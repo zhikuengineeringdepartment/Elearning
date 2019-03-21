@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.PreferMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.PreferKey">
+    <id column="prefer_user" jdbcType="INTEGER" property="preferUser" />
+    <id column="prefer_prf" jdbcType="INTEGER" property="preferPrf" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.PreferKey">
+    delete from prefer
+    where prefer_user = #{preferUser,jdbcType=INTEGER}
+      and prefer_prf = #{preferPrf,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.PreferKey">
+    insert into prefer (prefer_user, prefer_prf)
+    values (#{preferUser,jdbcType=INTEGER}, #{preferPrf,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.PreferKey">
+    insert into prefer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="preferUser != null">
+        prefer_user,
+      </if>
+      <if test="preferPrf != null">
+        prefer_prf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="preferUser != null">
+        #{preferUser,jdbcType=INTEGER},
+      </if>
+      <if test="preferPrf != null">
+        #{preferPrf,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 自定义sql -->
+  <resultMap id="PreferView" type="com.zhiku.view.PreferView" extends="BaseResultMap">
+    <collection property="preferences" resultMap="com.zhiku.mapper.PreferenceMapper.BaseResultMap"/>
+  </resultMap>
+  
+  <select id="selectPreferViewByUid" parameterType="java.lang.Integer" resultMap="PreferView">
+    select *
+    from prefer,preference
+    where prefer_user = #{uid} and prefer_prf = prfid
+  </select>
+</mapper>

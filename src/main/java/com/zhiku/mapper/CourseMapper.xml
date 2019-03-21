@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.CourseMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Course">
+    <id column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+    <result column="course_desc" jdbcType="VARCHAR" property="courseDesc" />
+    <result column="course_icon" jdbcType="VARCHAR" property="courseIcon" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cid, course_name, course_desc, course_icon
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Course">
+    insert into course (cid, course_name, course_desc, 
+      course_icon)
+    values (#{cid,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR}, #{courseDesc,jdbcType=VARCHAR}, 
+      #{courseIcon,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Course">
+    insert into course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="courseName != null">
+        course_name,
+      </if>
+      <if test="courseDesc != null">
+        course_desc,
+      </if>
+      <if test="courseIcon != null">
+        course_icon,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="courseName != null">
+        #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="courseDesc != null">
+        #{courseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="courseIcon != null">
+        #{courseIcon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Course">
+    update course
+    <set>
+      <if test="courseName != null">
+        course_name = #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="courseDesc != null">
+        course_desc = #{courseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="courseIcon != null">
+        course_icon = #{courseIcon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Course">
+    update course
+    set course_name = #{courseName,jdbcType=VARCHAR},
+      course_desc = #{courseDesc,jdbcType=VARCHAR},
+      course_icon = #{courseIcon,jdbcType=VARCHAR}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+
+  <!-- 自定义SQL -->
+  <resultMap id="CourseView" type="com.zhiku.view.CourseView" extends="BaseResultMap">
+    <collection property="sections" resultMap="com.zhiku.mapper.SectionMapper.BaseResultMap"/>
+  </resultMap>
+  <select id="getAllCourse" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from course
+  </select>
+  
+  <select id="getCourseView" parameterType="java.lang.Integer" resultMap="CourseView">
+    select *
+    from course ,section
+    where section.section_course = cid and cid = #{cid};
+  </select>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 扫描所有的组件 -->
+    <context:component-scan base-package="com.zhiku.controller"/>
+    <context:component-scan base-package="com.zhiku.service"/>
+
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="config/jdbc.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="config/config.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="config/mail.properties" ignore-unresolvable="true"/>
+
+    <!-- 配置处理器映射器和适配器 -->
+    <mvc:annotation-driven/>
+
+    <!-- multipart解析器 -->
+    <bean id ="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000000"/>
+    </bean>
+    <!-- 配置视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 配置数据库 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxPoolSize" value="20"/>
+        <property name="initialPoolSize" value="5"/>
+    </bean>
+
+    <!-- 配置sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="config/mybatis-mapper.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <!-- 配置Mapper动态代理 -->
+    <!-- Mapper动态代理，减少了DAO开发的时间 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.zhiku.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!-- 配置过滤器 -->
+
+    <!--配置邮件接口 -->
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.smtp.host}" />
+        <property name="username" value="${mail.smtp.username}" />
+        <property name="password" value="${mail.smtp.password}" />
+        <property name="defaultEncoding" value="${mail.smtp.defaultEncoding}" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+                <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- freemarker -->
+    <bean id="freeMarkerConfig"
+          class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="templateLoaderPath" value="/freemarker/" />
+        <!-- 设置FreeMarker环境变量 -->
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="default_encoding">UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <!-- 静态资源配置 -->
+    <mvc:resources mapping="/image/**" location="/img" />
+
+</beans>

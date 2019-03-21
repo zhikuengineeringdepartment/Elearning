@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.SectionMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Section">
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="section_name" jdbcType="VARCHAR" property="sectionName" />
+    <result column="section_seq" jdbcType="VARCHAR" property="sectionSeq" />
+    <result column="section_recommend_path" jdbcType="VARCHAR" property="sectionRecommendPath" />
+    <result column="section_course" jdbcType="INTEGER" property="sectionCourse" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sid, section_name, section_seq, section_recommend_path, section_course
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from section
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from section
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Section">
+    insert into section (sid, section_name, section_seq, 
+      section_recommend_path, section_course)
+    values (#{sid,jdbcType=INTEGER}, #{sectionName,jdbcType=VARCHAR}, #{sectionSeq,jdbcType=VARCHAR}, 
+      #{sectionRecommendPath,jdbcType=VARCHAR}, #{sectionCourse,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Section">
+    insert into section
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="sectionName != null">
+        section_name,
+      </if>
+      <if test="sectionSeq != null">
+        section_seq,
+      </if>
+      <if test="sectionRecommendPath != null">
+        section_recommend_path,
+      </if>
+      <if test="sectionCourse != null">
+        section_course,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="sectionName != null">
+        #{sectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionSeq != null">
+        #{sectionSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionRecommendPath != null">
+        #{sectionRecommendPath,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionCourse != null">
+        #{sectionCourse,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Section">
+    update section
+    <set>
+      <if test="sectionName != null">
+        section_name = #{sectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionSeq != null">
+        section_seq = #{sectionSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionRecommendPath != null">
+        section_recommend_path = #{sectionRecommendPath,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionCourse != null">
+        section_course = #{sectionCourse,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Section">
+    update section
+    set section_name = #{sectionName,jdbcType=VARCHAR},
+      section_seq = #{sectionSeq,jdbcType=VARCHAR},
+      section_recommend_path = #{sectionRecommendPath,jdbcType=VARCHAR},
+      section_course = #{sectionCourse,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 自定义Sql -->
+  <resultMap id="SectionView" type="com.zhiku.view.SectionView" extends="BaseResultMap">
+    <collection property="knowledgeViews" resultMap="com.zhiku.mapper.KnowledgeMapper.KnowledgeView"/>
+  </resultMap>
+
+  <select id="getSectionViewBySid" parameterType="java.lang.Integer" resultMap="SectionView">
+    select *
+    from section ,knowledge ,paragraph
+    where sid = #{sid} and section.sid = knowledge.knowledge_section and knowledge.kid = paragraph.paragraph_knowledge order by paragraph_seq
+  </select>
+</mapper>

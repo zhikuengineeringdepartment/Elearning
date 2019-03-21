@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.FileopMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Fileop">
+    <id column="fopid" jdbcType="INTEGER" property="fopid" />
+    <result column="fop_user" jdbcType="INTEGER" property="fopUser" />
+    <result column="fop_file" jdbcType="INTEGER" property="fopFile" />
+    <result column="fop_date" jdbcType="TIMESTAMP" property="fopDate" />
+    <result column="fop_ip" jdbcType="VARCHAR" property="fopIp" />
+    <result column="fop_type" jdbcType="CHAR" property="fopType" />
+    <result column="fop_desc" jdbcType="VARCHAR" property="fopDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fopid, fop_user, fop_file, fop_date, fop_ip, fop_type, fop_desc
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fileop
+    where fopid = #{fopid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from fileop
+    where fopid = #{fopid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Fileop">
+    insert into fileop (fopid, fop_user, fop_file, 
+      fop_date, fop_ip, fop_type, 
+      fop_desc)
+    values (#{fopid,jdbcType=INTEGER}, #{fopUser,jdbcType=INTEGER}, #{fopFile,jdbcType=INTEGER}, 
+      #{fopDate,jdbcType=TIMESTAMP}, #{fopIp,jdbcType=VARCHAR}, #{fopType,jdbcType=CHAR}, 
+      #{fopDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Fileop">
+    insert into fileop
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fopid != null">
+        fopid,
+      </if>
+      <if test="fopUser != null">
+        fop_user,
+      </if>
+      <if test="fopFile != null">
+        fop_file,
+      </if>
+      <if test="fopDate != null">
+        fop_date,
+      </if>
+      <if test="fopIp != null">
+        fop_ip,
+      </if>
+      <if test="fopType != null">
+        fop_type,
+      </if>
+      <if test="fopDesc != null">
+        fop_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fopid != null">
+        #{fopid,jdbcType=INTEGER},
+      </if>
+      <if test="fopUser != null">
+        #{fopUser,jdbcType=INTEGER},
+      </if>
+      <if test="fopFile != null">
+        #{fopFile,jdbcType=INTEGER},
+      </if>
+      <if test="fopDate != null">
+        #{fopDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fopIp != null">
+        #{fopIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fopType != null">
+        #{fopType,jdbcType=CHAR},
+      </if>
+      <if test="fopDesc != null">
+        #{fopDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Fileop">
+    update fileop
+    <set>
+      <if test="fopUser != null">
+        fop_user = #{fopUser,jdbcType=INTEGER},
+      </if>
+      <if test="fopFile != null">
+        fop_file = #{fopFile,jdbcType=INTEGER},
+      </if>
+      <if test="fopDate != null">
+        fop_date = #{fopDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fopIp != null">
+        fop_ip = #{fopIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fopType != null">
+        fop_type = #{fopType,jdbcType=CHAR},
+      </if>
+      <if test="fopDesc != null">
+        fop_desc = #{fopDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fopid = #{fopid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Fileop">
+    update fileop
+    set fop_user = #{fopUser,jdbcType=INTEGER},
+      fop_file = #{fopFile,jdbcType=INTEGER},
+      fop_date = #{fopDate,jdbcType=TIMESTAMP},
+      fop_ip = #{fopIp,jdbcType=VARCHAR},
+      fop_type = #{fopType,jdbcType=CHAR},
+      fop_desc = #{fopDesc,jdbcType=VARCHAR}
+    where fopid = #{fopid,jdbcType=INTEGER}
+  </update>
+</mapper>

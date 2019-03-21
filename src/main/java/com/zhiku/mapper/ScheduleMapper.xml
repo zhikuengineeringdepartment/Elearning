@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.ScheduleMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Schedule">
+    <id column="schedule_user" jdbcType="INTEGER" property="scheduleUser" />
+    <id column="schedule_section" jdbcType="INTEGER" property="scheduleSection" />
+    <result column="schedule_date" jdbcType="TIMESTAMP" property="scheduleDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    schedule_user, schedule_section, schedule_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.ScheduleKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where schedule_user = #{scheduleUser,jdbcType=INTEGER}
+      and schedule_section = #{scheduleSection,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.ScheduleKey">
+    delete from schedule
+    where schedule_user = #{scheduleUser,jdbcType=INTEGER}
+      and schedule_section = #{scheduleSection,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Schedule">
+    insert into schedule (schedule_user, schedule_section, schedule_date
+      )
+    values (#{scheduleUser,jdbcType=INTEGER}, #{scheduleSection,jdbcType=INTEGER}, #{scheduleDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Schedule">
+    insert into schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scheduleUser != null">
+        schedule_user,
+      </if>
+      <if test="scheduleSection != null">
+        schedule_section,
+      </if>
+      <if test="scheduleDate != null">
+        schedule_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scheduleUser != null">
+        #{scheduleUser,jdbcType=INTEGER},
+      </if>
+      <if test="scheduleSection != null">
+        #{scheduleSection,jdbcType=INTEGER},
+      </if>
+      <if test="scheduleDate != null">
+        #{scheduleDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Schedule">
+    update schedule
+    <set>
+      <if test="scheduleDate != null">
+        schedule_date = #{scheduleDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where schedule_user = #{scheduleUser,jdbcType=INTEGER}
+      and schedule_section = #{scheduleSection,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Schedule">
+    update schedule
+    set schedule_date = #{scheduleDate,jdbcType=TIMESTAMP}
+    where schedule_user = #{scheduleUser,jdbcType=INTEGER}
+      and schedule_section = #{scheduleSection,jdbcType=INTEGER}
+  </update>
+
+  <!--自定义SQL-->
+  <delete id="deleteByCid" parameterType="java.lang.Integer" >
+    delete from schedule
+    where schedule_section not in
+    (select a.sid from
+      (select * from section,course,col_course,schedule
+        where section_course = cid and colc_course = cid and schedule_section = sid and colc_user = 10001)
+      as a)
+  </delete>
+</mapper>
