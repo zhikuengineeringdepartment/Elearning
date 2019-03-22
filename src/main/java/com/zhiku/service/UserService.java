@@ -1,7 +1,9 @@
 package com.zhiku.service;
 
+import com.zhiku.entity.Message;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
+import com.zhiku.mapper.MessageMapper;
 import com.zhiku.mapper.UserMapper;
 import com.zhiku.util.EmailUtil;
 import com.zhiku.util.UserStatus;
@@ -20,6 +22,8 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private MessageMapper messageMapper;
     private EmailUtil emailUtil = new EmailUtil();
 
     /**
@@ -143,5 +147,16 @@ public class UserService {
         user.setUserPassword(newPsw);
         user.setUserMailtime(new Date());
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+
+    public List<Message> getMessages(int uid, int type) {
+        Message message = new Message();
+        if(type == 0){
+            message.setMessageTo(uid);
+        }else{
+            message.setMessageFrom(uid);
+        }
+        return messageMapper.selectMessagesByUser(message);
     }
 }

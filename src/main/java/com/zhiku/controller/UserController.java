@@ -244,4 +244,11 @@ public class UserController {
         courseService.removeColCourse(uid,cid);
     }
 
+    @RequestMapping(value = "getMessages",method = RequestMethod.GET)
+    public @ResponseBody Map<String,Object> getMessages(int uid,int type){
+        Map<String,Object> rMessage = new HashMap<>();
+        rMessage.put("myMessages",userService.getMessages(uid,type));
+        return rMessage;
+    }
+
 }

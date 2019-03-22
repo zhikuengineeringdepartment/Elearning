@@ -2,6 +2,8 @@ package com.zhiku.mapper;
 
 import com.zhiku.entity.Message;
 
+import java.util.List;
+
 public interface MessageMapper {
     int deleteByPrimaryKey(Integer mid);
 
@@ -16,4 +18,7 @@ public interface MessageMapper {
     int updateByPrimaryKeyWithBLOBs(Message record);
 
     int updateByPrimaryKey(Message record);
+
+//    自定义方法
+    List<Message> selectMessagesByUser(Message message);
 }
