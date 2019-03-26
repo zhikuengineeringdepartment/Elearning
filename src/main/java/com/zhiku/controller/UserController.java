@@ -251,4 +251,14 @@ public class UserController {
         return rMessage;
     }
 
+    @RequestMapping(value = "readMessage",method = RequestMethod.GET)
+    public void readMessage(int mid){
+        userService.readMessage(mid);
+    }
+
+    @RequestMapping(value = "removeMessage",method = RequestMethod.DELETE)
+    public void removeMessage(int mid){
+        userService.removeMessage(mid);
+    }
+
 }

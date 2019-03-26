@@ -159,4 +159,14 @@ public class UserService {
         }
         return messageMapper.selectMessagesByUser(message);
     }
+
+    public void readMessage(int mid) {
+        Message message = messageMapper.selectByPrimaryKey(mid);
+        message.setMessageRead("r");
+        messageMapper.updateByPrimaryKeySelective(message);
+    }
+
+    public void removeMessage(int mid) {
+        messageMapper.deleteByPrimaryKey(mid);
+    }
 }
