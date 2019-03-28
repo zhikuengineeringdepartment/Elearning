@@ -41,8 +41,8 @@
     </bean>
     <!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/jsp/"/>
-        <property name="suffix" value=".jsp"/>
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".html"/>
     </bean>
 
     <!-- 配置数据库 -->
@@ -102,6 +102,9 @@
 
 
     <!-- 静态资源配置 -->
-    <mvc:resources mapping="/image/**" location="/img" />
+    <mvc:resources mapping="/img/**" location="/img/" />
+    <mvc:resources mapping="/WEB-INF/**" location="/WEB-INF/"/>
+    <mvc:resources mapping="/common/**" location="/WEB-INF/common/"/>
+    <mvc:resources mapping="/template/**" location="/WEB-INF/template/"/>
 
 </beans>

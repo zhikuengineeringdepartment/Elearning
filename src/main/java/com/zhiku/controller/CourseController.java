@@ -10,9 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("course")
@@ -22,13 +25,19 @@ public class CourseController {
     @Autowired
     private SectionService sectionService;
 
+    @RequestMapping(value = "first",method = RequestMethod.GET)
+    public ModelAndView getFirst(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("first");
+        return mv;
+    }
+
     @RequestMapping(value = "getAllCourse" ,method = RequestMethod.GET)
-    public ModelAndView getAllCourse(@RequestParam(value = "majorId")int majorId){
-        ModelAndView modelAndView = new ModelAndView();
-        List<Course> courses = courseService.getAllCourse(majorId);
-        modelAndView.addObject("courses",courses);
-        modelAndView.setViewName("forward:/Elearing/index");
-        return  modelAndView;
+    public @ResponseBody Map<String,Object> getAllCourse(){
+        Map<String,Object> Rmessage = new HashMap<>();
+        List<Course> courses = courseService.getAllCourse();
+        Rmessage.put("courses",courses);
+        return Rmessage;
     }
 
     @RequestMapping(value = "getCourseDetails")

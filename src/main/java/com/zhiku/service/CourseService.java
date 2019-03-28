@@ -23,7 +23,7 @@ public class CourseService {
     @Autowired
     private ScheduleMapper scheduleMapper;
 
-    public List<Course> getAllCourse(int majorId){
+    public List<Course> getAllCourse(){
         return courseMapper.getAllCourse();
     }
 

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/Elearning/common/vue-element.css" />
+    <link rel="stylesheet" href="/Elearning/common/main.css" />
+    <link rel="stylesheet" href="/Elearning/common/jquery.Jcrop.css" />
+    <script src="/Elearning/common/vue.js"></script>
+    <script src="/Elearning/common/jquery.min.js"></script>
+    <script src="/Elearning/common/jquery.Jcrop.js"></script>
+    <script src="/Elearning/common/vue-element.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--引入模块-->
+    <script src="/Elearning/template/course.js"></script>
+
+    <title>zhiku</title>
+</head>
+<body>
+<div id = "root">
+<el-container>
+    <el-header>Header</el-header>
+    <el-container>
+        <el-aside>Aside</el-aside>
+        <el-main>
+            <el-row>
+                <el-col :span="8" v-for="(course,index) in courses" :key="index" :offset="1">
+                    <course :course="course"></course>
+                </el-col>
+            </el-row>
+        </el-main>
+    </el-container>
+    <el-footer>Footer</el-footer>
+</el-container>
+</div>
+</body>
+<script>
+    var root = new Vue({
+        el:"#root",
+        data:{
+            courses:[
+                {
+                    name:"course1",
+                    img:"../img/jinx.jpg",
+                    date:"2018-09-15"
+                },
+                {
+                    name:"course1",
+                    img:"../img/jinx.jpg",
+                    date:"2018-09-15"
+                },
+                {
+                    name:"course1",
+                    img:"../img/jinx.jpg",
+                    date:"2018-09-15"
+                },
+                {
+                    name:"course1",
+                    img:"../img/jinx.jpg",
+                    date:"2018-09-15"
+                }
+            ]
+        },
+        created:function(){
+           this.getCourses()
+        },
+        methods:{
+            getCourses:function(){
+                var _this =this;
+                axios.get('getAllCourse')
+                    .then(function(response){
+                        _this.courses = response.data.courses;
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    });
+            }
+        }
+    })
+</script>
+
+</html>
