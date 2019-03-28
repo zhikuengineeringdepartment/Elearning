@@ -9,6 +9,8 @@ public class Paragraph {
 
     private String paragraphType;
 
+    private String paragraphNewline;
+
     private String paragraphContent;
 
     public Integer getPid() {
@@ -41,6 +43,14 @@ public class Paragraph {
 
     public void setParagraphType(String paragraphType) {
         this.paragraphType = paragraphType == null ? null : paragraphType.trim();
+    }
+
+    public String getParagraphNewline() {
+        return paragraphNewline;
+    }
+
+    public void setParagraphNewline(String paragraphNewline) {
+        this.paragraphNewline = paragraphNewline == null ? null : paragraphNewline.trim();
     }
 
     public String getParagraphContent() {
