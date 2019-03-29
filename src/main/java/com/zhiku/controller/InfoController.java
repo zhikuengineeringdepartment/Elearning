@@ -2,6 +2,7 @@ package com.zhiku.controller;
 
 import com.zhiku.entity.Preference;
 import com.zhiku.service.PreferenceService;
+import com.zhiku.util.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +17,12 @@ public class InfoController {
     @Autowired
     private PreferenceService preferenceService;
 
+    @ResponseBody
     @RequestMapping(value = "getAllPrfs")
-    public @ResponseBody Map<String,Object> getAllPreferences(){
-        Map<String,Object> rMessage = new HashMap<>();
+    public ResponseData getAllPreferences(){
+        ResponseData responseData = ResponseData.ok();
         List<Preference> preferences = preferenceService.getAllPreference();
-        rMessage.put("preferences",preferences);
-        return rMessage;
+        responseData.putDataValue("preferences",preferences);
+        return responseData;
     }
 }

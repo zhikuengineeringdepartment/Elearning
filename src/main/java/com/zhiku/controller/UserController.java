@@ -6,6 +6,7 @@ import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.service.CourseService;
 import com.zhiku.service.PreferenceService;
 import com.zhiku.service.UserService;
+import com.zhiku.util.ResponseData;
 import com.zhiku.util.UserStatus;
 import com.zhiku.view.ColCourseView;
 import freemarker.template.Configuration;
@@ -51,59 +52,78 @@ public class UserController {
      * ----检测是否重复
      * ----正常注册
      */
+    @ResponseBody
     @RequestMapping(value = "registe" ,method = RequestMethod.POST)
-    public ModelAndView registe(
+    public ResponseData registe(
             HttpServletRequest request,
             @RequestParam(name = "username" ) String username,
             @RequestParam(name = "password" ) String password,
             @RequestParam(name = "email" ) String email){
-        ModelAndView modelAndView = new ModelAndView();
+        ResponseData responseData = null;
         try{
             userService.getUserByUsername(username);
-            modelAndView.setStatus(HttpStatus.NOT_ACCEPTABLE);
-            modelAndView.setViewName("/registe");
-            modelAndView.addObject("message","用户名重复");
+            responseData = ResponseData.badRequest();
+            responseData.setMessage("用户名重复");
         }catch (UserNotFoundException unfe){
             try{
                 userService.getUserByEmail(email);
-                modelAndView.setStatus(HttpStatus.NOT_ACCEPTABLE);
-                modelAndView.setViewName("/registe");
-                modelAndView.addObject("message","邮箱重复");
+                responseData = ResponseData.badRequest();
+                responseData.setMessage("邮箱重复");
             }catch (UserNotFoundException e){
                 if(userService.registeUser(username,password,email,request)){
                     userService.sendEmail(javaMailSender,username,email,"active",freemarkerConfig);
-                    modelAndView.setViewName("/registe");
-                    modelAndView.addObject("message","激活邮件已发送，请到邮箱查看激活");
+                    responseData = ResponseData.ok();
                 }else{
-                    modelAndView.setViewName("/registe");
-                    modelAndView.addObject("message","发生了一个预期之外的错误，请重试");
+                    responseData = ResponseData.badRequest();
+                    responseData.setMessage("发生了一个预期之外的错误");
                 }
             }
         }
-        return modelAndView;
+        return responseData;
     }
 
+    @ResponseBody
     @RequestMapping(value = "/login" ,method = RequestMethod.POST)
-    public ModelAndView login(
+    public ResponseData login(
             @RequestParam(name = "identity" ) String identity,
-            @RequestParam(name = "password" ) String password) throws UserNotFoundException {
-        ModelAndView modelAndView = new ModelAndView();
-        User user = userService.getUserByUsername(identity);
-        if(userService.checkPassword(user,password)){
-            modelAndView.setViewName("redirect:/index");
-        }else{
-            modelAndView.setStatus(HttpStatus.NOT_ACCEPTABLE);
-            modelAndView.setViewName("login");
-            modelAndView.addObject("Message","用户名或密码不正确");
+            @RequestParam(name = "password" ) String password) {
+        ResponseData responseData = null;
+        User user = null;
+        try{
+            user = userService.getUserByUsername(identity);
+        }catch (UserNotFoundException e){
+            try{
+                user = userService.getUserByEmail(identity);
+                UserStatus userStatus = userService.checkUser(user);
+                if(userStatus == UserStatus.NORMAL){
+                    if(userService.checkPassword(user,password)){
+                        responseData = ResponseData.ok();
+                        //签发token
+                    }else {
+                        responseData = ResponseData.badRequest();
+                        responseData.setMessage("用户名和密码不正确");
+                    }
+                }else{
+                    responseData = ResponseData.badRequest();
+                    responseData.setMessage(userStatus.getMessage());
+                }
+                //签发token
+            }catch (UserNotFoundException unfe){
+                responseData = ResponseData.badRequest();
+                responseData.setMessage("账号不存在");
+            }
         }
-        return modelAndView;
+
+        return responseData;
     }
 
+    @ResponseBody
     @RequestMapping(value = "mail/active",method = RequestMethod.GET)
-    public ModelAndView mailHandler(
+    public ResponseData mailHandler(
             String act,
             String username,
             String code){
+        ResponseData responseData = null;
         ModelAndView modelAndView = new ModelAndView();
         try{
             User user = userService.getUserByUsername(username);
@@ -125,53 +145,55 @@ public class UserController {
             modelAndView.addObject("message","用户不存在！");
         }
 
-        return modelAndView;
+        return responseData;
     }
 
+    @ResponseBody
     @RequestMapping(value = "mail/forgetPassword",method = RequestMethod.GET)
-    public ModelAndView forgetPassword(String email){
-        ModelAndView modelAndView = new ModelAndView();
+    public ResponseData forgetPassword(String email){
+        ResponseData responseData = null;
         try{
             User user = userService.getUserByEmail(email);
             userService.sendEmail(javaMailSender,user.getUserUsername(),user.getUserEmail(),"reset",freemarkerConfig);
+            responseData = ResponseData.ok();
         }catch (UserNotFoundException e){
-            modelAndView.setViewName("Error");
-            modelAndView.addObject("message","该邮箱尚未被注册");
+            responseData = ResponseData.badRequest();
+            responseData.setMessage("邮箱不存在");
         }
-        return modelAndView;
+        return responseData;
     }
+
     @RequestMapping(value = "mail/reset",method = RequestMethod.POST)
     public String reset(){
         return "forward:/reset";
     }
 
-        @RequestMapping(value = "mail/resetPassword",method = RequestMethod.POST)
-        public ModelAndView resetPassword(String username,String code,String newPsw){
-            ModelAndView modelAndView = new ModelAndView();
-            try{
-                User user = userService.getUserByUsername(username);
-                if(code.equals(user.hashCode()+"")){
-                    userService.resetPassword(user,newPsw);
-                }else{
-                    modelAndView.setViewName("Error");
-                    modelAndView.addObject("message","无效链接");
-                }
-            }catch (UserNotFoundException e){
-                e.printStackTrace();
+    @ResponseBody
+    @RequestMapping(value = "mail/resetPassword",method = RequestMethod.POST)
+    public ResponseData resetPassword(String username,String code,String newPsw){
+        ResponseData responseData = null;
+        try{
+            User user = userService.getUserByUsername(username);
+            if(code.equals(user.hashCode()+"")){
+                userService.resetPassword(user,newPsw);
+                responseData = ResponseData.ok();
+            }else{
+                responseData = ResponseData.badRequest();
+                responseData.setMessage("无效链接");
             }
-            return modelAndView;
+        }catch (UserNotFoundException e){
+            responseData = ResponseData.badRequest();
+            responseData.setMessage("无效链接");
+        }
+        return responseData;
     }
 
+    @ResponseBody
     @RequestMapping(value = "getPrfs" ,method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getPreferences(int uid){
-        Map<String,Object> rMessage = new HashMap<>();
-        try{
-            User user = userService.getUserById(uid);
-            rMessage.put("prefers",preferenceService.getPrfByUid(uid));
-        }catch (UserNotFoundException unfe){
-            rMessage.put("message","用户不存在");
-        }
-        return rMessage;
+    public ResponseData getPreferences(int uid){
+        ResponseData responseData = ResponseData.ok();
+        responseData.putDataValue("prefers",preferenceService.getPrfByUid(uid));
+        return responseData;
     }
 
     /**
@@ -179,9 +201,11 @@ public class UserController {
      * @param uid 用户id
      * @param prfs 偏好列表
      */
+    @ResponseBody
     @RequestMapping(value = "removePrfs" ,method = RequestMethod.DELETE)
-    public void removePrefers(int uid, List<Preference> prfs){
+    public ResponseData removePrefers(int uid, List<Preference> prfs){
         preferenceService.removePrefers(uid,prfs);
+        return ResponseData.ok();
     }
 
     /**
@@ -189,9 +213,11 @@ public class UserController {
      * @param uid 用户id
      * @param prfs 偏好列表
      */
+    @ResponseBody
     @RequestMapping(value = "addPrfs",method = RequestMethod.GET)
-    public void addPrefers(int uid,List<Preference> prfs){
+    public ResponseData addPrefers(int uid,List<Preference> prfs){
         preferenceService.addPrefers(uid,prfs);
+        return ResponseData.ok();
     }
 
     /**
@@ -199,17 +225,14 @@ public class UserController {
      * @param uid 用户id
      * @return
      */
+    @ResponseBody
     @RequestMapping(value = "getColCourses" ,method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getColCourses(int uid ){
-        Map<String,Object> rMessage = new HashMap<>();
-        try{
-            User user = userService.getUserById(uid);
-            List<ColCourseView> colCourseViews = courseService.getColCourses(uid);
-            rMessage.put("colCoureses",colCourseViews);
-        }catch (UserNotFoundException unfe){
-            rMessage.put("message","用户不存在");
-        }
-        return rMessage;
+    public ResponseData getColCourses(int uid ){
+        ResponseData responseData = null;
+        List<ColCourseView> colCourseViews = courseService.getColCourses(uid);
+        responseData = ResponseData.ok();
+        responseData.putDataValue("colCourseView",colCourseViews);
+        return responseData;
     }
 
     /**
@@ -218,19 +241,17 @@ public class UserController {
      * @param cid
      * @return
      */
-    public @ResponseBody Map<String,Object> colCourse(int uid,int cid){
-        Map<String,Object> rMessage = new HashMap<>();
-        try{
-            User user = userService.getUserById(uid);
-            if(courseService.colCourse(uid,cid)){
-                rMessage.put("message","ok");
-            }else{
-                rMessage.put("message","收藏失败，请重试！");
-            }
-        }catch(UserNotFoundException unfe){
-            rMessage.put("message","用户不存在");
+    @ResponseBody
+    @RequestMapping(value = "colCourse",method = RequestMethod.POST)
+    public ResponseData colCourse(int uid,int cid){
+        ResponseData responseData = null;
+        if(courseService.colCourse(uid,cid)){
+            responseData = ResponseData.ok();
+        }else{
+            responseData = ResponseData.badRequest();
+            responseData.setMessage("收藏失败，请重试!");
         }
-        return rMessage;
+        return responseData;
     }
 
     /**
@@ -239,26 +260,33 @@ public class UserController {
      * @param uid
      * @param cid
      */
+    @ResponseBody
     @RequestMapping(value = "removeColCourse",method = RequestMethod.DELETE)
-    public void removeColCourse(int uid,int cid){
+    public ResponseData removeColCourse(int uid,int cid){
         courseService.removeColCourse(uid,cid);
+        return ResponseData.ok();
     }
 
+    @ResponseBody
     @RequestMapping(value = "getMessages",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getMessages(int uid,int type){
-        Map<String,Object> rMessage = new HashMap<>();
-        rMessage.put("myMessages",userService.getMessages(uid,type));
-        return rMessage;
+    public ResponseData getMessages(int uid,int type){
+        ResponseData responseData = ResponseData.ok();
+        responseData.putDataValue("myMessages",userService.getMessages(uid,type));
+        return responseData;
     }
 
+    @ResponseBody
     @RequestMapping(value = "readMessage",method = RequestMethod.GET)
-    public void readMessage(int mid){
+    public ResponseData readMessage(int mid){
         userService.readMessage(mid);
+        return ResponseData.ok();
     }
 
+    @ResponseBody
     @RequestMapping(value = "removeMessage",method = RequestMethod.DELETE)
-    public void removeMessage(int mid){
+    public ResponseData removeMessage(int mid){
         userService.removeMessage(mid);
+        return ResponseData.ok();
     }
 
 }

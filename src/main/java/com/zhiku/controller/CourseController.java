@@ -3,6 +3,7 @@ package com.zhiku.controller;
 import com.zhiku.entity.Course;
 import com.zhiku.service.CourseService;
 import com.zhiku.service.SectionService;
+import com.zhiku.util.ResponseData;
 import com.zhiku.view.CourseView;
 import com.zhiku.view.SectionView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +33,23 @@ public class CourseController {
         return mv;
     }
 
+    @ResponseBody
     @RequestMapping(value = "getAllCourse" ,method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> getAllCourse(){
-        Map<String,Object> Rmessage = new HashMap<>();
+    public ResponseData getAllCourse(){
+       ResponseData responseData = ResponseData.ok();
         List<Course> courses = courseService.getAllCourse();
-        Rmessage.put("courses",courses);
-        return Rmessage;
+        responseData.putDataValue("courses",courses);
+        return responseData;
     }
 
+    @ResponseBody
     @RequestMapping(value = "getCourseDetails")
-    public ModelAndView getCourseDetails(@RequestParam(value = "cid") int cid){
-        ModelAndView modelAndView = new ModelAndView();
+    public ResponseData getCourseDetails(@RequestParam(value = "cid") int cid){
+        ResponseData responseData = ResponseData.ok();
         CourseView courseView = courseService.getCourseDetails(cid);
         SectionView sectionView = sectionService.getIntroduce(courseView.getCid());
-        System.out.println(sectionView.getKnowledgeViews().get(0).getParagraphs().get(1).getParagraphContent());
-        modelAndView.addObject("courseView",courseView);
-        modelAndView.addObject("sectionView",sectionView);
-        modelAndView.setViewName("course_index");
-        return modelAndView;
+        responseData.putDataValue("courseView",courseView);
+        responseData.putDataValue("sectionView",sectionView);
+        return responseData;
     }
 }
