@@ -2,6 +2,10 @@ package com.zhiku.mapper;
 
 import com.zhiku.entity.ColParagraph;
 import com.zhiku.entity.ColParagraphKey;
+import com.zhiku.view.ColParagraphView;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ColParagraphMapper {
     int deleteByPrimaryKey(ColParagraphKey key);
@@ -15,4 +19,8 @@ public interface ColParagraphMapper {
     int updateByPrimaryKeySelective(ColParagraph record);
 
     int updateByPrimaryKey(ColParagraph record);
+
+    List<ColParagraph> selectBySid(@Param("uid")int uid,@Param("sid") int sid);
+
+    List<ColParagraphView> selectViewBySid(int uid);
 }

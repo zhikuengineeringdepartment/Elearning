@@ -68,4 +68,25 @@
     where colp_para = #{colpPara,jdbcType=INTEGER}
       and colp_user = #{colpUser,jdbcType=INTEGER}
   </update>
+
+  <!--自定义SQL-->
+  <resultMap id="ColParagraphView" type="com.zhiku.view.ColParagraphView" extends="BaseResultMap">
+    <association property="paragraph" resultMap="com.zhiku.mapper.ParagraphMapper"/>
+  </resultMap>
+  <!--接收uid和sid作为参数-->
+  <select id="selectBySid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from col_paragraph,paragraph
+    where colp_user = #{uid}
+      and colp_para = pid
+      and paragraph_seq between #{sid}*100000 and #{sid}*100000+9999
+  </select>
+
+  <select id="selectViewBySid" parameterType="java.lang.Integer" resultMap="ColParagraphView">
+    select *
+    from col_paragraph,paragraph
+    where colp_user = #{uid}
+    and colp_para = pid
+  </select>
 </mapper>
