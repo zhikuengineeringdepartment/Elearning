@@ -71,7 +71,7 @@
 
   <!--自定义SQL-->
   <resultMap id="ColParagraphView" type="com.zhiku.view.ColParagraphView" extends="BaseResultMap">
-    <association property="paragraph" resultMap="com.zhiku.mapper.ParagraphMapper"/>
+    <association property="paragraph" resultMap="com.zhiku.mapper.ParagraphMapper.ResultMapWithBLOBs"/>
   </resultMap>
   <!--接收uid和sid作为参数-->
   <select id="selectBySid" resultMap="BaseResultMap">
@@ -83,7 +83,7 @@
       and paragraph_seq between #{sid}*100000 and #{sid}*100000+9999
   </select>
 
-  <select id="selectViewBySid" parameterType="java.lang.Integer" resultMap="ColParagraphView">
+  <select id="selectParagraphView" parameterType="java.lang.Integer" resultMap="ColParagraphView">
     select *
     from col_paragraph,paragraph
     where colp_user = #{uid}

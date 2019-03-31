@@ -22,5 +22,5 @@ public interface ColParagraphMapper {
 
     List<ColParagraph> selectBySid(@Param("uid")int uid,@Param("sid") int sid);
 
-    List<ColParagraphView> selectViewBySid(int uid);
+    List<ColParagraphView> selectParagraphView(int uid);
 }
