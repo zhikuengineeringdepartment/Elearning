@@ -92,4 +92,24 @@
     where note_user = #{noteUser,jdbcType=INTEGER}
       and note_para = #{notePara,jdbcType=INTEGER}
   </update>
+
+  <!--自定义SQL-->
+  <resultMap id="NoteView" type="com.zhiku.view.NoteView" extends="ResultMapWithBLOBs">
+    <association property="paragraph" resultMap="com.zhiku.mapper.ParagraphMapper.ResultMapWithBLOBs"/>
+  </resultMap>
+  <select id="selectBySid" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Blob_Column_List"/>
+    from note ,paragraph
+    where pid = note_para
+          and note_user = #{uid}
+          and paragraph_seq between #{sid}*100000 and #{sid}*100000+9999
+  </select>
+
+  <select id="selectNoteViewByUid" parameterType="java.lang.Integer" resultMap="NoteView">
+    select *
+    from note,paragraph
+    where note_user = #{uid}
+    and note_para = pid
+  </select>
 </mapper>

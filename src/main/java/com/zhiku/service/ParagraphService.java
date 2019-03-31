@@ -2,9 +2,13 @@ package com.zhiku.service;
 
 import com.zhiku.entity.ColParagraph;
 import com.zhiku.entity.ColParagraphKey;
+import com.zhiku.entity.Note;
+import com.zhiku.entity.NoteKey;
 import com.zhiku.mapper.ColParagraphMapper;
+import com.zhiku.mapper.NoteMapper;
 import com.zhiku.mapper.ParagraphMapper;
 import com.zhiku.view.ColParagraphView;
+import com.zhiku.view.NoteView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,8 @@ public class ParagraphService {
     ParagraphMapper paragraphMapper;
     @Autowired
     ColParagraphMapper colParagraphMapper;
+    @Autowired
+    NoteMapper noteMapper;
 
     /**
      * 获取某一节的收藏段落
@@ -34,7 +40,7 @@ public class ParagraphService {
      * @return
      */
     public List<ColParagraphView> getColParagraphViews(int uid){
-        return colParagraphMapper.selectViewBySid(uid);
+        return colParagraphMapper.selectParagraphView(uid);
     }
 
     /**
@@ -55,6 +61,12 @@ public class ParagraphService {
         }
     }
 
+    /**
+     * 删除一个收藏的段落
+     * @param uid
+     * @param pid
+     * @return
+     */
     public boolean removeColParagraph(int uid,int pid){
         ColParagraphKey colParagraphKey = new ColParagraphKey();
         colParagraphKey.setColpUser(uid);
@@ -65,4 +77,65 @@ public class ParagraphService {
             return false;
         }
     }
+
+    /**
+     * 获得某用户对应小节的全部笔记
+     * @param uid
+     * @param sid
+     * @return
+     */
+    public List<Note> getNotesBySid(int uid,int sid){
+        return noteMapper.selectBySid(uid,sid);
+    }
+
+    /**
+     * 添加一条笔记
+     * @param note 笔记
+     * @return 是否添加成功
+     */
+    public boolean addNote(Note note){
+        note.setNoteDate(new Date());
+        if(noteMapper.insert(note)>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 删除一条笔记
+     * @param uid
+     * @param pid
+     * @return 是否删除成功
+     */
+    public boolean removeNote(int uid,int pid){
+        NoteKey noteKey = new NoteKey();
+        noteKey.setNoteUser(uid);
+        noteKey.setNotePara(pid);
+        if(noteMapper.deleteByPrimaryKey(noteKey)>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 修改已有笔记的内容
+     * @param note
+     * @return
+     */
+    public boolean modifyNote(Note note){
+
+        note.setNoteDate(new Date());
+        if(noteMapper.updateByPrimaryKeySelective(note)>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public List<NoteView> getNoteViews(int uid ,int cid,int page){
+        return noteMapper.selectNoteViewByUid(uid);
+    }
+
 }

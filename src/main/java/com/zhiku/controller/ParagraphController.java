@@ -1,9 +1,11 @@
 package com.zhiku.controller;
 
 import com.zhiku.entity.ColParagraph;
+import com.zhiku.entity.Note;
 import com.zhiku.service.ParagraphService;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.ColParagraphView;
+import com.zhiku.view.NoteView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,6 +83,66 @@ public class ParagraphController {
         List<ColParagraphView> colParagraphViews = paragraphService.getColParagraphViews(uid);
         responseData = ResponseData.ok();
         responseData.putDataValue("colParagraphViews",colParagraphViews);
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getNoteBySid" ,method = RequestMethod.GET)
+    public ResponseData getNoteBySid(int uid,int sid){
+        ResponseData responseData = null;
+        List<Note> notes = paragraphService.getNotesBySid(uid,sid);
+        responseData = ResponseData.ok();
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "removeNote",method = RequestMethod.POST)
+    public ResponseData removeNote(int uid,int pid){
+        ResponseData responseData = null;
+        if(paragraphService.removeNote(uid,pid)){
+            responseData = ResponseData.ok();
+        }else {
+            responseData = ResponseData.serverInternalError();
+            responseData.setMessage("操作失败，请重试！");
+        }
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "addNote",method = RequestMethod.POST)
+    public ResponseData addNote(int uid ,int pid ,Note note){
+        ResponseData responseData = null;
+        note.setNotePara(pid);
+        note.setNoteUser(uid);
+        if(paragraphService.addNote(note)){
+            responseData = ResponseData.ok();
+        }else {
+            responseData = ResponseData.serverInternalError();
+            responseData.setMessage("操作失败，请重试！");
+        }
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getNoteViews",method = RequestMethod.GET)
+    public ResponseData getNoteViews(int uid,int page,int cid){
+        ResponseData responseData = null;
+        List<NoteView> noteViews = paragraphService.getNoteViews(uid,cid,page);
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "modifyNote",method = RequestMethod.POST)
+    public ResponseData modifyNote(int uid,int pid,Note note){
+        ResponseData responseData = null;
+        note.setNotePara(pid);
+        note.setNoteUser(uid);
+        if(paragraphService.modifyNote(note)){
+            responseData = ResponseData.ok();
+        }else {
+            responseData = ResponseData.serverInternalError();
+            responseData.setMessage("操作失败，请重试！");
+        }
         return responseData;
     }
 }
