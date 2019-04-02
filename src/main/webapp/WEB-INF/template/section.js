@@ -1,37 +1,33 @@
-let aaa = `
-<div class="knowlege" >
-    <h3>{{knowledge.title}}</h3>
-    <template v-for="paragraph in knowledge.paragraphs">
-        <template v-if="paragraph.type === 't'">
-            <p>{{paragraph.content}}</p>
-        </template>
-        <template v-else-if="paragraph.type === 'm'">
-            <img src="paragraph.content"/>
-        </template>
-        <template v-else>
-            <a href="paragraph.content"></a>
-        </template>
+let sectionTemplate = `
+<div id="section.sid" >
+    <template v-for="knowledge in section.knowledges">
+        <h3 id="knowledge.kid">{{knowledge.knowledgeName}}</h3>{{preTag}}
+        <paragraph v-for="paragraph in knowledge.paragraphs" v-bind:paragraph="paragraph" v-bind:preTag="preTag" v-bind:inline="inline" v-on:function_a="function_b"></paragraph>
     </template>
 </div>
 `
 
 
 
-var bottomCounter = {
+var sectionModule = {
     data: function () {
         return {
-            count: 0
+            preTag:null,
+            inline:false
         }
     },
-    props:['knowledge'],
-    template: aaa,
+    props:['section'],
+    template: sectionTemplate,
     methods:{
         addCount:function () {
             this.count++;
+        },
+        function_b:function () {
+            this.inline = !this.inline;
         }
     }
 }
 
-Vue.component('bottom-counter',bottomCounter)
+Vue.component('my_section',sectionModule)
 
 
