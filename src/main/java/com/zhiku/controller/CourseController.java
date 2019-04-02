@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("course")
@@ -29,7 +27,7 @@ public class CourseController {
     @RequestMapping(value = "first",method = RequestMethod.GET)
     public ModelAndView getFirst(){
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("first");
+        mv.setViewName("index");
         return mv;
     }
 

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="common/vue-element.css" />
+    <link rel="stylesheet" href="common/main.css" />
+    <link rel="stylesheet" href="common/jquery.Jcrop.css" />
+    <script src="common/vue.js"></script>
+    <script src="common/jquery.min.js"></script>
+    <script src="common/jquery.Jcrop.js"></script>
+    <script src="common/vue-element.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--引入模块-->
+    <script src="template/course.js"></script>
+    <script src="template/major.js"></script>
+
+    <title>zhiku</title>
+</head>
+<body>
+<el-container id = "root">
+    <!--头部-->
+    <el-header height="100px">
+    <el-row type="flex" class="row-bg" justify="space-around">
+        <el-col :span="12" style="display: flex;align-items: center;justify-content: center;">
+            <img src="../img/logo.jpg" height="50px" width="auto" style="margin-right:20px">
+            <i>让知识回归平凡</i>
+        </el-col>
+        <el-col :span="6"><el-input v-model="search" placeholder="搜索..."></el-input></el-col>
+        <el-col :span="4">
+            <el-button type="text">登录</el-button>
+            <el-button type="text">注册</el-button>
+        </el-col>
+    </el-row>
+    <el-row class="row-md">
+        <el-col :span="20" :offset="3">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item><a href="/">文件资源</a></el-breadcrumb-item>
+                <el-breadcrumb-item>练习测试</el-breadcrumb-item>
+                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+            </el-breadcrumb>
+        </el-col>
+    </el-row>
+    </el-header>
+
+    <!--内容-->
+    <el-main>
+        <el-row type="flex" class="row-bg" justify="center">
+            <!--专业目录展示部分-->
+            <el-col :span="4">
+                <el-row type="flex" justify="center">
+                    <el-col :span="18">
+                        <h5>专业目录</h5>
+                        <el-menu
+                                default-active="2"
+                                class="el-menu-vertical-demo"
+                                @open="handleOpen"
+                                @close="handleClose">
+                            <major v-for="(major,index) in majors" v-bind:major="major" key="index"></major>
+
+                        </el-menu>
+                    </el-col>
+                </el-row>
+            </el-col>
+            <!--主要课程展示部分-->
+            <el-col :span="14">
+                <el-row :gutter="20">
+                    <template v-for="(course,index) in courses">
+                        <el-col :span="8" style='margin: 20px 0px'>
+                            <course :course="course" key="index"></course>
+                        </el-col>
+                    </template>
+                </el-row>
+            </el-col>
+        </el-row>
+    </el-main>
+
+    <!--foot-->
+    <el-footer>
+        <el-row type="flex" class="row-bg" justify="center">
+            <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
+            <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
+            <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
+        </el-row>
+    </el-footer>
+</el-container>
+</body>
+<script>
+    var root = new Vue({
+        el:"#root",
+        data:{
+            search:"",
+            courses:[
+                {
+                    courseName:"course1",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course2",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course3",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course4",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course5",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course6",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course7",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course8",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                },
+                {
+                    courseName:"course9",
+                    icon:"../img/logo.jpg",
+                    courseDesc:"2018-09-15"
+                }
+            ],
+            majors:[
+                {
+                    id:1,
+                    name:"软件工程"
+                },
+                {
+                    id:2,
+                    name:"数字媒体"
+                },
+                {
+                    id:3,
+                    name:"计算机科学"
+                },
+                {
+                    id:4,
+                    name:"马克思学院"
+                },
+                {
+                    id:5,
+                    name:"软件工程"
+                },
+                {
+                    id:6,
+                    name:"数字媒体"
+                },
+                {
+                    id:7,
+                    name:"计算机科学"
+                },
+                {
+                    id:8,
+                    name:"马克思学院"
+                }
+            ]
+        },
+        created:function(){
+           this.getCourses()
+        },
+        methods:{
+            getCourses:function(){
+                var _this =this;
+                axios.get('getAllCourse')
+                    .then(function(response){
+                        _this.courses = response.data.courses;
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    });
+            }
+        }
+    })
+</script>
+
+</html>
