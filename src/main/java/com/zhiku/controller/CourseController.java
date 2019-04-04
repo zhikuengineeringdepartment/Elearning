@@ -33,6 +33,11 @@ public class CourseController {
         return mv;
     }
 
+    /**
+     * 获得所有的课
+     * 后期修改为可按照专业搜课
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "getAllCourse" ,method = RequestMethod.GET)
     public ResponseData getAllCourse(){
@@ -42,8 +47,16 @@ public class CourseController {
         return responseData;
     }
 
+    /**
+     * 获得一个课程的详情
+     * 建议拆分成两部分
+     * -- -- 获得目录结构
+     * -- -- 获得课程introduction部分
+     * @param cid
+     * @return
+     */
     @ResponseBody
-    @RequestMapping(value = "getCourseDetails")
+    @RequestMapping(value = "getCourseDetails",method = RequestMethod.GET)
     public ResponseData getCourseDetails(@RequestParam(value = "cid") int cid){
         ResponseData responseData = ResponseData.ok();
         CourseView courseView = courseService.getCourseDetails(cid);

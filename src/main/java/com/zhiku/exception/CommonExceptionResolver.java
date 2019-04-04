@@ -15,6 +15,7 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
             modelAndView.setViewName("login");
         }else{
             modelAndView.setViewName("Error");
+            e.printStackTrace();
         }
         return modelAndView;
     }

@@ -11,7 +11,6 @@ import com.zhiku.util.UserStatus;
 import com.zhiku.view.ColCourseView;
 import freemarker.template.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -188,48 +185,53 @@ public class UserController {
         return responseData;
     }
 
+    /**
+     * 返回的视图有点问题
+     * @param user 用户
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "getPrfs" ,method = RequestMethod.GET)
-    public ResponseData getPreferences(int uid){
+    public ResponseData getPreferences(User user){
         ResponseData responseData = ResponseData.ok();
-        responseData.putDataValue("prefers",preferenceService.getPrfByUid(uid));
+        responseData.putDataValue("prefers",preferenceService.getPrfByUid(user.getUid()));
         return responseData;
     }
 
     /**
      * 移除用户的偏好
-     * @param uid 用户id
+     * @param user 用户
      * @param prfs 偏好列表
      */
     @ResponseBody
     @RequestMapping(value = "removePrfs" ,method = RequestMethod.DELETE)
-    public ResponseData removePrefers(int uid, List<Preference> prfs){
-        preferenceService.removePrefers(uid,prfs);
+    public ResponseData removePrefers(User user, List<Preference> prfs){
+        preferenceService.removePrefers(user.getUid(),prfs);
         return ResponseData.ok();
     }
 
     /**
      * 添加用户偏好
-     * @param uid 用户id
+     * @param user 用户
      * @param prfs 偏好列表
      */
     @ResponseBody
     @RequestMapping(value = "addPrfs",method = RequestMethod.GET)
-    public ResponseData addPrefers(int uid,List<Preference> prfs){
-        preferenceService.addPrefers(uid,prfs);
+    public ResponseData addPrefers(User user,List<Preference> prfs){
+        preferenceService.addPrefers(user.getUid(),prfs);
         return ResponseData.ok();
     }
 
     /**
      * 查看用户的收藏课程以及对应的进度
-     * @param uid 用户id
+     * @param user 用户
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "getColCourses" ,method = RequestMethod.GET)
-    public ResponseData getColCourses(int uid ){
+    public ResponseData getColCourses(User user ){
         ResponseData responseData = null;
-        List<ColCourseView> colCourseViews = courseService.getColCourses(uid);
+        List<ColCourseView> colCourseViews = courseService.getColCourses(user.getUid());
         responseData = ResponseData.ok();
         responseData.putDataValue("colCourseView",colCourseViews);
         return responseData;
@@ -237,15 +239,15 @@ public class UserController {
 
     /**
      * 用户收藏课程
-     * @param uid
+     * @param user
      * @param cid
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "colCourse",method = RequestMethod.POST)
-    public ResponseData colCourse(int uid,int cid){
+    public ResponseData colCourse(User user,int cid){
         ResponseData responseData = null;
-        if(courseService.colCourse(uid,cid)){
+        if(courseService.colCourse(user.getUid(),cid)){
             responseData = ResponseData.ok();
         }else{
             responseData = ResponseData.badRequest();
@@ -257,21 +259,21 @@ public class UserController {
     /**
      * 用户清除自己的收藏课程
      * 同时会清除对应课程的学习进度
-     * @param uid
+     * @param user
      * @param cid
      */
     @ResponseBody
     @RequestMapping(value = "removeColCourse",method = RequestMethod.DELETE)
-    public ResponseData removeColCourse(int uid,int cid){
-        courseService.removeColCourse(uid,cid);
+    public ResponseData removeColCourse(User user,int cid){
+        courseService.removeColCourse(user.getUid(),cid);
         return ResponseData.ok();
     }
 
     @ResponseBody
     @RequestMapping(value = "getMessages",method = RequestMethod.GET)
-    public ResponseData getMessages(int uid,int type){
+    public ResponseData getMessages(User user,int type){
         ResponseData responseData = ResponseData.ok();
-        responseData.putDataValue("myMessages",userService.getMessages(uid,type));
+        responseData.putDataValue("myMessages",userService.getMessages(user.getUid(),type));
         return responseData;
     }
 

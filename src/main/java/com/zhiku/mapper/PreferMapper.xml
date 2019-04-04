@@ -40,7 +40,7 @@
   </resultMap>
   
   <select id="selectPreferViewByUid" parameterType="java.lang.Integer" resultMap="PreferView">
-    select *
+    select prefer.*,prf_name
     from prefer,preference
     where prefer_user = #{uid} and prefer_prf = prfid
   </select>

@@ -18,6 +18,11 @@ public class SectionController {
     @Autowired
     SectionService sectionService;
 
+    /**
+     * 获得指定小节的内容
+     * @param sid 节号
+     * @return 节-知识点-段落视图
+     */
     @ResponseBody
     @RequestMapping(value = "getSection",method = RequestMethod.GET)
     public ResponseData getSection(@RequestParam(value = "sid") int sid){

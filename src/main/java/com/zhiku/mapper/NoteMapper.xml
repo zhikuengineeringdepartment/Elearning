@@ -98,8 +98,7 @@
     <association property="paragraph" resultMap="com.zhiku.mapper.ParagraphMapper.ResultMapWithBLOBs"/>
   </resultMap>
   <select id="selectBySid" resultMap="ResultMapWithBLOBs">
-    select
-    <include refid="Blob_Column_List"/>
+    select *
     from note ,paragraph
     where pid = note_para
           and note_user = #{uid}

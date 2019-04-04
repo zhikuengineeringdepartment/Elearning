@@ -55,7 +55,7 @@ public class JWTUtil {
 
     public static void main(String[] args)throws Exception{
         User user = new User();
-        user.setUid(10000);
+        user.setUid(1);
         user.setUserEmail("1368183370@qq.com");
         user.setUserUsername("baowei");
         String token = signToken(user);

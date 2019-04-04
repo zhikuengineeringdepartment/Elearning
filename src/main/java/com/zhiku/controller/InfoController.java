@@ -17,6 +17,10 @@ public class InfoController {
     @Autowired
     private PreferenceService preferenceService;
 
+    /**
+     * 获得都有偏好标签
+     * @return 偏好列表
+     */
     @ResponseBody
     @RequestMapping(value = "getAllPrfs")
     public ResponseData getAllPreferences(){

@@ -47,9 +47,9 @@ public class FileController {
 
     @RequestMapping(value = "download",method = RequestMethod.GET)
     public ResponseEntity<byte[]> fileDownload(
-            @RequestParam(value = "uid")int uid,
+            @RequestParam(value = "uid")User user,
             @RequestParam(value = "fid") int fid) throws UserNotFoundException,FileNotExistException {
-        User user = userService.getUserById(uid);
+        user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);
         return fileService.fileDownload(user,file);
     }
