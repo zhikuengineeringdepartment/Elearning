@@ -1,6 +1,7 @@
 package com.zhiku.aop;
 
 import com.zhiku.entity.User;
+import com.zhiku.exception.TokenVerifyErrorException;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.util.JWTUtil;
 import org.aspectj.lang.JoinPoint;
@@ -24,7 +25,7 @@ public class TokenAop {
      * @throws UnsupportedEncodingException
      */
     @Before(value = "execution(* com.zhiku.controller.*.*(com.zhiku.entity.User,..))")       //对于controller下的任意带有User user参数的请求进行拦截，带user的请求都是需要需要验证token的
-    public void  before(JoinPoint pjp) throws UserNotFoundException , UnsupportedEncodingException {
+    public void  before(JoinPoint pjp) throws UserNotFoundException , TokenVerifyErrorException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = request.getParameter("token");
         User user = ((User)(pjp.getArgs()[0]));

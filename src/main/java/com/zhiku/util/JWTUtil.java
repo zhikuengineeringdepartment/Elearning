@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zhiku.entity.User;
+import com.zhiku.exception.TokenVerifyErrorException;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -40,14 +41,18 @@ public class JWTUtil {
         return token;
     }
 
-    public static Map<String, Claim> verifyToken(String token) throws UnsupportedEncodingException {
-        DecodedJWT jwt = null;
-        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
-        jwt = jwtVerifier.verify(token);
-        return jwt.getClaims();
+    public static Map<String, Claim> verifyToken(String token) throws TokenVerifyErrorException {
+        try{
+            DecodedJWT jwt = null;
+            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
+            jwt = jwtVerifier.verify(token);
+            return jwt.getClaims();
+        }catch (Exception e){
+            throw new TokenVerifyErrorException("登录信息验证失败！");
+        }
     }
 
-    public static int getUid(String token) throws UnsupportedEncodingException{
+    public static int getUid(String token) throws TokenVerifyErrorException{
         Map<String,Claim> claims = verifyToken(token);
         Claim uid_claim = claims.get("uid");
         return uid_claim.asInt();

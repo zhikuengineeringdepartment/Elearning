@@ -1,6 +1,6 @@
 package com.zhiku.exception;
 
-public class FileNotExistException extends Exception {
+public class FileNotExistException extends RuntimeException {
     private String msg;
 
     public FileNotExistException(){}

@@ -1,6 +1,6 @@
 package com.zhiku.exception;
 
-public class UserNotFoundException extends Exception {
+public class UserNotFoundException extends RuntimeException {
     private String usrMsg;
 
     public UserNotFoundException(){}
