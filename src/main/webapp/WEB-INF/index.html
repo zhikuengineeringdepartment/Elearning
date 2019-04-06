@@ -15,76 +15,22 @@
     <!--引入模块-->
     <script src="template/course.js"></script>
     <script src="template/major.js"></script>
+    <script src="template/index_main.js"></script>
+    <script src="template/header.js"></script>
+    <script src="template/footer.js"></script>
 
     <title>zhiku</title>
 </head>
 <body>
-<el-container id = "root">
+<el-container id = "root" style="display: flex;flex-direction: column;">
     <!--头部-->
-    <el-header height="100px">
-    <el-row type="flex" class="row-bg" justify="space-around">
-        <el-col :span="12" style="display: flex;align-items: center;justify-content: center;">
-            <img src="../img/logo.jpg" height="50px" width="auto" style="margin-right:20px">
-            <i>让知识回归平凡</i>
-        </el-col>
-        <el-col :span="6"><el-input v-model="search" placeholder="搜索..."></el-input></el-col>
-        <el-col :span="4">
-            <el-button type="text">登录</el-button>
-            <el-button type="text">注册</el-button>
-        </el-col>
-    </el-row>
-    <el-row class="row-md">
-        <el-col :span="20" :offset="3">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item><a href="/">文件资源</a></el-breadcrumb-item>
-                <el-breadcrumb-item>练习测试</el-breadcrumb-item>
-                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-            </el-breadcrumb>
-        </el-col>
-    </el-row>
-    </el-header>
+    <my_header></my_header>
 
     <!--内容-->
-    <el-main>
-        <el-row type="flex" class="row-bg" justify="center">
-            <!--专业目录展示部分-->
-            <el-col :span="4">
-                <el-row type="flex" justify="center">
-                    <el-col :span="18">
-                        <h5>专业目录</h5>
-                        <el-menu
-                                default-active="2"
-                                class="el-menu-vertical-demo"
-                                @open="handleOpen"
-                                @close="handleClose">
-                            <major v-for="(major,index) in majors" v-bind:major="major" key="index"></major>
-
-                        </el-menu>
-                    </el-col>
-                </el-row>
-            </el-col>
-            <!--主要课程展示部分-->
-            <el-col :span="14">
-                <el-row :gutter="20">
-                    <template v-for="(course,index) in courses">
-                        <el-col :span="8" style='margin: 20px 0px'>
-                            <course :course="course" key="index"></course>
-                        </el-col>
-                    </template>
-                </el-row>
-            </el-col>
-        </el-row>
-    </el-main>
+    <my_indexmain :courses="courses" :majors="majors"></my_indexmain>
 
     <!--foot-->
-    <el-footer>
-        <el-row type="flex" class="row-bg" justify="center">
-            <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-        </el-row>
-    </el-footer>
+    <my_footer></my_footer>
 </el-container>
 </body>
 <script>
