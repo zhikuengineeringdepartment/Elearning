@@ -15,6 +15,7 @@
     <script src="template/header.js"></script>
     <script src="template/file.js"></script>
     <script src="template/file_main.js"></script>
+    <script src="template/file_upload_form.js"></script>
 
     <title>zhiku</title>
 </head>
@@ -38,6 +39,19 @@
     var root = new Vue({
         el:'#root',
         data:{
+            dynamicTags: ['标签一', '标签二', '标签三'],
+            inputVisible: false,
+            inputValue: '',
+            form: {
+                name: '',
+                region: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '',
+                desc: ''
+            },
             myfiles:[
                 {
                     fileName:"线性代数"
@@ -76,30 +90,52 @@
                     }]
                 }]
             }],
-            colleges:[{
-                colledgeId:1,
-                collegeName:"软件学院",
-                majors:[
-                    {
-                        majorId:1,
-                        majorName:"软件工程",
-                    },
-                    {
-                        majorId:2,
-                        majorName:"数媒"
-                    }
-                ]
-            }]
         },
-        method:{
+        methods:{
             search:function () {
                 return null;
             },
             handleClick(){
 
+            },
+            handleClose(tag) {
+                this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+            },
+
+            showInput() {
+                this.inputVisible = true;
+                this.$nextTick(_ => {
+                    this.$refs.saveTagInput.$refs.input.focus();
+                });
+            },
+
+            handleInputConfirm() {
+                let inputValue = this.inputValue;
+                if (inputValue) {
+                    this.dynamicTags.push(inputValue);
+                }
+                this.inputVisible = false;
+                this.inputValue = '';
             }
         }
     });
 </script>
+<style>
+    .el-tag + .el-tag {
+        margin-left: 10px;
+    }
+    .button-new-tag {
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .input-new-tag {
+        width: 90px;
+        margin-left: 10px;
+        vertical-align: bottom;
+    }
+</style>
 
 </html>
