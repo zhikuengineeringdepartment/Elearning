@@ -2,7 +2,7 @@ var headerTemplate = `
 <el-header height="100px">
     <el-row type="flex" class="row-bg" justify="space-around">
         <el-col :span="12" style="display: flex;align-items: center;justify-content: center;">
-            <img src="../img/logo.jpg" height="50px" width="auto" style="margin-right:20px">
+            <img src="./img/logo.jpg" height="50px" width="auto" style="margin-right:20px">
             <i>让知识回归平凡</i>
         </el-col>
         <el-col :span="6"><el-input v-model="search" placeholder="搜索..."></el-input></el-col>
@@ -30,7 +30,7 @@ var headerModule = {
 
         }
     },
-    props:[],
+    props:["search"],
     template: headerTemplate,
     methods:{
 
