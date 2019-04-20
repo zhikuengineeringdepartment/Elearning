@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="common/vue-element.css" />
+    <link rel="stylesheet" href="common/main.css" />
+    <link rel="stylesheet" href="common/jquery.Jcrop.css" />
+    <script src="common/vue.js"></script>
+    <script src="common/jquery.min.js"></script>
+    <script src="common/jquery.Jcrop.js"></script>
+    <script src="common/vue-element.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--引入模块-->
+    <script src="template/course.js"></script>
+    <script src="template/file.js"></script>
+    <script src="template/file_main.js"></script>
+    <script src="template/file_upload_form.js"></script>
+    <script src="template/file_upload_record.js"></script>
+    <script src="template/file_upload_record_list.js"></script>
+    <script src="template/header.js"></script>
+    <script src="template/footer.js"></script>
+    <script src="template/index_main.js"></script>
+    <script src="template/major.js"></script>
+    <script src="template/message.js"></script>
+    <script src="template/message_list.js"></script>
+    <script src="template/section.js"></script>
+    <script src="template/section_main.js"></script>
+    <script src="template/user_info_form.js"></script>
+    <script src="template/user_main.js"></script>
+
+    <title>zhiku</title>
+    <style>
+        .el-submenu .el-menu-item {
+            height: 50px;
+            line-height: 50px;
+            padding: 0 45px;
+            /* min-width: 200px; */
+            min-width: 0;
+            width: 100%;}
+    </style>
+</head>
+<body>
+<script type="text/javascript" src="./js/marked.min.js"></script>
+<script src="./js/load_markd.js"></script>
+<el-container id = "root" style="display: flex;flex-direction: column;">
+    <!--头部-->
+    <my_header></my_header>
+
+    <!--内容-->
+    <my_index_main v-if="model_see.indexMain"></my_index_main>
+
+    <my_section_main v-if="model_see.sectionMain"></my_section_main>
+
+    <my_file_main v-if="model_see.fileMain"></my_file_main>
+
+    <my_file_upload_form v-if="model_see.fileUploadForm"></my_file_upload_form>
+
+    <my_user_main v-if="model_see.userMain"></my_user_main>
+
+    <!--foot-->
+    <my_footer></my_footer>
+</el-container>
+</body>
+<script>
+    var root = new Vue({
+        el:"#root",
+        data:{
+            model_see:{
+                indexMain:true,
+                sectionMain:false,
+                fileMain:false,
+                userMain:false,
+                fileUploadFrom:false
+            }
+        },
+        created:function(){
+            this.resolveURL();
+            // this.getCourses();
+        },
+        methods:{
+            resolveURL:function(){
+                let url = window.location.search;
+                let paras = url.substring(1,url.length).split('&');
+                let p,para,para_list=[];
+                for(let i=0;i<paras.length;i++){
+                    p = paras[i].split('=');
+                    para = new Object();
+                    para.name = p[0];
+                    para.value = p[1];
+                    para_list.push(para);
+                }
+                this.resolvePara(para_list[0]);
+            },
+
+            resolvePara:function(para){
+                if(para.name === 'model_see'){
+                    this.setAllFalse(para.name);
+                    this.model_see[para.value] = true;
+                }
+            },
+
+            setAllFalse:function(modelName){
+                let model = this[modelName];
+                let model_arrs = Object.getOwnPropertyNames(model);
+                for(let i = 0;i<model_arrs.length;i++){
+                    model[model_arrs[i]] = false;
+                }
+            },
+
+            getCourses:function(){
+                var _this =this;
+                axios.get('getAllCourse')
+                    .then(function(response){
+                        _this.courses = response.data.courses;
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    });
+            }
+        }
+    })
+</script>
+
+</html>
