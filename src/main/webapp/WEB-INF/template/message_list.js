@@ -1,3 +1,6 @@
+/*
+消息列表组件
+ */
 var messageListTemplate = `
 <div>
 <div>全部消息</div>

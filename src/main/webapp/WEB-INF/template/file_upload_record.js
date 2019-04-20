@@ -1,3 +1,6 @@
+/*
+文件上传下载记录组件
+ */
 var fileUploadRecordTemplate = `
 <el-card shadow="hover" style="margin: 10px 0px">
                     <el-row style="margin-bottom: 0px">

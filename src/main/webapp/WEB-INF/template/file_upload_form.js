@@ -1,13 +1,19 @@
+/*
+文件上传表单组件
+ */
 var fileUploadFormTemplate = `
+<el-main>
 <el-row type="flex" justify="center">
             <el-col :span="12" style="border: 1px solid #ebebeb;padding:20px;">
-                <el-form ref="form" :model="form" label-width="80px">
+                <el-form ref="form" :model="uploadForm" label-width="80px">
                     <el-form-item label="文件">
                         <el-upload
                                 class="upload-demo"
                                 ref="upload"
-                                action="https://jsonplaceholder.typicode.com/posts/"
+                                action="uploadRequest"
                                 multiple="false"
+                                data="uploadForm"
+                                accept="docx||pdf"
                                 :on-preview="handlePreview"
                                 :on-remove="handleRemove"
                                 :file-list="fileList"
@@ -17,15 +23,15 @@ var fileUploadFormTemplate = `
                         </el-upload>
                     </el-form-item>
                     <el-form-item label="所属课程">
-                        <el-cascader :options="options" change-on-select></el-cascader>
+                        <el-cascader :options="courses" change-on-select></el-cascader>
                     </el-form-item>
                     <el-form-item label="任课教师">
-                        <el-input v-model="form.name"></el-input>
+                        <el-input v-model="uploadForm.teacherName"></el-input>
                     </el-form-item>
                     <el-form-item label="标签">
                         <el-tag
                                 :key="tag"
-                                v-for="tag in dynamicTags"
+                                v-for="tag in uploadForm.file_tags"
                                 closable
                                 :disable-transitions="false"
                                 @close="handleClose(tag)">
@@ -50,30 +56,51 @@ var fileUploadFormTemplate = `
                 </el-form>
             </el-col>
         </el-row>
+    </el-main>
 `
 
 var fileUploadFormModule = {
     data:function () {
         return{
-            dynamicTags: ['标签一', '标签二', '标签三'],
+            courses:[],
             inputVisible: false,
             inputValue: '',
-            form: {
-                name: '',
-                region: '',
-                date1: '',
-                date2: '',
-                delivery: false,
-                type: [],
-                resource: '',
-                desc: ''
+            fileList:[],
+            uploadForm: {
+                teacherName: '',
+                file_tags: []
             }
         }
     },
     props:[],
     template: fileUploadFormTemplate,
     methods:{
-
+        handleClose(tag) {
+            this.uploadForm.file_tags.splice(this.uploadForm.file_tags.indexOf(tag), 1);
+        },
+        handleInputConfirm() {
+            let inputValue = this.inputValue;
+            if (inputValue) {
+                this.uploadForm.file_tags.push(inputValue);
+            }
+            this.inputVisible = false;
+            this.inputValue = '';
+        },
+        showInput() {
+            this.inputVisible = true;
+            this.$nextTick(_ => {
+                this.$refs.saveTagInput.$refs.input.focus();
+            });
+        },
+        handlePreview(file){
+            console.log(file);
+        },
+        handleRemove(file,fileList){
+            console.log(file,fileList)
+        },
+        submitUpload(){
+            console.log(this.uploadForm);
+        }
     },
 
 }

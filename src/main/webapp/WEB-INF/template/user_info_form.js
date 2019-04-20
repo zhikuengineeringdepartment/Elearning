@@ -1,3 +1,6 @@
+/*
+用户个人信息修改表单组件
+ */
 var userInfoFormTemplate = `
 <el-form ref="form" :model="user_info" label-width="80px">
                     <div style="display: flex;align-items: center;margin: 10px;padding: 20px;">

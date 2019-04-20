@@ -1,3 +1,6 @@
+/*
+底部栏组件
+ */
 var footerTemplate = `
 <el-footer>
         <el-row type="flex" class="row-bg" justify="center">

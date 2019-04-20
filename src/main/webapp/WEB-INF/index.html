@@ -14,16 +14,21 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--引入模块-->
     <script src="template/course.js"></script>
-    <script src="template/major.js"></script>
-    <script src="template/index_main.js"></script>
-    <script src="template/header.js"></script>
-    <script src="template/footer.js"></script>
-    <script src="template/user_info_form.js"></script>
-    <script src="template/message.js"></script>
-    <script src="template/message_list.js"></script>
-
+    <script src="template/file.js"></script>
+    <script src="template/file_main.js"></script>
+    <script src="template/file_upload_form.js"></script>
     <script src="template/file_upload_record.js"></script>
     <script src="template/file_upload_record_list.js"></script>
+    <script src="template/header.js"></script>
+    <script src="template/footer.js"></script>
+    <script src="template/index_main.js"></script>
+    <script src="template/major.js"></script>
+    <script src="template/message.js"></script>
+    <script src="template/message_list.js"></script>
+    <script src="template/section.js"></script>
+    <script src="template/section_main.js"></script>
+    <script src="template/user_info_form.js"></script>
+    <script src="template/user_main.js"></script>
 
     <title>zhiku</title>
     <style>
@@ -37,76 +42,22 @@
     </style>
 </head>
 <body>
+<script type="text/javascript" src="./js/marked.min.js"></script>
 <script src="./js/load_markd.js"></script>
 <el-container id = "root" style="display: flex;flex-direction: column;">
     <!--头部-->
-    <my_header :search="search"></my_header>
+    <my_header></my_header>
 
     <!--内容-->
-    <!--<my_indexmain :courses="courses" :majors="majors"></my_indexmain>-->
+    <my_index_main v-if="model_see.indexMain"></my_index_main>
 
-    <el-main>
-        <el-row type="flex" class="row-bg" justify="center">
-            <!--专业目录展示部分-->
-            <el-col :span="4">
-                <el-row type="flex" justify="center">
-                    <el-col :span="18">
-                        <el-menu
-                                default-active="2"
-                                class="el-menu-vertical-demo"
-                                @open="handleOpen"
-                                @close="handleClose">
-                            <el-menu-item index="1">
-                                <i class="el-icon-info"></i>
-                                <span slot="title">个人信息</span>
-                            </el-menu-item>
-                            <el-menu-item index="2">
-                                <i class="el-icon-message" style="order: 1;"></i>
-                                <span slot="title" style="order: 2;">消息通知</span>
-                                <el-badge :value="12" class="item" style="order:3;float:right">
+    <my_section_main v-if="model_see.sectionMain"></my_section_main>
 
-                                </el-badge>
-                            </el-menu-item>
-                            <el-submenu index="3">
-                                <template slot="title">
-                                    <i class="el-icon-tickets"></i>
-                                    <span>文件操作记录</span>
-                                </template>
-                                <el-menu-item index="3-1">文件上传记录</el-menu-item>
-                                <el-menu-item index="3-2">文件下载记录</el-menu-item>
-                            </el-submenu>
-                            <el-submenu index="4">
-                                <template slot="title">
-                                    <i class="el-icon-star-on"></i>
-                                    <span>学习记录</span>
-                                </template>
-                                <el-menu-item index="4-1">收藏的课程</el-menu-item>
-                                <el-menu-item index="4-2">收藏的段落</el-menu-item>
-                            </el-submenu>
-                            <el-menu-item index="5">
-                                <i class="el-icon-edit-outline"></i>
-                                <span slot="title">个人笔记</span>
-                            </el-menu-item>
-                        </el-menu>
-                    </el-col>
-                </el-row>
-            </el-col>
+    <my_file_main v-if="model_see.fileMain"></my_file_main>
 
-            <el-col :span="12" style="border: 1px solid #ebebeb;padding:20px;">
-                <my_user_info_form v-if="module[0].see"></my_user_info_form>
-                <my_message_list v-if="module[1].see"></my_message_list>
-                <my_file_upload_record_list v-if="module[2].see"></my_file_upload_record_list>
-                <my_course v-if="module[3].see" v-for="course in courses" :course="course" :schedule="schedule"></my_course>
-            </el-col>
+    <my_file_upload_form v-if="model_see.fileUploadForm"></my_file_upload_form>
 
-        </el-row>
-    </el-main>
-
-    <!--<el-main>-->
-        <!--<el-row>-->
-            <!---->
-        <!--</el-row>-->
-    <!--</el-main>-->
+    <my_user_main v-if="model_see.userMain"></my_user_main>
 
     <!--foot-->
     <my_footer></my_footer>
@@ -116,114 +67,17 @@
     var root = new Vue({
         el:"#root",
         data:{
-            module:[
-                {
-                    name:'user_info_form_see',
-                    see:true
-                },
-                {
-                    name:'message_list_see',
-                    see:false
-                },
-                {
-                    name:'file_upload_record_list_see',
-                    see:false
-                },
-                {
-                    name:'course_see',
-                    see:false
-                }
-            ],
-            schedule:false,
-            dynamicTags: ['标签一', '标签二', '标签三'],
-            inputVisible: false,
-            inputValue: '',
-            search:'',
-            courses:[
-                {
-                    courseName:"course1",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course2",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course3",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course4",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course5",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course6",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course7",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course8",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                },
-                {
-                    courseName:"course9",
-                    icon:"./img/logo.jpg",
-                    courseDesc:"2018-09-15"
-                }
-            ],
-            majors:[
-                {
-                    id:1,
-                    name:"软件工程"
-                },
-                {
-                    id:2,
-                    name:"数字媒体"
-                },
-                {
-                    id:3,
-                    name:"计算机科学"
-                },
-                {
-                    id:4,
-                    name:"马克思学院"
-                },
-                {
-                    id:5,
-                    name:"软件工程"
-                },
-                {
-                    id:6,
-                    name:"数字媒体"
-                },
-                {
-                    id:7,
-                    name:"计算机科学"
-                },
-                {
-                    id:8,
-                    name:"马克思学院"
-                }
-            ],
+            model_see:{
+                indexMain:true,
+                sectionMain:false,
+                fileMain:false,
+                userMain:false,
+                fileUploadFrom:false
+            }
         },
         created:function(){
             this.resolveURL();
-           this.getCourses()
+            // this.getCourses();
         },
         methods:{
             resolveURL:function(){
@@ -241,15 +95,17 @@
             },
 
             resolvePara:function(para){
-                if(para.name === 'model'){
-                    this.setAllFalse();
-                    this.module[para.value].see = true;
+                if(para.name === 'model_see'){
+                    this.setAllFalse(para.name);
+                    this.model_see[para.value] = true;
                 }
             },
 
-            setAllFalse:function(){
-                for(let i = 0;i<this.module.length;i++){
-                    this.module[i].see = false;
+            setAllFalse:function(modelName){
+                let model = this[modelName];
+                let model_arrs = Object.getOwnPropertyNames(model);
+                for(let i = 0;i<model_arrs.length;i++){
+                    model[model_arrs[i]] = false;
                 }
             },
 
@@ -262,32 +118,6 @@
                     .catch(function(err){
                         console.log(err);
                     });
-            },
-
-            handleOpen:function(){},
-
-            handleClick(){
-
-            },
-
-            handleClose(tag) {
-                this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-            },
-
-            showInput() {
-                this.inputVisible = true;
-                this.$nextTick(_ => {
-                    this.$refs.saveTagInput.$refs.input.focus();
-                });
-            },
-
-            handleInputConfirm() {
-                let inputValue = this.inputValue;
-                if (inputValue) {
-                    this.dynamicTags.push(inputValue);
-                }
-                this.inputVisible = false;
-                this.inputValue = '';
             }
         }
     })

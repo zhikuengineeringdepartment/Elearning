@@ -1,13 +1,14 @@
 let courseTemplate = `
 <el-card :body-style="{ padding: '0px' }" style="width: 256px;float: left;margin:10px 10px">
-                        <a href="#" style="text-decoration: none;color: #409EFF;">
-                            <img :src="course.icon" class="image">
+                        <a @click="getCourseDetails(course.cid)" style="text-decoration: none;color: #409EFF;">
+                            <img :src="course.courseIcon" class="image">
+                        </a>
                             <div style="padding: 14px;">
                                 <span style="color: #000;">{{course.courseName}}</span>
                                 <template v-if="schedule">
                                     <div class="bottom clearfix">
                                         <time class="time">{{course.courseDesc}}</time>
-                                        <el-button type="text" class="button">learn</el-button>
+                                        <el-button type="text" class="button" @click="getCourseDetails(course.cid)">learn</el-button>
                                     </div>
                                 </template>
                                 <template v-else>
@@ -17,7 +18,6 @@ let courseTemplate = `
                                     </div>
                                 </template>
                             </div>
-                        </a>
                     </el-card>
 `
 
@@ -30,7 +30,9 @@ var courseModule = {
     props:['course','schedule'],
     template: courseTemplate,
     methods:{
-
+        getCourseDetails(cid){
+            console.log(cid)
+        }
     },
 
 }

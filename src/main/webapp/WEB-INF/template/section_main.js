@@ -1,36 +1,54 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>{{course.name}}</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link rel="stylesheet" href="common/vue-element.css" />
-    <link rel="stylesheet" href="common/main.css" />
-    <link rel="stylesheet" href="common/jquery.Jcrop.css" />
-    <script src="common/vue.js"></script>
-    <script src="common/jquery.min.js"></script>
-    <script src="common/jquery.Jcrop.js"></script>
-    <script src="common/vue-element.js"></script>
+let sectionMainTemplate = `
+<el-main>
+        <el-row type="flex" class="row-bg" justify="center">
+            <el-col :span="4">
+                <h5>{{courseView.name}}</h5>
+                <el-menu
+                        default-active="2"
+                        class="el-menu-vertical-demo">
+                    <template v-for="section in courseView.sections">
+                        <el-menu-item index="section.id">
+                            <i class="el-icon-arrow-right"></i>
+                            <span slot="title">{{section.sectionName}}</span>
+                        </el-menu-item>
+                    </template>
+                </el-menu>
+            </el-col>
+            <el-col :span="16" style="margin: 20px">
+                <my_section :sectionView="sectionView"></my_section>
+            </el-col>
+        </el-row>
+    </el-main>
+`
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!--引入组件模板-->
-    <script src="template/section.js"></script>
-    <script src="template/paragraph.js"></script>
 
-</head>
-<body>
-<div id="courseRoot">
-    <my_section v-bind:section="section"></my_section>
-</div>
-</body>
-<script>
-    var courseRoot = new Vue({
-        el:'#courseRoot',
-        data:{
-            course:{
-              name:"高级程序设计语言java"
+
+var sectionMainModule = {
+    data: function () {
+        return {
+            courseView: {
+                "cid": 100,
+                "courseName": "java高级程序设计",
+                "courseDesc": "java语言基础",
+                "courseIcon": "/img/default.png",
+                "sections": [
+                    {
+                        "sid": 10001,
+                        "sectionName": "基本类型",
+                        "sectionSeq": "1.1",
+                        "sectionRecommendPath": "a/b.txt",
+                        "sectionCourse": 100
+                    },
+                    {
+                        "sid": 10002,
+                        "sectionName": "循环语句",
+                        "sectionSeq": "1.2",
+                        "sectionRecommendPath": "a/c.txt",
+                        "sectionCourse": 100
+                    }
+                ]
             },
-            section:{
+            sectionView:{
                 sid:10001,
                 sectionName:"## 1.4.第三节，关于图片",
                 knowledges:[
@@ -96,13 +114,24 @@
                         ]
                     }
                 ]
-            },
-            preTag:[]
-        },
-        created:function(){
-            return null;
-        },
+            }
+        }
+    },
+    props:[],
+    template: sectionMainTemplate,
+    created:function(){
 
-    });
-</script>
-</html>
+    },
+    methods:{
+        getCourseView:function(cid){
+            console.log(cid);
+        },
+        getSectionView:function(sid){
+            console.log(sid);
+        }
+    }
+}
+
+Vue.component('my_section_main',sectionMainModule)
+
+

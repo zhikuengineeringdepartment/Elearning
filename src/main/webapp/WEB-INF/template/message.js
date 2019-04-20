@@ -1,3 +1,6 @@
+/*
+用户收到的消息组件
+ */
 var messageTemplate = `
 <div style="display: flex">
                             <img :src="msg.user.icon" width="60px" height="60px">

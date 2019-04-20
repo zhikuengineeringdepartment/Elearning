@@ -1,3 +1,6 @@
+/*
+文件上传下载记录列表组件
+ */
 var fileUploadRecordListTemplate = `
 <div>
                     <div>文件上传记录</div>
