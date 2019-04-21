@@ -8,13 +8,12 @@ let userMainTemplate = `
                         <el-menu
                                 default-active="2"
                                 class="el-menu-vertical-demo"
-                                @open="handleOpen"
-                                @close="handleClose">
-                            <el-menu-item index="1">
+                                router>
+                            <el-menu-item index="1" :route="{path:'/user/info/infoform'}">
                                 <i class="el-icon-info"></i>
                                 <span slot="title">个人信息</span>
                             </el-menu-item>
-                            <el-menu-item index="2">
+                            <el-menu-item index="2" :route="{path:'/user/info/message_list'}">
                                 <i class="el-icon-message" style="order: 1;"></i>
                                 <span slot="title" style="order: 2;">消息通知</span>
                                 <el-badge :value="12" class="item" style="order:3;float:right">
@@ -26,7 +25,7 @@ let userMainTemplate = `
                                     <i class="el-icon-tickets"></i>
                                     <span>文件操作记录</span>
                                 </template>
-                                <el-menu-item index="3-1">文件上传记录</el-menu-item>
+                                <el-menu-item index="3-1" :route="{path:'/user/info/file_upload_record'}">文件上传记录</el-menu-item>
                                 <el-menu-item index="3-2">文件下载记录</el-menu-item>
                             </el-submenu>
                             <el-submenu index="4">
@@ -34,7 +33,7 @@ let userMainTemplate = `
                                     <i class="el-icon-star-on"></i>
                                     <span>学习记录</span>
                                 </template>
-                                <el-menu-item index="4-1">收藏的课程</el-menu-item>
+                                <el-menu-item index="4-1" :route="{path:'/user/info/course_list'}">收藏的课程</el-menu-item>
                                 <el-menu-item index="4-2">收藏的段落</el-menu-item>
                             </el-submenu>
                             <el-menu-item index="5">
@@ -47,10 +46,11 @@ let userMainTemplate = `
             </el-col>
 
             <el-col :span="12" style="border: 1px solid #ebebeb;padding:20px;">
-                <my_user_info_form v-if="module.user_info_see"></my_user_info_form>
-                <my_message_list v-if="module.message_list_see"></my_message_list>
-                <my_file_upload_record_list v-if="module.file_upload_record_list_see"></my_file_upload_record_list>
-                <my_course v-if="module.course_list_see" v-for="course in courses" :course="course" :schedule="schedule"></my_course>
+                <!--<my_user_info_form v-if="module.user_info_see"></my_user_info_form>-->
+                <!--<my_message_list v-if="module.message_list_see"></my_message_list>-->
+                <!--<my_file_upload_record_list v-if="module.file_upload_record_list_see"></my_file_upload_record_list>-->
+                <!--<my_course v-if="module.course_list_see" v-for="course in courses" :course="course" :schedule="schedule"></my_course>-->
+                <router-view></router-view>
             </el-col>
 
         </el-row>
@@ -76,6 +76,11 @@ var userMainModule = {
     template: userMainTemplate,
     created:function(){
 
+    },
+    watch:{
+        '$route' (to,from) {
+            console.log(to)
+        }
     },
     methods:{
 

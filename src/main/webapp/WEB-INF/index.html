@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="common/main.css" />
     <link rel="stylesheet" href="common/jquery.Jcrop.css" />
     <script src="common/vue.js"></script>
+    <script src="common/vue-router.js"></script>
     <script src="common/jquery.min.js"></script>
     <script src="common/jquery.Jcrop.js"></script>
     <script src="common/vue-element.js"></script>
@@ -22,6 +23,7 @@
     <script src="template/header.js"></script>
     <script src="template/footer.js"></script>
     <script src="template/index_main.js"></script>
+    <script src="template/login_registe.js"></script>
     <script src="template/major.js"></script>
     <script src="template/message.js"></script>
     <script src="template/message_list.js"></script>
@@ -45,70 +47,66 @@
 <script type="text/javascript" src="./js/marked.min.js"></script>
 <script src="./js/load_markd.js"></script>
 <el-container id = "root" style="display: flex;flex-direction: column;">
+
     <!--头部-->
     <my_header></my_header>
-
     <!--内容-->
-    <my_index_main v-if="model_see.indexMain"></my_index_main>
-
-    <my_section_main v-if="model_see.sectionMain"></my_section_main>
-
-    <my_file_main v-if="model_see.fileMain"></my_file_main>
-
-    <my_file_upload_form v-if="model_see.fileUploadForm"></my_file_upload_form>
-
-    <my_user_main v-if="model_see.userMain"></my_user_main>
+    <router-view></router-view>
 
     <!--foot-->
     <my_footer></my_footer>
 </el-container>
 </body>
 <script>
+    //配置路由
+    const routes = [
+        { path: '/', component: indexMainModule },
+        { path: '/login', component: loginRegisteModule },
+        { path: '/registe', component: loginRegisteModule },
+        { path: '/user/info', component: userMainModule,
+            children: [
+                {
+                    path: 'infoform',
+                    component: userInfoFormModule
+                },
+                {
+                    path: 'file_upload_record',
+                    component: fileUploadRecordListModule
+                },
+                {
+                    path: 'course_list',
+                    component: courseModule
+                },
+                {
+                    path: 'message_list',
+                    component: messageListModule
+                }
+            ]},
+        { path: '/course/details/:cid', component: sectionMainModule },
+        { path: '/fileMain', component: fileMainModule },
+        { path: '/fileUpload', component: fileUploadFormModule }
+    ]
+
+    // 3. 创建 router 实例，然后传 `routes` 配置
+    // 你还可以传别的配置参数, 不过先这么简单着吧。
+    const router = new VueRouter({
+        routes // (缩写) 相当于 routes: routes
+    })
+
+    // 4. 创建和挂载根实例。
+    // 记得要通过 router 配置参数注入路由，
+    // 从而让整个应用都有路由功能
+
     var root = new Vue({
+        router,
         el:"#root",
         data:{
-            model_see:{
-                indexMain:true,
-                sectionMain:false,
-                fileMain:false,
-                userMain:false,
-                fileUploadFrom:false
-            }
+
         },
         created:function(){
-            this.resolveURL();
             // this.getCourses();
         },
         methods:{
-            resolveURL:function(){
-                let url = window.location.search;
-                let paras = url.substring(1,url.length).split('&');
-                let p,para,para_list=[];
-                for(let i=0;i<paras.length;i++){
-                    p = paras[i].split('=');
-                    para = new Object();
-                    para.name = p[0];
-                    para.value = p[1];
-                    para_list.push(para);
-                }
-                this.resolvePara(para_list[0]);
-            },
-
-            resolvePara:function(para){
-                if(para.name === 'model_see'){
-                    this.setAllFalse(para.name);
-                    this.model_see[para.value] = true;
-                }
-            },
-
-            setAllFalse:function(modelName){
-                let model = this[modelName];
-                let model_arrs = Object.getOwnPropertyNames(model);
-                for(let i = 0;i<model_arrs.length;i++){
-                    model[model_arrs[i]] = false;
-                }
-            },
-
             getCourses:function(){
                 var _this =this;
                 axios.get('getAllCourse')
@@ -120,7 +118,7 @@
                     });
             }
         }
-    })
+    }).$mount('#root')
 </script>
 
 </html>

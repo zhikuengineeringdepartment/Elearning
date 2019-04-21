@@ -32,6 +32,7 @@ var courseModule = {
     methods:{
         getCourseDetails(cid){
             console.log(cid)
+            this.$router.push('/course/details/'+cid);
         }
     },
 

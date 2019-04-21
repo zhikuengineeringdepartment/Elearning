@@ -83,7 +83,7 @@ var fileMainModule = {
     template: fileMainTemplate,
     methods:{
         gotoUpload:function(){
-            window.location.href = "/Elearning/src/main/webapp/WEB-INF/index.html?model_see=fileUploadForm"
+            this.$router.push('/fileUpload')
         }
     },
 
