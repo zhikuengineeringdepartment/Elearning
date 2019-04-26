@@ -102,9 +102,11 @@
 
 
     <!-- 静态资源配置 -->
-    <mvc:resources mapping="/img/**" location="/img/" />
+    <mvc:resources mapping="/img/**" location="/WEB-INF/img/" />
     <mvc:resources mapping="/WEB-INF/**" location="/WEB-INF/"/>
     <mvc:resources mapping="/common/**" location="/WEB-INF/common/"/>
     <mvc:resources mapping="/template/**" location="/WEB-INF/template/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
+    <mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
 
 </beans>

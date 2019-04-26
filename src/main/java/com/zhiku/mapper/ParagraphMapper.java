@@ -16,4 +16,7 @@ public interface ParagraphMapper {
     int updateByPrimaryKeyWithBLOBs(Paragraph record);
 
     int updateByPrimaryKey(Paragraph record);
+
+//    自定义方法
+    Paragraph selectByParagraphSeq(Integer paragraphSeq);
 }

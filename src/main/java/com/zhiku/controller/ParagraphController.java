@@ -41,14 +41,14 @@ public class ParagraphController {
      * 收藏段落请求
      * 缺乏对于不存在段落的异常处理
      * @param user 用户
-     * @param pid 段落id
+     * @param paragraphSeq 段落序列
      * @return 是否收藏成功
      */
     @ResponseBody
     @RequestMapping(value = "addColParagraph",method = RequestMethod.POST)
-    public ResponseData addColParagraph(User user,int pid){
+    public ResponseData addColParagraph(User user,int paragraphSeq){
         ResponseData responseData = null;
-        if(paragraphService.addColParagraph(user.getUid(),pid)){
+        if(paragraphService.addColParagraph(user.getUid(),paragraphSeq)){
             responseData = ResponseData.ok();
         }else{
             responseData = ResponseData.serverInternalError();
@@ -133,17 +133,15 @@ public class ParagraphController {
     /**
      * 用户为一个段落添加一条笔记
      * @param user 用户
-     * @param pid 段落id
+     * @param paragraphSeq 段落序列
      * @param note 笔记
      * @return 是否添加成功
      */
     @ResponseBody
     @RequestMapping(value = "addNote",method = RequestMethod.POST)
-    public ResponseData addNote(User user ,int pid ,Note note){
+    public ResponseData addNote(User user ,int paragraphSeq ,Note note){
         ResponseData responseData = null;
-        note.setNotePara(pid);
-        note.setNoteUser(user.getUid());
-        if(paragraphService.addNote(note)){
+        if(paragraphService.addNote(user,note,paragraphSeq)){
             responseData = ResponseData.ok();
         }else {
             responseData = ResponseData.serverInternalError();

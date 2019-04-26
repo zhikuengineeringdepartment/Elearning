@@ -1,26 +1,31 @@
 package com.zhiku.service;
 
 import com.zhiku.entity.File;
+import com.zhiku.entity.FileKeys;
 import com.zhiku.entity.Fileop;
 import com.zhiku.entity.User;
 import com.zhiku.exception.FileNotExistException;
+import com.zhiku.mapper.FileKeysMapper;
 import com.zhiku.mapper.FileMapper;
 import com.zhiku.mapper.FileopMapper;
 import com.zhiku.util.FileStatus;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,6 +41,8 @@ public class FileService{
     private FileMapper fileMapper;
     @Autowired
     private FileopMapper fileopMapper;
+    @Autowired
+    private FileKeysMapper fileKeysMapper;
 
     /**
      * 检查上传的文件是否符合要求
@@ -55,14 +62,15 @@ public class FileService{
             return FileStatus.TYPE_ERROR;
         }
         //检查文件是否重复
-        try{
-            File file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
+//        try{
+            File file = null;
+//            File file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
             if(file != null){
                 return FileStatus.DUPLICATE;
             }
-        }catch (IOException ioe){
-            return FileStatus.FILE_ERROR;
-        }
+//        }catch (IOException ioe){
+//            return FileStatus.FILE_ERROR;
+//        }
         return FileStatus.NORMAL;
     }
 
@@ -72,7 +80,7 @@ public class FileService{
      * @param file
      * @return
      */
-    public boolean storeFile(MultipartFile multipartFile, File file){
+    public boolean storeFile(MultipartFile multipartFile, File file,User user,FileKeys fileKeys){
         boolean done ;
         //产生新的文件名和路径
         String path = makePath(multipartFile.getOriginalFilename(),uploadPath);
@@ -80,13 +88,19 @@ public class FileService{
         String realPath = path + java.io.File.separator + newFileName;
         if(storeFileToSys(multipartFile,realPath)){
             file.setFilePath(realPath);
-            storeFileToDB(multipartFile,file);
+            storeFileToDB(multipartFile,file,user);
+            storeFileKeys(fileKeys);
             done = true;
         }else{
             done = false;
         }
 
         return done;
+    }
+
+    private void storeFileKeys(FileKeys fileKeys) {
+        fileKeys.setFid(1);
+        fileKeysMapper.insertSelective(fileKeys);
     }
 
     /**
@@ -114,9 +128,10 @@ public class FileService{
      * @param file
      * @return
      */
-    private boolean storeFileToDB(MultipartFile multipartFile, File file){
+    private boolean storeFileToDB(MultipartFile multipartFile, File file,User user){
         boolean finish ;
         try{
+            file.setFileUpper(user.getUid());
             file.setFileName(multipartFile.getOriginalFilename());
             file.setFileStatus("n");
             file.setFileSha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
@@ -124,6 +139,7 @@ public class FileService{
             file.setFileType(multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf('.')+1));
             file.setFileScore(3.0F);
             file.setFileDownloadCount(0);
+            file.setFileDesc("");
             System.out.println(file);
             fileMapper.insertSelective(file);
             finish = true;
@@ -165,26 +181,48 @@ public class FileService{
         return dir;
     }
 
-    public ResponseEntity<byte[]> fileDownload(User user, File file) {
+    public void fileDownload(HttpServletResponse response,User user, File file) {
         java.io.File realFile = new java.io.File(file.getFilePath());
         storeFileOp(user.getUid(),file.getFid(),"d");
-        ResponseEntity<byte[]> entity = null;
         try{
-            byte[] body ;
-            InputStream is = new FileInputStream(realFile);
-            body = new byte[is.available()];
-            is.read(body);
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Disposition", "attchement;filename=" + file.getFileName());
-            HttpStatus statusCode = HttpStatus.OK;
-            entity = new ResponseEntity<>(body, headers, statusCode);
-            return entity;
-        }catch (FileNotFoundException fnfe){
-            //日志记录
-        }catch (IOException ioe){
-            //日志记录
+            response.setContentType("application/x-download");
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(file.getFileName(), "UTF-8"));
+            //读取要下载的文件，保存到文件输入流
+            FileInputStream in = new FileInputStream(file.getFilePath());
+            //创建输出流，注意这里使用的是response创建的输出流
+            OutputStream out = response.getOutputStream();
+            //创建缓冲区
+            byte buffer[] = new byte[1024];
+            int len = 0;
+            //循环将输入流中的内容读取到缓冲区当中
+            while((len=in.read(buffer))>0){
+                //输出缓冲区的内容到浏览器，实现文件下载
+                out.write(buffer, 0, len);
+            }
+            System.out.println(1);
+            out.flush();
+            out.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return entity;
+//        ResponseEntity<byte[]> entity = null;
+//        try{
+//            byte[] body ;
+//            InputStream is = new FileInputStream(realFile);
+//            body = new byte[is.available()];
+//            is.read(body);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.parseMediaType("application/x-download"));
+//            headers.add("Content-Disposition", "attchement;filename=" + file.getFileName());
+//            HttpStatus statusCode = HttpStatus.OK;
+//            entity = new ResponseEntity<>(body, headers, statusCode);
+//            return entity;
+//        }catch (FileNotFoundException fnfe){
+//            //日志记录
+//        }catch (IOException ioe){
+//            //日志记录
+//        }
+//        return entity;
     }
 
     public File getFileByFid(int fid) throws FileNotExistException{
@@ -214,5 +252,9 @@ public class FileService{
         fileop.setFopType(type);
         fileopMapper.insert(fileop);
         return true;
+    }
+
+    public List<File> getFileListByCid(int cid) {
+        return fileMapper.selectFilesByCid(cid);
     }
 }

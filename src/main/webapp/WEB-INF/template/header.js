@@ -10,8 +10,13 @@ var headerTemplate = `
         </el-col>
         <el-col :span="6"><el-input v-model="searchKey" placeholder="搜索..." @keyup.enter.native="handleSearch"></el-input></el-col>
         <el-col :span="4">
-            <el-button type="text" @click="toLoginRegiste('/login')">登录</el-button>
-            <el-button type="text" @click="toLoginRegiste('/registe')">注册</el-button>
+            <template v-if="login">
+                <router-link to="/user/info"><img :src="user_icon" height="50px" width="auto" style="margin-right:20px"></router-link>
+            </template>
+            <template v-else>
+                <el-button type="text" @click="toLoginRegiste('/login')">登录</el-button>
+                <el-button type="text" @click="toLoginRegiste('/registe')">注册</el-button>
+            </template>
         </el-col>
     </el-row>
     <el-row class="row-md">
@@ -30,14 +35,15 @@ var headerTemplate = `
 var headerModule = {
     data:function () {
         return{
-            searchKey:''
+            searchKey:'',
         }
     },
-    props:[],
+    props:['login','user_icon'],
     template: headerTemplate,
     created(){
         this.keyupEnter()
     },
+
     methods:{
         keyupEnter(){
             document.onkeydown = e =>{

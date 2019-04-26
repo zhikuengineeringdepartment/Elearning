@@ -209,10 +209,15 @@
   </update>
 
   <!-- 自定义SQL -->
-  <select id="selectBySha" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectBySha" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Blob_Column_List"/>
     from file
     where file_sha = #{sha}
+  </select>
+
+  <select id="selectFilesByCid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from file
+    where file_course = #{cid};
   </select>
 </mapper>

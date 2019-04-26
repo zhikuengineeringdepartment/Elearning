@@ -68,4 +68,9 @@
       major_college = #{majorCollege,jdbcType=INTEGER}
     where major_id = #{majorId,jdbcType=INTEGER}
   </update>
+
+  <!--自定义SQL-->
+  <select id="selectAllMajors" resultMap="BaseResultMap">
+    select * from major
+  </select>
 </mapper>

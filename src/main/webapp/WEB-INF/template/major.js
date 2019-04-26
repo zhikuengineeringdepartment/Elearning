@@ -1,7 +1,7 @@
 let majorTemplate = `
-<el-menu-item index="major.id">\
+<el-menu-item index="major.majorId">\
     <i class="el-icon-arrow-right"></i>
-    <span slot="title">{{major.name}}</span>
+    <span slot="title">{{major.majorName}}</span>
 </el-menu-item>
 `
 

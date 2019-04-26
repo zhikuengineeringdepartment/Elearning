@@ -2,6 +2,8 @@ package com.zhiku.mapper;
 
 import com.zhiku.entity.File;
 
+import java.util.List;
+
 public interface FileMapper {
     int deleteByPrimaryKey(Integer fid);
 
@@ -18,4 +20,6 @@ public interface FileMapper {
     int updateByPrimaryKey(File record);
 
     File selectBySha(String sha);
+
+    List<File> selectFilesByCid(int cid);
 }

@@ -6,6 +6,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -43,8 +44,9 @@ public class EmailUtil {
             javaMailSender.send(mMessage);// 发送邮件
         } catch (MessagingException e) {
             e.printStackTrace();
-//        }catch (IOException ioe){
-//            ioe.printStackTrace();
+        }catch (MailSendException mse){
+            mse.printStackTrace();
+            //抛出邮件异常
         }
         return "发送成功";
     }

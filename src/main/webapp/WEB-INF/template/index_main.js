@@ -35,65 +35,37 @@ var indexMainTemplate = `
 var indexMainModule = {
     data:function () {
         return{
-            courses: [
-                {
-                    "cid": 100,
-                    "courseName": "java高级程序设计",
-                    "courseDesc": "java语言基础",
-                    "courseIcon": "./img/logo.jpg"
-                },
-                {
-                    "cid": 101,
-                    "courseName": "linux课程",
-                    "courseDesc": "linux基础",
-                    "courseIcon": "./img/logo.jpg"
-                },
-                {
-                    "cid": 104,
-                    "courseName": "测试md",
-                    "courseDesc": "测试",
-                    "courseIcon": "./img/logo.jpg"
-                }
-            ],
-            majors:[
-                {
-                    id:1,
-                    name:"软件工程"
-                },
-                {
-                    id:2,
-                    name:"数字媒体"
-                },
-                {
-                    id:3,
-                    name:"计算机科学"
-                },
-                {
-                    id:4,
-                    name:"马克思学院"
-                },
-                {
-                    id:5,
-                    name:"软件工程"
-                },
-                {
-                    id:6,
-                    name:"数字媒体"
-                },
-                {
-                    id:7,
-                    name:"计算机科学"
-                },
-                {
-                    id:8,
-                    name:"马克思学院"
-                }
-            ]
+            courses: [],
+            majors:[]
         }
     },
     props:[],
     template: indexMainTemplate,
+    created:function(){
+        this.getMajors();
+        this.getCourses();
+    },
     methods:{
+        getMajors(){
+            var _this =this;
+            axios.get('getAllMajors')
+                .then(function(response){
+                    _this.majors = response.data.data.majors;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
+        getCourses:function(){
+            var _this =this;
+            axios.get('course/getAllCourse')
+                .then(function(response){
+                    _this.courses = response.data.data.courses;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
         handleClose(tag) {
             this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
         },

@@ -1,12 +1,15 @@
 package com.zhiku.controller;
 
+import com.zhiku.entity.Major;
 import com.zhiku.entity.Preference;
+import com.zhiku.service.MajorService;
 import com.zhiku.service.PreferenceService;
 import com.zhiku.util.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +19,15 @@ import java.util.Map;
 public class InfoController {
     @Autowired
     private PreferenceService preferenceService;
+    @Autowired
+    private MajorService majorService;
+
+    @RequestMapping("/index")
+    public ModelAndView index(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("index");
+        return mv;
+    }
 
     /**
      * 获得都有偏好标签
@@ -27,6 +39,15 @@ public class InfoController {
         ResponseData responseData = ResponseData.ok();
         List<Preference> preferences = preferenceService.getAllPreference();
         responseData.putDataValue("preferences",preferences);
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getAllMajors")
+    public ResponseData getAllMajors(){
+        ResponseData responseData = ResponseData.ok();
+        List<Major> majors = majorService.getAllMajors();
+        responseData.putDataValue("majors",majors);
         return responseData;
     }
 }

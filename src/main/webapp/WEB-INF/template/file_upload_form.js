@@ -9,24 +9,33 @@ var fileUploadFormTemplate = `
                     <el-form-item label="文件">
                         <el-upload
                                 class="upload-demo"
+                                action="file/upload"
                                 ref="upload"
-                                action="uploadRequest"
-                                multiple="false"
-                                data="uploadForm"
-                                accept="docx||pdf"
-                                :on-preview="handlePreview"
+                                name="multipartFile"
+                                :file-list="uploadForm.multipartFile"
+                                :limit="3"
+                                :on-exceed="handleExceed"
+                                :on-change="change_file_list"
+                                :on-success="handleSuccess"
                                 :on-remove="handleRemove"
-                                :file-list="fileList"
-                                :auto-upload="false">
+                                :auto-upload="false"
+                                :with-credentials="true">
                             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                             <div slot="tip" class="el-upload__tip" style="display:inline; margin-left:20px">可上传word,ppt,pdf类型文件，且不超过100M</div>
                         </el-upload>
                     </el-form-item>
                     <el-form-item label="所属课程">
-                        <el-cascader :options="courses" change-on-select></el-cascader>
+                        <el-select v-model="uploadForm.fileCourse" filterable placeholder="请选择">
+                            <el-option
+                                v-for="item in courses"
+                                :key="item.cid"
+                                :label="item.courseName"
+                                :value="item.cid">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="任课教师">
-                        <el-input v-model="uploadForm.teacherName"></el-input>
+                        <el-input v-model="uploadForm.fileTeacher"></el-input>
                     </el-form-item>
                     <el-form-item label="标签">
                         <el-tag
@@ -39,8 +48,8 @@ var fileUploadFormTemplate = `
                         </el-tag>
                         <el-input
                                 class="input-new-tag"
-                                v-if="inputVisible"
-                                v-model="inputValue"
+                                v-if="tagVisible"
+                                v-model="tagValue"
                                 ref="saveTagInput"
                                 size="small"
                                 @keyup.enter.native="handleInputConfirm"
@@ -51,7 +60,7 @@ var fileUploadFormTemplate = `
                     </el-form-item>
                     <el-form-item>
                         <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                        <el-button>取消</el-button>
+                        <el-button @click="returnBack">取消</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -62,35 +71,49 @@ var fileUploadFormTemplate = `
 var fileUploadFormModule = {
     data:function () {
         return{
-            courses:[],
-            inputVisible: false,
-            inputValue: '',
-            fileList:[],
+            courses: [],
+            tagVisible: false,
+            tagValue: '',
             uploadForm: {
-                teacherName: '',
+                fileCourse:'',
+                fileTeacher: '',
+                multipartFile:[],
                 file_tags: []
             }
         }
     },
     props:[],
     template: fileUploadFormTemplate,
+    created:function(){
+      indexMainModule.getCourses();
+    },
     methods:{
+        handleExceed(files, fileList) {
+            this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        },
         handleClose(tag) {
             this.uploadForm.file_tags.splice(this.uploadForm.file_tags.indexOf(tag), 1);
         },
+        change_file_list(file,flist){
+            console.log(this.$refs.upload.uploadFiles)
+            this.uploadForm.multipartFile=flist
+        },
         handleInputConfirm() {
-            let inputValue = this.inputValue;
-            if (inputValue) {
-                this.uploadForm.file_tags.push(inputValue);
+            let tagValue = this.tagValue;
+            if (tagValue) {
+                this.uploadForm.file_tags.push(tagValue);
             }
-            this.inputVisible = false;
-            this.inputValue = '';
+            this.tagVisible = false;
+            this.tagValue = '';
         },
         showInput() {
-            this.inputVisible = true;
+            this.tagVisible = true;
             this.$nextTick(_ => {
                 this.$refs.saveTagInput.$refs.input.focus();
             });
+        },
+        handleSuccess(respnose,file,fileList){
+            alert(respnose.data.data.message)
         },
         handlePreview(file){
             console.log(file);
@@ -99,7 +122,31 @@ var fileUploadFormModule = {
             console.log(file,fileList)
         },
         submitUpload(){
-            console.log(this.uploadForm);
+            var _this = this;
+            var form = new FormData();
+            form.append("multipartFile", document.getElementsByClassName('el-upload__input')[0].files[0]);
+            form.append("uid", 0);
+            form.append("fileCourse", this.uploadForm.fileCourse);
+            form.append("fileTeacher", this.uploadForm.fileTeacher);
+            console.log(this.uploadForm.file_tags)
+            for(var i = 1;i<=this.uploadForm.file_tags.length;i++){
+                form.append("key"+i,this.uploadForm.file_tags[i-1])
+            }
+            const instance=axios.create({
+                withCredentials: true
+            })
+            instance.post('file/upload',form).then(res=>{
+                if(res.code == 200){
+                    alert('提交成功');
+                    this.$router.push({ path: "/" });
+
+                }else{
+                    alert("请输入完整再提交");
+                }
+            })
+        },
+        returnBack(){
+          this.$router.go(-1);
         }
     },
 

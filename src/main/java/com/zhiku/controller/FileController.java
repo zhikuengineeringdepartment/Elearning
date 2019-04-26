@@ -1,12 +1,14 @@
 package com.zhiku.controller;
 
 import com.zhiku.entity.File;
+import com.zhiku.entity.FileKeys;
 import com.zhiku.entity.User;
 import com.zhiku.exception.FileNotExistException;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.service.FileService;
 import com.zhiku.service.UserService;
 import com.zhiku.util.FileStatus;
+import com.zhiku.util.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 @Controller
@@ -24,33 +29,48 @@ public class FileController {
     @Autowired
     UserService userService;
 
+    @ResponseBody
     @RequestMapping(value = "upload",method = RequestMethod.POST)
-    public ModelAndView fileUpload(
+    public ResponseData fileUpload(
+            User user,
             @RequestParam(value = "multipartFile") MultipartFile multipartFile,
-            File file){
-        ModelAndView modelAndView = new ModelAndView();
+            File file,
+            FileKeys fileKeys){
+        ResponseData responseData = null;
         //检查文件是否规范
+        System.out.println(user.getUid());
         FileStatus fileStatus = fileService.checkFile(multipartFile);
         if(fileStatus == FileStatus.NORMAL){
-            if(fileService.storeFile(multipartFile,file)){
-                modelAndView.setStatus(HttpStatus.OK);
+            if(fileService.storeFile(multipartFile,file,user,fileKeys)){
+                responseData = ResponseData.ok();
             }else{
-                modelAndView.setStatus(HttpStatus.NOT_ACCEPTABLE);
-                modelAndView.addObject("message","please retry");
+                responseData = ResponseData.serverInternalError();
+                responseData.setMessage("please retry");
             }
         }else{
-            modelAndView.setStatus(HttpStatus.ACCEPTED);
-            modelAndView.addObject("message",fileStatus.getName());
+            responseData = ResponseData.customerError();
+            responseData.setMessage(fileStatus.getName());
         }
-        return modelAndView;
+        return responseData;
     }
 
     @RequestMapping(value = "download",method = RequestMethod.GET)
-    public ResponseEntity<byte[]> fileDownload(
-            @RequestParam(value = "uid")User user,
+    public void fileDownload(
+            HttpServletResponse response,
+            User user,
             @RequestParam(value = "fid") int fid) throws UserNotFoundException,FileNotExistException {
         user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);
-        return fileService.fileDownload(user,file);
+        fileService.fileDownload(response,user,file);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getFileListByCourse",method = RequestMethod.GET)
+    public ResponseData getFileList(int cid){
+        ResponseData responseData = null;
+        List<File> files = fileService.getFileListByCid(cid);
+        responseData = ResponseData.ok();
+        responseData.putDataValue("files",files);
+        return  responseData;
     }
 }

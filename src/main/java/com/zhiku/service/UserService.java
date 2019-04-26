@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +82,7 @@ public class UserService {
      * @return
      */
     public boolean checkPassword(User user ,String password){
-        if(user.getUserPassword().equals(DigestUtils.md5(password))){
+        if(user.getUserPassword().equals(DigestUtils.md5Hex(password))){
             return true;
         }else{
             return false;
@@ -106,7 +107,8 @@ public class UserService {
         user.setUserRegip(request.getRemoteAddr());
         user.setUserRegtime(new Date());
         user.setUserEmail(email);
-        user.setUserPassword(new String(DigestUtils.md5(password)));
+        System.out.println(DigestUtils.md5Hex(password));
+        user.setUserPassword(DigestUtils.md5Hex(password));
         user.setUserStatus("u");    //设置状态为unchecked
         user.setUserUploadCount(0);
         user.setUserDownloadCount(0);

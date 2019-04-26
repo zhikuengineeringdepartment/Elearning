@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="common/vue-element.css" />
     <link rel="stylesheet" href="common/main.css" />
     <link rel="stylesheet" href="common/jquery.Jcrop.css" />
+    <link rel="stylesheet" href="css/markd.css"/>
     <script src="common/vue.js"></script>
     <script src="common/vue-router.js"></script>
     <script src="common/jquery.min.js"></script>
@@ -42,6 +43,7 @@
             min-width: 0;
             width: 100%;}
     </style>
+
 </head>
 <body>
 <script type="text/javascript" src="./js/marked.min.js"></script>
@@ -49,9 +51,9 @@
 <el-container id = "root" style="display: flex;flex-direction: column;">
 
     <!--头部-->
-    <my_header></my_header>
+    <my_header :login="login" :user_icon="user_icon" ></my_header>
     <!--内容-->
-    <router-view></router-view>
+    <router-view v-on:login-state="change_login"></router-view>
 
     <!--foot-->
     <my_footer></my_footer>
@@ -101,21 +103,40 @@
         router,
         el:"#root",
         data:{
-
+            login:false,
+            user_icon:''
         },
         created:function(){
-            // this.getCourses();
+            this.check_login();
+        },
+        watch:{
+            login:function(){
+                this.user_icon = localStorage['user_icon']
+            }
         },
         methods:{
-            getCourses:function(){
-                var _this =this;
-                axios.get('getAllCourse')
-                    .then(function(response){
-                        _this.courses = response.data.courses;
-                    })
-                    .catch(function(err){
-                        console.log(err);
-                    });
+            change_login:function(){
+                this.login=true;
+            },
+            check_login:function(){
+                var token = this.getCookie("token")
+                if (token != ''){
+                    this.login = true;
+                }else{
+                    this.login = false;
+                }
+            },
+            getCookie(name){
+                var value = ''
+                var cookies = document.cookie.split(';')
+                var ck ;
+                for(var i =0;i<cookies.length;i++){
+                    ck = cookies[i].split('=')
+                    if(ck[0] == name){
+                        value = ck[1]
+                    }
+                }
+                return value;
             }
         }
     }).$mount('#root')

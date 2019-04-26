@@ -11,7 +11,7 @@ var loginRegisteTemplate = `
                         <b>.</b>
                         <router-link to="/registe">注册</router-link>
                     </div>
-                    <template v-if="isLogin">
+                    <template v-if="isLoginPage">
                         <el-form ref="form" :model="loginForm" label-width="80px" style="display: flex;flex-direction: column;align-items: center">
                             <el-form-item label="账号">
                                 <el-input
@@ -27,7 +27,7 @@ var loginRegisteTemplate = `
                                         v-model="loginForm.password">
                                 </el-input>
                             </el-form-item>
-                            <el-button type="primary" round>登录</el-button>
+                            <el-button type="primary" round @click="handleLogin">登录</el-button>
                         </el-form>
                     </template>
                     <template v-else>
@@ -53,7 +53,7 @@ var loginRegisteTemplate = `
                                         v-model="registeForm.password">
                                 </el-input>
                             </el-form-item>
-                            <el-button  type="primary" round>注册</el-button>
+                            <el-button  type="primary" round @click="handleRegiste">注册</el-button>
                         </el-form>
                     </template>
                 </div>
@@ -65,7 +65,7 @@ var loginRegisteTemplate = `
 var loginRegisteModule = {
     data:function () {
         return{
-            isLogin:'',
+            isLoginPage:'',
             loginForm:{
                 identity:'',
                 password:''
@@ -85,15 +85,76 @@ var loginRegisteModule = {
     watch: {
         '$route' (to) {
             if(to.fullPath === '/login'){
-                this.isLogin = true;
+                this.isLoginPage = true;
             }else{
-                this.isLogin = false;
+                this.isLoginPage = false;
             }
         }
-        },
+     },
     methods:{
         setLogin(){
-            this.$router.history.current.path === '/login'? this.isLogin = true : this.isLogin = false;
+            console.log(this.$router)
+          if(this.$router.history.current.path === '/login'){
+              this.isLoginPage = true;
+          }else{
+              this.isLoginPage = false;
+          }
+        },
+
+        // 处理登录请求
+        handleLogin(){
+            var _this = this;
+            axios.post('/Elearning/user/login',
+                this.loginForm,
+                {
+                    transformRequest: [
+                        function(data) {
+                            let ret = '';
+                            for (let it in data) {
+                                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                            }
+                            return ret;
+                        }
+                    ],
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }
+        )
+                .then(function(response){
+                    localStorage['user_icon']=response.data.data.userIcon;
+                    // root.user_icon = response.data.data.user_icon;
+                    _this.$emit('login-state')
+                    _this.$router.push("/");
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
+        // 处理注册请求
+        handleRegiste(){
+            axios.post('/Elearning/user/registe',this.registeForm,
+                {
+                    transformRequest: [
+                        function(data) {
+                            let ret = '';
+                            for (let it in data) {
+                                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                            }
+                            return ret;
+                        }
+                    ],
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }
+                )
+                .then(function(res){
+                    this.$router.push("/login")
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         }
     },
 

@@ -1,0 +1,130 @@
+#root {
+	margin-left: 170px;
+	margin-right: 100px;
+	border: 1px solid #a7d7f9;
+	padding-left: 10px;
+	padding-top: 10px;
+}
+
+ .popupcontent {
+	z-index: 10000;
+	visibility: hidden;
+	position:fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -175px;
+	margin-top: -175px;
+	width: 350px;
+	height: 220px;
+	overflow:hidden;
+	background-color: #90CAF9;
+	/* text-align: center; */
+	box-shadow:10px 10px 5px #888888;
+	  
+	
+}
+.buttonbar
+{
+	padding-bottom: 10px;
+}
+.textedit
+{
+	border-left: 1px solid #00B0FF;
+	border-top:  1px solid #00B0FF;
+	border-right:  1px solid #00B0FF;
+	word-wrap: break-word;
+	width: 100%;
+	height: 84%;
+	overflow-x: hidden;
+	overflow-y:auto;
+}
+.closebutton
+{
+	/* position: absolute; */
+	background-color: #66ffFF;
+	/* right:4px; */
+	top:2px;
+	float: right;
+	text-align: center;
+	border: none;
+	display: inline-block;
+	z-index: 10001;
+}
+.savebutton
+{
+	/* position: absolute; */
+	display: inline-block;
+	background: #80D8FF;
+	/* right: 100px; */
+	text-align: center;
+	border: none;
+	height:26px;
+	float: right;
+	cursor: pointer;
+	visibility: hidden;
+	padding-bottom: 0px;
+	/* z-index: 10001; */
+}
+.input_notes
+{
+  display: inline-block;
+	background: #ffffff;
+  width: 96%;
+	height:20px;
+	resize: vertical; /*只允许调节高度*/
+	color: #000000;
+	font-size: 15px;
+	visibility: visible;
+}
+p {
+	width: 90%;
+}
+
+.pdiv {
+	position: relative;
+	z-index: 0;
+}
+
+.SubpdivN {
+	display: none;
+	position: absolute;
+	right: 5px;
+	top: 0px;
+	padding: 0px 0px 10px 0px;
+	background: #BFEFFF;
+	/* width:100px; */
+	height: 10px;
+	color: #000000;
+	z-index: 1;
+	border-left: solid 4px transparent;
+	border-right: solid 4px transparent;
+	cursor: pointer;
+}
+
+.SubpdivC {
+	display: none;
+	position: absolute;
+	right: 46px;
+	top: 0px;
+	padding: 0px 0px 10px 0px;
+	background: #BFEFFF;
+	/* width:100px; */
+	height: 10px;
+	color: #000000;
+	z-index: 1;
+	border-left: solid 4px transparent;
+	border-right: solid 4px transparent;
+	cursor: pointer;
+}
+
+.pdiv:hover {
+	background: #e3f3f7;
+}
+
+.pdiv:hover .SubpdivN {
+	display: block;
+}
+
+.pdiv:hover .SubpdivC {
+	display: block;
+}

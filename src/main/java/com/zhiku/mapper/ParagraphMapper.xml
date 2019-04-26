@@ -118,4 +118,9 @@
       paragraph_newline = #{paragraphNewline,jdbcType=CHAR}
     where pid = #{pid,jdbcType=INTEGER}
   </update>
+
+  <!--自定义SQL-->
+  <select id="selectByParagraphSeq" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from paragraph where paragraph_seq = #{paragraphSeq}
+  </select>
 </mapper>

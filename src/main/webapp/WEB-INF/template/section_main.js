@@ -7,9 +7,9 @@ let sectionMainTemplate = `
                         default-active="2"
                         class="el-menu-vertical-demo">
                     <template v-for="section in courseView.sections">
-                        <el-menu-item index="section.id">
+                        <el-menu-item index="section.id" @click="getSectionView(section.sid)">
                             <i class="el-icon-arrow-right"></i>
-                            <span slot="title">{{section.sectionName}}</span>
+                            <span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>
                         </el-menu-item>
                     </template>
                 </el-menu>
@@ -26,28 +26,7 @@ let sectionMainTemplate = `
 var sectionMainModule = {
     data: function () {
         return {
-            courseView: {
-                "cid": 100,
-                "courseName": "java高级程序设计",
-                "courseDesc": "java语言基础",
-                "courseIcon": "/img/default.png",
-                "sections": [
-                    {
-                        "sid": 10001,
-                        "sectionName": "基本类型",
-                        "sectionSeq": "1.1",
-                        "sectionRecommendPath": "a/b.txt",
-                        "sectionCourse": 100
-                    },
-                    {
-                        "sid": 10002,
-                        "sectionName": "循环语句",
-                        "sectionSeq": "1.2",
-                        "sectionRecommendPath": "a/c.txt",
-                        "sectionCourse": 100
-                    }
-                ]
-            },
+            courseView: '',
             sectionView:{
                 sid:10001,
                 sectionName:"## 1.4.第三节，关于图片",
@@ -117,17 +96,41 @@ var sectionMainModule = {
             }
         }
     },
-    props:[],
+    props:['cid'],
     template: sectionMainTemplate,
     created:function(){
-
+        this.getCourseView(this.$route.params.cid)
     },
     methods:{
         getCourseView:function(cid){
-            console.log(cid);
+            var _this =this;
+            axios.get('course/getCourseDetails',{
+                params:{
+                    cid:cid
+                }
+            })
+                .then(function(response){
+                    // console.log(response.data)
+                    _this.sectionView = response.data.data.sectionView;
+                    _this.courseView = response.data.data.courseView;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         },
         getSectionView:function(sid){
-            console.log(sid);
+            var _this =this;
+            axios.get('section/getSection',{
+                params:{
+                    sid:sid
+                }
+            })
+                .then(function(response){
+                    _this.sectionView = response.data.data.sectionView;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         }
     }
 }

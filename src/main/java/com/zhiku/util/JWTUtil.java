@@ -52,6 +52,11 @@ public class JWTUtil {
         }
     }
 
+    public static String getUserName(String token) throws TokenVerifyErrorException{
+        Map<String,Claim> claims = verifyToken(token);
+        Claim uid_claim = claims.get("username");
+        return uid_claim.asString();
+    }
     public static int getUid(String token) throws TokenVerifyErrorException{
         Map<String,Claim> claims = verifyToken(token);
         Claim uid_claim = claims.get("uid");

@@ -1,9 +1,6 @@
 package com.zhiku.service;
 
-import com.zhiku.entity.ColParagraph;
-import com.zhiku.entity.ColParagraphKey;
-import com.zhiku.entity.Note;
-import com.zhiku.entity.NoteKey;
+import com.zhiku.entity.*;
 import com.zhiku.mapper.ColParagraphMapper;
 import com.zhiku.mapper.NoteMapper;
 import com.zhiku.mapper.ParagraphMapper;
@@ -46,12 +43,13 @@ public class ParagraphService {
     /**
      * 收藏一个段落
      * @param uid
-     * @param pid
+     * @param paragraphSeq
      * @return
      */
-    public boolean addColParagraph(int uid, int pid) {
+    public boolean addColParagraph(int uid, int paragraphSeq) {
         ColParagraph colParagraph = new ColParagraph();
-        colParagraph.setColpPara(pid);
+        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+        colParagraph.setColpPara(paragraph.getPid());
         colParagraph.setColpUser(uid);
         colParagraph.setColpDate(new Date());
         if(colParagraphMapper.insert(colParagraph)>0){
@@ -90,10 +88,16 @@ public class ParagraphService {
 
     /**
      * 添加一条笔记
+     *
+     * @param user
      * @param note 笔记
+     * @param paragraphSeq
      * @return 是否添加成功
      */
-    public boolean addNote(Note note){
+    public boolean addNote(User user, Note note, int paragraphSeq){
+        note.setNoteUser(user.getUid());
+        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+        note.setNotePara(paragraph.getPid());
         note.setNoteDate(new Date());
         if(noteMapper.insert(note)>0){
             return true;

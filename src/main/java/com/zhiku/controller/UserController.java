@@ -6,6 +6,7 @@ import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.service.CourseService;
 import com.zhiku.service.PreferenceService;
 import com.zhiku.service.UserService;
+import com.zhiku.util.JWTUtil;
 import com.zhiku.util.ResponseData;
 import com.zhiku.util.UserStatus;
 import com.zhiku.view.ColCourseView;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -79,11 +82,19 @@ public class UserController {
         return responseData;
     }
 
+    /**
+     * 登录请求
+     * @param identity 登录的身份：用户名或邮箱
+     * @param password 登录密码
+     * @param response 返回，用以添加cookie
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/login" ,method = RequestMethod.POST)
     public ResponseData login(
             @RequestParam(name = "identity" ) String identity,
-            @RequestParam(name = "password" ) String password) {
+            @RequestParam(name = "password" ) String password,
+            HttpServletResponse response) {
         ResponseData responseData = null;
         User user = null;
         try{
@@ -91,23 +102,34 @@ public class UserController {
         }catch (UserNotFoundException e){
             try{
                 user = userService.getUserByEmail(identity);
-                UserStatus userStatus = userService.checkUser(user);
-                if(userStatus == UserStatus.NORMAL){
-                    if(userService.checkPassword(user,password)){
-                        responseData = ResponseData.ok();
-                        //签发token
-                    }else {
-                        responseData = ResponseData.badRequest();
-                        responseData.setMessage("用户名和密码不正确");
-                    }
-                }else{
-                    responseData = ResponseData.badRequest();
-                    responseData.setMessage(userStatus.getMessage());
-                }
-                //签发token
             }catch (UserNotFoundException unfe){
                 responseData = ResponseData.badRequest();
                 responseData.setMessage("账号不存在");
+            }
+        }
+        if(user != null){
+            UserStatus userStatus = userService.checkUser(user);
+            if(userStatus == UserStatus.NORMAL){
+                if(userService.checkPassword(user,password)){
+                    responseData = ResponseData.ok();
+                    //签发token
+                    //添加cookie
+                    try{
+                        String token = JWTUtil.signToken(user);
+                        Cookie cookie = new Cookie("token",token);
+                        cookie.setPath("/");
+                        response.addCookie(cookie);
+                        responseData.putDataValue("userIcon",user.getUserAvatar());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }else {
+                    responseData = ResponseData.badRequest();
+                    responseData.setMessage("用户名和密码不正确");
+                }
+            }else{
+                responseData = ResponseData.badRequest();
+                responseData.setMessage(userStatus.getMessage());
             }
         }
 

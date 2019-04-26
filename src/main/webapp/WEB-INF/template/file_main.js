@@ -13,7 +13,7 @@ var fileMainTemplate = `
             </el-col>
 
             <el-col :span="16">
-                <el-cascader :options="colleges" :props="college_major" change-on-select></el-cascader>
+                <el-cascader :options="colleges" :props="college_major" filterable :change-on-select="false"></el-cascader>
             </el-col>
 
             <el-col :span="16" style="margin-top: 20px">
@@ -26,29 +26,7 @@ var fileMainTemplate = `
 var fileMainModule = {
     data:function () {
         return{
-            my_files:[
-                {
-                    fid:1,
-                    fileName:"数据库——智库知识见解",
-                    upper:"baowei",
-                    date:"2018-09-15",
-                    downloadCount:"1"
-                },
-                {
-                    fid:2,
-                    fileName:"数据库——智库知识见解",
-                    upper:"baowei",
-                    date:"2018-09-15",
-                    downloadCount:"1"
-                },
-                {
-                    fid:3,
-                    fileName:"数据库——智库知识见解",
-                    upper:"baowei",
-                    date:"2018-09-15",
-                    downloadCount:"1"
-                }
-            ],
+            my_files:[],
             colleges: [
                 {
                     id:1,
@@ -81,6 +59,20 @@ var fileMainModule = {
     },
     props:[],
     template: fileMainTemplate,
+    created:function(){
+        var _this =this;
+        axios.get('file/getFileListByCourse',{
+            params:{
+                cid:100
+            }
+        })
+            .then(function(response){
+                _this.my_files = response.data.data.files;
+            })
+            .catch(function(err){
+                console.log(err);
+            });
+    },
     methods:{
         gotoUpload:function(){
             this.$router.push('/fileUpload')
