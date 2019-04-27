@@ -39,7 +39,7 @@ var fileModule = {
         },
         handleDownload:function(fid){
             console.log("下载文件"+fid);
-            window.open('file/download?fid='+fid+'&uid='+root.user.uid)
+            window.open('file/download?fid='+fid+'&uid='+0)
         }
     },
 

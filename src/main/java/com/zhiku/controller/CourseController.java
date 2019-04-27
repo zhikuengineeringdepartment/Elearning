@@ -24,13 +24,6 @@ public class CourseController {
     @Autowired
     private SectionService sectionService;
 
-    @RequestMapping(value = "first",method = RequestMethod.GET)
-    public ModelAndView getFirst(){
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("index");
-        return mv;
-    }
-
     /**
      * 获得所有的课
      * 后期修改为可按照专业搜课

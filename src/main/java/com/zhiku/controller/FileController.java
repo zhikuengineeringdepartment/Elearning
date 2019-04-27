@@ -56,8 +56,8 @@ public class FileController {
 
     @RequestMapping(value = "download",method = RequestMethod.GET)
     public void fileDownload(
-            HttpServletResponse response,
             User user,
+            HttpServletResponse response,
             @RequestParam(value = "fid") int fid) throws UserNotFoundException,FileNotExistException {
         user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);

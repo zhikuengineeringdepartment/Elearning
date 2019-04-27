@@ -14,7 +14,7 @@ let sectionMainTemplate = `
                     </template>
                 </el-menu>
             </el-col>
-            <el-col :span="16" style="margin: 20px">
+            <el-col :span="12" style="margin: 20px">
                 <my_section :sectionView="sectionView"></my_section>
             </el-col>
         </el-row>

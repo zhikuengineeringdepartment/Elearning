@@ -5,7 +5,7 @@ var headerTemplate = `
 <el-header height="100px">
     <el-row type="flex" class="row-bg" justify="space-around">
         <el-col :span="12" style="display: flex;align-items: center;justify-content: center;">
-            <router-link to="/"><img src="./img/logo.jpg" height="50px" width="auto" style="margin-right:20px"></router-link>
+            <router-link to="/"><img src="img/sharingIdea.jpg" height="50px" width="auto" style="margin-right:20px"></router-link>
             <i>让知识回归平凡</i>
         </el-col>
         <el-col :span="6"><el-input v-model="searchKey" placeholder="搜索..." @keyup.enter.native="handleSearch"></el-input></el-col>

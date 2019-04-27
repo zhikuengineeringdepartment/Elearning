@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 
@@ -84,6 +85,7 @@ public class UserController {
 
     /**
      * 登录请求
+     * @param request 获取用户登录的地址信息
      * @param identity 登录的身份：用户名或邮箱
      * @param password 登录密码
      * @param response 返回，用以添加cookie
@@ -92,6 +94,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/login" ,method = RequestMethod.POST)
     public ResponseData login(
+            HttpServletRequest request,
             @RequestParam(name = "identity" ) String identity,
             @RequestParam(name = "password" ) String password,
             HttpServletResponse response) {
@@ -112,8 +115,7 @@ public class UserController {
             if(userStatus == UserStatus.NORMAL){
                 if(userService.checkPassword(user,password)){
                     responseData = ResponseData.ok();
-                    //签发token
-                    //添加cookie
+                    //签发token并添加到cookie中
                     try{
                         String token = JWTUtil.signToken(user);
                         Cookie cookie = new Cookie("token",token);
@@ -123,6 +125,10 @@ public class UserController {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+                    //修改用户的上次登录时间和ip
+                    user.setUserLasttime(new Date());
+                    user.setUserLastip(request.getRemoteAddr());
+                    userService.saveUser(user);
                 }else {
                     responseData = ResponseData.badRequest();
                     responseData.setMessage("用户名和密码不正确");

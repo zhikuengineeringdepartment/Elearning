@@ -19,6 +19,8 @@ var sectionModule = {
                 _this.handleNoteParagraph(pid,noteContent)
             },function(pid){
                 _this.handleColParagraph(pid)
+            },function (pid) {
+                _this.handleCancelCol(pid)
             })
         }
     },
@@ -51,6 +53,9 @@ var sectionModule = {
                 .catch(function(err){
                     console.log(err);
                 });
+        },
+        handleCancelCol(pid){
+            console.log(pid)
         }
     }
 }

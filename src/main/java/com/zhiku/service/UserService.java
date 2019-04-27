@@ -96,8 +96,6 @@ public class UserService {
         user.setUserAuth("u");      //设置权限为user
         user.setUserGender("u");    //设置性别为unknown
         user.setUserLastip(request.getRemoteAddr());
-        System.out.println(request.getRemoteAddr());
-        System.out.println(request.getRemoteHost());
         Date current = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(current);
@@ -118,6 +116,10 @@ public class UserService {
         }else {
             return true;
         }
+    }
+
+    public void saveUser(User user){
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     public void sendEmail(JavaMailSender javaMailSender, String username, String email, String act, Configuration freemarkerConfig){
