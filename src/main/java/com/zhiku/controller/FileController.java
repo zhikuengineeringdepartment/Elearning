@@ -65,7 +65,6 @@ public class FileController {
         fileService.fileDownload(response,user,file);
     }
 
-    //TODO 目前对于office2010的还存在无法识别的问题
     @RequestMapping(value = "preview",method = RequestMethod.GET)
     public void filePreview(HttpServletResponse response,int fid) throws ConnectException {
         File file = fileService.getFileByFid(fid);
