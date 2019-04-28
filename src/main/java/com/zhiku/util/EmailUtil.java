@@ -55,7 +55,7 @@ public class EmailUtil {
         String text = "";
         try {
             Template template = freemarkerConfig.getTemplate("email.ftl");
-            Map<String,Object> map = new HashMap<>();
+            Map<String,Object> map = new HashMap<String,Object>();
             map.put("user",user.getUserUsername());
             map.put("act",act);
             map.put("code",user.hashCode());

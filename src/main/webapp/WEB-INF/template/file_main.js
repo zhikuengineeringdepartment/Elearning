@@ -63,7 +63,7 @@ var fileMainModule = {
         var _this =this;
         axios.get('file/getFileListByCourse',{
             params:{
-                cid:100
+                cid:104
             }
         })
             .then(function(response){

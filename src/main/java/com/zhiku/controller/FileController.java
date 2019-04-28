@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.net.ConnectException;
 import java.util.List;
 
 
@@ -62,6 +63,16 @@ public class FileController {
         user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);
         fileService.fileDownload(response,user,file);
+    }
+
+    //TODO 目前对于office2010的还存在无法识别的问题
+    @RequestMapping(value = "preview",method = RequestMethod.GET)
+    public void filePreview(HttpServletResponse response,int fid) throws ConnectException {
+        File file = fileService.getFileByFid(fid);
+        if(file != null){
+            String  rmsg = fileService.filePreview(response,file);
+            System.out.println(rmsg);
+        }
     }
 
     @ResponseBody

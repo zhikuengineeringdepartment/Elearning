@@ -36,6 +36,7 @@ var fileModule = {
     methods:{
         handlePreview:function (fid) {
             console.log("预览文件"+fid);
+            window.open("file/preview?fid="+fid)
         },
         handleDownload:function(fid){
             console.log("下载文件"+fid);

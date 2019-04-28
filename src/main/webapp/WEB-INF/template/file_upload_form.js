@@ -85,7 +85,7 @@ var fileUploadFormModule = {
     props:[],
     template: fileUploadFormTemplate,
     created:function(){
-      indexMainModule.getCourses();
+      this.courses = indexMainModule.courses
     },
     methods:{
         handleExceed(files, fileList) {

@@ -9,6 +9,7 @@ import com.zhiku.mapper.FileKeysMapper;
 import com.zhiku.mapper.FileMapper;
 import com.zhiku.mapper.FileopMapper;
 import com.zhiku.util.FileStatus;
+import com.zhiku.util.Office2PDF;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.ConnectException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,8 @@ public class FileService{
 
     @Value("${basePath_upload}")
     private String uploadPath;
+    @Value("${basePath_preview}")
+    private String previewPath;
     @Value("${max_size}")
     private int max_size;
     @Value("${type_reg}")
@@ -62,15 +66,14 @@ public class FileService{
             return FileStatus.TYPE_ERROR;
         }
         //检查文件是否重复
-//        try{
-            File file = null;
-//            File file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
+        try{
+            File file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
             if(file != null){
                 return FileStatus.DUPLICATE;
             }
-//        }catch (IOException ioe){
-//            return FileStatus.FILE_ERROR;
-//        }
+        }catch (IOException ioe){
+            return FileStatus.FILE_ERROR;
+        }
         return FileStatus.NORMAL;
     }
 
@@ -131,6 +134,7 @@ public class FileService{
     private boolean storeFileToDB(MultipartFile multipartFile, File file,User user){
         boolean finish ;
         try{
+            System.out.println("存入数据库");
             file.setFileUpper(user.getUid());
             file.setFileName(multipartFile.getOriginalFilename());
             file.setFileStatus("n");
@@ -199,7 +203,6 @@ public class FileService{
                 //输出缓冲区的内容到浏览器，实现文件下载
                 out.write(buffer, 0, len);
             }
-            System.out.println(1);
             out.flush();
             out.close();
         }catch (Exception e){
@@ -256,5 +259,34 @@ public class FileService{
 
     public List<File> getFileListByCid(int cid) {
         return fileMapper.selectFilesByCid(cid);
+    }
+
+    public String filePreview(HttpServletResponse response, File file) throws ConnectException {
+        String rmsg = "";
+        if(Office2PDF.isConvert(file.getFilePath())){
+            String outputFilePath = file.getFilePath();
+            //如果可以转化并且不是pdf
+            if(!"pdf".equals(Office2PDF.getPostfix(file.getFilePath()))){
+                outputFilePath = Office2PDF.getOutputFilePath(file.getFilePath());
+                if(!Office2PDF.openOfficeToPDF(file.getFilePath(), outputFilePath)){
+                    rmsg = "发生了一个未知的错误code:1，稍后重试";
+                }
+            }
+            //将文件输出到前端
+            try{
+                response.setContentType("application/pdf;charset=utf-8");
+                response.setHeader("pragme", "no-cache");
+                OutputStream outer = response.getOutputStream();
+                Office2PDF.writeOut(new java.io.File(outputFilePath), outer);
+                outer.close();
+                return null;
+            }catch(Exception e){
+                e.printStackTrace();
+                rmsg = "发生了一个未知错误code:2，请重试";
+            }
+        }else{
+            rmsg = "暂不支持本格式的预览！";
+        }
+        return  rmsg;
     }
 }

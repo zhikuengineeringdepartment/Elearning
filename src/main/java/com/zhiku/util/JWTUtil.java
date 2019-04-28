@@ -25,7 +25,7 @@ public class JWTUtil {
         calendar.setTime(issueTime);
         calendar.add(calendarField,maxAge);
         Date expireTime = calendar.getTime();
-        Map<String ,Object> header = new HashMap<>();
+        Map<String ,Object> header = new HashMap<String,Object>();
         header.put("alg","HS256");
         header.put("type","JWT");
         String token = JWT.create().withHeader(header)
