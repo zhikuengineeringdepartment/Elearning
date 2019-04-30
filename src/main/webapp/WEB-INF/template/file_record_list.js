@@ -1,33 +1,32 @@
 /*
 文件上传下载记录列表组件
  */
-var fileUploadRecordListTemplate = `
+var fileRecordListTemplate = `
 <div>
-                    <div>文件上传记录</div>
                     <ul>
-                        <template v-for="_file in _files" >
+                        <template v-for="upload_file in upload_files" >
                             <li style="list-style: none">
-                                <my_file_upload_record :_file="_file"></my_file_upload_record>
+                                <my_file_record :file_record="upload_file" :is_upload_page="is_upload_page"></my_file_record>
                             </li>
                         </template>
                     </ul>
                 </div>
 `
 
-var fileUploadRecordListModule = {
+var fileRecordListModule = {
     data:function () {
         return{
-            _files:[]
+            upload_files:[]
         }
     },
-    props:[],
-    template: fileUploadRecordListTemplate,
+    props:["is_upload_page"],
+    template: fileRecordListTemplate,
     created:function(){
         this.getFiles();
     },
     methods:{
         getFiles:function(){
-            this._files = [
+            this.upload_files = [
                 {
                     name:"数据结构",
                     desc:"数据结构的上课课件",
@@ -35,10 +34,10 @@ var fileUploadRecordListModule = {
                     uploadDate:'2018-09-15',
                     tags:[
                         {
-                            name:"标签一"
+                            tagName:"标签一"
                         },
                         {
-                            name:"数据"
+                            tagName:"数据"
                         }
                     ]
                 },
@@ -49,10 +48,10 @@ var fileUploadRecordListModule = {
                     uploadDate:'2018-09-15',
                     tags:[
                         {
-                            name:"标签一"
+                            tagName:"标签一"
                         },
                         {
-                            name:"数据"
+                            tagName:"数据"
                         }
                     ]
                 }
@@ -62,4 +61,4 @@ var fileUploadRecordListModule = {
 
 }
 
-Vue.component("my_file_upload_record_list",fileUploadRecordListModule);
+Vue.component("my_file_record_list",fileRecordListModule);

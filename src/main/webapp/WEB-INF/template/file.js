@@ -14,7 +14,7 @@ var fileTemplate = `
                         <el-col>
                             <el-row>
                                 <el-col :span="12">
-                                    <el-tag v-for="tag in file_tags" type="danger">{{tag.tagName}}</el-tag>
+                                    <my_tag :file_tags="file_tags"></my_tag>
                                 </el-col>
                                 <el-col :span="12" style="display: flex;justify-content: center">
                                     <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(jfile.fid)"></el-button>

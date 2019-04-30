@@ -2,6 +2,7 @@
 <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer"/>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="common/vue-element.css" />
     <link rel="stylesheet" href="common/main.css" />
@@ -15,12 +16,15 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--引入模块-->
+    <script src="template/col_course_list.js"></script>
+    <script src="template/col_paragraph.js"></script>
+    <script src="template/col_paragraph_list.js"></script>
     <script src="template/course.js"></script>
     <script src="template/file.js"></script>
     <script src="template/file_main.js"></script>
     <script src="template/file_upload_form.js"></script>
-    <script src="template/file_upload_record.js"></script>
-    <script src="template/file_upload_record_list.js"></script>
+    <script src="template/file_record.js"></script>
+    <script src="template/file_record_list.js"></script>
     <script src="template/header.js"></script>
     <script src="template/footer.js"></script>
     <script src="template/index_main.js"></script>
@@ -28,8 +32,11 @@
     <script src="template/major.js"></script>
     <script src="template/message.js"></script>
     <script src="template/message_list.js"></script>
+    <script src="template/note.js"></script>
+    <script src="template/note_list.js"></script>
     <script src="template/section.js"></script>
     <script src="template/section_main.js"></script>
+    <script src="template/tag.js"></script>
     <script src="template/user_info_form.js"></script>
     <script src="template/user_main.js"></script>
 
@@ -68,20 +75,33 @@
         { path: '/user/info', component: userMainModule,
             children: [
                 {
+                    path:"/",
+                    component:userInfoFormModule
+                },
+                {
                     path: 'infoform',
                     component: userInfoFormModule
                 },
                 {
-                    path: 'file_upload_record',
-                    component: fileUploadRecordListModule
+                    path: 'file_upload_record/:is_upload_page',
+                    component: fileRecordListModule,
+                    props:true
                 },
                 {
                     path: 'course_list',
-                    component: courseModule
+                    component: colCourseListModule
                 },
                 {
                     path: 'message_list',
                     component: messageListModule
+                },
+                {
+                    path: 'col_paragraph',
+                    component: colParagraphListModule
+                },
+                {
+                    path: 'note',
+                    component: noteListModule
                 }
             ]},
         { path: '/course/details/:cid', component: sectionMainModule },

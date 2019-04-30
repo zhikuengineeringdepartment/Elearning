@@ -25,8 +25,8 @@ let userMainTemplate = `
                                     <i class="el-icon-tickets"></i>
                                     <span>文件操作记录</span>
                                 </template>
-                                <el-menu-item index="3-1" :route="{path:'/user/info/file_upload_record'}">文件上传记录</el-menu-item>
-                                <el-menu-item index="3-2">文件下载记录</el-menu-item>
+                                <el-menu-item index="3-1" :route="{path:'/user/info/file_upload_record/true'}">文件上传记录</el-menu-item>
+                                <el-menu-item index="3-2" :route="{path:'/user/info/file_upload_record/false'}">文件下载记录</el-menu-item>
                             </el-submenu>
                             <el-submenu index="4">
                                 <template slot="title">
@@ -34,9 +34,9 @@ let userMainTemplate = `
                                     <span>学习记录</span>
                                 </template>
                                 <el-menu-item index="4-1" :route="{path:'/user/info/course_list'}">收藏的课程</el-menu-item>
-                                <el-menu-item index="4-2">收藏的段落</el-menu-item>
+                                <el-menu-item index="4-2" :route="{path:'/user/info/col_paragraph'}">收藏的段落</el-menu-item>
                             </el-submenu>
-                            <el-menu-item index="5">
+                            <el-menu-item index="5" :route="{path:'/user/info/note'}">
                                 <i class="el-icon-edit-outline"></i>
                                 <span slot="title">个人笔记</span>
                             </el-menu-item>
