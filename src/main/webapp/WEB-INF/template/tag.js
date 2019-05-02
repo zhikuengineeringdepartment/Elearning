@@ -3,12 +3,16 @@
  */
 var tagTemplate = `
 <div>
-<el-tag v-for="tag in file_tags" type="danger" style="margin: 0px 5px">
-    <router-link to="/fileMain" style="color: #f56c6c;text-decoration: none;">{{tag.tagName}}</router-link>
-</el-tag>
+<template v-for="(tag,name,index) in file_tags">
+    <template v-if="name != 'fid' && tag != null">
+        <el-tag  type="danger" style="margin: 0px 5px">
+            {{tag}}
+        </el-tag>
+    </template>
+</template>
 </div>
 `
-
+//TODO 缺少点击标签可以跳转的功能
 var tagModule = {
     data:function () {
         return{

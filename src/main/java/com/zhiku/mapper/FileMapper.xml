@@ -209,6 +209,9 @@
   </update>
 
   <!-- 自定义SQL -->
+  <resultMap id="FileView" type="com.zhiku.view.FileView" extends="BaseResultMap">
+    <association property="fileKeys" resultMap="com.zhiku.mapper.FileKeysMapper.BaseResultMap"></association>
+  </resultMap>
   <select id="selectBySha" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Blob_Column_List"/>
@@ -216,8 +219,34 @@
     where file_sha = #{sha}
   </select>
 
-  <select id="selectFilesByCid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from file
-    where file_course = #{cid};
+  <select id="selectFiles" resultMap="FileView">
+    select file.* ,file_keys.* from file,file_keys,user
+    <where>
+      file.fid = file_keys.fid and
+      user.uid = file.file_upper and
+      <if test="keyWord != null">
+        (file_name like concat('%',#{keyWord},'%') or
+        user.user_username like concat('%',#{keyWord},'%') or
+        file_keys.key1 like concat('%',#{keyWord},'%') or
+        file_keys.key2 like concat('%',#{keyWord},'%') or
+        file_keys.key3 like concat('%',#{keyWord},'%') or
+        file_keys.key4 like concat('%',#{keyWord},'%') or
+        file_keys.key5 like concat('%',#{keyWord},'%') or
+        file_keys.key6 like concat('%',#{keyWord},'%') or
+        file_keys.key7 like concat('%',#{keyWord},'%') or
+        file_keys.key8 like concat('%',#{keyWord},'%') or
+        file_keys.key9 like concat('%',#{keyWord},'%') or
+        file_keys.key10 like concat('%',#{keyWord},'%'))
+      </if>
+      <if test="file.fileCourse != null">
+        and file_course = #{file.fileCourse}
+      </if>
+      order by file_upload_time
+      <if test="order == true">
+        desc
+      </if>
+      limit #{startLine},#{pageSize}
+    </where>
   </select>
+
 </mapper>

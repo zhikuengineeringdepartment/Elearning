@@ -1,6 +1,8 @@
 package com.zhiku.mapper;
 
 import com.zhiku.entity.File;
+import com.zhiku.view.FileView;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,5 +23,5 @@ public interface FileMapper {
 
     File selectBySha(String sha);
 
-    List<File> selectFilesByCid(int cid);
+    List<FileView> selectFiles(@Param("keyWord") String keyWord, @Param("file") File file, @Param("startLine") int startLine, @Param("pageSize")int pageSize, @Param("order") boolean order);
 }

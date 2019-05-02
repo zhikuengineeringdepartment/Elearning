@@ -8,8 +8,10 @@ import com.zhiku.exception.FileNotExistException;
 import com.zhiku.mapper.FileKeysMapper;
 import com.zhiku.mapper.FileMapper;
 import com.zhiku.mapper.FileopMapper;
+import com.zhiku.mapper.UserMapper;
 import com.zhiku.util.FileStatus;
 import com.zhiku.util.Office2PDF;
+import com.zhiku.view.FileView;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.ConnectException;
@@ -31,6 +35,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class FileService{
 
     @Value("${basePath_upload}")
@@ -41,12 +46,15 @@ public class FileService{
     private int max_size;
     @Value("${type_reg}")
     private String type_reg;
+    public static int PAGE_SIZE = 10;
     @Autowired
     private FileMapper fileMapper;
     @Autowired
     private FileopMapper fileopMapper;
     @Autowired
     private FileKeysMapper fileKeysMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 检查上传的文件是否符合要求
@@ -92,7 +100,17 @@ public class FileService{
         if(storeFileToSys(multipartFile,realPath)){
             file.setFilePath(realPath);
             storeFileToDB(multipartFile,file,user);
+            try {
+                file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
+                fileKeys.setFid(file.getFid());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //保存文件的关键字
             storeFileKeys(fileKeys);
+            //更新用户的上传次数
+            user.setUserUploadCount(user.getUserUploadCount()+1);
+            userMapper.updateByPrimaryKeySelective(user);
             done = true;
         }else{
             done = false;
@@ -101,8 +119,11 @@ public class FileService{
         return done;
     }
 
+    /**
+     * 保存文件关键字
+     * @param fileKeys 关键字对象
+     */
     private void storeFileKeys(FileKeys fileKeys) {
-        fileKeys.setFid(1);
         fileKeysMapper.insertSelective(fileKeys);
     }
 
@@ -185,9 +206,17 @@ public class FileService{
         return dir;
     }
 
-    public void fileDownload(HttpServletResponse response,User user, File file) {
+    public void fileDownload(HttpServletRequest request, HttpServletResponse response, User user, File file) {
         java.io.File realFile = new java.io.File(file.getFilePath());
-        storeFileOp(user.getUid(),file.getFid(),"d");
+        //保存用户的文件操作记录
+        storeFileOp(request,user.getUid(),file.getFid(),"d");
+        //更新文件的下载量
+        file.setFileDownloadCount(file.getFileDownloadCount()+1);
+        fileMapper.updateByPrimaryKeySelective(file);
+        //更新用户的文件下载量
+        user.setUserDownloadCount(user.getUserDownloadCount()+1);
+        userMapper.updateByPrimaryKeySelective(user);
+        //输出下载文件
         try{
             response.setContentType("application/x-download");
             response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(file.getFileName(), "UTF-8"));
@@ -241,26 +270,37 @@ public class FileService{
 
     /**
      * 将文件的操作记录进数据库
+     *
+     * @param request
      * @param uid
      * @param fid
      * @param type
      * @return
      */
-    public boolean storeFileOp(int uid,int fid,String type){
+    public boolean storeFileOp(HttpServletRequest request, int uid, int fid, String type){
         Fileop fileop = new Fileop();
         fileop.setFopFile(fid);
         fileop.setFopUser(uid);
         fileop.setFopDate(new Date());
-        fileop.setFopIp("127.0.0.1");
+        fileop.setFopIp(request.getRemoteAddr());
         fileop.setFopType(type);
         fileopMapper.insert(fileop);
         return true;
     }
 
-    public List<File> getFileListByCid(int cid) {
-        return fileMapper.selectFilesByCid(cid);
+    public List<FileView> getFileList(String keyWord, File file, int page, boolean order) {
+        int startLine = (page-1)*PAGE_SIZE;
+        System.out.println(startLine);
+        return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order);
     }
 
+    /**
+     * 处理文件的预览操作
+     * @param response
+     * @param file
+     * @return
+     * @throws ConnectException
+     */
     public String filePreview(HttpServletResponse response, File file) throws ConnectException {
         String rmsg = "";
         if(Office2PDF.isConvert(file.getFilePath())){

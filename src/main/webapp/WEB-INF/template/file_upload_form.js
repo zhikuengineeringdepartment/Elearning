@@ -25,14 +25,7 @@ var fileUploadFormTemplate = `
                         </el-upload>
                     </el-form-item>
                     <el-form-item label="所属课程">
-                        <el-select v-model="uploadForm.fileCourse" filterable placeholder="请选择">
-                            <el-option
-                                v-for="item in courses"
-                                :key="item.cid"
-                                :label="item.courseName"
-                                :value="item.cid">
-                            </el-option>
-                        </el-select>
+                        <my_course_select v-on:get-course-value="set_course_value"></my_course_select>
                     </el-form-item>
                     <el-form-item label="任课教师">
                         <el-input v-model="uploadForm.fileTeacher"></el-input>
@@ -71,7 +64,6 @@ var fileUploadFormTemplate = `
 var fileUploadFormModule = {
     data:function () {
         return{
-            courses: [],
             tagVisible: false,
             tagValue: '',
             uploadForm: {
@@ -97,6 +89,9 @@ var fileUploadFormModule = {
         change_file_list(file,flist){
             console.log(this.$refs.upload.uploadFiles)
             this.uploadForm.multipartFile=flist
+        },
+        set_course_value:function(cid){
+            this.uploadForm.fileCourse = cid;
         },
         handleInputConfirm() {
             let tagValue = this.tagValue;

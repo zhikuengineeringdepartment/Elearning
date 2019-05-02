@@ -20,6 +20,7 @@
     <script src="template/col_paragraph.js"></script>
     <script src="template/col_paragraph_list.js"></script>
     <script src="template/course.js"></script>
+    <script src="template/course_select.js"></script>
     <script src="template/file.js"></script>
     <script src="template/file_main.js"></script>
     <script src="template/file_upload_form.js"></script>
@@ -105,7 +106,8 @@
                 }
             ]},
         { path: '/course/details/:cid', component: sectionMainModule },
-        { path: '/fileMain', component: fileMainModule },
+        { path: '/fileMain', component: fileMainModule},
+        { path: '/fileMain/a', component: fileMainModule},
         { path: '/fileUpload', component: fileUploadFormModule }
     ]
 
