@@ -108,5 +108,6 @@
     <mvc:resources mapping="/template/**" location="/WEB-INF/template/"/>
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
     <mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
+    <mvc:resources mapping="/wangEditor/**" location="/WEB-INF/wangEditor/"/>
 
 </beans>

@@ -7,7 +7,7 @@
 	padding-top: 10px;
 }
 
- .popupcontent {
+ /* .popupcontent {
 	z-index: 10000;
 	visibility: hidden;
 	position:fixed;
@@ -19,15 +19,8 @@
 	height: 220px;
 	overflow:hidden;
 	background-color: #90CAF9;
-	/* text-align: center; */
-	box-shadow:10px 10px 5px #888888;
-	  
-	
-}
-.buttonbar
-{
-	padding-bottom: 10px;
-}
+	box-shadow:10px 10px 5px #888888;	
+} */
 /* .textedit
 {
 	border-left: 1px solid #00B0FF;
@@ -39,19 +32,18 @@
 	overflow-x: hidden;
 	overflow-y:auto;
 } */
-.closebutton
+/* .closebutton
 {
-	/* position: absolute; */
+	
 	background-color: #66ffFF;
-	/* right:4px; */
 	top:2px;
 	float: right;
 	text-align: center;
 	border: none;
 	display: inline-block;
 	z-index: 10001;
-}
-.savebutton
+} */
+.save_button
 {
 	/* position: absolute; */
 	display: inline-block;
@@ -60,7 +52,7 @@
 	text-align: center;
 	border: none;
 	height:26px;
-	float: right;
+  float: right;
 	cursor: pointer;
 	visibility: hidden;
 	padding-bottom: 0px;
@@ -68,20 +60,76 @@
 }
 .input_notes
 {
-    display: inline-block;
+  display: inline-block;
 	background: #ffffff;
-    width: 96%;
+  width: 96%;
 	min-height:40px;
 	max-height: 200px;/*待定*/
-	height: 20px;
+	/* height: 20px; */
 	resize: vertical; /*只允许调节高度*/
 	color: #000000;
-	font-size: 15px;
 	visibility: visible;
 	border:0;
-	border-radius:5px;
-	font-weight: bold;
+	border-radius:5px;    
 }
+.input_notes div
+{
+	max-height: 196px ;
+}
+
+/*笔记编辑区的样式*/
+.input_notes table{
+	border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+.input_notes table td
+{
+	border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 3px 5px;
+}
+.input_notes table th
+{
+	border-bottom: 2px solid #ccc;
+	border-right: 1px solid #ccc;
+  padding: 3px 5px;
+  text-align: center;
+}
+.input_notes blockquote 
+{
+  display: block;
+  border-left: 8px solid #d0e5f2;
+  padding: 5px 10px;
+  margin: 10px 0;
+  line-height: 1.4;
+  font-size: 100%;
+  background-color: #f1f1f1;
+}
+.input_notes code 
+{
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  padding: 3px 5px;
+  margin: 0 3px;
+}
+
+.input_notes pre code 
+{
+  display: block;
+}
+.input_notes ul
+{
+  margin: 10px 0 10px 20px;
+}
+.input_notes ol
+{
+	margin: 10px 0 10px 20px;
+}
+
+
 .input_notes:focus
 {
 	outline: none;

@@ -82,8 +82,22 @@ public class ParagraphService {
      * @param sid
      * @return
      */
-    public List<Note> getNotesBySid(int uid,int sid){
+    public List<NoteView> getNotesBySid(int uid,int sid){
         return noteMapper.selectBySid(uid,sid);
+    }
+
+    /**
+     * 依据note的联合主键找到对应的note
+     * @param user  联合主键中的uid
+     * @param paragraphSeq  联合主键中pid
+     * @return
+     */
+    public Note getNoteByNoteKey(User user,int paragraphSeq){
+        NoteKey noteKey = new NoteKey();
+        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+        noteKey.setNotePara(paragraph.getPid());
+        noteKey.setNoteUser(user.getUid());
+        return noteMapper.selectByPrimaryKey(noteKey);
     }
 
     /**
@@ -129,9 +143,8 @@ public class ParagraphService {
      * @return
      */
     public boolean modifyNote(Note note){
-
         note.setNoteDate(new Date());
-        if(noteMapper.updateByPrimaryKeySelective(note)>0){
+        if(noteMapper.updateByPrimaryKeyWithBLOBs(note)>0){
             return true;
         }else{
             return false;

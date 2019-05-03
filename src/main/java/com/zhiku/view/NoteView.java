@@ -4,13 +4,13 @@ import com.zhiku.entity.Note;
 import com.zhiku.entity.Paragraph;
 
 public class NoteView extends Note {
-    private Paragraph paragraph;
+    private int paragraphSeq;
 
-    public Paragraph getParagraph() {
-        return paragraph;
+    public void setParagraphSeq(int paragraphSeq) {
+        this.paragraphSeq = paragraphSeq;
     }
 
-    public void setParagraph(Paragraph paragraph) {
-        this.paragraph = paragraph;
+    public int getParagraphSeq() {
+        return paragraphSeq;
     }
 }

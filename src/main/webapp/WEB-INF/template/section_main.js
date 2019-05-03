@@ -7,7 +7,7 @@ let sectionMainTemplate = `
                         default-active="2"
                         class="el-menu-vertical-demo">
                     <template v-for="section in courseView.sections">
-                        <el-menu-item index="section.id" @click="getSectionView(section.sid)">
+                        <el-menu-item index="section.id" @click="handleMenu(section.sid)">
                             <i class="el-icon-arrow-right"></i>
                             <span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>
                         </el-menu-item>
@@ -15,7 +15,7 @@ let sectionMainTemplate = `
                 </el-menu>
             </el-col>
             <el-col :span="12" style="margin: 20px">
-                <my_section :sectionView="sectionView"></my_section>
+                <my_section :sectionView="sectionView" :noteViews="noteViews"></my_section>
             </el-col>
         </el-row>
     </el-main>
@@ -93,7 +93,8 @@ var sectionMainModule = {
                         ]
                     }
                 ]
-            }
+            },
+            noteViews:[]
         }
     },
     props:['cid'],
@@ -102,6 +103,14 @@ var sectionMainModule = {
         this.getCourseView(this.$route.params.cid)
     },
     methods:{
+        //处理目录栏的点击事件
+        handleMenu(sid){
+            this.getSectionView(sid);
+            if(root.login){
+                this.getNoteView(sid);
+            }
+        },
+        //获得课程目录的请求
         getCourseView:function(cid){
             var _this =this;
             axios.get('course/getCourseDetails',{
@@ -118,6 +127,7 @@ var sectionMainModule = {
                     console.log(err);
                 });
         },
+        //获得小节内容的请求
         getSectionView:function(sid){
             var _this =this;
             axios.get('section/getSection',{
@@ -127,6 +137,31 @@ var sectionMainModule = {
             })
                 .then(function(response){
                     _this.sectionView = response.data.data.sectionView;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
+        //获得用户笔记的请求
+        getNoteView:function (sid) {
+            var _this = this;
+            axios.post('paragraph/getNoteBySid',{
+                uid:0,
+                sid:sid
+            },{
+                transformRequest: [
+                    function(data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                        }
+                        return ret;
+                    }
+                ],
+                withCredentials:true
+            })
+                .then(function(res){
+                    _this.noteViews = res.data.data.noteViews;
                 })
                 .catch(function(err){
                     console.log(err);

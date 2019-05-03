@@ -95,9 +95,9 @@
 
   <!--自定义SQL-->
   <resultMap id="NoteView" type="com.zhiku.view.NoteView" extends="ResultMapWithBLOBs">
-    <association property="paragraph" resultMap="com.zhiku.mapper.ParagraphMapper.ResultMapWithBLOBs"/>
+    <id javaType="java.lang.Integer" property="paragraphSeq" column="paragraph_seq" ></id>
   </resultMap>
-  <select id="selectBySid" resultMap="ResultMapWithBLOBs">
+  <select id="selectBySid" resultMap="NoteView">
     select *
     from note ,paragraph
     where pid = note_para

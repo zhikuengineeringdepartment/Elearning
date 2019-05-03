@@ -23,7 +23,7 @@ public interface NoteMapper {
     int updateByPrimaryKey(Note record);
 
 //    自定义方法
-    List<Note> selectBySid(@Param("uid")int uid,@Param("sid")int sid);
+    List<NoteView> selectBySid(@Param("uid")int uid,@Param("sid")int sid);
 
     List<NoteView> selectNoteViewByUid(int uid);
 }

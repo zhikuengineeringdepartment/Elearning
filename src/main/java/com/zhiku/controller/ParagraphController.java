@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -102,12 +103,12 @@ public class ParagraphController {
      * @return 笔记列表
      */
     @ResponseBody
-    @RequestMapping(value = "getNoteBySid" ,method = RequestMethod.GET)
+    @RequestMapping(value = "getNoteBySid" ,method = RequestMethod.POST)
     public ResponseData getNoteBySid(User user,int sid){
         ResponseData responseData = null;
-        List<Note> notes = paragraphService.getNotesBySid(user.getUid(),sid);
+        List<NoteView> notes = paragraphService.getNotesBySid(user.getUid(),sid);
         responseData = ResponseData.ok();
-        responseData.putDataValue("notes",notes);
+        responseData.putDataValue("noteViews",notes);
         return responseData;
     }
 
@@ -131,22 +132,24 @@ public class ParagraphController {
     }
 
     /**
-     * 用户为一个段落添加一条笔记
-     * @param user 用户
-     * @param paragraphSeq 段落序列
-     * @param note 笔记
-     * @return 是否添加成功
+     * 编辑笔记，包括添加笔记和修改笔记
+     * @param user
+     * @param paragraphSeq
+     * @param note
+     * @return
      */
     @ResponseBody
-    @RequestMapping(value = "addNote",method = RequestMethod.POST)
-    public ResponseData addNote(User user ,int paragraphSeq ,Note note){
+    @RequestMapping(value = "editNote",method = RequestMethod.POST)
+    public ResponseData editNote(User user,int paragraphSeq ,Note note){
         ResponseData responseData = null;
-        if(paragraphService.addNote(user,note,paragraphSeq)){
-            responseData = ResponseData.ok();
-        }else {
-            responseData = ResponseData.serverInternalError();
-            responseData.setMessage("操作失败，请重试！");
+        Note my_note = paragraphService.getNoteByNoteKey(user,paragraphSeq);
+        if(my_note != null){
+            my_note.setNoteContent(note.getNoteContent());
+            paragraphService.modifyNote(my_note);
+        }else{
+            paragraphService.addNote(user,note,paragraphSeq);
         }
+
         return responseData;
     }
 
@@ -169,25 +172,4 @@ public class ParagraphController {
         return responseData;
     }
 
-    /**
-     * 用户修改对应段落笔记内容
-     * @param user 用户
-     * @param pid 段落
-     * @param note 笔记
-     * @return 是否返回成功
-     */
-    @ResponseBody
-    @RequestMapping(value = "modifyNote",method = RequestMethod.POST)
-    public ResponseData modifyNote(User user,int pid,Note note){
-        ResponseData responseData = null;
-        note.setNotePara(pid);
-        note.setNoteUser(user.getUid());
-        if(paragraphService.modifyNote(note)){
-            responseData = ResponseData.ok();
-        }else {
-            responseData = ResponseData.serverInternalError();
-            responseData.setMessage("操作失败，请重试！");
-        }
-        return responseData;
-    }
 }
