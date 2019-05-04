@@ -106,9 +106,7 @@ var sectionMainModule = {
         //处理目录栏的点击事件
         handleMenu(sid){
             this.getSectionView(sid);
-            if(root.login){
-                this.getNoteView(sid);
-            }
+
         },
         //获得课程目录的请求
         getCourseView:function(cid){
@@ -137,6 +135,11 @@ var sectionMainModule = {
             })
                 .then(function(response){
                     _this.sectionView = response.data.data.sectionView;
+                })
+                .then(function () {
+                    if(root.login){
+                        _this.getNoteView(sid);
+                    }
                 })
                 .catch(function(err){
                     console.log(err);

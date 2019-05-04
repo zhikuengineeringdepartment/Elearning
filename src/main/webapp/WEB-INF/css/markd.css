@@ -7,19 +7,19 @@
 	padding-top: 10px;
 }
 
- /* .popupcontent {
-	z-index: 10000;
-	visibility: hidden;
-	position:fixed;
-	left: 50%;
-	top: 50%;
-	margin-left: -175px;
-	margin-top: -175px;
-	width: 350px;
-	height: 220px;
-	overflow:hidden;
-	background-color: #90CAF9;
-	box-shadow:10px 10px 5px #888888;	
+/* .popupcontent {
+   z-index: 10000;
+   visibility: hidden;
+   position:fixed;
+   left: 50%;
+   top: 50%;
+   margin-left: -175px;
+   margin-top: -175px;
+   width: 350px;
+   height: 220px;
+   overflow:hidden;
+   background-color: #90CAF9;
+   box-shadow:10px 10px 5px #888888;
 } */
 /* .textedit
 {
@@ -52,7 +52,7 @@
 	text-align: center;
 	border: none;
 	height:26px;
-  float: right;
+	float: right;
 	cursor: pointer;
 	visibility: hidden;
 	padding-bottom: 0px;
@@ -60,9 +60,9 @@
 }
 .input_notes
 {
-  display: inline-block;
+	display: inline-block;
 	background: #ffffff;
-  width: 96%;
+	width: 96%;
 	min-height:40px;
 	max-height: 200px;/*待定*/
 	/* height: 20px; */
@@ -70,59 +70,65 @@
 	color: #000000;
 	visibility: visible;
 	border:0;
-	border-radius:5px;    
+	border-radius:5px;
+}
+.input_notes div::before
+{
+	color:lightgrey;
+	content:attr(data-placeholder);
 }
 .input_notes div
 {
+	/* outline:none; */
 	max-height: 196px ;
 }
 
 /*笔记编辑区的样式*/
 .input_notes table{
 	border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
+	border-left: 1px solid #ccc;
 }
 .input_notes table td
 {
 	border-bottom: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  padding: 3px 5px;
+	border-right: 1px solid #ccc;
+	padding: 3px 5px;
 }
 .input_notes table th
 {
 	border-bottom: 2px solid #ccc;
 	border-right: 1px solid #ccc;
-  padding: 3px 5px;
-  text-align: center;
+	padding: 3px 5px;
+	text-align: center;
 }
-.input_notes blockquote 
+.input_notes blockquote
 {
-  display: block;
-  border-left: 8px solid #d0e5f2;
-  padding: 5px 10px;
-  margin: 10px 0;
-  line-height: 1.4;
-  font-size: 100%;
-  background-color: #f1f1f1;
+	display: block;
+	border-left: 8px solid #d0e5f2;
+	padding: 5px 10px;
+	margin: 10px 0;
+	line-height: 1.4;
+	font-size: 100%;
+	background-color: #f1f1f1;
 }
-.input_notes code 
+.input_notes code
 {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-  background-color: #f1f1f1;
-  border-radius: 3px;
-  padding: 3px 5px;
-  margin: 0 3px;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	background-color: #f1f1f1;
+	border-radius: 3px;
+	padding: 3px 5px;
+	margin: 0 3px;
 }
 
-.input_notes pre code 
+.input_notes pre code
 {
-  display: block;
+	display: block;
 }
 .input_notes ul
 {
-  margin: 10px 0 10px 20px;
+	margin: 10px 0 10px 20px;
 }
 .input_notes ol
 {

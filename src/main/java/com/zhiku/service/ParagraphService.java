@@ -122,14 +122,10 @@ public class ParagraphService {
 
     /**
      * 删除一条笔记
-     * @param uid
-     * @param pid
+     * @param noteKey
      * @return 是否删除成功
      */
-    public boolean removeNote(int uid,int pid){
-        NoteKey noteKey = new NoteKey();
-        noteKey.setNoteUser(uid);
-        noteKey.setNotePara(pid);
+    public boolean removeNote(NoteKey noteKey){
         if(noteMapper.deleteByPrimaryKey(noteKey)>0){
             return true;
         }else{

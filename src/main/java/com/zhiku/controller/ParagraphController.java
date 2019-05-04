@@ -113,26 +113,7 @@ public class ParagraphController {
     }
 
     /**
-     * 删除用户对某个段落的笔记
-     * @param user 用户
-     * @param pid 段落
-     * @return 是否删除成功
-     */
-    @ResponseBody
-    @RequestMapping(value = "removeNote",method = RequestMethod.POST)
-    public ResponseData removeNote(User user,int pid){
-        ResponseData responseData = null;
-        if(paragraphService.removeNote(user.getUid(),pid)){
-            responseData = ResponseData.ok();
-        }else {
-            responseData = ResponseData.serverInternalError();
-            responseData.setMessage("操作失败，请重试！");
-        }
-        return responseData;
-    }
-
-    /**
-     * 编辑笔记，包括添加笔记和修改笔记
+     * 编辑笔记，包括添加笔记和修改笔记和删除笔记
      * @param user
      * @param paragraphSeq
      * @param note
@@ -143,7 +124,9 @@ public class ParagraphController {
     public ResponseData editNote(User user,int paragraphSeq ,Note note){
         ResponseData responseData = null;
         Note my_note = paragraphService.getNoteByNoteKey(user,paragraphSeq);
-        if(my_note != null){
+        if(note.getNoteContent().equals("<p><br></p>")){    //判断是否为空
+            paragraphService.removeNote(my_note);
+        }else if(my_note != null){
             my_note.setNoteContent(note.getNoteContent());
             paragraphService.modifyNote(my_note);
         }else{

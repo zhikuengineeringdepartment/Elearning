@@ -294,6 +294,30 @@
   </update>
 
   <!-- 自定义sql -->
+  <resultMap id="UserBaseInfoView" type="com.zhiku.view.UserBaseInfoView">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="user_username" jdbcType="VARCHAR" property="userUsername" />
+    <result column="user_nick" jdbcType="VARCHAR" property="userNick" />
+    <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
+    <result column="user_sign" jdbcType="VARCHAR" property="userSign" />
+    <result column="user_gender" jdbcType="CHAR" property="userGender" />
+    <result column="user_coin" jdbcType="INTEGER" property="userCoin" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_qq" jdbcType="VARCHAR" property="userQq" />
+    <result column="user_college" jdbcType="INTEGER" property="userCollege" />
+    <result column="user_major" jdbcType="INTEGER" property="userMajor" />
+    <result column="user_status" jdbcType="CHAR" property="userStatus" />
+    <result column="user_upload_count" jdbcType="INTEGER" property="userUploadCount" />
+    <result column="user_download_count" jdbcType="INTEGER" property="userDownloadCount" />
+  </resultMap>
+
+  <sql id="Base_Info_Column_List">
+    user_username, user_nick, user_avatar, user_sign, user_gender,
+    user_coin, user_email, user_phone, user_qq, user_college, user_major,
+    user_status,user_upload_count, user_download_count
+  </sql>
+
   <!-- 按照用户名查找 -->
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -307,5 +331,11 @@
     <include refid="Base_Column_List"/>
     from user
     where user_email = #{email,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectBaseInfo" resultMap="UserBaseInfoView" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Info_Column_List" />
+    from user where uid = #{uid}
   </select>
 </mapper>
