@@ -4,10 +4,19 @@
 var fileRecordListTemplate = `
 <div>
                     <ul>
-                        <template v-for="upload_file in upload_files" >
-                            <li style="list-style: none">
-                                <my_file_record :file_record="upload_file" :is_upload_page="is_upload_page"></my_file_record>
-                            </li>
+                        <template v-if="is_upload_page === 'true'">
+                            <template v-for="record in file_upload_records" >
+                                <li style="list-style: none">
+                                    <my_file_upload_record :file_upload_record="record"></my_file_upload_record>
+                                </li>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <template v-for="record in file_download_records" >
+                                <li style="list-style: none">
+                                    <my_file_download_record :file_download_record="record"></my_file_download_record>
+                                </li>
+                            </template>
                         </template>
                     </ul>
                 </div>
@@ -16,7 +25,9 @@ var fileRecordListTemplate = `
 var fileRecordListModule = {
     data:function () {
         return{
-            upload_files:[]
+            page:1,
+            file_upload_records:[],
+            file_download_records:[]
         }
     },
     props:["is_upload_page"],
@@ -24,38 +35,75 @@ var fileRecordListModule = {
     created:function(){
         this.getFiles();
     },
+    watch:{
+        '$route' (to) {
+            console.log(to.params)
+            if(to.params.is_upload_page === 'true'){
+                this.getUploadRecords();
+            }else{
+                this.getDownloadRecords();
+            }
+        }
+    },
     methods:{
         getFiles:function(){
-            this.upload_files = [
-                {
-                    name:"数据结构",
-                    desc:"数据结构的上课课件",
-                    status:"正常",
-                    uploadDate:'2018-09-15',
-                    tags:[
-                        {
-                            tagName:"标签一"
-                        },
-                        {
-                            tagName:"数据"
-                        }
-                    ]
+            if(this.is_upload_page === 'true'){
+                this.getUploadRecords();
+            }else{
+                this.getDownloadRecords();
+            }
+        },
+        getUploadRecords:function(){
+            var _this = this;
+            axios.get("user/getUploadRecords",{
+                params:{
+                    uid:0,
+                    page:this.page
                 },
-                {
-                    name:"数据结构",
-                    desc:"数据结构的上课课件",
-                    status:"正常",
-                    uploadDate:'2018-09-15',
-                    tags:[
-                        {
-                            tagName:"标签一"
-                        },
-                        {
-                            tagName:"数据"
+                withCredentials:true
+            })
+                .then(function (response) {
+                    _this.file_upload_records = response.data.data.fileUploadRecords;
+                    for(var i=0;i<_this.file_upload_records.length;i++){
+                        _this.file_upload_records[i].fileUploadTime = getFormatDate(response.data.data.fileUploadRecords[i].fileUploadTime);
+                        if(response.data.data.fileUploadRecords[i].fileStatus === 'n'){
+                            _this.file_upload_records[i].fileStatus = '正常'
+                        }else if(response.data.data.fileUploadRecords[i].fileStatus === 'f'){
+                            _this.file_upload_records[i].fileStatus = '封禁'
+                        }else{
+                            _this.file_upload_records[i].fileStatus = '异常'
                         }
-                    ]
-                }
-            ]
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
+        getDownloadRecords:function(){
+            var _this = this;
+            axios.get("user/getDownloadRecords",{
+                params:{
+                    uid:0,
+                    page:this.page
+                },
+                withCredentials:true
+            })
+                .then(function (response) {
+                    _this.file_download_records = response.data.data.fileDownloadRecords;
+                    for(var i=0;i<_this.file_download_records.length;i++){
+                        _this.file_download_records[i].fopDate = getFormatDate(response.data.data.fileDownloadRecords[i].fopDate);
+                        if(response.data.data.fileDownloadRecords[i].fileView.fileStatus === 'n'){
+                            _this.file_download_records[i].fileStatus = '正常'
+                        }else if(response.data.data.fileDownloadRecords[i].fileView.fileStatus === 'f'){
+                            _this.file_download_records[i].fileStatus = '封禁'
+                        }else{
+                            _this.file_download_records[i].fileStatus = '异常'
+                        }
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         }
     },
 

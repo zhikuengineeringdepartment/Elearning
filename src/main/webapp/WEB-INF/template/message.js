@@ -3,13 +3,13 @@
  */
 var messageTemplate = `
 <div style="display: flex">
-                            <img :src="msg.user.icon" width="60px" height="60px">
+                            <img :src="msg.toAvatar" width="60px" height="60px">
                             <div style="width: 90%">
                                 <div>
-                                    <i>{{msg.user.name}}</i>
-                                    <span style="float: right">{{msg.time}}</span>
+                                    <i>{{msg.toUserName}}</i>
+                                    <span style="float: right">{{msg.messageDate}}</span>
                                 </div>
-                                <p style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap; ">{{msg.content}}</p>
+                                <p style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap; ">{{msg.messageContent}}</p>
                             </div>
                         </div>
 `

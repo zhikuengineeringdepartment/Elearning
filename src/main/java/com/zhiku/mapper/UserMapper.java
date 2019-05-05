@@ -1,6 +1,7 @@
 package com.zhiku.mapper;
 
 import com.zhiku.entity.User;
+import com.zhiku.view.UserBaseInfoView;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserMapper {
@@ -20,4 +21,6 @@ public interface UserMapper {
     //自定义方法
     User selectByUsername(String username);
     User selectByEmail(String email);
+
+    UserBaseInfoView selectBaseInfo(Integer uid);
 }

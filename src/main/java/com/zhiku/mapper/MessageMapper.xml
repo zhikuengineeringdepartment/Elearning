@@ -120,11 +120,18 @@
   </update>
 
   <!--自定义SQL-->
+  <resultMap id="MessageView" type="com.zhiku.view.MessageView" extends="ResultMapWithBLOBs">
+    <result property="toUserName" column="to_username" jdbcType="VARCHAR"></result>
+    <result property="toAvatar" column="to_avatar" jdbcType="VARCHAR"></result>
+    <result property="fromUserName" column="from_username" jdbcType="VARCHAR"></result>
+    <result property="fromAvatar" column="from_avatar" jdbcType="VARCHAR"></result>
+  </resultMap>
   <!--依据用户查找对应的消息-->
-  <select id="selectMessagesByUser" parameterType="com.zhiku.entity.Message" resultMap="ResultMapWithBLOBs">
-    select *
-    from message
+  <select id="selectMessagesByUser" parameterType="com.zhiku.entity.Message" resultMap="MessageView">
+    select message.* ,toer.user_username as to_username,fromer.user_username as from_username,toer.user_avatar as to_avatar, fromer.user_avatar as from_avatar
+    from message ,user as toer ,user as fromer
     <trim prefix="where " suffixOverrides=",">
+      toer.uid = message.message_to and fromer.uid = message.message_from and
       <if test="messageFrom != null">
         message_from = #{messageFrom},
       </if>

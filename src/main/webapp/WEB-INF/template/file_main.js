@@ -110,6 +110,9 @@ var fileMainModule = {
             })
                 .then(function(response){
                     _this.my_files = response.data.data.files;
+                    for(var i=0;i<_this.my_files.length;i++){
+                        _this.my_files[i].fileUploadTime = getFormatDate(response.data.data.files[i].fileUploadTime)
+                    }
                 })
                 .catch(function(err){
                     console.log(err);

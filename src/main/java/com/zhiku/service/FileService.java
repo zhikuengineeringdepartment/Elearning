@@ -11,19 +11,14 @@ import com.zhiku.mapper.FileopMapper;
 import com.zhiku.mapper.UserMapper;
 import com.zhiku.util.FileStatus;
 import com.zhiku.util.Office2PDF;
+import com.zhiku.view.FileDownloadRecordView;
 import com.zhiku.view.FileView;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -329,4 +324,27 @@ public class FileService{
         }
         return  rmsg;
     }
+
+    /**
+     * 获得下载记录
+     * @param user
+     * @param page
+     * @return
+     */
+    public List<FileDownloadRecordView> getFileDownloadRecords(User user,int page){
+        int startLine = (page -1)*PAGE_SIZE;
+        return fileopMapper.selectFileDownloadRecords(user,startLine,PAGE_SIZE);
+    }
+
+    /**
+     * 获得上传记录
+     * @param user
+     * @param page
+     * @return
+     */
+    public List<FileView> getFileUploadRecords(User user, int page){
+        int startLine = (page -1)*PAGE_SIZE;
+        return fileMapper.selectFileUploadRecords(user,startLine,PAGE_SIZE);
+    }
+
 }

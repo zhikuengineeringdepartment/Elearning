@@ -2,22 +2,22 @@
 用户个人信息修改表单组件
  */
 var userInfoFormTemplate = `
-<el-form ref="form" :model="user_info" label-width="80px">
+<el-form ref="form" :model="baseInfo" label-width="80px">
                     <div style="display: flex;align-items: center;margin: 10px;padding: 20px;">
-                        <img :src="user_info.icon" width="160px" height="160px">
+                        <img :src="baseInfo.userAvatar" width="160px" height="160px">
                         <el-button type="primary" size="small" round style="margin: 20px;">更换头像</el-button>
                     </div>
                     <el-form-item label="用户昵称">
-                        <el-input v-model="user_info.name"></el-input>
+                        <el-input v-model="baseInfo.userNick"></el-input>
                     </el-form-item>
                     <el-form-item label="用户邮箱" style="display: flex;align-items: center;margin-left: 0">
                         <div  style="display: flex;align-items: center;margin-left:-80px" >
-                            <el-input v-model="user_info.email" disabled></el-input>
+                            <el-input v-model="baseInfo.userEmail" disabled></el-input>
                             <el-button type="primary" size="small" round style="margin: 20px;">更换邮箱绑定</el-button>
                         </div>
                     </el-form-item>
                     <el-form-item label="手机号">
-                        <el-input v-model="user_info.phone"></el-input>
+                        <el-input v-model="baseInfo.userPhone"></el-input>
                     </el-form-item>
                     <el-form-item label="所属专业">
                         <el-cascader :options="colleges" :props="college_major" change-on-select></el-cascader>
@@ -31,7 +31,7 @@ var userInfoFormTemplate = `
 var userInfoFormModule = {
     data:function () {
         return{
-            user_info:{},
+            baseInfo:{},
             colleges:[],
             college_major:{
                 value: 'id',
@@ -48,12 +48,23 @@ var userInfoFormModule = {
     },
     methods:{
         getUserInfo:function(){
-            this.user_info = {
-                icon:'./img/logo.jpg',
-                name:'baowei',
-                email:'1368183370@qq.com',
-                phone:'17864154913'
-            }
+            var _this = this;
+            axios.get('user/getBaseInfo',{
+                params:{
+                    uid:0
+                }
+            })
+                .then(function(response){
+                    _this.baseInfo = response.data.data.baseInfo;
+                })
+                .then(function () {
+                    if(root.login){
+                        _this.getNoteView(sid);
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         },
         getColleges:function(){
             this.colleges = [
@@ -76,4 +87,4 @@ var userInfoFormModule = {
 
 }
 
-Vue.component("my_user_info_form",userInfoFormModule);
+Vue.component("my_baseInfo_form",userInfoFormModule);

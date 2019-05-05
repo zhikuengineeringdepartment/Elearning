@@ -1,12 +1,16 @@
 package com.zhiku.service;
 
+import com.zhiku.entity.Fileop;
 import com.zhiku.entity.Message;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
+import com.zhiku.mapper.FileopMapper;
 import com.zhiku.mapper.MessageMapper;
 import com.zhiku.mapper.UserMapper;
 import com.zhiku.util.EmailUtil;
 import com.zhiku.util.UserStatus;
+import com.zhiku.view.MessageView;
+import com.zhiku.view.UserBaseInfoView;
 import freemarker.template.Configuration;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,8 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private MessageMapper messageMapper;
+    @Autowired
+    private FileopMapper fileopMapper;
     private EmailUtil emailUtil = new EmailUtil();
 
     /**
@@ -154,7 +160,7 @@ public class UserService {
     }
 
 
-    public List<Message> getMessages(int uid, int type) {
+    public List<MessageView> getMessages(int uid, int type) {
         Message message = new Message();
         if(type == 0){
             message.setMessageTo(uid);
@@ -173,4 +179,9 @@ public class UserService {
     public void removeMessage(int mid) {
         messageMapper.deleteByPrimaryKey(mid);
     }
+
+    public UserBaseInfoView getUserBaseInfo(int uid){
+        return userMapper.selectBaseInfo(uid);
+    }
+
 }

@@ -114,4 +114,19 @@
       fop_desc = #{fopDesc,jdbcType=VARCHAR}
     where fopid = #{fopid,jdbcType=INTEGER}
   </update>
+
+  <!--自定义SQL-->
+  <resultMap id="FileDownloadRecordView" type="com.zhiku.view.FileDownloadRecordView" extends="BaseResultMap">
+    <result property="upperName" column="user_username" jdbcType="VARCHAR"></result>
+    <association property="fileView" resultMap="com.zhiku.mapper.FileMapper.FileView"></association>
+  </resultMap>
+  <select id="selectFileDownloadRecords" resultMap="FileDownloadRecordView">
+    select
+    <include refid="com.zhiku.mapper.FileMapper.FileView_Base_Column_List"/> , fileop.fop_date , fileop.fop_desc
+    from fileop,file,file_keys,user
+    where fileop.fop_user = user.uid and
+      file.fid = fileop.fop_file and file.fid = file_keys.fid and fop_user = #{user.uid} and fop_type = 'd'
+      order by fileop.fop_date
+      limit #{startLine},#{pageSize}
+  </select>
 </mapper>

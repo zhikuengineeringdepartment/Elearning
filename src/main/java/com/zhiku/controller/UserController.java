@@ -4,12 +4,14 @@ import com.zhiku.entity.Preference;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.service.CourseService;
+import com.zhiku.service.FileService;
 import com.zhiku.service.PreferenceService;
 import com.zhiku.service.UserService;
 import com.zhiku.util.JWTUtil;
 import com.zhiku.util.ResponseData;
 import com.zhiku.util.UserStatus;
 import com.zhiku.view.ColCourseView;
+import com.zhiku.view.UserBaseInfoView;
 import freemarker.template.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -36,6 +38,8 @@ public class UserController {
     private PreferenceService preferenceService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private FileService fileService;
     @Autowired
     JavaMailSender javaMailSender;
     @Autowired
@@ -297,6 +301,12 @@ public class UserController {
         return ResponseData.ok();
     }
 
+    /**
+     * 获得用户的消息列表
+     * @param user  用户
+     * @param type  类型（收信||写信）
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "getMessages",method = RequestMethod.GET)
     public ResponseData getMessages(User user,int type){
@@ -317,6 +327,34 @@ public class UserController {
     public ResponseData removeMessage(int mid){
         userService.removeMessage(mid);
         return ResponseData.ok();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getBaseInfo",method = RequestMethod.GET)
+    public ResponseData getBaseInfo(User user){
+        ResponseData responseData = null;
+        UserBaseInfoView userBaseInfoView = userService.getUserBaseInfo(user.getUid());
+        responseData = ResponseData.ok();
+        responseData.putDataValue("baseInfo",userBaseInfoView);
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getUploadRecords",method = RequestMethod.GET)
+    public ResponseData getUploadRecords(User user,int page){
+        ResponseData responseData = null;
+        responseData = ResponseData.ok();
+        responseData.putDataValue("fileUploadRecords",fileService.getFileUploadRecords(user,page));
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getDownloadRecords",method = RequestMethod.GET)
+    public ResponseData getDownloadRecords(User user,int page){
+        ResponseData responseData = null;
+        responseData = ResponseData.ok();
+        responseData.putDataValue("fileDownloadRecords",fileService.getFileDownloadRecords(user,page));
+        return responseData;
     }
 
 }

@@ -210,8 +210,13 @@
 
   <!-- 自定义SQL -->
   <resultMap id="FileView" type="com.zhiku.view.FileView" extends="BaseResultMap">
+    <result property="upperName" column="user_username" jdbcType="VARCHAR"></result>
     <association property="fileKeys" resultMap="com.zhiku.mapper.FileKeysMapper.BaseResultMap"></association>
   </resultMap>
+  <sql id="FileView_Base_Column_List">
+    file.fid, file_name, file_course, file_teacher, file_type, file_upper, file_upload_time,
+    file_download_count, file_desc, file_status, file_score, user_username, file_keys.*
+  </sql>
   <select id="selectBySha" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Blob_Column_List"/>
@@ -220,7 +225,9 @@
   </select>
 
   <select id="selectFiles" resultMap="FileView">
-    select file.* ,file_keys.* from file,file_keys,user
+    select
+    <include refid="FileView_Base_Column_List" />
+    from file,file_keys,user
     <where>
       file.fid = file_keys.fid and
       user.uid = file.file_upper and
@@ -245,6 +252,19 @@
       <if test="order == true">
         desc
       </if>
+      limit #{startLine},#{pageSize}
+    </where>
+  </select>
+
+  <select id="selectFileUploadRecords" resultMap="FileView">
+    select
+    <include refid="FileView_Base_Column_List"/>
+    from file,file_keys,user
+    <where>
+      file.fid = file_keys.fid and
+      user.uid = file.file_upper and
+      user.uid = #{user.uid}
+      order by file_upload_time
       limit #{startLine},#{pageSize}
     </where>
   </select>

@@ -1,6 +1,7 @@
 package com.zhiku.mapper;
 
 import com.zhiku.entity.Message;
+import com.zhiku.view.MessageView;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface MessageMapper {
     int updateByPrimaryKey(Message record);
 
 //    自定义方法
-    List<Message> selectMessagesByUser(Message message);
+    List<MessageView> selectMessagesByUser(Message message);
 }

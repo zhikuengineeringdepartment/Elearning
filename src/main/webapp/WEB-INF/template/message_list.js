@@ -17,6 +17,7 @@ var messageListTemplate = `
 var messageListModule = {
     data:function () {
         return{
+            type:1,
             messages:[]
         }
     },
@@ -27,32 +28,23 @@ var messageListModule = {
     },
     methods:{
         getMessages:function(){
-            this.messages = [
-                {
-                    user:{
-                        icon:'./img/logo.jpg',
-                        name:'zhiku'
-                    },
-                    time:'2018-09-15',
-                    content:"你好，你手动一条来自智库的信息，请及时查收。"
+            var _this = this;
+            axios.get('user/getMessages',{
+                params:{
+                    uid:0,
+                    type:this.type
                 },
-                {
-                    user:{
-                        icon:'./img/logo.jpg',
-                        name:'zhiku'
-                    },
-                    time:'2018-09-15',
-                    content:"你好，你手动一条来自智库的信息，请及时查收。"
-                },
-                {
-                    user:{
-                        icon:'./img/logo.jpg',
-                        name:'zhiku'
-                    },
-                    time:'2018-09-15',
-                    content:"你好，你手动一条来自智库的信息，请及时查收。"
-                }
-            ]
+                withCredentials:true
+            })
+                .then(function(response){
+                    _this.messages = response.data.data.myMessages;
+                    for(var i=0;i<_this.messages.length;i++){
+                        _this.messages[i].messageDate = getFormatDate(response.data.data.myMessages[i].messageDate)
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         }
     },
 
