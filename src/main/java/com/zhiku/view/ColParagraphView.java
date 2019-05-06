@@ -4,13 +4,93 @@ import com.zhiku.entity.ColParagraph;
 import com.zhiku.entity.Paragraph;
 
 public class ColParagraphView extends ColParagraph {
-    private Paragraph paragraph;
+    private Integer paragraphSeq;
 
-    public Paragraph getParagraph() {
-        return paragraph;
+    private Integer paragraphKnowledge;
+
+    private String paragraphType;
+
+    private String paragraphNewline;
+
+    private String paragraphContent;
+
+    private Integer cid;
+
+    private String courseName;
+
+    private String courseDesc;
+
+    private String courseIcon;
+
+    public void setParagraphSeq(Integer paragraphSeq) {
+        this.paragraphSeq = paragraphSeq;
     }
 
-    public void setParagraph(Paragraph paragraph) {
-        this.paragraph = paragraph;
+    public void setParagraphKnowledge(Integer paragraphKnowledge) {
+        this.paragraphKnowledge = paragraphKnowledge;
+    }
+
+    public void setParagraphType(String paragraphType) {
+        this.paragraphType = paragraphType;
+    }
+
+    public void setParagraphNewline(String paragraphNewline) {
+        this.paragraphNewline = paragraphNewline;
+    }
+
+    public void setParagraphContent(String paragraphContent) {
+        this.paragraphContent = paragraphContent;
+    }
+
+    public void setCid(Integer cid) {
+        this.cid = cid;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public void setCourseDesc(String courseDesc) {
+        this.courseDesc = courseDesc;
+    }
+
+    public void setCourseIcon(String courseIcon) {
+        this.courseIcon = courseIcon;
+    }
+
+    public Integer getParagraphSeq() {
+        return paragraphSeq;
+    }
+
+    public Integer getParagraphKnowledge() {
+        return paragraphKnowledge;
+    }
+
+    public String getParagraphType() {
+        return paragraphType;
+    }
+
+    public String getParagraphNewline() {
+        return paragraphNewline;
+    }
+
+    public String getParagraphContent() {
+        return paragraphContent;
+    }
+
+    public Integer getCid() {
+        return cid;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public String getCourseDesc() {
+        return courseDesc;
+    }
+
+    public String getCourseIcon() {
+        return courseIcon;
     }
 }

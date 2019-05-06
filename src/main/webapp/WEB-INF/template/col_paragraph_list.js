@@ -17,30 +17,50 @@ var colParagraphListModule = {
     data:function () {
         return{
             col_paragraph_views:[
-                {
-                    sectionName:"第一节",
-                    courseName:"测试md",
-                    paragraphContent:"图片的描述”功能暂未计划开发，请用“#”代替，如1.1.2.结构框图中图片。图片要**单独**一段。",
-                    colCount:100
-                },
-                {
-                    sectionName:"第一节",
-                    courseName:"测试md",
-                    paragraphContent:"图片的描述”功能暂未计划开发，请用“#”代替，如1.1.2.结构框图中图片。图片要**单独**一段。",
-                    colCount:100
-                },
-                {
-                    sectionName:"第一节",
-                    courseName:"测试md",
-                    paragraphContent:"图片的描述”功能暂未计划开发，请用“#”代替，如1.1.2.结构框图中图片。图片要**单独**一段。",
-                    colCount:100
-                }
+                // {
+                //     sectionName:"第一节",
+                //     courseName:"测试md",
+                //     paragraphContent:"图片的描述”功能暂未计划开发，请用“#”代替，如1.1.2.结构框图中图片。图片要**单独**一段。",
+                //     colCount:100
+                // },
+                // {
+                //     sectionName:"第一节",
+                //     courseName:"测试md",
+                //     paragraphContent:"图片的描述”功能暂未计划开发，请用“#”代替，如1.1.2.结构框图中图片。图片要**单独**一段。",
+                //     colCount:100
+                // },
+                // {
+                //     sectionName:"第一节",
+                //     courseName:"测试md",
+                //     paragraphContent:"图片的描述”功能暂未计划开发，请用“#”代替，如1.1.2.结构框图中图片。图片要**单独**一段。",
+                //     colCount:100
+                // }
             ]
         }
     },
     props:[],
     template: colParagraphListTemplate,
+    created:function(){
+        this.getColParagraphViews();
+    },
     methods:{
+        getColParagraphViews:function () {
+            var _this = this;
+            axios.get("paragraph/getColParagraphViews",{
+                params:{
+                    uid:0,
+                    cid:100,
+                    page:1
+                },
+                withCredentials:true
+            })
+                .then(function(response){
+                    _this.col_paragraph_views = response.data.data.colParagraphViews;
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+        }
     },
 
 }

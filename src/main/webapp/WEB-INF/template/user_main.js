@@ -46,10 +46,6 @@ let userMainTemplate = `
             </el-col>
 
             <el-col :span="12" style="border: 1px solid #ebebeb;padding:20px;">
-                <!--<my_user_info_form v-if="module.user_info_see"></my_user_info_form>-->
-                <!--<my_message_list v-if="module.message_list_see"></my_message_list>-->
-                <!--<my_file_upload_record_list v-if="module.file_upload_record_list_see"></my_file_upload_record_list>-->
-                <!--<my_course v-if="module.course_list_see" v-for="course in courses" :course="course" :schedule="schedule"></my_course>-->
                 <router-view></router-view>
             </el-col>
 
@@ -62,12 +58,6 @@ let userMainTemplate = `
 var userMainModule = {
     data: function () {
         return {
-            module:{
-                user_info_see:true,
-                message_list_see:false,
-                file_upload_record_list_see:false ,
-                course_list_see:false
-            },
             courses:[],
             schedule:true
         }

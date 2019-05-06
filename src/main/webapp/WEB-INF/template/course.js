@@ -13,8 +13,8 @@ let courseTemplate = `
                                 </template>
                                 <template v-else>
                                     <div style="margin-top: 10px;">
-                                        <el-progress :stroke-width="12" :percentage="20/40*100" :show-text="false"></el-progress>
-                                        <span>已学习20/40小节</span>
+                                        <el-progress :stroke-width="12" :percentage="completed" :show-text="false"></el-progress>
+                                        <span>已学习{{course.completedSection}}/{{course.totalSection}}小节</span>
                                     </div>
                                 </template>
                             </div>
@@ -24,15 +24,14 @@ let courseTemplate = `
 var courseModule = {
     data:function () {
         return{
-
+            completed:this.course.completedSection/this.course.totalSection *100
         }
     },
     props:['course','schedule'],
     template: courseTemplate,
     methods:{
         getCourseDetails(cid){
-            console.log(cid)
-            this.$router.push('/course/details/'+cid);
+            this.$router.push('/course/details/'+cid+"/" +(cid*100+1));
         }
     },
 

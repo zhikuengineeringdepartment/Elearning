@@ -97,16 +97,17 @@ var sectionMainModule = {
             noteViews:[]
         }
     },
-    props:['cid'],
+    props:['cid','sid'],
     template: sectionMainTemplate,
     created:function(){
-        this.getCourseView(this.$route.params.cid)
+        this.getCourseView(this.$route.params.cid);
+        this.getSectionView(this.$route.params.sid);
     },
     methods:{
         //处理目录栏的点击事件
         handleMenu(sid){
+            this.$router.push(''+sid);
             this.getSectionView(sid);
-
         },
         //获得课程目录的请求
         getCourseView:function(cid){
@@ -118,7 +119,6 @@ var sectionMainModule = {
             })
                 .then(function(response){
                     // console.log(response.data)
-                    _this.sectionView = response.data.data.sectionView;
                     _this.courseView = response.data.data.courseView;
                 })
                 .catch(function(err){

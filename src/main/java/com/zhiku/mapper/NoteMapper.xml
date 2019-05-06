@@ -95,14 +95,16 @@
 
   <!--自定义SQL-->
   <resultMap id="NoteView" type="com.zhiku.view.NoteView" extends="ResultMapWithBLOBs">
-    <id javaType="java.lang.Integer" property="paragraphSeq" column="paragraph_seq" ></id>
+    <association property="colParagraphView" resultMap="com.zhiku.mapper.ColParagraphMapper.ColParagraphView"></association>
   </resultMap>
   <select id="selectBySid" resultMap="NoteView">
     select *
-    from note ,paragraph
+    from note ,paragraph,course
     where pid = note_para
-          and note_user = #{uid}
-          and paragraph_seq between #{sid}*100000 and #{sid}*100000+9999
+      and note_user = #{uid}
+      and paragraph_seq div 100000 = #{sid}
+      and #{sid} div 100 = course.cid
+
   </select>
 
   <select id="selectNoteViewByUid" parameterType="java.lang.Integer" resultMap="NoteView">

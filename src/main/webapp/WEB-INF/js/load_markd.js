@@ -131,7 +131,7 @@ function load_paragraph(json_data, root_id, saveFunc, collectionF, cancelCollect
 //遍历上面那个数组，对数组的每一个元素执行下面那个方法
 function load_array(arr, saveFunc) {
     for (let i = 0; i < arr.length; i++) {
-        createNote(arr[i].paragraphSeq, saveFunc, arr[i].noteContent);
+        createNote(arr[i].colParagraphView.paragraphSeq, saveFunc, arr[i].noteContent);
     }
     document.activeElement.blur();
 }

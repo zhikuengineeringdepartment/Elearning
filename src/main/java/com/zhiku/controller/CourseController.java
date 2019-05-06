@@ -51,9 +51,7 @@ public class CourseController {
     public ResponseData getCourseDetails(@RequestParam(value = "cid") int cid){
         ResponseData responseData = ResponseData.ok();
         CourseView courseView = courseService.getCourseDetails(cid);
-        SectionView sectionView = sectionService.getIntroduce(courseView.getCid());
         responseData.putDataValue("courseView",courseView);
-        responseData.putDataValue("sectionView",sectionView);
         return responseData;
     }
 }

@@ -34,8 +34,17 @@ var sectionModule = {
         handleColParagraph(pid){
             axios.post('paragraph/addColParagraph',{
                 uid:0,
-                paragraphSeq:pid
+                paragraphSeq:parseInt(pid)
             },{
+                transformRequest: [
+                    function(data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                        }
+                        return ret;
+                    }
+                ],
                 withCredentials:true
             })
                 .then(function(res){
