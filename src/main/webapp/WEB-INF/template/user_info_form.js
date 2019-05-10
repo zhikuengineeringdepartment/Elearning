@@ -4,8 +4,32 @@
 var userInfoFormTemplate = `
 <el-form ref="form" :model="baseInfo" label-width="80px">
                     <div style="display: flex;align-items: center;margin: 10px;padding: 20px;">
-                        <img :src="baseInfo.userAvatar" width="160px" height="160px">
-                        <el-button type="primary" size="small" round style="margin: 20px;">更换头像</el-button>
+                        <img id="user_avatar" :src="baseInfo.userAvatar" width="160px" height="160px">
+                        <el-button id="change_avatar" type="primary" size="small" round style="margin: 20px;" @click="changeAvatar">更换头像</el-button>
+                    </div>
+                    <div id="pic_cropper_detail" class="details-overlay">
+                        <div role="dialog" class="pic_cropper_dialog Box" tabindex="-1">
+                            <div class="Box-header">
+                                <h4 class="Box-title" >在下方上传并编辑你的头像
+                                    <div id="pic_dialog_close" class="pic_dialog_close" @click="closeX">x</div> 
+                                </h4>
+                                             
+                            </div>
+                            <div class="flex_form">
+                                <label class="pic_upload">
+                                    点击以选择图片
+                                    <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg"
+                                        class="pic_input" onchange="selectImg(this)">
+                                </label>
+                                <div id="pic_container" class="container">
+                                    <img id="tailoringImg">
+                                </div>
+                            </div>
+                            <div id="sureCut" class="button_bar" @click="sureCuted">
+                                <button class="pic_OK">确定并提交</button>
+                            </div>
+
+                        </div>
                     </div>
                     <el-form-item label="用户昵称">
                         <el-input v-model="baseInfo.userNick"></el-input>
@@ -46,6 +70,9 @@ var userInfoFormModule = {
         this.getUserInfo();
         this.getColleges();
     },
+    mounted:function(){
+        init_cut()
+    },
     methods:{
         getUserInfo:function(){
             var _this = this;
@@ -82,6 +109,33 @@ var userInfoFormModule = {
                     ]
                 }
             ]
+        },
+        changeAvatar(){
+            console.log(111)
+            $(".pic_cropper_dialog")[0].style.display = "block";
+            $(".details-overlay").addClass('details-overlay-dark');
+        },
+        sureCuted:function () {
+            if ($("#tailoringImg").attr("src") == null) {
+                return false;
+            } else {
+                var cas = $('#tailoringImg').cropper('getCroppedCanvas');// 获取被裁剪后的canvas
+                var base64 = cas.toDataURL('image/jpeg'); // 转换为base64
+
+                this.baseInfo.userAvatar = base64;
+                // $("#user_avatar").prop("src", base64);// 显示图片
+                // uploadFile(encodeURIComponent(base64))//编码后上传服务器
+                closeTailor();// 关闭裁剪框
+
+            }
+        },
+        closeTailor() {
+            //document.getElementById("pic_cropper_detail").open="";
+            $(".pic_cropper_dialog")[0].style.display = "none";
+            $(".details-overlay").removeClass('details-overlay-dark');
+        },
+        closeX:function () {
+            closeTailor();
         }
     },
 

@@ -46,6 +46,9 @@ var noteListModule = {
             })
                 .then(function(res){
                     _this.note_list = res.data.data.noteViews;
+                    for(var i=0;i<_this.note_list.length;i++){
+                        _this.note_list[i].noteDate = getFormatDate(res.data.data.noteViews[i].noteDate);
+                    }
                 })
                 .catch(function(err){
                     console.log(err);
