@@ -218,8 +218,7 @@
     file_download_count, file_desc, file_status, file_score, user_username, file_keys.*
   </sql>
   <select id="selectBySha" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
-    select
-    <include refid="Blob_Column_List"/>
+    select *
     from file
     where file_sha = #{sha}
   </select>

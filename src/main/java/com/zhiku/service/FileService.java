@@ -104,6 +104,7 @@ public class FileService{
             //保存文件的关键字
             storeFileKeys(fileKeys);
             //更新用户的上传次数
+            user = userMapper.selectByPrimaryKey(user.getUid());
             user.setUserUploadCount(user.getUserUploadCount()+1);
             userMapper.updateByPrimaryKeySelective(user);
             done = true;
