@@ -2,6 +2,7 @@ package com.zhiku.controller;
 
 import com.zhiku.service.SectionService;
 import com.zhiku.util.ResponseData;
+import com.zhiku.util.spider.SpiderBoot;
 import com.zhiku.view.SectionView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,5 +31,15 @@ public class SectionController {
         SectionView sectionView = sectionService.getSection(sid);
         responseData.putDataValue("sectionView",sectionView);
         return  responseData;
+    }
+
+    //TODO 推荐的中文存在乱码
+    @ResponseBody
+    @RequestMapping(value = "getCSDN",method = RequestMethod.GET)
+    public ResponseData getCSDN(){
+        ResponseData responseData = ResponseData.ok();
+        SpiderBoot spiderBoot = new SpiderBoot();
+        responseData.putDataValue("csdn",spiderBoot.bootSpider("java","blog",1,3));
+        return responseData;
     }
 }

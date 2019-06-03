@@ -16,6 +16,10 @@ let sectionMainTemplate = `
             </el-col>
             <el-col :span="12" style="margin: 20px">
                 <my_section :sectionView="sectionView" :noteViews="noteViews"></my_section>
+                <h3>相关csdn推荐</h3>
+                <template v-for="item in csdn">
+                <a target="_blank" :href="item.url">{{item.title}}</a><br>
+                </template>
             </el-col>
         </el-row>
     </el-main>
@@ -26,6 +30,7 @@ let sectionMainTemplate = `
 var sectionMainModule = {
     data: function () {
         return {
+            csdn:'',
             courseView: '',
             sectionView:{
                 sid:10001,
@@ -102,6 +107,7 @@ var sectionMainModule = {
     created:function(){
         this.getCourseView(this.$route.params.cid);
         this.getSectionView(this.$route.params.sid);
+        this.getCsdn();
     },
     methods:{
         //处理目录栏的点击事件
@@ -165,6 +171,16 @@ var sectionMainModule = {
             })
                 .then(function(res){
                     _this.noteViews = res.data.data.noteViews;
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
+        getCsdn(){
+            var _this = this;
+            axios.get('section/getCSDN')
+                .then(function(response){
+                    _this.csdn = response.data;
                 })
                 .catch(function(err){
                     console.log(err);
