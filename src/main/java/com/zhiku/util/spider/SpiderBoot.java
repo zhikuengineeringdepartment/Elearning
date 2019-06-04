@@ -1,0 +1,39 @@
+package com.zhiku.util.spider;
+
+
+import com.google.gson.Gson;
+import com.zhiku.util.spider.model.TitleAndUrl;
+
+import java.util.ArrayList;
+
+public class SpiderBoot {
+    public String bootSpider(String key, String type, int pages,int needs)  {
+        //实例化spider对象
+        SpiderBuilder spiderBuilder = new SpiderBuilder();
+        //爬取多个页面的爬虫
+        SpiderForMorePages spider = new SpiderForMorePages();
+        //设置爬取的页数
+        spider.setPageNumbers(pages);
+        //获取爬取结果：二维数组
+        ArrayList<ArrayList<String>> arrResults = spider.startSpider(spiderBuilder,key,type);
+        //存放需要的结果
+        ArrayList<ArrayList<String>> needsResults = new ArrayList<ArrayList<String>>();
+
+        ArrayList<TitleAndUrl> re = new ArrayList<TitleAndUrl>();
+
+        for (int i=0; i<=needs-1; i++){
+            TitleAndUrl tau = new TitleAndUrl();
+            tau.setTitle(arrResults.get(i).get(0));
+            tau.setUrl(arrResults.get(i).get(1));
+            re.add(tau);
+        }
+        //数据清洗：不用了
+        //new DataCleanUtil().dataClean(results);
+        //二维数组->json
+        Gson gson = new Gson();
+        String jsonResults = gson.toJson(re);
+        //返回json
+        return jsonResults;
+    }
+
+}

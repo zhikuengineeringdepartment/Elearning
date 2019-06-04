@@ -1,22 +1,21 @@
+/*
+文件相关的请求
+ */
 package com.zhiku.controller;
 
 import com.zhiku.entity.File;
 import com.zhiku.entity.FileKeys;
 import com.zhiku.entity.User;
 import com.zhiku.exception.FileNotExistException;
-import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.service.FileService;
 import com.zhiku.service.UserService;
 import com.zhiku.util.FileStatus;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +31,14 @@ public class FileController {
     @Autowired
     UserService userService;
 
+    /**
+     *用户上传文件
+     * @param user 用户
+     * @param multipartFile 上传的文件对象
+     * @param file 将要保存的文件实体（数据库实体）
+     * @param fileKeys 上传时用户提供的文件关键字
+     * @return 是否操作成功
+     */
     @ResponseBody
     @RequestMapping(value = "upload",method = RequestMethod.POST)
     public ResponseData fileUpload(
@@ -57,17 +64,32 @@ public class FileController {
         return responseData;
     }
 
+    /**
+     * 文件下载请求
+     * @param user 用户
+     * @param request 请求
+     * @param response 响应
+     * @param fid 下载的文件id
+     * @throws FileNotExistException 文件找不到异常
+     */
     @RequestMapping(value = "download",method = RequestMethod.GET)
     public void fileDownload(
             User user,
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(value = "fid") int fid) throws UserNotFoundException,FileNotExistException {
+            @RequestParam(value = "fid") int fid) throws FileNotExistException {
         user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);
         fileService.fileDownload(request,response,user,file);
     }
 
+    //TODO 待处理抛出的ConnectException
+    /**
+     * 文件预览请求
+     * @param response 响应
+     * @param fid 预览的文件id
+     * @throws ConnectException openoffice服务找不到
+     */
     @RequestMapping(value = "preview",method = RequestMethod.GET)
     public void filePreview(HttpServletResponse response,int fid) throws ConnectException {
         File file = fileService.getFileByFid(fid);
@@ -88,10 +110,6 @@ public class FileController {
     @ResponseBody
     @RequestMapping(value = "getFileList",method = RequestMethod.GET)
     public ResponseData getFileList(String keyWord,File file,int page,boolean order){
-        System.out.println(keyWord);
-        System.out.println(file.getFileCourse());
-        System.out.println(page);
-        System.out.println(order);
         ResponseData responseData = null;
         List<FileView> files = fileService.getFileList(keyWord,file,page,order);
         responseData = ResponseData.ok();

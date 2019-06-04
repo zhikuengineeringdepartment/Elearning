@@ -186,7 +186,8 @@ function createNote(id, saveF, content) {
         //console.log("焦点在这");
         document.getElementById('_' + id + '_notes').style.background = "#E1F5FE";
         // document.getElementById('_' + id + '_save_button').style.visibility = "visible";
-        document.getElementById(id + '_editor').children[0].style.display = "-webkit-box";
+        // document.getElementById(id + '_editor').children[0].style.display = "-webkit-box";
+        document.getElementById(id + '_editor').children[0].style.display = "flex";
     }
 
     editor.create();

@@ -22,6 +22,7 @@ public class InfoController {
     @Autowired
     private MajorService majorService;
 
+    //TODO 修改进入首页的方式，删除这个鸡肋请求
     @RequestMapping("/index")
     public ModelAndView index(){
         ModelAndView mv = new ModelAndView();
@@ -29,6 +30,7 @@ public class InfoController {
         return mv;
     }
 
+    //TODO 待测试，待和对应前端结合
     /**
      * 获得都有偏好标签
      * @return 偏好列表
@@ -42,6 +44,11 @@ public class InfoController {
         return responseData;
     }
 
+    /**
+     * 获得所有的专业
+     * 没有很好的学院专业课程关系之前，没有作用
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "getAllMajors")
     public ResponseData getAllMajors(){

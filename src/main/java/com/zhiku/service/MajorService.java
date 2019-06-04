@@ -12,6 +12,7 @@ public class MajorService {
     @Autowired
     private MajorMapper majorMapper;
 
+    @Deprecated
     public List<Major> getAllMajors(){
         return majorMapper.selectAllMajors();
     }

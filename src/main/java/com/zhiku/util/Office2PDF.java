@@ -13,6 +13,7 @@ import java.net.ConnectException;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+//TODO 修改Openoffice的服务开启方式，目前无法自动开启服务，整个逻辑建立在默认服务开启的情况下运行
 public class Office2PDF {
     //可以转化的格式类型
     public static String MATCHTYPE = "docx|doc|xlsx|xls|pptx|ppt|txt|pdf";

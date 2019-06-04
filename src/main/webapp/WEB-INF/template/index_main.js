@@ -4,27 +4,38 @@
 var indexMainTemplate = `
 <el-main>
         <el-row type="flex" class="row-bg" justify="center">
+         <el-col :span="16">
+            <template>
+              <el-carousel :interval="3000" type="card" height="200px">
+                <el-carousel-item v-for="item in 6" :key="item">
+                  <img src="img/739038.png" style="width: 100%">
+                </el-carousel-item>
+              </el-carousel>
+            </template>
+           </el-col>
+        </el-row>
+        <el-row type="flex" class="row-bg" justify="center">
             <!--专业目录展示部分-->
-            <el-col :span="4">
-                <el-row type="flex" justify="center">
-                    <el-col :span="18">
-                        <h5>专业目录</h5>
-                        <el-menu
-                                default-active="2"
-                                class="el-menu-vertical-demo">
-                            <major v-for="major in majors" v-bind:major="major"></major>
+            <!--<el-col :span="6">-->
+                <!--<el-row type="flex" justify="center">-->
+                    <!--<el-col :span="18">-->
+                        <!--<h5>专业目录</h5>-->
+                        <!--<el-menu-->
+                                <!--default-active="2"-->
+                                <!--class="el-menu-vertical-demo">-->
+                            <!--<major v-for="major in majors" v-bind:major="major":index="major.majorId"></major>-->
 
-                        </el-menu>
-                    </el-col>
-                </el-row>
-            </el-col>
+                        <!--</el-menu>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
+            <!--</el-col>-->
             <!--主要课程展示部分-->
-            <el-col :span="14">
-                <el-row :gutter="20">
-                    <template v-for="course in courses">
-                        <el-col :span="8" style='margin: 20px 0px'>
+            <el-col :span="15">
+                <el-row :gutter="20" >
+                    <template v-for="course in courses" class="course-row">
+                        <!--<el-col style='margin: 20px 0px'>-->
                             <my_course :course="course" :schedule="true"></my_course>
-                        </el-col>
+                        <!--</el-col>-->
                     </template>
                 </el-row>
             </el-col>

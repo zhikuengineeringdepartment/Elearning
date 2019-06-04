@@ -2,7 +2,7 @@
 头部栏组件
  */
 var headerTemplate = `
-<el-header height="100px">
+<el-header height="auto">
     <el-row type="flex" class="row-bg" justify="space-around">
         <el-col :span="12" style="display: flex;align-items: center;justify-content: center;">
             <router-link to="/"><img src="img/sharingIdea.jpg" height="50px" width="auto" style="margin-right:20px"></router-link>
@@ -19,16 +19,26 @@ var headerTemplate = `
             </template>
         </el-col>
     </el-row>
+    <!--<el-row class="row-md">-->
+        <!--<el-col :span="20" :offset="3">-->
+            <!--<el-breadcrumb separator="/">-->
+                <!--<el-breadcrumb-item :to="{path:'/'}">首页</el-breadcrumb-item>-->
+                <!--<el-breadcrumb-item :to="{path:'/fileMain'}">文件资源</el-breadcrumb-item>-->
+                <!--<el-breadcrumb-item :to="{path:'/exercise'}">练习测试</el-breadcrumb-item>-->
+                <!--<el-breadcrumb-item :to="{path:'/activity'}">活动详情</el-breadcrumb-item>-->
+            <!--</el-breadcrumb>-->
+        <!--</el-col>-->
+    <!--</el-row>-->
     <el-row class="row-md">
-        <el-col :span="20" :offset="3">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{path:'/'}">首页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{path:'/fileMain'}">文件资源</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{path:'/exercise'}">练习测试</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{path:'/activity'}">活动详情</el-breadcrumb-item>
-            </el-breadcrumb>
-        </el-col>
-    </el-row>
+    <el-col :span="20" :offset="3">
+         <el-tabs :activeName ="this.$route.path" @tab-click="headerClick" >
+            <el-tab-pane label="首页" name="/" ></el-tab-pane>
+            <el-tab-pane label="文件资源" name="/fileMain" ></el-tab-pane>
+            <el-tab-pane label="练习测试" name="/exercise"></el-tab-pane>
+            <el-tab-pane label="活动详情" name="/activity"></el-tab-pane>
+          </el-tabs>
+          </el-col>
+     </el-row>
     </el-header>
 `
 
@@ -45,6 +55,11 @@ var headerModule = {
     },
 
     methods:{
+        headerClick(tab, event){
+            // console.log(tab.name);
+            this.$router.push(tab.name);
+
+        },
         keyupEnter(){
             document.onkeydown = e =>{
                 let body = document.getElementsByTagName('body')[0]

@@ -1,3 +1,6 @@
+/*
+关于课程的所以请求
+ */
 package com.zhiku.controller;
 
 import com.zhiku.entity.Course;
@@ -24,10 +27,11 @@ public class CourseController {
     @Autowired
     private SectionService sectionService;
 
+    //TODO 获得全部课程，在讨论完学院专业课程的设计之后可以考虑修改这部分逻辑
     /**
      * 获得所有的课
      * 后期修改为可按照专业搜课
-     * @return
+     * @return 课程列表
      */
     @ResponseBody
     @RequestMapping(value = "getAllCourse" ,method = RequestMethod.GET)
@@ -39,12 +43,9 @@ public class CourseController {
     }
 
     /**
-     * 获得一个课程的详情
-     * 建议拆分成两部分
-     * -- -- 获得目录结构
-     * -- -- 获得课程introduction部分
-     * @param cid
-     * @return
+     * 获得一个课程的目录结构
+     * @param cid 课程id
+     * @return 课程视图（包含了目录结构）
      */
     @ResponseBody
     @RequestMapping(value = "getCourseDetails",method = RequestMethod.GET)

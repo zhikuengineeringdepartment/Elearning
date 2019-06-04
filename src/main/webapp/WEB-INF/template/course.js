@@ -1,5 +1,5 @@
 let courseTemplate = `
-<el-card :body-style="{ padding: '0px' }" style="width: 256px;float: left;margin:10px 10px">
+<el-card :body-style="{ padding: '0px' }" style="float: left;margin:10px 10px">
                         <a @click="getCourseDetails(course.cid)" style="text-decoration: none;color: #409EFF;">
                             <img :src="course.courseIcon" class="image">
                         </a>

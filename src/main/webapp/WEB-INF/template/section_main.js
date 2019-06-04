@@ -4,10 +4,10 @@ let sectionMainTemplate = `
             <el-col :span="4">
                 <h5>{{courseView.name}}</h5>
                 <el-menu
-                        default-active="2"
+                      :default-active="this.$route.params.sid"
                         class="el-menu-vertical-demo">
                     <template v-for="section in courseView.sections">
-                        <el-menu-item index="section.id" @click="handleMenu(section.sid)">
+                        <el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">
                             <i class="el-icon-arrow-right"></i>
                             <span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>
                         </el-menu-item>
@@ -107,6 +107,7 @@ var sectionMainModule = {
     created:function(){
         this.getCourseView(this.$route.params.cid);
         this.getSectionView(this.$route.params.sid);
+
         this.getCsdn();
     },
     methods:{
