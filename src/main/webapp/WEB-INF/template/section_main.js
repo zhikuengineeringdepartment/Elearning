@@ -115,6 +115,7 @@ var sectionMainModule = {
         handleMenu(sid){
             this.$router.push(''+sid);
             this.getSectionView(sid);
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
         },
         //获得课程目录的请求
         getCourseView:function(cid){

@@ -33,9 +33,11 @@ var headerTemplate = `
     <el-col :span="20" :offset="3">
          <el-tabs :activeName ="this.$route.path" @tab-click="headerClick" >
             <el-tab-pane label="首页" name="/" ></el-tab-pane>
+            <el-tab-pane label="在线教程" name="/courseMain" ></el-tab-pane>
             <el-tab-pane label="文件资源" name="/fileMain" ></el-tab-pane>
-            <el-tab-pane label="练习测试" name="/exercise"></el-tab-pane>
+            <!--<el-tab-pane label="练习测试" name="/exercise"></el-tab-pane>-->
             <el-tab-pane label="活动详情" name="/activity"></el-tab-pane>
+            <el-tab-pane label="个人中心" name="/user"></el-tab-pane>
           </el-tabs>
           </el-col>
      </el-row>
@@ -56,8 +58,19 @@ var headerModule = {
 
     methods:{
         headerClick(tab, event){
-            // console.log(tab.name);
-            this.$router.push(tab.name);
+            console.log(tab.name !== '/user')
+            console.log(tab.name == '/user')
+            console.log(tab.name === '/user')
+            console.log(this.login)
+            if(tab.name !== '/user'){
+                this.$router.push(tab.name);
+            }else{
+                if(this.login){
+                    this.$router.push('/user/info');
+                }else{
+                    this.$router.push('/login');
+                }
+            }
 
         },
         keyupEnter(){

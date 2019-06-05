@@ -23,10 +23,13 @@
     <script src="js/jquery-cropper.min.js"></script>
     <script src="js/picCrop.js"></script>
     <!--引入模块-->
+    <script src="template/activity.js"></script>
+    <script src="template/activity_main.js"></script>
     <script src="template/col_course_list.js"></script>
     <script src="template/col_paragraph.js"></script>
     <script src="template/col_paragraph_list.js"></script>
     <script src="template/course.js"></script>
+    <script src="template/course_main.js"></script>
     <script src="template/course_select.js"></script>
     <script src="template/file.js"></script>
     <script src="template/file_download_record.js"></script>
@@ -58,8 +61,8 @@
             /* min-width: 200px; */
             min-width: 0;
             width: 100%;}
-        .pdiv p img {
-            width: 100%;
+        .pdiv img {
+            max-width: 100%;
         }
         .image{
             width: 100%;
@@ -134,10 +137,12 @@
                     component: noteListModule
                 }
             ]},
+        { path: '/courseMain',component: courseMainModule},
         { path: '/course/details/:cid/:sid', component: sectionMainModule },
         { path: '/fileMain', component: fileMainModule},
         { path: '/fileMain/a', component: fileMainModule},
-        { path: '/fileUpload', component: fileUploadFormModule }
+        { path: '/fileUpload', component: fileUploadFormModule },
+        { path: '/activity',component: activityMainModule}
     ]
 
     // 3. 创建 router 实例，然后传 `routes` 配置

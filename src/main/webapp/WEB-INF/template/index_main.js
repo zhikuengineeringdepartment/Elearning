@@ -6,9 +6,9 @@ var indexMainTemplate = `
         <el-row type="flex" class="row-bg" justify="center">
          <el-col :span="16">
             <template>
-              <el-carousel :interval="3000" height="400px">
+              <el-carousel :interval="4000" height="400px">
                 <el-carousel-item v-for="item in 6" :key="item">
-                    <img src="img/IMG_4025.JPG" style="width: 100%">
+                    <img src="img/IMG_4025.JPG" style="width: 100%;height: 100%; object-fit: cover;object-position: center;">
                     <span>{{item}}</span>
                 </el-carousel-item>
               </el-carousel>
@@ -31,15 +31,15 @@ var indexMainTemplate = `
                 <!--</el-row>-->
             <!--</el-col>-->
             <!--主要课程展示部分-->
-            <el-col :span="15">
-                <el-row :gutter="20" >
-                    <template v-for="course in courses" class="course-row">
-                        <!--<el-col style='margin: 20px 0px'>-->
-                            <my_course :course="course" :schedule="true"></my_course>
-                        <!--</el-col>-->
-                    </template>
-                </el-row>
-            </el-col>
+            <!--<el-col :span="15">-->
+                <!--<el-row :gutter="20" >-->
+                    <!--<template v-for="course in courses" class="course-row">-->
+                        <!--&lt;!&ndash;<el-col style='margin: 20px 0px'>&ndash;&gt;-->
+                            <!--<my_course :course="course" :schedule="true"></my_course>-->
+                        <!--&lt;!&ndash;</el-col>&ndash;&gt;-->
+                    <!--</template>-->
+                <!--</el-row>-->
+            <!--</el-col>-->
         </el-row>
     </el-main>
 `
