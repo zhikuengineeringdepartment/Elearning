@@ -5,9 +5,10 @@ import com.google.gson.Gson;
 import com.zhiku.util.spider.model.TitleAndUrl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SpiderBoot {
-    public String bootSpider(String key, String type, int pages,int needs)  {
+    public List<TitleAndUrl> bootSpider(String key, String type, int pages, int needs)  {
         //实例化spider对象
         SpiderBuilder spiderBuilder = new SpiderBuilder();
         //爬取多个页面的爬虫
@@ -30,10 +31,11 @@ public class SpiderBoot {
         //数据清洗：不用了
         //new DataCleanUtil().dataClean(results);
         //二维数组->json
-        Gson gson = new Gson();
-        String jsonResults = gson.toJson(re);
+//        Gson gson = new Gson();
+//        String jsonResults = gson.toJson(re);
         //返回json
-        return jsonResults;
+//        return jsonResults;
+        return re;
     }
 
 }

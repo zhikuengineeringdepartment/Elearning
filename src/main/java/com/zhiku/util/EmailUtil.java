@@ -58,7 +58,7 @@ public class EmailUtil {
             Map<String,Object> map = new HashMap<String,Object>();
             map.put("user",user.getUserUsername());
             map.put("act",act);
-            map.put("code",user.hashCode());
+            map.put("code",String.valueOf(user.hashCode()));
             text = FreeMarkerTemplateUtils.processTemplateIntoString(template,map);
         } catch (IOException e) {
             e.printStackTrace();

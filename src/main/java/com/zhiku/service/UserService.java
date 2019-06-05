@@ -135,7 +135,8 @@ public class UserService {
 
     public UserStatus checkUser(User user){
         if(user.getUserStatus().equals(UserStatus.UNCHECKED.getCode())){
-            if(user.getUserMailtime().after(new Date())){
+            Date current = new Date();
+            if(user.getUserMailtime().before(current)){
                 return UserStatus.EMAIL_TIMEOUT;
             }
             return UserStatus.UNCHECKED;

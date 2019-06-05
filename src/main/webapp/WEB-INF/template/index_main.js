@@ -6,9 +6,10 @@ var indexMainTemplate = `
         <el-row type="flex" class="row-bg" justify="center">
          <el-col :span="16">
             <template>
-              <el-carousel :interval="3000" type="card" height="200px">
+              <el-carousel :interval="3000" height="400px">
                 <el-carousel-item v-for="item in 6" :key="item">
-                  <img src="img/739038.png" style="width: 100%">
+                    <img src="img/IMG_4025.JPG" style="width: 100%">
+                    <span>{{item}}</span>
                 </el-carousel-item>
               </el-carousel>
             </template>

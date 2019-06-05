@@ -1,0 +1,64 @@
+/*@font-face {*/
+    /*font-family: 'code_font';*/
+    /*src: url('sourcecodevariable-roman-webfont.woff2') format('woff2'),*/
+         /*url('sourcecodevariable-roman-webfont.woff') format('woff');*/
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+/*}*/
+.el-menu-item{
+  text-decoration: none;
+  overflow: hidden; /*超出部分隐藏*/
+	/*文本溢出用"..."表示*/
+	white-space: nowrap;
+  text-overflow: ellipsis; /*适用IE*/
+  -o-text-overflow: ellipsis; /*适用opera*/
+  /*-moz-binding: url("ellipsis.xml#ellipsis"); !*适用火狐(firefox通过XUL实现效果)*!*/
+}
+
+pre{
+	/* background: #CCFFCC; */
+	/* white-space: pre-wrap; */
+	
+	overflow-x:auto ;
+	background: #f0f5f5;
+}
+
+pre code{
+	/* overflow-wrap: break-word; */
+	
+	/* font-family:code_font; */
+	/* color:red; */
+	/* background: rgb(238,238,238); */
+	color: #b9335d;
+	background: none;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+	
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+	
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	
+}
+a.recommendtion:link{
+	color: #4ea1db;
+	text-decoration:none;
+}
+a.recommendtion:hover{
+	text-decoration:underline;
+}
+a.recommendtion:visited{
+    color:#ca0c16;
+		text-decoration: none;
+}

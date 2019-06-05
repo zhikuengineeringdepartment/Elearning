@@ -119,10 +119,15 @@ var loginRegisteModule = {
                 }
         )
                 .then(function(response){
-                    localStorage['user_icon']=response.data.data.userIcon;
-                    // root.user_icon = response.data.data.user_icon;
-                    _this.$emit('login-state')
-                    _this.$router.push("/");
+                    if(response.data.code == 200){
+                        localStorage['user_icon']=response.data.data.userIcon;
+                        // root.user_icon = response.data.data.user_icon;
+                        _this.$emit('login-state')
+                        _this.$router.push("/");
+                    }else{
+                        alert(response.data.message)
+                    }
+
                 })
                 .catch(function(err){
                     console.log(err);
@@ -130,6 +135,7 @@ var loginRegisteModule = {
         },
         // 处理注册请求
         handleRegiste(){
+            var _this = this;
             axios.post('/Elearning/user/registe',this.registeForm,
                 {
                     transformRequest: [
@@ -147,7 +153,12 @@ var loginRegisteModule = {
                 }
                 )
                 .then(function(res){
-                    this.$router.push("/login")
+                    if(res.data.code == 400){
+                        alert(res.data.message)
+                    }else if(res.data.code == 200){
+                        alert("请激活邮箱后登录")
+                        _this.$router.push("/login");
+                    }
                 })
                 .catch(function(err){
                     console.log(err);

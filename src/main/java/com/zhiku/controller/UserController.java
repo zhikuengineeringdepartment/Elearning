@@ -153,25 +153,27 @@ public class UserController {
             String username,
             String code){
         ResponseData responseData = null;
-        ModelAndView modelAndView = new ModelAndView();
         try{
             User user = userService.getUserByUsername(username);
             UserStatus userStatus = userService.checkUser(user);
-            if(userStatus.equals(UserStatus.UNCHECKED)){
-                userService.activeEmail(user);
-                modelAndView.setViewName("login");
-            }else if(userStatus.equals(UserStatus.NORMAL)){
-                modelAndView.setViewName("redirect:Elearing/index");
+            if(userStatus.equals(UserStatus.NORMAL)){
+                responseData = ResponseData.ok();
+                responseData.setMessage("用户已经激活，可直接登录");
             }else if(code.equals(user.hashCode()+"")){
-                modelAndView.setViewName("Error");
-                modelAndView.addObject("message",userStatus.getMessage());
+                if(userStatus.equals(UserStatus.UNCHECKED)){
+                    userService.activeEmail(user);
+                    responseData = ResponseData.ok();
+                }else {
+                    responseData = ResponseData.badRequest();
+                    responseData.setMessage(userStatus.getMessage());
+                }
             }else {
-                modelAndView.setViewName("Error");
-                modelAndView.addObject("message","无效链接");
+                responseData = ResponseData.customerError();
+                responseData.setMessage("无效链接");
             }
         }catch (UserNotFoundException e){
-            modelAndView.setViewName("Error");
-            modelAndView.addObject("message","用户不存在！");
+            responseData = ResponseData.badRequest();
+            responseData.setMessage("用户不存在");
         }
 
         return responseData;

@@ -6,7 +6,7 @@
 
 <body>
 <h1>你好${user}</h1>
-<h3>点击<a href="http://localhost:8080/Elearning/mail/${act}?usr=${user}&key=${code}">激活邮件</a> </h3>
+<h3>点击<a href="http://localhost:8080/Elearning/user/mail/${act}?username=${user}&code=${code}">激活邮件</a> </h3>
 <p>如果邮件到期，请尝试<a href="#">重新发送</a></p>
 </body>
 </html>

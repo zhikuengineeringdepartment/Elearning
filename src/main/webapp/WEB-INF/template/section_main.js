@@ -18,7 +18,7 @@ let sectionMainTemplate = `
                 <my_section :sectionView="sectionView" :noteViews="noteViews"></my_section>
                 <h3>相关csdn推荐</h3>
                 <template v-for="item in csdn">
-                <a target="_blank" :href="item.url">{{item.title}}</a><br>
+                <a target="_blank" :href="item.url" class="recommendtion">{{item.title}}</a><br>
                 </template>
             </el-col>
         </el-row>
@@ -181,7 +181,8 @@ var sectionMainModule = {
             var _this = this;
             axios.get('section/getCSDN')
                 .then(function(response){
-                    _this.csdn = response.data;
+                    _this.csdn = response.data.data.csdn;
+                    console.log(_this.csdn)
                 })
                 .catch(function(err){
                     console.log(err);
