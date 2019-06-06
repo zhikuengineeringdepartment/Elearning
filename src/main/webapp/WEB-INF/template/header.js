@@ -58,10 +58,6 @@ var headerModule = {
 
     methods:{
         headerClick(tab, event){
-            console.log(tab.name !== '/user')
-            console.log(tab.name == '/user')
-            console.log(tab.name === '/user')
-            console.log(this.login)
             if(tab.name !== '/user'){
                 this.$router.push(tab.name);
             }else{

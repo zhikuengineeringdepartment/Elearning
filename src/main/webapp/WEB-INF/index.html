@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/change_avatar.css"/>
     <link rel="stylesheet" href="css/cropper.min.css"/>
     <link rel="stylesheet" href="css/font.css"/>
+    <link rel="stylesheet" href="css/toTop.css"/>
     <script src="common/vue.js"></script>
     <script src="common/vue-router.js"></script>
     <script src="common/jquery.min.js"></script>
@@ -86,6 +87,7 @@
 
 </head>
 <body>
+<div id="htmlTop"></div>
 <script type="text/javascript" src="./js/marked.min.js"></script>
 <script src="./js/load_markd.js"></script>
 <el-container id = "root" style="display: flex;flex-direction: column;">
@@ -94,7 +96,14 @@
     <my_header :login="login" :user_icon="user_icon" ></my_header>
     <!--内容-->
     <router-view v-on:login-state="change_login"></router-view>
-
+    <a class="toTop" href="#htmlTop">
+        <img class="topImg" src="img/toTop.png">
+        <div class="hoverText">
+				<span>
+				返回<br>顶部
+				</span>
+        </div>
+    </a>
     <!--foot-->
     <my_footer></my_footer>
 </el-container>

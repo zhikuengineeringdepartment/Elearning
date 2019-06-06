@@ -6,16 +6,63 @@ let sectionMainTemplate = `
                 <el-menu
                       :default-active="this.$route.params.sid"
                         class="el-menu-vertical-demo">
-                    <template v-for="section in courseView.sections">
-                        <el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">
-                            <i class="el-icon-arrow-right"></i>
-                            <span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>
-                        </el-menu-item>
+                    <!--<template v-for="section in courseView.sections">-->
+                        <!--<el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">-->
+                            <!--<i class="el-icon-arrow-right"></i>-->
+                            <!--<span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>-->
+                        <!--</el-menu-item>-->
+                    <!--</template>-->
+                    <template v-for="zhang in courseView.sections">
+                        <el-submenu :index="zhang.index.toString()">
+                        <span slot="title">{{zhang.title}}</span>
+                        <template v-for="section in zhang.sub">
+                            <el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">
+                                <i class="el-icon-arrow-right"></i>
+                                <span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>
+                            </el-menu-item>
+                        </template>
+                        </el-submenu>
                     </template>
                 </el-menu>
             </el-col>
             <el-col :span="12" style="margin: 20px">
+                <div style="display: flex;justify-content: space-between">
+                    <div>
+                        <template v-if="side.preSection !== ''">
+                            <el-button type="text" @click="handleMenu(side.preSection.sid)">
+                                <i class="el-icon-arrow-left"></i>
+                                {{side.preSection.sectionName.substring(side.preSection.sectionName.indexOf(' '))}}
+                            </el-button>
+                        </template>
+                    </div>
+                    <div>
+                        <template v-if="side.nextSection !== ''">
+                            <el-button type="text" @click="handleMenu(side.nextSection.sid)">
+                                {{side.nextSection.sectionName.substring(side.nextSection.sectionName.indexOf(' '))}}
+                                <i class="el-icon-arrow-right"></i>
+                            </el-button>
+                        </template>
+                    </div>
+                </div>
                 <my_section :sectionView="sectionView" :noteViews="noteViews"></my_section>
+                <div style="display: flex;justify-content: space-between">
+                    <div>
+                        <template v-if="side.preSection !== ''">
+                            <el-button type="text" @click="handleMenu(side.preSection.sid)">
+                                <i class="el-icon-arrow-left"></i>
+                                {{side.preSection.sectionName.substring(side.preSection.sectionName.indexOf(' '))}}
+                            </el-button>
+                        </template>
+                    </div>
+                    <div>
+                        <template v-if="side.nextSection !== ''">
+                            <el-button type="text" @click="handleMenu(side.nextSection.sid)">
+                                {{side.nextSection.sectionName.substring(side.nextSection.sectionName.indexOf(' '))}}
+                                <i class="el-icon-arrow-right"></i>
+                            </el-button>
+                        </template>
+                    </div>
+                </div>
                 <h3>相关csdn推荐</h3>
                 <template v-for="item in csdn">
                 <a target="_blank" :href="item.url" class="recommendtion">{{item.title}}</a><br>
@@ -32,6 +79,10 @@ var sectionMainModule = {
         return {
             csdn:'',
             courseView: '',
+            side:{
+                preSection:'',
+                nextSection:''
+            },
             sectionView:{
                 sid:10001,
                 sectionName:"## 1.4.第三节，关于图片",
@@ -111,6 +162,44 @@ var sectionMainModule = {
         this.getCsdn();
     },
     methods:{
+        //获得上下节点
+        getSideSection:function(sid){
+            var side = {}
+            // var i,j;
+            var sections = this.courseView.sections;
+            fors:
+            for(var i=0;i<sections.length;i++){
+                for(var j =0;j<sections[i].sub.length;j++){
+                    var s = sections[i].sub[j];
+                    if(s.sid == sid){
+                        break fors;
+                    }
+                }
+            }
+
+            //找前一个
+            if(j != 0){
+                side.preSection = sections[i].sub[j-1]
+            }else{
+                if(i != 0){
+                    side.preSection = sections[i-1].sub[sections[i-1].sub.length-1]
+                }else{
+                    side.preSection = '';
+                }
+            }
+            //找后一个
+            if(j != sections[i].sub.length -1){
+                side.nextSection = sections[i].sub[j+1]
+            }else{
+                if(i != sections.length -1){
+                    side.nextSection = sections[i+1].sub[0]
+                }else{
+                    side.nextSection = '';
+                }
+            }
+            this.side = side;
+            console.log(side);
+        },
         //处理目录栏的点击事件
         handleMenu(sid){
             this.$router.push(''+sid);
@@ -118,7 +207,7 @@ var sectionMainModule = {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         },
         //获得课程目录的请求
-        getCourseView:function(cid){
+        getCourseView:function(cid,sid){
             var _this =this;
             axios.get('course/getCourseDetails',{
                 params:{
@@ -128,6 +217,30 @@ var sectionMainModule = {
                 .then(function(response){
                     // console.log(response.data)
                     _this.courseView = response.data.data.courseView;
+
+                    //硬编码将原有的纯section结构变为zhang_section结构
+                    //TODO 以后应该直接从数据库中存储的时候就安排好结构
+                    var scts = [];
+                    var s = response.data.data.courseView.sections;
+                    var index = 0;
+                    for(var i = 0 ; i <s.length;i++){
+                        var name = s[i].sectionName;
+                        if(name.substring(0,name.indexOf(' ')) === '#'){
+                            if(i == 0){
+                                index = 0;
+                            }else{
+                                index++;
+                            }
+                            scts[index] = {};
+                            scts[index].title = name.substring(name.indexOf(' '),name.indexOf('章')+1);
+                            scts[index].index = index;
+                            scts[index].sub = [];
+                            scts[index].sub[0] = s[i];
+                        }else{
+                            scts[index].sub[scts[index].sub.length] = s[i];
+                        }
+                    }
+                    _this.courseView.sections = scts;
                 })
                 .catch(function(err){
                     console.log(err);
@@ -143,6 +256,7 @@ var sectionMainModule = {
             })
                 .then(function(response){
                     _this.sectionView = response.data.data.sectionView;
+                    _this.getSideSection(sid);
                 })
                 .then(function () {
                     if(root.login){
