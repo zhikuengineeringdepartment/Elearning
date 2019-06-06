@@ -159,7 +159,7 @@ var sectionMainModule = {
         this.getCourseView(this.$route.params.cid);
         this.getSectionView(this.$route.params.sid);
 
-        this.getCsdn();
+        this.getCsdn(this.$route.params.sid);
     },
     methods:{
         //获得上下节点
@@ -204,6 +204,7 @@ var sectionMainModule = {
         handleMenu(sid){
             this.$router.push(''+sid);
             this.getSectionView(sid);
+            this.getCsdn(sid);
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         },
         //获得课程目录的请求
@@ -292,9 +293,13 @@ var sectionMainModule = {
                     console.log(err);
                 });
         },
-        getCsdn(){
+        getCsdn:function(sid){
             var _this = this;
-            axios.get('section/getCSDN')
+            axios.get('section/getCSDN',{
+                params:{
+                    sid:sid
+                }
+            })
                 .then(function(response){
                     _this.csdn = response.data.data.csdn;
                     console.log(_this.csdn)
