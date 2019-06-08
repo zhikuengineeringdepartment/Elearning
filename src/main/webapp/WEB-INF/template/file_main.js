@@ -2,7 +2,7 @@
 文件模块的主页面组件
  */
 var fileMainTemplate = `
-<el-main style="margin-top: 20px">
+<el-main id="fileList" style="margin-top: 20px">
         <el-row style="display: flex;flex-direction: column;align-items: center">
             <el-col :span="16" style="margin-bottom: 20px">
                 <el-card shadow="always" style="padding: 20px;">
@@ -12,7 +12,7 @@ var fileMainTemplate = `
                 </el-card>
             </el-col>
 
-            <el-col :span="16">
+            <el-col :span="16" @scroll.native="lazyLoading">
                 <el-row>
                     <el-col :span="10">
                         <!--<el-cascader :value="fileCourse" :options="colleges" :props="college_major" filterable :change-on-select="false"></el-cascader>-->
@@ -20,7 +20,7 @@ var fileMainTemplate = `
                     </el-col>
                     <el-col :span="10">
                         <el-input placeholder="搜索" v-model="fileListForm.keyWord" class="input-with-select">
-                            <el-button slot="append" icon="el-icon-search" @click="getFileList"></el-button>
+                            <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
                         </el-input>
                     </el-col>
                     <el-col :span="4">
@@ -72,7 +72,8 @@ var fileMainModule = {
     props:[],
     template: fileMainTemplate,
     created:function(){
-        this.getFileList();
+        this.scrollToDown();
+        this.getFileList(this.fileListForm.page);
     },
     methods:{
         gotoUpload:function(){
@@ -88,7 +89,7 @@ var fileMainModule = {
                     document.getElementById('file_order').children[0].className ='el-icon-sort-down'
                     document.getElementById("file_order").children[1].innerHTML = '按时间降序'
                 }
-                this.getFileList();
+                this.my_files.reverse();
             })
 
         },
@@ -98,27 +99,55 @@ var fileMainModule = {
         set_keyword:function(key){
             this.fileListForm.keyWord = key;
         },
-        getFileList:function(){
+        doSearch:function(){
+            this.my_files = [];
+            this.fileListForm.page = 1;
+            this.getFileList(this.fileListForm.page);
+        },
+        getFileList:function(page){
             var _this =this;
             axios.get('file/getFileList',{
                 params:{
                     keyWord:this.fileListForm.keyWord,
                     fileCourse:this.fileListForm.fileCourse,
-                    page:this.fileListForm.page,
+                    page:page,
                     order:this.fileListForm.order
                 }
             })
                 .then(function(response){
-                    _this.my_files = response.data.data.files;
-                    for(var i=0;i<_this.my_files.length;i++){
-                        _this.my_files[i].fileUploadTime = getFormatDate(response.data.data.files[i].fileUploadTime)
+                    for(var i=0;i<response.data.data.files.length;i++){
+                        response.data.data.files[i].fileUploadTime = getFormatDate(response.data.data.files[i].fileUploadTime)
+                    }
+                    if(response.data.data.files.length != 0){
+                        _this.my_files = _this.my_files.concat(response.data.data.files);
+                    }else{
+                        alert("已经到最后了")
                     }
                 })
                 .catch(function(err){
                     console.log(err);
                 });
+        },
+        scrollToDown(){
+            //TODO 目前通过判断路径的方式只在文件部分实现滚动事件，不过不是长久之计，应该修改为只对特定组件或者特定页面的滚动事件
+            document.onscroll = e =>{
+                if(this.$route.path === '/fileMain'){
+                    this.lazyLoading();
+                }
+            }
+        },
+        lazyLoading () { // 滚动到底部，再加载的处理事件
+            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            let clientHeight = document.documentElement.clientHeight;
+            let scrollHeight = document.documentElement.scrollHeight;
+            if (scrollTop + clientHeight >= scrollHeight) { // 如果滚动到接近底部，自动加载下一页
+                //事件处理
+                this.fileListForm.page++;
+                console.log(this.fileListForm.page)
+                this.getFileList(this.fileListForm.page)
+            }
         }
-    },
+    }
 
 }
 

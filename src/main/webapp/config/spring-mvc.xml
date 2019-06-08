@@ -31,7 +31,9 @@
     <!--配置切面相关配置-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <!--登录验证切面-->
-    <bean id="loginAop" class="com.zhiku.aop.TokenAop"/>
+    <bean id="tokenAop" class="com.zhiku.aop.TokenAop"/>
+    <!--登录验证切面-->
+    <bean id="logAop" class="com.zhiku.aop.LogAop"/>
     <!--异常处理器-->
     <bean id="handlerExceptionResolver" class="com.zhiku.exception.CommonExceptionResolver"/>
 

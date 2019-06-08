@@ -240,4 +240,13 @@ public class User {
     public int hashCode() {
         return Objects.hash(uid, userUsername, userPassword, userEmail, userMailtime);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", userUsername='" + userUsername + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                '}';
+    }
 }
