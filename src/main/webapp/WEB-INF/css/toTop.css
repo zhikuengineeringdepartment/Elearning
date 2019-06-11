@@ -1,16 +1,18 @@
 a.toTop{
+	display: none;
 	position: fixed;
 	top:85%;
 	left:92vw;
 	padding-top: 0.5vh;
 	
-	width: 3vw;
+	width: 6vh;
 	height: 6vh;
 	cursor:pointer;
 	text-align:center;
 	border:1px 
 	solid #e0e0e0;
 	background:#fff;
+	z-index:99
 }
 a.toTop img.topImg{
 	width:90%;
@@ -25,9 +27,9 @@ a.toTop:link{
 
 
 a.toTop:hover{
-	background-color: #FF9999;
-	text-decoration: none;
-	
+	background-color: rgb(101, 211, 255);
+	text-decoration: none
+
 }
 
 a.toTop:hover img.topImg{

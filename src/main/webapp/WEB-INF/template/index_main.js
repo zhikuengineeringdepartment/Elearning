@@ -1,5 +1,6 @@
 /*
 首页界面组件
+（已更改为关于智库页面）
  */
 var indexMainTemplate = `
 <el-main>

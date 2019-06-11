@@ -10,8 +10,8 @@
 
 
 
-/// <reference path="./JQuery3.4.0.js" />
-/// <reference path="./wangEditor.min.js" />
+/// <reference path="../common/jquery.min.js" />
+/// <reference path="../wangEditor/wangEditor.js" />
 // (function(){
 //     var script = document.createElement("script");
 //     script.type = "text/javascript";

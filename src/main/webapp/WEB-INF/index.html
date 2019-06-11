@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="zh" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="referrer" content="no-referrer"/>
+    <meta name="referrer" content="no-referrer" />
     <script src="common/vue.js"></script>
     <link rel="stylesheet" href="common/vue-element.css" />
     <link rel="stylesheet" href="common/main.css" />
     <link rel="stylesheet" href="common/jquery.Jcrop.css" />
-    <link rel="stylesheet" href="css/markd.css"/>
-    <link rel="stylesheet" href="css/change_avatar.css"/>
-    <link rel="stylesheet" href="css/cropper.min.css"/>
-    <link rel="stylesheet" href="css/font.css"/>
-    <link rel="stylesheet" href="css/toTop.css"/>
+    <link rel="stylesheet" href="css/markd.css" />
+    <link rel="stylesheet" href="css/change_avatar.css" />
+    <link rel="stylesheet" href="css/cropper.min.css" />
+    <link rel="stylesheet" href="css/font.css" />
+    <link rel="stylesheet" href="css/toTop.css" />
+    <link rel="stylesheet" href="css/header.css" />
     <script src="common/vue.js"></script>
     <script src="common/vue-router.js"></script>
     <script src="common/jquery.min.js"></script>
@@ -61,18 +63,23 @@
             padding: 0 45px;
             /* min-width: 200px; */
             min-width: 0;
-            width: 100%;}
+            width: 100%;
+        }
+
         .pdiv img {
             max-width: 100%;
         }
-        .image{
+
+        .image {
             width: 100%;
             min-width: 100px;
         }
-        .course-row{
+
+        .course-row {
             display: flex;
             flex-wrap: wrap;
         }
+
         .el-carousel__item:nth-child(2n) {
             background-color: #99a9bf;
         }
@@ -80,45 +87,61 @@
         .el-carousel__item:nth-child(2n+1) {
             background-color: #d3dce6;
         }
-        .w-e-toolbar{
+
+        .w-e-toolbar {
             flex-wrap: wrap;
         }
     </style>
 
 </head>
-<body>
-<div id="htmlTop"></div>
-<script type="text/javascript" src="./js/marked.min.js"></script>
-<script src="./js/load_markd.js"></script>
-<el-container id = "root" style="display: flex;flex-direction: column;">
 
-    <!--头部-->
-    <my_header :login="login" :user_icon="user_icon" ></my_header>
-    <!--内容-->
-    <router-view v-on:login-state="change_login"></router-view>
-    <a class="toTop" href="#htmlTop">
-        <img class="topImg" src="img/toTop.png">
-        <div class="hoverText">
-				<span>
-				返回<br>顶部
-				</span>
-        </div>
-    </a>
-    <!--foot-->
-    <my_footer></my_footer>
-</el-container>
+<body>
+    <div id="htmlTop"></div>
+    <script src="./js/toTop.js"></script>
+    <script src="./js/marked.min.js"></script>
+    <script src="./js/load_markd.js"></script>
+    <el-container id="root" style="display: flex;flex-direction: column;">
+
+        <!--头部-->
+        <my_header :login="login" :user_icon="user_icon"></my_header>
+        <!--内容-->
+        <router-view v-on:login-state="change_login"></router-view>
+        <a class="toTop" href="#htmlTop">
+            <img class="topImg" src="img/toTop.png">
+            <div class="hoverText">
+                <span>
+                    返回<br>顶部
+                </span>
+            </div>
+        </a>
+        <!--foot-->
+        <my_footer></my_footer>
+    </el-container>
 </body>
 <script>
     //配置路由
-    const routes = [
-        { path: '/', component: indexMainModule },
-        { path: '/login', component: loginRegisteModule },
-        { path: '/registe', component: loginRegisteModule },
-        { path: '/user/info', component: userMainModule,
-            children: [
-                {
-                    path:"/",
-                    component:userInfoFormModule
+    const routes = [{
+            path: '/',
+            component: courseMainModule
+        },
+        {
+            path: '/aboutIdea',
+            component: indexMainModule
+        },
+        {
+            path: '/login',
+            component: loginRegisteModule
+        },
+        {
+            path: '/registe',
+            component: loginRegisteModule
+        },
+        {
+            path: '/user/info',
+            component: userMainModule,
+            children: [{
+                    path: "/",
+                    component: userInfoFormModule
                 },
                 {
                     path: 'infoform',
@@ -127,7 +150,7 @@
                 {
                     path: 'file_upload_record/:is_upload_page',
                     component: fileRecordListModule,
-                    props:true
+                    props: true
                 },
                 {
                     path: 'course_list',
@@ -145,19 +168,35 @@
                     path: 'note',
                     component: noteListModule
                 }
-            ]},
-        { path: '/courseMain',component: courseMainModule},
-        { path: '/course/details/:cid/:sid', component: sectionMainModule },
-        { path: '/fileMain', component: fileMainModule},
-        { path: '/fileMain/a', component: fileMainModule},
-        { path: '/fileUpload', component: fileUploadFormModule },
-        { path: '/activity',component: activityMainModule}
+            ]
+        },
+        // { path: '/courseMain',component: courseMainModule},
+        {
+            path: '/course/details/:cid/:sid',
+            component: sectionMainModule
+        },
+        {
+            path: '/fileMain',
+            component: fileMainModule
+        },
+        {
+            path: '/fileMain/a',
+            component: fileMainModule
+        },
+        {
+            path: '/fileUpload',
+            component: fileUploadFormModule
+        },
+        {
+            path: '/activity',
+            component: activityMainModule
+        }
     ]
 
     // 3. 创建 router 实例，然后传 `routes` 配置
     // 你还可以传别的配置参数, 不过先这么简单着吧。
     const router = new VueRouter({
-        routes // (缩写) 相当于 routes: routes
+        routes: routes // (缩写) 相当于 routes: routes
     })
 
     // 4. 创建和挂载根实例。
@@ -166,38 +205,38 @@
 
     var root = new Vue({
         router,
-        el:"#root",
-        data:{
-            login:false,
-            user_icon:''
+        el: "#root",
+        data: {
+            login: false,
+            user_icon: ''
         },
-        created:function(){
+        created: function () {
             this.check_login();
         },
-        watch:{
-            login:function(){
+        watch: {
+            login: function () {
                 this.user_icon = localStorage['user_icon']
             }
         },
-        methods:{
-            change_login:function(){
-                this.login=true;
+        methods: {
+            change_login: function () {
+                this.login = true;
             },
-            check_login:function(){
+            check_login: function () {
                 var token = this.getCookie("token")
-                if (token != ''){
+                if (token != '') {
                     this.login = true;
-                }else{
+                } else {
                     this.login = false;
                 }
             },
-            getCookie(name){
+            getCookie(name) {
                 var value = ''
                 var cookies = document.cookie.split(';')
-                var ck ;
-                for(var i =0;i<cookies.length;i++){
+                var ck;
+                for (var i = 0; i < cookies.length; i++) {
                     ck = cookies[i].split('=')
-                    if(ck[0] == name){
+                    if (ck[0] == name) {
                         value = ck[1]
                     }
                 }
