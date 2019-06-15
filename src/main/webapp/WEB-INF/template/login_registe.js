@@ -101,7 +101,7 @@ var loginRegisteModule = {
         // 处理登录请求
         handleLogin(){
             var _this = this;
-            axios.post('/Elearning/user/login',
+            axios.post('/user/login',
                 this.loginForm,
                 {
                     transformRequest: [
@@ -136,7 +136,7 @@ var loginRegisteModule = {
         // 处理注册请求
         handleRegiste(){
             var _this = this;
-            axios.post('/Elearning/user/registe',this.registeForm,
+            axios.post('/user/registe',this.registeForm,
                 {
                     transformRequest: [
                         function(data) {

@@ -22,8 +22,7 @@ public class InfoController {
     @Autowired
     private MajorService majorService;
 
-    //TODO 修改进入首页的方式，删除这个鸡肋请求
-    @RequestMapping("/index")
+    @RequestMapping("/")
     public ModelAndView index(){
         ModelAndView mv = new ModelAndView();
         mv.setViewName("index");
