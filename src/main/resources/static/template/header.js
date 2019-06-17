@@ -38,7 +38,7 @@ var headerTemplate = `
             <el-tab-pane label="知识见解" name="/" ></el-tab-pane>
             <el-tab-pane label="文件资源" name="/fileMain" ></el-tab-pane>
             <!--<el-tab-pane label="练习测试" name="/exercise"></el-tab-pane>-->
-            <el-tab-pane label="活动详情" name="/activity" ></el-tab-pane>
+            <el-tab-pane label="智库专栏" name="/activity" ></el-tab-pane>
             <el-tab-pane label="关于智库" name="/aboutIdea" ></el-tab-pane>
             <el-tab-pane label="个人中心" name="/login"></el-tab-pane>
           </el-tabs>

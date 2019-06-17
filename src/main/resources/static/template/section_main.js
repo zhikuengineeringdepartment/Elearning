@@ -4,8 +4,8 @@ let sectionMainTemplate = `
             <el-col :span="4">
                 <h5>{{courseView.name}}</h5>
                 <el-menu
-                      :default-active="this.$route.params.sid"
-                        class="el-menu-vertical-demo">
+                    :default-active="this.$route.params.sid"
+                    class="el-menu-vertical-demo">
                     <!--<template v-for="section in courseView.sections">-->
                         <!--<el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">-->
                             <!--<i class="el-icon-arrow-right"></i>-->
@@ -16,10 +16,12 @@ let sectionMainTemplate = `
                         <el-submenu :index="zhang.index.toString()">
                         <span slot="title">{{zhang.title}}</span>
                         <template v-for="section in zhang.sub">
-                            <el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">
-                                <i class="el-icon-arrow-right"></i>
-                                <span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>
-                            </el-menu-item>
+                            <el-tooltip class="item" effect="dark" :content="section.sectionName.substring(section.sectionName.indexOf(' '))" placement="top-start">
+                                <el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">
+                                    <i class="el-icon-arrow-right"></i>
+                                    <span slot="title">{{section.sectionName.substring(section.sectionName.indexOf(' '))}}</span>
+                                </el-menu-item>
+                            </el-tooltip>
                         </template>
                         </el-submenu>
                     </template>

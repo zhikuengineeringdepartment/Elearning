@@ -50,6 +50,15 @@ var loginRegisteTemplate = `
                                         v-model="registeForm.password">
                                 </el-input>
                             </el-form-item>
+                            <el-form-item label="确认密码">
+                                <el-input
+                                        type="password"
+                                        placeholder="请确认密码"
+                                        prefix-icon="el-icon-info"
+                                        v-model="registeForm.password2"
+                                        show-password>
+                                </el-input>
+                            </el-form-item>
                             <el-button  type="primary" round @click="handleRegiste">注册</el-button>
                         </el-form>
                     </template>
@@ -60,86 +69,93 @@ var loginRegisteTemplate = `
 `
 
 var loginRegisteModule = {
-    data:function () {
-        return{
-            isLoginPage:'',
-            loginForm:{
-                identity:'',
-                password:''
+    data: function () {
+        return {
+            isLoginPage: '',
+            loginForm: {
+                identity: '',
+                password: ''
             },
-            registeForm:{
-                username:'',
-                email:'',
-                password:''
+            registeForm: {
+                username: '',
+                email: '',
+                password: '',
+                password2: ''
             }
         }
     },
-    created:function () {
+    created: function () {
         this.setLogin();
     },
-    props:[],
+    props: [],
     template: loginRegisteTemplate,
     watch: {
-        '$route' (to) {
-            if(to.fullPath === '/login'){
+        '$route'(to) {
+            if (to.fullPath === '/login') {
                 this.isLoginPage = true;
-            }else{
+            } else {
                 this.isLoginPage = false;
             }
         }
-     },
-    methods:{
-        setLogin(){
+    },
+    methods: {
+        setLogin() {
             console.log(this.$router)
-          if(this.$router.history.current.path === '/login'){
-              this.isLoginPage = true;
-          }else{
-              this.isLoginPage = false;
-          }
+            if (this.$router.history.current.path === '/login') {
+                this.isLoginPage = true;
+            } else {
+                this.isLoginPage = false;
+            }
         },
 
         // 处理登录请求
-        handleLogin(){
+        handleLogin() {
             var _this = this;
+            if (!this.registeForm.password || !this.registeForm.password2 || this.registeForm.password != this.registeForm.password2) {
+                this.$message({
+                    showClose: true,
+                    message: '密码不一致或为空',
+                    type: 'error'
+                });
+                return;
+            }
             axios.post('/user/login',
-                this.loginForm,
-                {
-                    transformRequest: [
-                        function(data) {
-                            let ret = '';
-                            for (let it in data) {
-                                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                    this.loginForm, {
+                        transformRequest: [
+                            function (data) {
+                                let ret = '';
+                                for (let it in data) {
+                                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                                }
+                                return ret;
                             }
-                            return ret;
+                        ],
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
                         }
-                    ],
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
                     }
-                }
-        )
-                .then(function(response){
-                    if(response.data.code == 200){
-                        localStorage['user_icon']=response.data.data.userIcon;
+                )
+                .then(function (response) {
+                    if (response.data.code == 200) {
+                        localStorage['user_icon'] = response.data.data.userIcon;
                         // root.user_icon = response.data.data.user_icon;
                         _this.$emit('login-state')
                         _this.$router.push("/");
-                    }else{
+                    } else {
                         alert(response.data.message)
                     }
 
                 })
-                .catch(function(err){
+                .catch(function (err) {
                     console.log(err);
                 });
         },
         // 处理注册请求
-        handleRegiste(){
+        handleRegiste() {
             var _this = this;
-            axios.post('/user/registe',this.registeForm,
-                {
+            axios.post('/user/registe', this.registeForm, {
                     transformRequest: [
-                        function(data) {
+                        function (data) {
                             let ret = '';
                             for (let it in data) {
                                 ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
@@ -150,17 +166,16 @@ var loginRegisteModule = {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
-                }
-                )
-                .then(function(res){
-                    if(res.data.code == 400){
+                })
+                .then(function (res) {
+                    if (res.data.code == 400) {
                         alert(res.data.message)
-                    }else if(res.data.code == 200){
+                    } else if (res.data.code == 200) {
                         alert("请激活邮箱后登录")
                         _this.$router.push("/login");
                     }
                 })
-                .catch(function(err){
+                .catch(function (err) {
                     console.log(err);
                 });
         }
@@ -168,4 +183,4 @@ var loginRegisteModule = {
 
 }
 
-Vue.component("my_login_registe",loginRegisteModule);
+Vue.component("my_login_registe", loginRegisteModule);
