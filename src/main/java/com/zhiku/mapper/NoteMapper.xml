@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.NoteMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Note">
+    <id column="note_user" jdbcType="INTEGER" property="noteUser" />
+    <id column="note_para" jdbcType="INTEGER" property="notePara" />
+    <result column="note_date" jdbcType="TIMESTAMP" property="noteDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.Note">
+    <result column="note_content" jdbcType="LONGVARCHAR" property="noteContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    note_user, note_para, note_date
+  </sql>
+  <sql id="Blob_Column_List">
+    note_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.NoteKey" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from note
+    where note_user = #{noteUser,jdbcType=INTEGER}
+      and note_para = #{notePara,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.NoteKey">
+    delete from note
+    where note_user = #{noteUser,jdbcType=INTEGER}
+      and note_para = #{notePara,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Note">
+    insert into note (note_user, note_para, note_date, 
+      note_content)
+    values (#{noteUser,jdbcType=INTEGER}, #{notePara,jdbcType=INTEGER}, #{noteDate,jdbcType=TIMESTAMP}, 
+      #{noteContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Note">
+    insert into note
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="noteUser != null">
+        note_user,
+      </if>
+      <if test="notePara != null">
+        note_para,
+      </if>
+      <if test="noteDate != null">
+        note_date,
+      </if>
+      <if test="noteContent != null">
+        note_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="noteUser != null">
+        #{noteUser,jdbcType=INTEGER},
+      </if>
+      <if test="notePara != null">
+        #{notePara,jdbcType=INTEGER},
+      </if>
+      <if test="noteDate != null">
+        #{noteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noteContent != null">
+        #{noteContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Note">
+    update note
+    <set>
+      <if test="noteDate != null">
+        note_date = #{noteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noteContent != null">
+        note_content = #{noteContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where note_user = #{noteUser,jdbcType=INTEGER}
+      and note_para = #{notePara,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.Note">
+    update note
+    set note_date = #{noteDate,jdbcType=TIMESTAMP},
+      note_content = #{noteContent,jdbcType=LONGVARCHAR}
+    where note_user = #{noteUser,jdbcType=INTEGER}
+      and note_para = #{notePara,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Note">
+    update note
+    set note_date = #{noteDate,jdbcType=TIMESTAMP}
+    where note_user = #{noteUser,jdbcType=INTEGER}
+      and note_para = #{notePara,jdbcType=INTEGER}
+  </update>
+
+  <!--自定义SQL-->
+  <resultMap id="NoteView" type="com.zhiku.view.NoteView" extends="ResultMapWithBLOBs">
+    <association property="colParagraphView" resultMap="com.zhiku.mapper.ColParagraphMapper.ColParagraphView"></association>
+  </resultMap>
+  <select id="selectBySid" resultMap="NoteView">
+    select *
+    from note ,paragraph,course
+    where pid = note_para
+      and note_user = #{uid}
+      and paragraph_seq div 100000 = #{sid}
+      and #{sid} div 100 = course.cid
+
+  </select>
+
+  <select id="selectNoteViewByUid" parameterType="java.lang.Integer" resultMap="NoteView">
+    select *
+    from note,paragraph
+    where note_user = #{uid}
+    and note_para = pid
+  </select>
+</mapper>

@@ -1,0 +1,51 @@
+a.toTop{
+	display: none;
+	position: fixed;
+	top:85%;
+	left:92vw;
+	padding-top: 0.5vh;
+	
+	width: 6vh;
+	height: 6vh;
+	cursor:pointer;
+	text-align:center;
+	border:1px 
+	solid #e0e0e0;
+	background:#fff;
+	z-index:99
+}
+a.toTop img.topImg{
+	width:90%;
+	height:90%;
+}
+a.toTop div.hoverText{
+	display: none;
+}
+a.toTop:link{
+	text-decoration: none;
+}
+
+
+a.toTop:hover{
+	background-color: rgb(101, 211, 255);
+	text-decoration: none
+
+}
+
+a.toTop:hover img.topImg{
+	display: none;
+}
+
+
+a.toTop:hover div.hoverText{
+	display: block;
+	text-align: center;
+}
+
+div.hoverText span{
+	/* font-size: 14px; */
+    color: #fff;
+    /* margin-top: 15px; */
+}
+
+

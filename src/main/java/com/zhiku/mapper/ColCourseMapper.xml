@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.ColCourseMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.ColCourse">
+    <id column="colc_user" jdbcType="INTEGER" property="colcUser" />
+    <id column="colc_course" jdbcType="INTEGER" property="colcCourse" />
+    <result column="colc_date" jdbcType="TIMESTAMP" property="colcDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    colc_user, colc_course, colc_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.ColCourseKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from col_course
+    where colc_user = #{colcUser,jdbcType=INTEGER}
+      and colc_course = #{colcCourse,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.ColCourseKey">
+    delete from col_course
+    where colc_user = #{colcUser,jdbcType=INTEGER}
+      and colc_course = #{colcCourse,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.ColCourse">
+    insert into col_course (colc_user, colc_course, colc_date
+      )
+    values (#{colcUser,jdbcType=INTEGER}, #{colcCourse,jdbcType=INTEGER}, #{colcDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.ColCourse">
+    insert into col_course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="colcUser != null">
+        colc_user,
+      </if>
+      <if test="colcCourse != null">
+        colc_course,
+      </if>
+      <if test="colcDate != null">
+        colc_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="colcUser != null">
+        #{colcUser,jdbcType=INTEGER},
+      </if>
+      <if test="colcCourse != null">
+        #{colcCourse,jdbcType=INTEGER},
+      </if>
+      <if test="colcDate != null">
+        #{colcDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.ColCourse">
+    update col_course
+    <set>
+      <if test="colcDate != null">
+        colc_date = #{colcDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where colc_user = #{colcUser,jdbcType=INTEGER}
+      and colc_course = #{colcCourse,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.ColCourse">
+    update col_course
+    set colc_date = #{colcDate,jdbcType=TIMESTAMP}
+    where colc_user = #{colcUser,jdbcType=INTEGER}
+      and colc_course = #{colcCourse,jdbcType=INTEGER}
+  </update>
+
+  <!--自定义SQL-->
+
+  <resultMap id="ColCourseView" type="com.zhiku.view.ColCourseView" extends="BaseResultMap">
+    <result column="completed_section" property="completedSection" javaType="java.lang.Integer"/>
+    <result column="total_section" property="totalSection" javaType="java.lang.Integer"/>
+    <association property="course" resultMap="com.zhiku.mapper.CourseMapper.BaseResultMap"/>
+  </resultMap>
+
+  <select id="selectColCourseView" resultMap="ColCourseView" parameterType="java.lang.Integer">
+    select
+    course.*,col_course.*,count(sid) as total_section,count(distinct schedule_section) as completed_section
+    from  course,col_course , section left join schedule on section.sid = schedule.schedule_section
+    where course.cid = col_course.colc_course and colc_user = #{uid} and col_course.colc_course = section.section_course
+    group by cid
+  </select>
+</mapper>

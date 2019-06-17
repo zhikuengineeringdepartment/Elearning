@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.ActionMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Action">
+    <id column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="action_user" jdbcType="INTEGER" property="actionUser" />
+    <result column="action_date" jdbcType="TIMESTAMP" property="actionDate" />
+    <result column="action_type" jdbcType="CHAR" property="actionType" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.Action">
+    <result column="action_item" jdbcType="LONGVARCHAR" property="actionItem" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    aid, action_user, action_date, action_type
+  </sql>
+  <sql id="Blob_Column_List">
+    action_item
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from action
+    where aid = #{aid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from action
+    where aid = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Action">
+    insert into action (aid, action_user, action_date, 
+      action_type, action_item)
+    values (#{aid,jdbcType=INTEGER}, #{actionUser,jdbcType=INTEGER}, #{actionDate,jdbcType=TIMESTAMP}, 
+      #{actionType,jdbcType=CHAR}, #{actionItem,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Action">
+    insert into action
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="actionUser != null">
+        action_user,
+      </if>
+      <if test="actionDate != null">
+        action_date,
+      </if>
+      <if test="actionType != null">
+        action_type,
+      </if>
+      <if test="actionItem != null">
+        action_item,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="actionUser != null">
+        #{actionUser,jdbcType=INTEGER},
+      </if>
+      <if test="actionDate != null">
+        #{actionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionType != null">
+        #{actionType,jdbcType=CHAR},
+      </if>
+      <if test="actionItem != null">
+        #{actionItem,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Action">
+    update action
+    <set>
+      <if test="actionUser != null">
+        action_user = #{actionUser,jdbcType=INTEGER},
+      </if>
+      <if test="actionDate != null">
+        action_date = #{actionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionType != null">
+        action_type = #{actionType,jdbcType=CHAR},
+      </if>
+      <if test="actionItem != null">
+        action_item = #{actionItem,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.Action">
+    update action
+    set action_user = #{actionUser,jdbcType=INTEGER},
+      action_date = #{actionDate,jdbcType=TIMESTAMP},
+      action_type = #{actionType,jdbcType=CHAR},
+      action_item = #{actionItem,jdbcType=LONGVARCHAR}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Action">
+    update action
+    set action_user = #{actionUser,jdbcType=INTEGER},
+      action_date = #{actionDate,jdbcType=TIMESTAMP},
+      action_type = #{actionType,jdbcType=CHAR}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+</mapper>

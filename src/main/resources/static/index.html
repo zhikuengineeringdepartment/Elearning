@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer" />
+    <script src="common/vue.js"></script>
+    <link rel="stylesheet" href="common/vue-element.css" />
+    <link rel="stylesheet" href="common/main.css" />
+    <link rel="stylesheet" href="common/jquery.Jcrop.css" />
+    <link rel="stylesheet" href="css/markd.css" />
+    <link rel="stylesheet" href="css/change_avatar.css" />
+    <link rel="stylesheet" href="css/cropper.min.css" />
+    <link rel="stylesheet" href="css/font.css" />
+    <link rel="stylesheet" href="css/toTop.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <script src="common/vue.js"></script>
+    <script src="common/vue-router.js"></script>
+    <script src="common/jquery.min.js"></script>
+    <script src="common/jquery.Jcrop.js"></script>
+    <script src="common/vue-element.js"></script>
+    <script src="wangEditor/wangEditor.min.js"></script>
+    <script src="js/date.js"></script>
+    <script src="common/axios.js"></script>
+    <script src="js/cropper.min.js"></script>
+    <script src="js/jquery-cropper.min.js"></script>
+    <script src="js/picCrop.js"></script>
+    <!--引入模块-->
+    <script src="template/activity.js"></script>
+    <script src="template/activity_main.js"></script>
+    <script src="template/col_course_list.js"></script>
+    <script src="template/col_paragraph.js"></script>
+    <script src="template/col_paragraph_list.js"></script>
+    <script src="template/course.js"></script>
+    <script src="template/course_main.js"></script>
+    <script src="template/course_select.js"></script>
+    <script src="template/file.js"></script>
+    <script src="template/file_download_record.js"></script>
+    <script src="template/file_main.js"></script>
+    <script src="template/file_upload_form.js"></script>
+    <script src="template/file_upload_record.js"></script>
+    <script src="template/file_record_list.js"></script>
+    <script src="template/header.js"></script>
+    <script src="template/footer.js"></script>
+    <script src="template/index_main.js"></script>
+    <script src="template/login_registe.js"></script>
+    <script src="template/major.js"></script>
+    <script src="template/message.js"></script>
+    <script src="template/message_list.js"></script>
+    <script src="template/note.js"></script>
+    <script src="template/note_list.js"></script>
+    <script src="template/section.js"></script>
+    <script src="template/section_main.js"></script>
+    <script src="template/tag.js"></script>
+    <script src="template/user_info_form.js"></script>
+    <script src="template/user_main.js"></script>
+
+    <title>zhiku</title>
+    <style>
+        .el-submenu .el-menu-item {
+            height: 50px;
+            line-height: 50px;
+            padding: 0 45px;
+            /* min-width: 200px; */
+            min-width: 0;
+            width: 100%;
+        }
+
+        .pdiv img {
+            max-width: 100%;
+        }
+
+        .image {
+            width: 100%;
+            min-width: 100px;
+        }
+
+        .course-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .el-carousel__item:nth-child(2n) {
+            background-color: #99a9bf;
+        }
+
+        .el-carousel__item:nth-child(2n+1) {
+            background-color: #d3dce6;
+        }
+
+        .w-e-toolbar {
+            flex-wrap: wrap;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="htmlTop"></div>
+    <script src="./js/toTop.js"></script>
+    <script src="./js/marked.min.js"></script>
+    <script src="./js/load_markd.js"></script>
+    <el-container id="root" style="display: flex;flex-direction: column;">
+
+        <!--头部-->
+        <my_header :login="login" :user_icon="user_icon"></my_header>
+        <!--内容-->
+        <router-view v-on:login-state="change_login"></router-view>
+        <a class="toTop" href="#htmlTop">
+            <img class="topImg" src="img/toTop.png">
+            <div class="hoverText">
+                <span>
+                    返回<br>顶部
+                </span>
+            </div>
+        </a>
+        <!--foot-->
+        <my_footer></my_footer>
+    </el-container>
+</body>
+<script>
+    //配置路由
+    const routes = [{
+            path: '/',
+            component: courseMainModule
+        },
+        {
+            path: '/aboutIdea',
+            component: indexMainModule
+        },
+        {
+            path: '/login',
+            component: loginRegisteModule
+        },
+        {
+            path: '/registe',
+            component: loginRegisteModule
+        },
+        {
+            path: '/user/info',
+            component: userMainModule,
+            children: [{
+                    path: "/",
+                    component: userInfoFormModule
+                },
+                {
+                    path: 'infoform',
+                    component: userInfoFormModule
+                },
+                {
+                    path: 'file_upload_record/:is_upload_page',
+                    component: fileRecordListModule,
+                    props: true
+                },
+                {
+                    path: 'course_list',
+                    component: colCourseListModule
+                },
+                {
+                    path: 'message_list',
+                    component: messageListModule
+                },
+                {
+                    path: 'col_paragraph',
+                    component: colParagraphListModule
+                },
+                {
+                    path: 'note',
+                    component: noteListModule
+                }
+            ]
+        },
+        // { path: '/courseMain',component: courseMainModule},
+        {
+            path: '/course/details/:cid/:sid',
+            component: sectionMainModule
+        },
+        {
+            path: '/fileMain',
+            component: fileMainModule
+        },
+        {
+            path: '/fileMain/a',
+            component: fileMainModule
+        },
+        {
+            path: '/fileUpload',
+            component: fileUploadFormModule
+        },
+        {
+            path: '/activity',
+            component: activityMainModule
+        }
+    ]
+
+    // 3. 创建 router 实例，然后传 `routes` 配置
+    // 你还可以传别的配置参数, 不过先这么简单着吧。
+    const router = new VueRouter({
+        routes: routes // (缩写) 相当于 routes: routes
+    })
+
+    // 4. 创建和挂载根实例。
+    // 记得要通过 router 配置参数注入路由，
+    // 从而让整个应用都有路由功能
+
+    var root = new Vue({
+        router,
+        el: "#root",
+        data: {
+            login: false,
+            user_icon: ''
+        },
+        created: function () {
+            this.check_login();
+        },
+        watch: {
+            login: function () {
+                this.user_icon = localStorage['user_icon']
+            }
+        },
+        methods: {
+            change_login: function () {
+                this.login = true;
+            },
+            check_login: function () {
+                var token = this.getCookie("token")
+                if (token != '') {
+                    this.login = true;
+                } else {
+                    this.login = false;
+                }
+            },
+            getCookie(name) {
+                var value = ''
+                var cookies = document.cookie.split(';')
+                var ck;
+                for (var i = 0; i < cookies.length; i++) {
+                    ck = cookies[i].split('=')
+                    if (ck[0] == name) {
+                        value = ck[1]
+                    }
+                }
+                return value;
+            }
+        }
+    }).$mount('#root')
+</script>
+
+</html>

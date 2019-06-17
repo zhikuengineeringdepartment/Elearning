@@ -1,0 +1,39 @@
+basePath_upload: "unknow"
+basePath_preview: "unknow"
+max_size: 100000000
+type_reg: "pptx?|docx?|pdf"
+spring:
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: m17864154913@163.com
+    password: forxkasake78647
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+      imap:
+        ssl:
+          socketFactory:
+            fallback: false
+  datasource:
+    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8
+    username: root
+    password: Zhiku_123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    view:
+      prefix:
+      suffix: .html
+  freemarker:
+    template-loader-path: classpath:/freemarker/
+mybatis:
+  type-aliases-package: com.zhiku.entity
+  mapper-locations: com/zhiku/mapper/*.xml
+server:
+  port: 10234
+logging:
+  level:
+    com.zhiku.*: debug

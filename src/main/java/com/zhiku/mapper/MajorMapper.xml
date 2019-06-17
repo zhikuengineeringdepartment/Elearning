@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.MajorMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Major">
+    <id column="major_id" jdbcType="INTEGER" property="majorId" />
+    <result column="major_name" jdbcType="VARCHAR" property="majorName" />
+    <result column="major_college" jdbcType="INTEGER" property="majorCollege" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    major_id, major_name, major_college
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from major
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from major
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Major">
+    insert into major (major_id, major_name, major_college
+      )
+    values (#{majorId,jdbcType=INTEGER}, #{majorName,jdbcType=VARCHAR}, #{majorCollege,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Major">
+    insert into major
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="majorId != null">
+        major_id,
+      </if>
+      <if test="majorName != null">
+        major_name,
+      </if>
+      <if test="majorCollege != null">
+        major_college,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="majorId != null">
+        #{majorId,jdbcType=INTEGER},
+      </if>
+      <if test="majorName != null">
+        #{majorName,jdbcType=VARCHAR},
+      </if>
+      <if test="majorCollege != null">
+        #{majorCollege,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Major">
+    update major
+    <set>
+      <if test="majorName != null">
+        major_name = #{majorName,jdbcType=VARCHAR},
+      </if>
+      <if test="majorCollege != null">
+        major_college = #{majorCollege,jdbcType=INTEGER},
+      </if>
+    </set>
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Major">
+    update major
+    set major_name = #{majorName,jdbcType=VARCHAR},
+      major_college = #{majorCollege,jdbcType=INTEGER}
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </update>
+
+  <!--自定义SQL-->
+  <select id="selectAllMajors" resultMap="BaseResultMap">
+    select * from major
+  </select>
+</mapper>

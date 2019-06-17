@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <!--<Console name="File" target="#">-->
+            <!--<PatternLayout pattern="%d{YYYY:MM:DD,HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>-->
+        <!--</Console>-->
+    </Appenders>
+    <Loggers>
+        <Logger name="com.zhiku.mapper" level="INFO"/>
+        <Root level="DEBUG">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
