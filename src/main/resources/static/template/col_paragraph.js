@@ -5,7 +5,7 @@ var colParagraphTemplate = `
 <el-card shadow="hover" style="margin: 10px 0px">
     <div>
         <h3>{{col_paragraph.sectionName}}</h3>
-        <div :id="col_paragraph_content"></div>
+        <div :id="col_paragraph_content" class="col_div"></div>
         <div>
             <router-link :to="toAddress"><span style="margin-right: 10px">{{col_paragraph.courseName}}</span></router-link>
             <span style="margin-right: 10px">{{col_paragraph.colCount}}</span>

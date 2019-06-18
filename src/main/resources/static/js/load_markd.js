@@ -167,6 +167,9 @@ function createNote(id, saveF, content) {
      * wangEditor自带的onblur只是手动获取焦点的情况有效
      * js原生的'blur'可以,但是会在点击菜单时候也失焦
      */
+
+
+
     editor.customConfig.onblur = function () {
         editor.customConfig.hasOnBlur = 1;
         let html = editor.txt.html();
@@ -208,7 +211,7 @@ function createNote(id, saveF, content) {
     document.activeElement.blur();
 
     document.getElementById('_' + id + '_notes').children[0].dataset.placeholder="My Note:";
-
+    $('.w-e-menu').css('z-index','auto');
     //console.log(document.activeElement);
 
     // 执行代码
