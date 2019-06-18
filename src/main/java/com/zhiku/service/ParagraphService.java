@@ -37,8 +37,9 @@ public class ParagraphService {
      * @param uid 用户名
      * @return
      */
-    public List<ColParagraphView> getColParagraphViews(int uid){
-        return colParagraphMapper.selectParagraphView(uid);
+    public List<ColParagraphView> getColParagraphViews( Integer uid, Integer cid,Integer ordtime, Integer page,Integer pagesize){
+//        return colParagraphMapper.selectParagraphView(uid);
+        return colParagraphMapper.selectParagraphViewByWhere(uid,cid,ordtime,page,pagesize);
     }
 
     /**

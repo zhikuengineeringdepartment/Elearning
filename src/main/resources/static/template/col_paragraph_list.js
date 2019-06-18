@@ -3,6 +3,8 @@
  */
 var colParagraphListTemplate = `
 <div>
+                        <my_course_select v-on:get-course-value="set_course_value"></my_course_select>
+
     <ul>
         <template v-for="(col_paragraph,index) in col_paragraph_views" >
             <li style="list-style: none">
@@ -16,6 +18,7 @@ var colParagraphListTemplate = `
 var colParagraphListModule = {
     data:function () {
         return{
+            Course:null,
             col_paragraph_views:[
                 // {
                 //     sectionName:"第一节",
@@ -44,12 +47,16 @@ var colParagraphListModule = {
         this.getColParagraphViews();
     },
     methods:{
+        set_course_value:function(cid){
+                    this.Course = cid;
+            this.getColParagraphViews();
+        },
         getColParagraphViews:function () {
             var _this = this;
             axios.get("paragraph/getColParagraphViews",{
                 params:{
                     uid:0,
-                    cid:100,
+                    cid:_this.Course,
                     page:1
                 },
                 withCredentials:true
