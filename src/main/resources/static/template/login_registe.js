@@ -21,7 +21,7 @@ var loginRegisteTemplate = `
                                 </el-input>
                             </el-form-item>
                             <el-form-item label="密码">
-                                <el-input placeholder="请输入密码" v-model="loginForm.password" type="password"></el-input>
+                                <el-input placeholder="请输入密码" prefix-icon="el-icon-info" v-model="loginForm.password" type="password"></el-input>
                             </el-form-item>
                             <el-button type="primary" round @click="handleLogin">登录</el-button>
                         </el-form>
