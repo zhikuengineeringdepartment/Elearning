@@ -24,7 +24,7 @@ var messageListModule = {
     props:[],
     template: messageListTemplate,
     created:function(){
-        this.getMessages();
+        //this.getMessages();
     },
     methods:{
         getMessages:function(){

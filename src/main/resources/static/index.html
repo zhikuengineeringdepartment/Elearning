@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="no-referrer" />
-    <script src="common/vue.js"></script>
-    <link rel="stylesheet" href="common/vue-element.css" />
+    <!--<link rel="stylesheet" href="common/vue-element.css" />-->
     <link rel="stylesheet" href="common/main.css" />
     <link rel="stylesheet" href="common/jquery.Jcrop.css" />
     <link rel="stylesheet" href="css/markd.css" />
@@ -18,13 +17,18 @@
     <script src="common/vue-router.js"></script>
     <script src="common/jquery.min.js"></script>
     <script src="common/jquery.Jcrop.js"></script>
-    <script src="common/vue-element.js"></script>
+    <!--<script src="common/vue-element.js"></script>-->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.9.1/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.9.1/lib/index.js"></script>
     <script src="wangEditor/wangEditor.min.js"></script>
     <script src="js/date.js"></script>
     <script src="common/axios.js"></script>
     <script src="js/cropper.min.js"></script>
     <script src="js/jquery-cropper.min.js"></script>
     <script src="js/picCrop.js"></script>
+
     <!--引入模块-->
     <script src="template/activity.js"></script>
     <script src="template/activity_main.js"></script>
@@ -57,6 +61,12 @@
 
     <title>zhiku</title>
     <style>
+        @font-face {
+            font-family: element-icons;
+            src: url('common/fonts/element-icons.woff') format('woff'), url('common/fonts/element-icons.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal
+        }
         .el-submenu .el-menu-item {
             height: 50px;
             line-height: 50px;

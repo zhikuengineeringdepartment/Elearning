@@ -10,7 +10,7 @@ var sectionModule = {
 
         }
     },
-    props:["sectionView","noteViews"],
+    props:["sectionView","noteViews","colParas"],
     template: sectionTemplate,
     watch: {
         sectionView: function (newSection,oldSection) {
@@ -28,6 +28,10 @@ var sectionModule = {
             load_array(_this.noteViews,function(pid,noteContent){
                 _this.handleNoteParagraph(pid,noteContent)
             })
+        },
+        colParas:function (newcp,oldcp) {
+            var _this = this;
+            load_colArray(this.colParas);
         }
     },
     methods:{
@@ -79,7 +83,27 @@ var sectionModule = {
                 });
         },
         handleCancelCol(pid){
-            console.log(pid)
+            axios.post('paragraph/removeColParagraph',{
+                uid:0,
+                paragraphSeq:parseInt(pid)
+            },{
+                transformRequest: [
+                    function(data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                        }
+                        return ret;
+                    }
+                ],
+                withCredentials:true
+            })
+                .then(function(res){
+                    console.log(res);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         }
     }
 }

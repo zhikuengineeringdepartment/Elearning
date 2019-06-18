@@ -16,9 +16,7 @@ let userMainTemplate = `
                             <el-menu-item index="2" :route="{path:'/user/info/message_list'}">
                                 <i class="el-icon-message" style="order: 1;"></i>
                                 <span slot="title" style="order: 2;">消息通知</span>
-                                <el-badge :value="12" class="item" style="order:3;float:right">
-
-                                </el-badge>
+                               
                             </el-menu-item>
                             <el-submenu index="3">
                                 <template slot="title">

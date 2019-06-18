@@ -136,6 +136,19 @@ function load_array(arr, saveFunc) {
     document.activeElement.blur();
 }
 
+function load_colArray(arr){
+    for(let i=0;i<arr.length;i++){
+        //加载页面时向用户显示该部分是否已经收藏
+        //arr[i].paragraphSeq
+        collected(arr[i].paragraphSeq);
+    }
+}
+
+function collected(id){
+    $('#'+id+'_Cbutton').text("取消");
+}
+
+
 function createNote(id, saveF, content) {
     //$('#'+id).after('<textarea class="input_notes" id='+id+'_notes></textarea>');
     $('#' + id).after('<div id=' + id + '_editor class=notes_editor></div>');

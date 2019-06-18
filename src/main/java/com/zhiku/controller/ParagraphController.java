@@ -5,6 +5,7 @@ import com.zhiku.entity.Note;
 import com.zhiku.entity.User;
 import com.zhiku.service.ParagraphService;
 import com.zhiku.util.ResponseData;
+import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import com.zhiku.view.NoteView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,10 @@ public class ParagraphController {
      * @return 返回收藏段落列表
      */
     @ResponseBody
-    @RequestMapping(value = "getColParagraphBySid" ,method = RequestMethod.GET)
+    @RequestMapping(value = "getColParagraphBySid" ,method = RequestMethod.POST)
     public ResponseData getColParagraphBySid(User user, int sid){
         ResponseData responseData = null;
-        List<ColParagraph> colParagraphList = paragraphService.getColParagraphs(user.getUid(),sid);
+        List<ColParagraphSectionView> colParagraphList = paragraphService.getColParagraphs(user.getUid(),sid);
         responseData = ResponseData.ok();
         responseData.putDataValue("colParagraphList",colParagraphList);
         return responseData;
@@ -60,14 +61,14 @@ public class ParagraphController {
     /**
      * 移除收藏的段落
      * @param user 用户
-     * @param pid 段落id
+     * @param paragraphSeq 段落序列
      * @return 是否移除成功
      */
     @ResponseBody
     @RequestMapping("removeColParagraph")
-    public ResponseData removeColParagraph(User user, int pid){
+    public ResponseData removeColParagraph(User user, int paragraphSeq){
         ResponseData responseData = null;
-        if(paragraphService.removeColParagraph(user.getUid(), pid)){
+        if(paragraphService.removeColParagraph(user.getUid(), paragraphSeq)){
             responseData = ResponseData.ok();
         }else{
             responseData = ResponseData.serverInternalError();
