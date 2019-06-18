@@ -44,7 +44,7 @@ let sectionMainTemplate = `
                         </template>
                     </div>
                 </div>
-                <my_section :sectionView="sectionView" :noteViews="noteViews"></my_section>
+                <my_section :sectionView="sectionView" :noteViews="noteViews" :colParas="colParas"></my_section>
                 <div style="display: flex;justify-content: space-between">
                     <div>
                         <template v-if="side.preSection !== ''">
@@ -150,7 +150,8 @@ var sectionMainModule = {
                     }
                 ]
             },
-            noteViews:[]
+            noteViews:[],
+            colParas:[]
         }
     },
     props:['cid','sid'],
@@ -158,7 +159,7 @@ var sectionMainModule = {
     created:function(){
         this.getCourseView(this.$route.params.cid);
         this.getSectionView(this.$route.params.sid);
-
+        this.getColParas(this.$route.params.sid);
         this.getCsdn(this.$route.params.sid);
     },
     methods:{
@@ -204,6 +205,7 @@ var sectionMainModule = {
         handleMenu(sid){
             this.$router.push(''+sid);
             this.getSectionView(sid);
+            this.getColParas(sid);
             this.getCsdn(sid);
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         },
@@ -303,6 +305,31 @@ var sectionMainModule = {
                 .then(function(response){
                     _this.csdn = response.data.data.csdn;
                     console.log(_this.csdn)
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+        },
+        getColParas:function(sid){
+            var _this = this;
+            axios.post('paragraph/getColParagraphBySid',{
+                uid:0,
+                sid:sid
+            },{
+                transformRequest: [
+                    function(data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                        }
+                        return ret;
+                    }
+                ],
+                withCredentials:true
+            })
+                .then(function(res){
+                    console.log(res.data.data.colParagraphList);
+                    _this.colParas = res.data.data.colParagraphList;
                 })
                 .catch(function(err){
                     console.log(err);

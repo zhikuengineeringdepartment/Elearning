@@ -2,6 +2,7 @@ package com.zhiku.mapper;
 
 import com.zhiku.entity.ColParagraph;
 import com.zhiku.entity.ColParagraphKey;
+import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public interface ColParagraphMapper {
 
     int updateByPrimaryKey(ColParagraph record);
 
-    List<ColParagraph> selectBySid(@Param("uid") int uid, @Param("sid") int sid);
+    List<ColParagraphSectionView> selectBySid(@Param("uid") int uid, @Param("sid") int sid);
 
     List<ColParagraphView> selectParagraphView(int uid);
 }

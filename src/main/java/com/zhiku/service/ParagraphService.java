@@ -4,6 +4,7 @@ import com.zhiku.entity.*;
 import com.zhiku.mapper.ColParagraphMapper;
 import com.zhiku.mapper.NoteMapper;
 import com.zhiku.mapper.ParagraphMapper;
+import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import com.zhiku.view.NoteView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ParagraphService {
      * @param sid 节号
      * @return 一个收藏段落的列表
      */
-    public List<ColParagraph> getColParagraphs(int uid,int sid){
+    public List<ColParagraphSectionView> getColParagraphs(int uid, int sid){
         return colParagraphMapper.selectBySid(uid,sid);
     }
 
@@ -62,13 +63,14 @@ public class ParagraphService {
     /**
      * 删除一个收藏的段落
      * @param uid
-     * @param pid
+     * @param paragraphSeq
      * @return
      */
-    public boolean removeColParagraph(int uid,int pid){
+    public boolean removeColParagraph(int uid,int paragraphSeq){
         ColParagraphKey colParagraphKey = new ColParagraphKey();
+        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
         colParagraphKey.setColpUser(uid);
-        colParagraphKey.setColpPara(pid);
+        colParagraphKey.setColpPara(paragraph.getPid());
         if(colParagraphMapper.deleteByPrimaryKey(colParagraphKey)>0){
             return true;
         }else {
