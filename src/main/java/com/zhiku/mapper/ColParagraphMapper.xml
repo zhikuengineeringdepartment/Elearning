@@ -97,8 +97,28 @@
   <select id="selectParagraphView" parameterType="java.lang.Integer" resultMap="ColParagraphView">
     select *
     from col_paragraph,paragraph,course
-    where colp_user = 10005
+    where colp_user = #{uid}
       and colp_para = pid
       and paragraph.paragraph_seq div 10000000 = course.cid
+  </select>
+
+  <select id="selectParagraphViewByWhere" resultMap="ColParagraphView">
+    select *
+    from col_paragraph,paragraph,course
+    where colp_user = #{uid}
+      and colp_para = pid
+      and paragraph.paragraph_seq div 10000000 = course.cid
+    <if test="cid != null">
+      and course.cid=#{cid,jdbcType=INTEGER}
+    </if>
+    <if test="ordtime != 0">
+      ORDER BY colp_date
+    </if>
+    <if test="ordtime > 0" >
+      desc
+    </if>
+    <if test="page != null and page > 0 and pagesize !=null and pagesize > 0">
+      limit #{page,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </if>
   </select>
 </mapper>
