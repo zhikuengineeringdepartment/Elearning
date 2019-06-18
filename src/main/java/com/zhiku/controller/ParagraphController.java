@@ -89,16 +89,16 @@ public class ParagraphController {
     @ResponseBody
     @RequestMapping(value = "getColParagraphViews",method = RequestMethod.GET)
     public ResponseData getColParagraphViews(User user, Integer cid, Integer page){
-        //todo:删除
-        System.out.println("查询课程："+cid);////////////////
+//        //todo:删除下面测试
+//        System.out.println("查询课程："+cid);////////////////
         ResponseData responseData = null;
         List<ColParagraphView> colParagraphViews = paragraphService.getColParagraphViews(user.getUid(),cid,1,page,null);
         responseData = ResponseData.ok();
         responseData.putDataValue("colParagraphViews",colParagraphViews);
-        //todo:删除
-        for(ColParagraphView cpv:colParagraphViews){
-            System.out.println("查询段落："+cpv.getCourseName()+"|||"+cpv.getParagraphContent());////////////////
-        }
+//        //todo:删除下面测试
+//        for(ColParagraphView cpv:colParagraphViews){
+//            System.out.println("查询段落："+cpv.getCourseName()+"|||"+cpv.getParagraphContent());////////////////
+//        }
 
         return responseData;
     }
