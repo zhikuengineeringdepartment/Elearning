@@ -66,6 +66,11 @@ var activityMainModule = {
                     title: "卷积卷积卷积，卷积都被用在哪？ | 山软方向谈",
                     img: "img/img_10.JPG",
                     link: "https://mp.weixin.qq.com/s/omF1qkfJas7_o21aciDTPQ"
+                },
+                {
+                    title: "镜子对面那位，你是谁？ | Sharing Secrets",
+                    img: "img/img_11.JPG",
+                    link: "https://mp.weixin.qq.com/s/lktXllRr5F4_Ds2jhpUj2Q"
                 }
             ]
         }
