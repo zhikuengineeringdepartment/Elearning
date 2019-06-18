@@ -15,8 +15,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.beans.Transient;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +32,10 @@ public class UserService {
     private MessageMapper messageMapper;
     @Autowired
     private FileopMapper fileopMapper;
+    @Autowired
+    JavaMailSender javaMailSender;
+    @Autowired
+    Configuration freemarkerConfig;
     private EmailUtil emailUtil = new EmailUtil();
 
     /**
@@ -126,7 +133,16 @@ public class UserService {
         userMapper.updateByPrimaryKeySelective(user);
     }
 
-    public void sendEmail(JavaMailSender javaMailSender, String username, String email, String act, Configuration freemarkerConfig){
+    /**
+     * 发邮件，异常不处理，抛到上一层
+     * @param javaMailSender
+     * @param username
+     * @param email
+     * @param act
+     * @param freemarkerConfig
+     * @throws MessagingException
+     */
+    public void sendEmail(JavaMailSender javaMailSender, String username, String email, String act, Configuration freemarkerConfig) throws MessagingException {
         User user = userMapper.selectByUsername(username);
         emailUtil.sendMail(javaMailSender,act,user,"智库邮件",email,freemarkerConfig);
     }
@@ -183,4 +199,17 @@ public class UserService {
         return userMapper.selectBaseInfo(uid);
     }
 
+    /**
+     * 插入数据库记录和发邮件，事务
+     * 发生问题会抛出异常，抛出异常会回滚
+     * @param username
+     * @param password
+     * @param email
+     * @param request
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void registeUserAndSendEmail(String username,String password,String email,HttpServletRequest request) throws MessagingException {
+        registeUser(username,password,email,request);
+        sendEmail(javaMailSender,username,email,"active",freemarkerConfig);
+    }
 }

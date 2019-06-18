@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,10 +75,25 @@ public class UserController {
                 responseData = ResponseData.badRequest();
                 responseData.setMessage("邮箱重复");
             }catch (UserNotFoundException e){
-                if(userService.registeUser(username,password,email,request)){
-                    userService.sendEmail(javaMailSender,username,email,"active",freemarkerConfig);
+
+                //if(userService.registeUser(username,password,email,request)){
+                //    userService.sendEmail(javaMailSender,username,email,"active",freemarkerConfig);
+                //    responseData = ResponseData.ok();
+                //}else{
+                //    responseData = ResponseData.badRequest();
+                //    responseData.setMessage("发生了一个预期之外的错误");
+                //}
+
+                // 将插入记录和发邮件写成事务
+                try {
+                    userService.registeUserAndSendEmail(username,password,email,request);
+                    //发生异常就不会执行这一句
+                    System.out.println("邮件发送成功");
                     responseData = ResponseData.ok();
-                }else{
+                }
+                catch (Exception ex){
+                    System.out.println("邮件发送失败");
+                    ex.printStackTrace();
                     responseData = ResponseData.badRequest();
                     responseData.setMessage("发生了一个预期之外的错误");
                 }
@@ -189,6 +205,8 @@ public class UserController {
         }catch (UserNotFoundException e){
             responseData = ResponseData.badRequest();
             responseData.setMessage("邮箱不存在");
+        } catch (MessagingException e) {
+            e.printStackTrace();
         }
         return responseData;
     }

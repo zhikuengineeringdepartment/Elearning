@@ -19,12 +19,23 @@ public class EmailUtil {
 
     private final String from = "m17864154913@163.com";
 
-    public String sendMail(JavaMailSender javaMailSender, String act, User user, String subject, String emailAdress, Configuration freemarkerConfig) {
+    /**
+     * 发邮件的异常不处理，抛出到上一层
+     * @param javaMailSender
+     * @param act
+     * @param user
+     * @param subject
+     * @param emailAdress
+     * @param freemarkerConfig
+     * @return
+     * @throws MessagingException
+     */
+    public String sendMail(JavaMailSender javaMailSender, String act, User user, String subject, String emailAdress, Configuration freemarkerConfig) throws MessagingException {
         MimeMessage mMessage = javaMailSender.createMimeMessage();// 创建邮件对象
         MimeMessageHelper mMessageHelper;
 //        Properties prop = new Properties();
         String text = getText(freemarkerConfig,act,user);
-        try {
+        //try {
 //            prop.load(this.getClass().getResourceAsStream("/mail.properties"));
 //            String from = prop.get("mail.smtp.username") + "";
             mMessageHelper = new MimeMessageHelper(mMessage, false, "UTF-8");
@@ -39,12 +50,12 @@ public class EmailUtil {
 
 
             javaMailSender.send(mMessage);// 发送邮件
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }catch (MailSendException mse){
-            mse.printStackTrace();
-            //抛出邮件异常
-        }
+        //} catch (MessagingException e) {
+        //    e.printStackTrace();
+        //}catch (MailSendException mse){
+        //    mse.printStackTrace();
+        //    //抛出邮件异常
+        //}
         return "发送成功";
     }
 
