@@ -96,9 +96,9 @@ public class FileService{
         String newFileName = makeFileName(multipartFile.getOriginalFilename());
         String realPath = path + java.io.File.separator + newFileName;
         System.out.println(realPath);
-        if(storeFileToSys(multipartFile,realPath)){
-            file.setFilePath(realPath);
-            storeFileToDB(multipartFile,file,user);
+        file.setFilePath(realPath);
+        if(storeFileToDB(multipartFile,file,user)){
+            storeFileToSys(multipartFile,realPath);
             try {
                 file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
                 fileKeys.setFid(file.getFid());
