@@ -138,6 +138,7 @@ public class UserController {
                     try{
                         String token = JWTUtil.signToken(user);
                         Cookie cookie = new Cookie("token",token);
+                        cookie.setMaxAge(3*60*60);
                         cookie.setPath("/");
                         response.addCookie(cookie);
                         responseData.putDataValue("userIcon",user.getUserAvatar());
