@@ -2,7 +2,6 @@ basePath_upload: "unknow"
 basePath_preview: "unknow"
 max_size: 100000000
 type_reg: "pptx?|docx?|pdf"
-
 spring:
   mail:
     host: smtp.163.com
@@ -26,6 +25,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   freemarker:
     template-loader-path: classpath:/freemarker/
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+      location: /var/zhiku/temp
 mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
