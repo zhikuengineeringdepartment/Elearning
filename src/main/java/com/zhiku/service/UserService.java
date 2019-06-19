@@ -106,6 +106,7 @@ public class UserService {
         user.setUserNick(username);
         user.setUserAuth("u");      //设置权限为user
         user.setUserGender("u");    //设置性别为unknown
+        user.setUserAvatar("img/default.png");
         user.setUserLastip(request.getRemoteAddr());
         Date current = new Date();
         Calendar calendar = Calendar.getInstance();

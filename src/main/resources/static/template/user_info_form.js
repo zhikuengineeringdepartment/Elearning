@@ -125,6 +125,8 @@ var userInfoFormModule = {
                 this.baseInfo.userAvatar = base64;
                 // $("#user_avatar").prop("src", base64);// 显示图片
                 // uploadFile(encodeURIComponent(base64))//编码后上传服务器
+                console.log(base64);
+                this.modifyAvatar(base64)
                 closeTailor();// 关闭裁剪框
 
             }
@@ -136,6 +138,31 @@ var userInfoFormModule = {
         },
         closeX:function () {
             closeTailor();
+        },
+        modifyAvatar:function (avatar) {
+            var _this = this;
+            axios.post('user/modifyAvatar',{
+                uid:0,
+                avatar:avatar
+            },{
+                transformRequest: [
+                    function(data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                        }
+                        return ret;
+                    }
+                ],
+                withCredentials:true
+            })
+                .then(function(res){
+                    localStorage['user_icon'] = avatar;
+                    console.log(res);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         }
     },
 

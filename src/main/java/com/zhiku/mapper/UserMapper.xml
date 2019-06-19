@@ -6,7 +6,7 @@
     <result column="user_username" jdbcType="VARCHAR" property="userUsername" />
     <result column="user_nick" jdbcType="VARCHAR" property="userNick" />
     <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
-    <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
+    <result column="user_avatar" jdbcType="LONGVARCHAR" property="userAvatar" />
     <result column="user_sign" jdbcType="VARCHAR" property="userSign" />
     <result column="user_gender" jdbcType="CHAR" property="userGender" />
     <result column="user_coin" jdbcType="INTEGER" property="userCoin" />
@@ -51,7 +51,7 @@
       user_lastip, user_mailtime, user_upload_count, 
       user_download_count)
     values (#{uid,jdbcType=INTEGER}, #{userUsername,jdbcType=VARCHAR}, #{userNick,jdbcType=VARCHAR}, 
-      #{userPassword,jdbcType=VARCHAR}, #{userAvatar,jdbcType=VARCHAR}, #{userSign,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userAvatar,jdbcType=LONGVARCHAR}, #{userSign,jdbcType=VARCHAR},
       #{userGender,jdbcType=CHAR}, #{userCoin,jdbcType=INTEGER}, #{userEmail,jdbcType=VARCHAR}, 
       #{userPhone,jdbcType=VARCHAR}, #{userQq,jdbcType=VARCHAR}, #{userCollege,jdbcType=INTEGER}, 
       #{userMajor,jdbcType=INTEGER}, #{userAuth,jdbcType=CHAR}, #{userStatus,jdbcType=CHAR}, 
@@ -211,7 +211,7 @@
         user_password = #{userPassword,jdbcType=VARCHAR},
       </if>
       <if test="userAvatar != null">
-        user_avatar = #{userAvatar,jdbcType=VARCHAR},
+        user_avatar = #{userAvatar,jdbcType=LONGVARCHAR},
       </if>
       <if test="userSign != null">
         user_sign = #{userSign,jdbcType=VARCHAR},
@@ -272,7 +272,7 @@
     set user_username = #{userUsername,jdbcType=VARCHAR},
       user_nick = #{userNick,jdbcType=VARCHAR},
       user_password = #{userPassword,jdbcType=VARCHAR},
-      user_avatar = #{userAvatar,jdbcType=VARCHAR},
+      user_avatar = #{userAvatar,jdbcType=LONGVARCHAR},
       user_sign = #{userSign,jdbcType=VARCHAR},
       user_gender = #{userGender,jdbcType=CHAR},
       user_coin = #{userCoin,jdbcType=INTEGER},
@@ -298,7 +298,7 @@
     <id column="uid" jdbcType="INTEGER" property="uid" />
     <result column="user_username" jdbcType="VARCHAR" property="userUsername" />
     <result column="user_nick" jdbcType="VARCHAR" property="userNick" />
-    <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
+    <result column="user_avatar" jdbcType="LONGVARCHAR" property="userAvatar" />
     <result column="user_sign" jdbcType="VARCHAR" property="userSign" />
     <result column="user_gender" jdbcType="CHAR" property="userGender" />
     <result column="user_coin" jdbcType="INTEGER" property="userCoin" />

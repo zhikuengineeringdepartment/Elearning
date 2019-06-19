@@ -382,6 +382,17 @@ public class UserController {
         return responseData;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "modifyAvatar",method = RequestMethod.POST)
+    public ResponseData modifyAvatar(User user,String avatar){
+        ResponseData responseData = null;
+        User u = userService.getUserById(user.getUid());
+        u.setUserAvatar(avatar);
+        userService.saveUser(u);
+        responseData = ResponseData.ok();
+        return responseData;
+    }
+
 
     public String redirectToActivePage(){
         return "/pages/active.html";

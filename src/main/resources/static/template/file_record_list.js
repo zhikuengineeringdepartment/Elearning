@@ -66,10 +66,12 @@ var fileRecordListModule = {
                     _this.file_upload_records = response.data.data.fileUploadRecords;
                     for(var i=0;i<_this.file_upload_records.length;i++){
                         _this.file_upload_records[i].fileUploadTime = getFormatDate(response.data.data.fileUploadRecords[i].fileUploadTime);
-                        if(response.data.data.fileUploadRecords[i].fileStatus === 'n'){
+                        if(response.data.data.fileUploadRecords[i].fileStatus == 'n'){
                             _this.file_upload_records[i].fileStatus = '正常'
-                        }else if(response.data.data.fileUploadRecords[i].fileStatus === 'f'){
+                        }else if(response.data.data.fileUploadRecords[i].fileStatus == 'f'){
                             _this.file_upload_records[i].fileStatus = '封禁'
+                        }else if(response.data.data.fileUploadRecords[i].fileStatus == 'u'){
+                            _this.file_upload_records[i].fileStatus = '待审核'
                         }else{
                             _this.file_upload_records[i].fileStatus = '异常'
                         }
