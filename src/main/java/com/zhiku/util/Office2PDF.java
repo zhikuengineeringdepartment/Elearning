@@ -114,7 +114,7 @@ public class Office2PDF {
      */
     public static String getOutputFilePath(String inputFilePath) {
         String file_name = inputFilePath.substring(inputFilePath.lastIndexOf(java.io.File.separator)+1,inputFilePath.lastIndexOf("."));
-        String outputFilePath = "/zhiku/preview/" + file_name + ".pdf";
+        String outputFilePath = "/var/zhiku/" + file_name + ".pdf";
         return outputFilePath;
     }
 
