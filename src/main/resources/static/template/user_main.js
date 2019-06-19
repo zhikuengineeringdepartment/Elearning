@@ -31,13 +31,13 @@ let userMainTemplate = `
                                     <i class="el-icon-star-on"></i>
                                     <span>学习记录</span>
                                 </template>
-                                <el-menu-item index='/user/info/course_list' :route="{path:'/user/info/course_list'}">收藏的课程</el-menu-item>
+                                <!--<el-menu-item index='/user/info/course_list' :route="{path:'/user/info/course_list'}">收藏的课程</el-menu-item>-->
                                 <el-menu-item index='/user/info/col_paragraph' :route="{path:'/user/info/col_paragraph'}">收藏的段落</el-menu-item>
                             </el-submenu>
-                            <el-menu-item index='/user/info/note' :route="{path:'/user/info/note'}">
-                                <i class="el-icon-edit-outline"></i>
-                                <span slot="title">个人笔记</span>
-                            </el-menu-item>
+                            <!--<el-menu-item index='/user/info/note' :route="{path:'/user/info/note'}">-->
+                                <!--<i class="el-icon-edit-outline"></i>-->
+                                <!--<span slot="title">个人笔记</span>-->
+                            <!--</el-menu-item>-->
                         </el-menu>
                     </el-col>
                 </el-row>

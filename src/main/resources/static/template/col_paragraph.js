@@ -9,7 +9,7 @@ var colParagraphTemplate = `
         <div>
             <router-link :to="toAddress"><span style="margin-right: 10px">{{col_paragraph.courseName}}</span></router-link>
             <span style="margin-right: 10px">{{col_paragraph.colCount}}</span>
-            <span style="margin-right: 10px">取消收藏</span>
+            <!--<span style="margin-right: 10px">取消收藏</span>-->
         </div>
     </div>
 </el-card>

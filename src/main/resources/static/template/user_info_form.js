@@ -37,17 +37,17 @@ var userInfoFormTemplate = `
                     <el-form-item label="用户邮箱" style="display: flex;align-items: center;margin-left: 0">
                         <div  style="display: flex;align-items: center;margin-left:-80px" >
                             <el-input v-model="baseInfo.userEmail" disabled></el-input>
-                            <el-button type="primary" size="small" round style="margin: 20px;">更换邮箱绑定</el-button>
+                            <el-button type="primary" size="small" round disabled style="margin: 20px;">更换邮箱绑定</el-button>
                         </div>
                     </el-form-item>
                     <el-form-item label="手机号">
                         <el-input v-model="baseInfo.userPhone"></el-input>
                     </el-form-item>
-                    <el-form-item label="所属专业">
-                        <el-cascader :options="colleges" :props="college_major" change-on-select></el-cascader>
-                    </el-form-item>
+                    <!--<el-form-item label="所属专业">-->
+                        <!--<el-cascader :options="colleges" :props="college_major" change-on-select></el-cascader>-->
+                    <!--</el-form-item>-->
                     <el-form-item label="密码" style="display: flex;align-items: center;">
-                        <el-button type="primary" size="small" round style="margin: -80px;">修改密码</el-button>
+                        <el-button type="primary" size="small" disabled round style="margin: -80px;">修改密码</el-button>
                     </el-form-item>
                 </el-form>
 `

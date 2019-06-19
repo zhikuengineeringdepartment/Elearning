@@ -18,25 +18,25 @@ var fileDownloadRecordTemplate = `
                                 <label>下载时间</label>
                                 {{file_download_record.fopDate}}
                             </span>
-                            <template v-if="commented">
-                                <el-rate
-                                    v-model="value"
-                                    disabled
-                                    show-score
-                                    text-color="#ff9900"
-                                    score-template="{value}">
-                                </el-rate>
-                            </template>
-                            <template v-else>
-                                <div>
-                                    <span size="small" style="float: right" @click="commentFile">立即评价</span>
-                                <el-rate
-                                    v-model="score"
-                                    allow-half
-                                    text-color="#ff9900">
-                                </el-rate>
-                            </div>
-                            </template>
+                            <!--<template v-if="commented">-->
+                                <!--<el-rate-->
+                                    <!--v-model="value"-->
+                                    <!--disabled-->
+                                    <!--show-score-->
+                                    <!--text-color="#ff9900"-->
+                                    <!--score-template="{value}">-->
+                                <!--</el-rate>-->
+                            <!--</template>-->
+                            <!--<template v-else>-->
+                                <!--<div>-->
+                                    <!--<span size="small" style="float: right" @click="commentFile">立即评价</span>-->
+                                <!--<el-rate-->
+                                    <!--v-model="score"-->
+                                    <!--allow-half-->
+                                    <!--text-color="#ff9900">-->
+                                <!--</el-rate>-->
+                            <!--</div>-->
+                            <!--</template>-->
                         </el-col>
                     </el-row>
                 </el-card>
