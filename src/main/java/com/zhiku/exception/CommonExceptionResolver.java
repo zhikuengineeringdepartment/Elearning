@@ -15,9 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 public class CommonExceptionResolver {
 
     @ExceptionHandler(value = UserNotFoundException.class)
-    public String handlerUserNotFoundException(UserNotFoundException e){
+    public String handlerUserNotFoundException(UserNotFoundException e) {
         return "/test.html";
     }
+
     @ExceptionHandler(value = TokenVerifyErrorException.class)
     public String handlerTokenVerifyErrorException(TokenVerifyErrorException e){
         return "/test.html";

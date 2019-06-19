@@ -161,7 +161,6 @@ var sectionMainModule = {
     created:function(){
         this.getCourseView(this.$route.params.cid);
         this.getSectionView(this.$route.params.sid);
-        this.getColParas(this.$route.params.sid);
         this.getCsdn(this.$route.params.sid);
     },
     methods:{
@@ -207,7 +206,6 @@ var sectionMainModule = {
         handleMenu(sid){
             this.$router.push(''+sid);
             this.getSectionView(sid);
-            this.getColParas(sid);
             this.getCsdn(sid);
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         },
@@ -266,6 +264,7 @@ var sectionMainModule = {
                 .then(function () {
                     if(root.login){
                         _this.getNoteView(sid);
+                        _this.getColParas(sid);
                     }
                 })
                 .catch(function(err){

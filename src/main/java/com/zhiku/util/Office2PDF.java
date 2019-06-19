@@ -174,11 +174,16 @@ public class Office2PDF {
         return flag;
     }
 
-    public static void writeOut(File file, OutputStream out) throws Exception{
+    public static void writeOut(File file, OutputStream out,boolean admin) throws Exception{
         System.out.println(file.getAbsolutePath());
         PDDocument document = PDDocument.load(file, MemoryUsageSetting.setupTempFileOnly());
         document.getPages();
-        int endPage = document.getNumberOfPages()>DEFAULT_PAGE?DEFAULT_PAGE:document.getNumberOfPages();
+        int endPage = 0;
+        if(!admin){
+            endPage = document.getNumberOfPages()>DEFAULT_PAGE?DEFAULT_PAGE:document.getNumberOfPages();
+        }else{
+            endPage = document.getNumberOfPages();
+        }
 
         PDDocument pd = new PDDocument();
         for(int i = 0;i<endPage;i++) {

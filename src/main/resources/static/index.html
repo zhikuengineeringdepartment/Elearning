@@ -32,6 +32,8 @@
     <!--引入模块-->
     <script src="template/activity.js"></script>
     <script src="template/activity_main.js"></script>
+    <script src="template/admin_file.js"></script>
+    <script src="template/admin_file_main.js"></script>
     <script src="template/col_course_list.js"></script>
     <script src="template/col_paragraph.js"></script>
     <script src="template/col_paragraph_list.js"></script>
@@ -217,6 +219,10 @@
         {
             path: '/activity',
             component: activityMainModule
+        },
+        {
+            path: '/admin',
+            component: adminFileMainModule
         }
     ]
 
@@ -251,6 +257,7 @@
             },
             check_login: function () {
                 var token = this.getCookie("token")
+                // console.log(token)
                 if (token != '') {
                     this.login = true;
                 } else {
@@ -263,7 +270,7 @@
                 var ck;
                 for (var i = 0; i < cookies.length; i++) {
                     ck = cookies[i].split('=')
-                    if (ck[0] == name) {
+                    if (ck[0].trim() == name) {
                         value = ck[1]
                     }
                 }

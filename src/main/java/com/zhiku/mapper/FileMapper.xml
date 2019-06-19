@@ -247,6 +247,9 @@
       <if test="file.fileCourse != null">
         and file_course = #{file.fileCourse}
       </if>
+      <if test="status != null">
+        and file_status = #{status}
+      </if>
       order by file_upload_time
       <if test="order == true">
         desc
