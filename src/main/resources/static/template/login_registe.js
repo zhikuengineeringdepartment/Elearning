@@ -55,8 +55,7 @@ var loginRegisteTemplate = `
                                         type="password"
                                         placeholder="请确认密码"
                                         prefix-icon="el-icon-info"
-                                        v-model="registeForm.password2"
-                                        show-password>
+                                        v-model="registeForm.password2">
                                 </el-input>
                             </el-form-item>
                             <el-button  type="primary" round @click="handleRegiste">注册</el-button>
@@ -111,14 +110,6 @@ var loginRegisteModule = {
         // 处理登录请求
         handleLogin() {
             var _this = this;
-            if (!this.registeForm.password || !this.registeForm.password2 || this.registeForm.password != this.registeForm.password2) {
-                this.$message({
-                    showClose: true,
-                    message: '密码不一致或为空',
-                    type: 'error'
-                });
-                return;
-            }
             axios.post('/user/login',
                     this.loginForm, {
                         transformRequest: [
@@ -153,6 +144,14 @@ var loginRegisteModule = {
         // 处理注册请求
         handleRegiste() {
             var _this = this;
+            if (!_this.registeForm.password || !_this.registeForm.password2 || _this.registeForm.password != _this.registeForm.password2) {
+                this.$message({
+                    showClose: true,
+                    message: '密码不一致或为空',
+                    type: 'error'
+                });
+                return;
+            }
             axios.post('/user/registe', this.registeForm, {
                     transformRequest: [
                         function (data) {
