@@ -36,6 +36,7 @@ var sectionModule = {
     },
     methods:{
         handleColParagraph(pid){
+            var _this = this;
             axios.post('paragraph/addColParagraph',{
                 uid:0,
                 paragraphSeq:parseInt(pid)
@@ -55,7 +56,7 @@ var sectionModule = {
                     console.log(res);
                 })
                 .catch(function(err){
-                    console.log(err);
+                    console.log(err)
                 });
         },
         handleNoteParagraph(pid,noteContent){

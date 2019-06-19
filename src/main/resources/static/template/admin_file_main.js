@@ -1,7 +1,7 @@
 /*
 文件模块的主页面组件
  */
-var fileMainTemplate = `
+var adminFileMainTemplate = `
 <el-main id="fileList" style="margin-top: 20px">
         <el-row style="display: flex;flex-direction: column;align-items: center">
             <el-col :span="16" style="margin-bottom: 20px">
@@ -31,14 +31,12 @@ var fileMainTemplate = `
             </el-col>
 
             <el-col :span="16" style="margin-top: 20px">
-                <my_file v-for="jfile in my_files" :jfile="jfile"></my_file>
+                <my_admin_file v-for="jfile in my_files" :jfile="jfile"></my_admin_file>
             </el-col>
         </el-row>
     </el-main>
 `
-var impermanentFileMainTemplate = `
-`;
-var fileMainModule = {
+var adminFileMainModule = {
 
     data: function () {
         return {
@@ -72,20 +70,12 @@ var fileMainModule = {
         }
     },
     props: [],
-    template: fileMainTemplate,
-    // template: impermanentFileMainTemplate,
+    template: adminFileMainTemplate,
     created: function () {
         this.scrollToDown();
         this.getFileList(this.fileListForm.page);
-        // this.open();
     },
     methods: {
-        // open() {
-        //     this.$alert('', '敬请期待', {
-        //         confirmButtonText: '确定',
-        //         customClass: 'messageBox-confirm',
-        //     });
-        // }
             gotoUpload:function(){
                 this.$router.push('/fileUpload')
             },
@@ -116,13 +106,14 @@ var fileMainModule = {
             },
             getFileList:function(page){
                 var _this =this;
-                axios.get('file/getFileList',{
+                axios.get('admin/getUncheckFiles',{
                     params:{
                         keyWord:this.fileListForm.keyWord,
                         fileCourse:this.fileListForm.fileCourse,
                         page:page,
                         order:this.fileListForm.order
-                    }
+                    },
+                    withCredentials:true
                 })
                     .then(function(response){
                         for(var i=0;i<response.data.data.files.length;i++){
@@ -160,4 +151,4 @@ var fileMainModule = {
     }
 
 }
-Vue.component("my_file_main", fileMainModule);
+Vue.component("my_admin_file_main", adminFileMainModule);

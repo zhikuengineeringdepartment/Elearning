@@ -1,5 +1,7 @@
 package com.zhiku.controller;
 
+
+
 import com.zhiku.entity.Major;
 import com.zhiku.entity.Preference;
 import com.zhiku.service.MajorService;
@@ -24,7 +26,7 @@ public class InfoController {
     @RequestMapping("/index")
     public ModelAndView index(){
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("index");
+        mv.setViewName("index.html");
         return mv;
     }
 

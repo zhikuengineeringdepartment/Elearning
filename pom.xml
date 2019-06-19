@@ -37,12 +37,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>org.springframework.boot</groupId>-->
-                    <!--<artifactId>spring-boot-starter-logging</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -128,26 +128,26 @@
 
         <!--日志相关jar依赖-->
 
-        <!--&lt;!&ndash;https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.logging.log4j</groupId>-->
-            <!--<artifactId>log4j-core</artifactId>-->
-            <!--<version>2.11.1</version>-->
-        <!--</dependency>-->
+        <!--https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.1</version>
+        </dependency>
 
-        <!--&lt;!&ndash;https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.logging.log4j</groupId>-->
-            <!--<artifactId>log4j-api</artifactId>-->
-            <!--<version>2.11.1</version>-->
-        <!--</dependency>-->
+        <!--https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.1</version>
+        </dependency>
 
-        <!--&lt;!&ndash;https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-web&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.logging.log4j</groupId>-->
-            <!--<artifactId>log4j-web</artifactId>-->
-            <!--<version>2.11.1</version>-->
-        <!--</dependency>-->
+        <!--https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-web-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-web</artifactId>
+            <version>2.11.1</version>
+        </dependency>
 
 
 
@@ -205,11 +205,18 @@
 
         <!-- jsp相关jar依赖 -->
         <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.servlet</groupId>-->
+            <!--<artifactId>jstl</artifactId>-->
+            <!--<version>1.2</version>-->
+        <!--</dependency>-->
+
+
+        <!--<dependency>-->
+            <!--<groupId>org.apache.tomcat.embed</groupId>-->
+            <!--<artifactId>tomcat-embed-jasper</artifactId>-->
+        <!--</dependency>-->
+
 
         <!--阅读pdf的依赖-->
         <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
@@ -266,12 +273,12 @@
         <!-- 其他jar依赖 -->
 
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.servlet</groupId>-->
+            <!--<artifactId>javax.servlet-api</artifactId>-->
+            <!--<version>4.0.1</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
@@ -311,6 +318,8 @@
             <artifactId>spring-tx</artifactId>
             <version>5.1.6.RELEASE</version>
         </dependency>
+
+
 
     </dependencies>
 

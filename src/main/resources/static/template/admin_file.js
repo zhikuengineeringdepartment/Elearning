@@ -1,7 +1,7 @@
- /*
+/*
 文件浏览时的文件组件
  */
-var fileTemplate = `
+var adminFileTemplate = `
 <el-card shadow="hover" style="margin: 10px 0px">
                     <el-row>
                         <el-col>
@@ -18,7 +18,7 @@ var fileTemplate = `
                                 </el-col>
                                 <el-col :span="12" style="display: flex;justify-content: center">
                                     <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(jfile.fid)"></el-button>
-                                    <el-button type="success" icon="el-icon-download" circle @click="handleDownload(jfile.fid)"></el-button>
+                                    <el-button type="success" icon="el-icon-download" circle @click="modifyStatus(jfile.fid)"></el-button>
                                 </el-col>
                             </el-row>
                         </el-col>
@@ -26,24 +26,44 @@ var fileTemplate = `
                 </el-card>
 `
 
-var fileModule = {
+var adminFileModule = {
     data:function () {
         return{
         }
     },
     props:["jfile"],
-    template: fileTemplate,
+    template: adminFileTemplate,
     methods:{
         handlePreview:function (fid) {
             console.log("预览文件"+fid);
-            window.open("/preview.html?fid="+fid)
+            window.open("admin/preview?fid="+fid)
         },
-        handleDownload:function(fid){
-            console.log("下载文件"+fid);
-            window.open('file/download?fid='+fid+'&uid='+0)
+        modifyStatus:function (fid) {
+            var _this = this;
+            axios.post('admin/modifyFileStatus',{
+                fid:fid,
+                status:"n"
+            },{
+                transformRequest: [
+                    function(data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
+                        }
+                        return ret;
+                    }
+                ],
+                withCredentials:true
+            })
+                .then(function(res){
+                    console.log(res);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
         }
-     },
+    },
 
 }
 
-Vue.component("my_file",fileModule);
+Vue.component("my_admin_file",adminFileModule);

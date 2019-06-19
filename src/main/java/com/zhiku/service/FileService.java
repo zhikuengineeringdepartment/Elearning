@@ -36,8 +36,8 @@ import java.util.UUID;
 @Transactional
 public class FileService{
 
-    @Value("${basePath_upload}")
-    private String uploadPath;
+//    @Value("${basePath_upload}")
+    private String uploadPath = "D:"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
     @Value("${basePath_preview}")
     private String previewPath;
     @Value("${max_size}")
@@ -95,6 +95,7 @@ public class FileService{
         String path = makePath(multipartFile.getOriginalFilename(),uploadPath);
         String newFileName = makeFileName(multipartFile.getOriginalFilename());
         String realPath = path + java.io.File.separator + newFileName;
+        System.out.println(realPath);
         if(storeFileToSys(multipartFile,realPath)){
             file.setFilePath(realPath);
             storeFileToDB(multipartFile,file,user);
@@ -157,7 +158,7 @@ public class FileService{
             System.out.println("存入数据库");
             file.setFileUpper(user.getUid());
             file.setFileName(multipartFile.getOriginalFilename());
-            file.setFileStatus("n");
+            file.setFileStatus(FileStatus.UNCHECK.getCode());
             file.setFileSha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
             file.setFileUploadTime(new Date());
             file.setFileType(multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf('.')+1));
@@ -267,6 +268,10 @@ public class FileService{
         return file;
     }
 
+    public void updateFileStatus(File file){
+        fileMapper.updateByPrimaryKeySelective(file);
+    }
+
     /**
      * 将文件的操作记录进数据库
      *
@@ -287,10 +292,10 @@ public class FileService{
         return true;
     }
 
-    public List<FileView> getFileList(String keyWord, File file, int page, boolean order) {
+    public List<FileView> getFileList(String keyWord, File file, int page, boolean order,String status) {
         int startLine = (page-1)*PAGE_SIZE;
         System.out.println(startLine);
-        return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order);
+        return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order,status);
     }
 
     /**
@@ -300,7 +305,7 @@ public class FileService{
      * @return
      * @throws ConnectException
      */
-    public String filePreview(HttpServletResponse response, File file) throws ConnectException {
+    public String filePreview(HttpServletResponse response, File file,boolean isAdmin) throws ConnectException {
         String rmsg = "";
         if(Office2PDF.isConvert(file.getFilePath())){
             String outputFilePath = file.getFilePath();
@@ -316,7 +321,7 @@ public class FileService{
                 response.setContentType("application/pdf;charset=utf-8");
                 response.setHeader("pragme", "no-cache");
                 OutputStream outer = response.getOutputStream();
-                Office2PDF.writeOut(new java.io.File(outputFilePath), outer);
+                Office2PDF.writeOut(new java.io.File(outputFilePath), outer,isAdmin);
                 outer.close();
                 return null;
             }catch(Exception e){

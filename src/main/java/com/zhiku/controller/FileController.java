@@ -94,7 +94,7 @@ public class FileController {
     public void filePreview(HttpServletResponse response,int fid) throws ConnectException {
         File file = fileService.getFileByFid(fid);
         if(file != null){
-            String  rmsg = fileService.filePreview(response,file);
+            String  rmsg = fileService.filePreview(response,file,false);
             System.out.println(rmsg);
         }
     }
@@ -111,7 +111,7 @@ public class FileController {
     @RequestMapping(value = "getFileList",method = RequestMethod.GET)
     public ResponseData getFileList(String keyWord,File file,int page,boolean order){
         ResponseData responseData = null;
-        List<FileView> files = fileService.getFileList(keyWord,file,page,order);
+        List<FileView> files = fileService.getFileList(keyWord,file,page,order,FileStatus.NORMAL.getCode());
         responseData = ResponseData.ok();
         responseData.putDataValue("files",files);
         return  responseData;

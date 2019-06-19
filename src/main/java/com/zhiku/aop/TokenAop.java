@@ -3,10 +3,12 @@ package com.zhiku.aop;
 import com.zhiku.entity.User;
 import com.zhiku.exception.TokenVerifyErrorException;
 import com.zhiku.exception.UserNotFoundException;
+import com.zhiku.service.UserService;
 import com.zhiku.util.JWTUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @Aspect
 public class TokenAop {
+    @Autowired
+    UserService userService;
 
     /**
      *用户登录检测的切面
@@ -31,6 +35,17 @@ public class TokenAop {
         User user = ((User)(pjp.getArgs()[0]));     //获取切面的第一个参数对象user
         user.setUid(JWTUtil.getUid(token));
         user.setUserUsername(JWTUtil.getUserName(token));
+    }
+
+    @Before(value = "execution(* com.zhiku.controller.AdminController.*(..)))")
+    public void adminBefore(JoinPoint pjp) throws UserNotFoundException, TokenVerifyErrorException{
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String token = getCookieByName("token",request.getCookies());
+        User user = userService.getUserByUsername(JWTUtil.getUserName(token));
+        if(!"a".equals(user.getUserAuth())){
+            throw new TokenVerifyErrorException("抱歉，您没有该权限！");
+        }
+
     }
 
     //TODO 添加日志记录的切面，主要记录用户的各种点击行为

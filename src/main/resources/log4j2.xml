@@ -9,7 +9,7 @@
         <!--</Console>-->
     </Appenders>
     <Loggers>
-        <Logger name="com.zhiku.mapper" level="INFO"/>
+        <Logger name="com.zhiku.mapper" level="DEBUG"/>
         <Root level="DEBUG">
             <AppenderRef ref="Console"/>
         </Root>
