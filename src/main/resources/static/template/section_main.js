@@ -4,7 +4,7 @@ let sectionMainTemplate = `
             <el-col :span="4">
                 <h5>{{courseView.name}}</h5>
                 <el-menu
-                    :default-active="this.$route.params.sid"
+                    :default-active="that.$route.params.sid"
                     class="el-menu-vertical-demo">
                     <!--<template v-for="section in courseView.sections">-->
                         <!--<el-menu-item :index="section.sid.toString()" @click="handleMenu(section.sid)">-->
@@ -79,6 +79,7 @@ let sectionMainTemplate = `
 var sectionMainModule = {
     data: function () {
         return {
+            that:this,
             csdn:'',
             courseView: '',
             side:{

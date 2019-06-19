@@ -5,7 +5,6 @@ import com.zhiku.util.ResponseData;
 import com.zhiku.util.spider.SpiderBoot;
 import com.zhiku.util.spider.model.TitleAndUrl;
 import com.zhiku.view.SectionView;
-import jdk.nashorn.internal.runtime.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

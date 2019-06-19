@@ -59,7 +59,7 @@
     <script src="template/user_info_form.js"></script>
     <script src="template/user_main.js"></script>
 
-    <title>zhiku</title>
+    <title>山软智库</title>
     <style>
         @font-face {
             font-family: element-icons;
@@ -130,7 +130,7 @@
     <el-container id="root" style="display: flex;flex-direction: column;">
 
         <!--头部-->
-        <my_header :login="login" :user_icon="user_icon"></my_header>
+        <my_header :login="login" :user_icon="user_icon" @change-login="login = false"></my_header>
         <!--内容-->
         <router-view v-on:login-state="change_login"></router-view>
         <a class="toTop" href="#htmlTop">

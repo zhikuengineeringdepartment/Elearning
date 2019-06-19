@@ -12,7 +12,8 @@ var headerTemplate = `
         <!-- <el-col :span="6"><el-input v-model="searchKey" placeholder="搜索..." @keyup.enter.native="handleSearch"></el-input></el-col> -->
         <el-col :span="4">
             <template v-if="login">
-                <router-link to="/user/info"><img :src="user_icon" height="50px" width="auto" style="margin-right:20px"></router-link>
+                <router-link to="/user/info"><img :src="user_icon" height="50px" width="auto" style="float:left;margin-right:10px;"></router-link>
+                <el-button type="text" @click="loginOut" style="float:left;padding: 0;margin-top: 32px;">登出</el-button>
             </template>
             <template v-else>
                 <el-button type="text" @click="toLoginRegiste('/login')">登录</el-button>
@@ -32,7 +33,7 @@ var headerTemplate = `
     <!--</el-row>-->
     <el-row class="row-md">
     <el-col :span="20" :offset="3">
-         <el-tabs v-model="activeName" @tab-click="headerClick" >
+         <el-tabs :activeName="that.$route.path" @tab-click="headerClick" ref="aaa">
             <!--<el-tab-pane label="首页" name="/" ></el-tab-pane>-->
             <!--<el-tab-pane label="在线教程" name="/courseMain" ></el-tab-pane>-->
             <el-tab-pane label="知识见解" name="/" ></el-tab-pane>
@@ -40,7 +41,7 @@ var headerTemplate = `
             <!--<el-tab-pane label="练习测试" name="/exercise"></el-tab-pane>-->
             <el-tab-pane label="智库专栏" name="/activity" ></el-tab-pane>
             <el-tab-pane label="关于智库" name="/aboutIdea" ></el-tab-pane>
-            <el-tab-pane label="个人中心" name="/login"></el-tab-pane>
+            <el-tab-pane label="个人中心" :name="pname"></el-tab-pane>
           </el-tabs>
           </el-col>
      </el-row>
@@ -51,18 +52,29 @@ var headerModule = {
     data: function () {
         return {
             searchKey: '',
-            activeName: this.$route.path
+            activeName: this.$route.path,
+            that: this,
+            pname: '/user/info'
         }
     },
     props: ['login', 'user_icon'],
     template: headerTemplate,
     created() {
+
         this.keyupEnter()
+        if (this.$route.path.match(/\/user\/info/g)) {
+            this.pname = window.location.href.match(/\/user\/info/g) ? window.location.hash.substr(1) : '/user/info';
+        }
+    },
+    watch: {
+        '$route'(to, from) {
+            this.pname = window.location.href.match(/\/user\/info/g) ? window.location.hash.substr(1) : '/user/info';
+        }
     },
 
     methods: {
         headerClick(tab, event) {
-            if (tab.name !== '/login') {
+            if (tab.name !== '/user/info') {
                 this.$router.push(tab.name);
             } else {
                 if (this.login) {
@@ -87,6 +99,30 @@ var headerModule = {
         },
         toLoginRegiste: function (to) {
             root.$router.push(to);
+        },
+        loginOut() {
+            let _this = this;
+            this.$confirm('是否退出登陆', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'info'
+            }).then(() => {
+                this.$message({
+                    type: 'success',
+                    message: '退出登陆成功!'
+                });
+                document.cookie = "token" + "=" + "";
+                _this.$emit('change-login');
+                _this.$router.push('/');
+                console.log(_this.activeName);
+                _this.activeName = "/login";
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '取消退出登陆'
+                });
+            });
+
         }
     },
 

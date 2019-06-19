@@ -85,6 +85,7 @@ var loginRegisteModule = {
     },
     created: function () {
         this.setLogin();
+        this.keyupEnter()
     },
     props: [],
     template: loginRegisteTemplate,
@@ -98,6 +99,15 @@ var loginRegisteModule = {
         }
     },
     methods: {
+        keyupEnter() {
+            document.onkeydown = e => {
+                let body = document.getElementsByTagName('body')[0]
+                if (e.keyCode === 13 && e.target.baseURI.match(/login/)) {
+                    console.log('enter')
+                    this.handleLogin()
+                }
+            }
+        },
         setLogin() {
             console.log(this.$router)
             if (this.$router.history.current.path === '/login') {

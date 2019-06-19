@@ -19,18 +19,18 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>nexus-aliyun</id>
-            <name>nexus-aliyun</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <repository>
+        <id>nexus-aliyun</id>
+        <name>nexus-aliyun</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
 
 
     <dependencies>
