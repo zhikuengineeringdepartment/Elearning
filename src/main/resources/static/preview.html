@@ -14,11 +14,46 @@
     <!--<script type="text/javascript" src="lib/ajaxHandler.js"></script>-->
     <!--<script src="lib/jquery.cookie.js"></script>-->
     <!--<script src="lib/toastDom.js"></script>-->
-    
+    <style>
+        .el-button {
+            display: inline-block;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            background: #FFF;
+            border: 1px solid #DCDFE6;
+            color: #606266;
+            -webkit-appearance: none;
+            text-align: center;
+            box-sizing: border-box;
+            outline: 0;
+            margin: 0;
+            -webkit-transition: .1s;
+            transition: .1s;
+            font-weight: 500;
+            -moz-user-select: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+        .el-button.is-circle {
+            border-radius: 50%;
+            padding: 20px 12px;
+        }
+
+        .el-button+.el-button {
+            margin-left: 10px;
+        }
+        .el-button--success {
+            color: #FFF;
+            background-color: #67C23A;
+            border-color: #67C23A;
+        }
+    </style>
     
 </head>
 <body style="background-color: #fbf8f0">
-    <!--<button id="getDown" type="button" class="btn btn-success" style="float: right;margin:10px 20px">下载 </button>    -->
+    <button id="getDown" type="button" class="el-button el-button--success is-circle" style="float: right;margin:10px 20px;position: fixed">下载 </button>
     <div id="container">   
         <div id="pop" style="text-align: center;"></div>
     </div>
@@ -87,7 +122,20 @@
 
 
          document.getElementById('getDown').onclick= function getDown(){
+                var cks = document.cookie.split(';');
+                var hasLogin=false;
+                for(var i=0;i<cks.length;i++){
+                    var key = cks[i].split('=');
+                    // console.log(key)
 
+                    if(key[0].trim()=='token'&& key.length>1&&key[1]!=''){
+                        hasLogin=true;
+                        window.open('file/download?'+fid+'&uid='+0)
+                    }
+                }
+                if(hasLogin==false){
+                    window.location.href='/#/login'
+                }
             // if(!checkLogin()){
             //     new Toast().showMsg('请先登录',1000);
             //     return;
