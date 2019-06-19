@@ -15,10 +15,10 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
         if((e instanceof UserNotFoundException) || (e instanceof TokenVerifyErrorException)){   //拦截用户验证登录失败的异常
             modelAndView.setViewName("login");
         }else if(e instanceof DataAccessException){     //拦截数据库操作的异常
-            modelAndView.setViewName("jsp/Error");
+            modelAndView.setViewName("pages/Error");
             modelAndView.addObject("message","操作失误，请重试");
         }else{
-            modelAndView.setViewName("jsp/Error");
+            modelAndView.setViewName("pages/Error");
             e.printStackTrace();
         }
         return modelAndView;

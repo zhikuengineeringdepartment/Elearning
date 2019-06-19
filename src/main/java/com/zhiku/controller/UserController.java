@@ -161,9 +161,9 @@ public class UserController {
         return responseData;
     }
 
-    @ResponseBody
+    //@ResponseBody
     @RequestMapping(value = "mail/active",method = RequestMethod.GET)
-    public ResponseData mailHandler(
+    public String mailHandler(
             String act,
             String username,
             String code){
@@ -174,10 +174,14 @@ public class UserController {
             if(userStatus.equals(UserStatus.NORMAL)){
                 responseData = ResponseData.ok();
                 responseData.setMessage("用户已经激活，可直接登录");
+                // TODO 返回已经激活而不是激活成功
+                return redirectToActivePage();
             }else if(code.equals(user.hashCode()+"")){
                 if(userStatus.equals(UserStatus.UNCHECKED)){
                     userService.activeEmail(user);
                     responseData = ResponseData.ok();
+                    // 激活成功跳转
+                    return redirectToActivePage();
                 }else {
                     responseData = ResponseData.badRequest();
                     responseData.setMessage(userStatus.getMessage());
@@ -191,7 +195,8 @@ public class UserController {
             responseData.setMessage("用户不存在");
         }
 
-        return responseData;
+        // TODO 这个网页还没有
+        return "error.html";
     }
 
     @ResponseBody
@@ -374,6 +379,11 @@ public class UserController {
         responseData = ResponseData.ok();
         responseData.putDataValue("fileDownloadRecords",fileService.getFileDownloadRecords(user,page));
         return responseData;
+    }
+
+
+    public String redirectToActivePage(){
+        return "/pages/active.html";
     }
 
 }
