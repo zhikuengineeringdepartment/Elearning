@@ -98,7 +98,6 @@ public class FileService{
         System.out.println(realPath);
         file.setFilePath(realPath);
         if(storeFileToDB(multipartFile,file,user)){
-            storeFileToSys(multipartFile,realPath);
             try {
                 file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
                 fileKeys.setFid(file.getFid());
@@ -111,6 +110,7 @@ public class FileService{
             user = userMapper.selectByPrimaryKey(user.getUid());
             user.setUserUploadCount(user.getUserUploadCount()+1);
             userMapper.updateByPrimaryKeySelective(user);
+            storeFileToSys(multipartFile,realPath);
             done = true;
         }else{
             done = false;
