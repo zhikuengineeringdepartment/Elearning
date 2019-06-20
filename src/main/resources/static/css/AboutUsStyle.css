@@ -1,11 +1,3 @@
-input[type="button"],
-input[type="submit"] {
-  transition: 0.5s all;
-  -webkit-transition: 0.5s all;
-  -moz-transition: 0.5s all;
-  -o-transition: 0.5s all;
-  -ms-transition: 0.5s all;
-}
 h1,
 h2,
 h3,
@@ -440,7 +432,7 @@ span.chng {
 }
 .about {
   padding: 5em 0em;
-  background-color: #eeee;
+  background-color: #f9fafc;
 }
 /** /about**/
 /*-- services --*/
@@ -836,11 +828,6 @@ a.right.carousel-control.test-right-control {
   -webkit-appearance: none;
   outline: none;
 }
-input#datepicker {
-  letter-spacing: 1px;
-  font-size: 0.9em;
-  background-color: transparent;
-}
 select#category1,
 select#category2 {
   font-size: 0.9em;
@@ -977,30 +964,6 @@ input[type="tel"]:focus {
   background: #ffffff;
   color: #f44336;
 }
-input[type="text"] {
-  width: 100%;
-  border: 0;
-  background-color: transparent;
-  border-bottom: 1px solid #fff;
-  box-sizing: border-box;
-  font-size: 15px;
-  letter-spacing: 2px;
-  color: #fff;
-  outline: none;
-  padding: 10px;
-}
-input[type="email"] {
-  width: 100%;
-  border: 0;
-  background-color: transparent;
-  border-bottom: 1px solid #fff;
-  box-sizing: border-box;
-  font-size: 15px;
-  letter-spacing: 2px;
-  color: #fff;
-  outline: none;
-  padding: 10px;
-}
 h2 {
   display: inline-block;
   font-size: 20px;
@@ -1047,9 +1010,7 @@ ul li .check::before {
   transition: background 0.25s linear;
   -webkit-transition: background 0.25s linear;
 }
-input[type="radio"]:checked ~ .check::before {
-  background: #f44336;
-}
+
 .grid-w3layouts1 ul li,
 .grid-w3layouts2 ul li {
   color: #000;
@@ -1085,17 +1046,16 @@ input[type="radio"]:checked ~ .check::before {
 }
 
 div.header_div{
-  height: 400px;
+  height: 500px;
   text-align: center;
   overflow: hidden;
 }
 
 img.headerPic{
   vertical-align: middle;
-  /* max-width: 100%; */
+  max-width: 80%;
   /* object-fit: fill; */
-	max-height: 100%;
-	width: 60%;
+	/* max-height: 100%; */
 }
 option {
   background-color: #000;
@@ -1648,6 +1608,7 @@ ul.con_inner_text.midimg li {
   }
   .about {
     padding: 3em 0em;
+    background: #f9fafc;
   }
   .services {
     padding: 3em 0em;
@@ -2172,6 +2133,7 @@ ul.con_inner_text.midimg li {
   flex-direction: column;
   text-align: center;
   /* line-height: 400px; */
+  
 }
 
 .showText:hover {
@@ -2182,10 +2144,6 @@ ul.con_inner_text.midimg li {
   opacity: 0.8;
 }
 
-.row-bg{
-  background: #eee;
-  margin-bottom: 0%;
-}
 
 @keyframes fadeIn {
   0% {
