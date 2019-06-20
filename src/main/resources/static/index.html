@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/toTop.css" />
     <link rel="stylesheet" href="css/header.css" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
+	<!-- <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"> -->
+	<link href="css/AboutUsStyle.css" rel="stylesheet" type="text/css" media="all" />
     <script src="common/vue.js"></script>
     <script src="common/vue-router.js"></script>
     <script src="common/jquery.min.js"></script>
@@ -28,12 +31,9 @@
     <script src="js/cropper.min.js"></script>
     <script src="js/jquery-cropper.min.js"></script>
     <script src="js/picCrop.js"></script>
-
     <!--引入模块-->
     <script src="template/activity.js"></script>
     <script src="template/activity_main.js"></script>
-    <script src="template/admin_file.js"></script>
-    <script src="template/admin_file_main.js"></script>
     <script src="template/col_course_list.js"></script>
     <script src="template/col_paragraph.js"></script>
     <script src="template/col_paragraph_list.js"></script>
@@ -60,8 +60,22 @@
     <script src="template/tag.js"></script>
     <script src="template/user_info_form.js"></script>
     <script src="template/user_main.js"></script>
+	
+	<!-- for testimonials slider-js-script-->
 
-    <title>山软智库</title>
+	<!--script-->
+	<script src="js/easyResponsiveTabs.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true // 100% fit in a container
+			});
+		});
+	</script>
+
+    <title>zhiku</title>
     <style>
         @font-face {
             font-family: element-icons;
@@ -132,7 +146,7 @@
     <el-container id="root" style="display: flex;flex-direction: column;">
 
         <!--头部-->
-        <my_header :login="login" :user_icon="user_icon" @change-login="login = false"></my_header>
+        <my_header :login="login" :user_icon="user_icon"></my_header>
         <!--内容-->
         <router-view v-on:login-state="change_login"></router-view>
         <a class="toTop" href="#htmlTop">
@@ -219,10 +233,6 @@
         {
             path: '/activity',
             component: activityMainModule
-        },
-        {
-            path: '/admin',
-            component: adminFileMainModule
         }
     ]
 
@@ -257,7 +267,6 @@
             },
             check_login: function () {
                 var token = this.getCookie("token")
-                // console.log(token)
                 if (token != '') {
                     this.login = true;
                 } else {
@@ -270,7 +279,7 @@
                 var ck;
                 for (var i = 0; i < cookies.length; i++) {
                     ck = cookies[i].split('=')
-                    if (ck[0].trim() == name) {
+                    if (ck[0] == name) {
                         value = ck[1]
                     }
                 }
