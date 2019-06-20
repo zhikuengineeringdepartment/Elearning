@@ -90,7 +90,7 @@ var indexMainTemplate = `
 	</el-row>
 
 	<!-- footer -->
-	<div class="contact" id="contact">
+	<div class="contact_us" id="contact_us">
 		<div class="container">
 			<div class="f-bg-w3l">
                 <h3>关注我们</h3>
