@@ -117,28 +117,44 @@ var fileUploadFormModule = {
             console.log(file,fileList)
         },
         submitUpload(){
-            var _this = this;
-            var form = new FormData();
-            form.append("multipartFile", document.getElementsByClassName('el-upload__input')[0].files[0]);
-            form.append("uid", 0);
-            form.append("fileCourse", this.uploadForm.fileCourse);
-            form.append("fileTeacher", this.uploadForm.fileTeacher);
-            console.log(this.uploadForm.file_tags)
-            for(var i = 1;i<=this.uploadForm.file_tags.length;i++){
-                form.append("key"+i,this.uploadForm.file_tags[i-1])
-            }
-            const instance=axios.create({
-                withCredentials: true
-            })
-            instance.post('file/upload',form).then(res=>{
-                if(res.code == 200){
-                    alert('提交成功');
-                    this.$router.push({ path: "/" });
-
-                }else{
-                    alert("请输入完整再提交");
+            if(root.login){
+                var _this = this;
+                var form = new FormData();
+                form.append("multipartFile", document.getElementsByClassName('el-upload__input')[0].files[0]);
+                form.append("uid", 0);
+                form.append("fileCourse", this.uploadForm.fileCourse);
+                form.append("fileTeacher", this.uploadForm.fileTeacher);
+                console.log(this.uploadForm.file_tags)
+                for(var i = 1;i<=this.uploadForm.file_tags.length;i++){
+                    form.append("key"+i,this.uploadForm.file_tags[i-1])
                 }
-            })
+                const instance=axios.create({
+                    withCredentials: true
+                })
+                instance.post('file/upload',form).then(res=>{
+                    console.log(res);
+                    if(res.data.code == 200){
+                        alert('提交成功');
+                        this.$router.push({ path: "/" });
+
+                    }else{
+                        this.$message({
+                            message: res.data.message,
+                            type: 'warning'
+                        });
+                    }
+                })
+                    .catch(res=>{
+                        // console.log(JSON.stringify(res))
+                        // res = (JSON.stringify(res))
+                        this.$message({
+                            message: '请输入完整文件信息',
+                            type: 'warning'
+                        });
+                    })
+            }else{
+                this.$router.push("/login")
+            }
         },
         returnBack(){
           this.$router.go(-1);
