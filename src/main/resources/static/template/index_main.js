@@ -143,10 +143,13 @@ var indexMainModule = {
     },
     props: [],
     template: indexMainTemplate,
-    // created: function () {
-    //     this.getMajors();
-    //     this.getCourses();
-    // },
+    created: function () {
+        loadjscssfile("css/bootstrap.min.css","css");
+
+    },
+    destroyed(){
+        removejscssfile("css/bootstrap.min.css","css")
+    }
     // methods: {
     //     getMajors() {
     //         var _this = this;
