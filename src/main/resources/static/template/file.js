@@ -39,8 +39,11 @@ var fileModule = {
             window.open("/preview.html?fid="+fid)
         },
         handleDownload:function(fid){
-            console.log("下载文件"+fid);
-            window.open('file/download?fid='+fid+'&uid='+0)
+            if(root.login){
+                window.open('file/download?fid='+fid+'&uid='+0)
+            }else{
+                this.$router.push("/login")
+            }
         }
      },
 
