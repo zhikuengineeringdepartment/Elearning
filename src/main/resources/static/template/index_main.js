@@ -75,9 +75,9 @@ var indexMainTemplate = `
 		<el-col :span="16">
 			<template>
 				<el-carousel :interval="4000" height="400px">
-					<el-carousel-item v-for="(item,index) in departments" :key="index">
+					<el-carousel-item v-for="(item,index) in departments" :key="index" style="background-color:#f9fafc">
 						<img :src="item.imgPath"
-							style="width: 100%;height: 100%; object-fit: cover;object-position: center;">
+							style="width: 100%;height: 100%; object-fit: scale-down;object-position: center;">
 						<div class="showText">
 							<h3 style="margin-top:15vh;">{{item.content1}}</h3>
 							<h4 style="margin-top:3%;">{{item.content2}}</h4>
