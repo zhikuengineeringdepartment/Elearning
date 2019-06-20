@@ -37,8 +37,8 @@ import java.util.UUID;
 public class FileService{
 
 //    @Value("${basePath_upload}")
-//    private String uploadPath = "/var"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
-    private String uploadPath = "E:\\14_zhiku\\upload";
+    private String uploadPath = "/var"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
+//    private String uploadPath = "E:\\14_zhiku\\upload";
     @Value("${basePath_preview}")
     private String previewPath;
     @Value("${max_size}")
