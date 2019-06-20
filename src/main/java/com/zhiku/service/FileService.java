@@ -37,7 +37,8 @@ import java.util.UUID;
 public class FileService{
 
 //    @Value("${basePath_upload}")
-    private String uploadPath = "/var"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
+//    private String uploadPath = "/var"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
+    private String uploadPath = "E:\\14_zhiku\\upload";
     @Value("${basePath_preview}")
     private String previewPath;
     @Value("${max_size}")
@@ -84,39 +85,53 @@ public class FileService{
     }
 
     /**
-     * 保存文件
+     * 事务保存文件+插入数据到数据库
      * @param multipartFile
      * @param file
      * @return
      */
-    public boolean storeFile(MultipartFile multipartFile, File file, User user, FileKeys fileKeys){
-        boolean done ;
+    @Transactional(rollbackFor = Exception.class)
+    public void storeFile(MultipartFile multipartFile, File file, User user, FileKeys fileKeys) throws IOException {
         //产生新的文件名和路径
         String path = makePath(multipartFile.getOriginalFilename(),uploadPath);
         String newFileName = makeFileName(multipartFile.getOriginalFilename());
         String realPath = path + java.io.File.separator + newFileName;
         System.out.println(realPath);
         file.setFilePath(realPath);
-        if(storeFileToDB(multipartFile,file,user)){
-            try {
-                file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
-                fileKeys.setFid(file.getFid());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //保存文件的关键字
-            storeFileKeys(fileKeys);
-            //更新用户的上传次数
-            user = userMapper.selectByPrimaryKey(user.getUid());
-            user.setUserUploadCount(user.getUserUploadCount()+1);
-            userMapper.updateByPrimaryKeySelective(user);
-            storeFileToSys(multipartFile,realPath);
-            done = true;
-        }else{
-            done = false;
-        }
 
-        return done;
+        // 文件记录->数据库
+        storeFileToDB(multipartFile,file,user);
+
+        // 重新赋值file,保存文件的关键字
+        file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
+        fileKeys.setFid(file.getFid());
+        storeFileKeys(fileKeys);
+
+        //更新用户的上传次数
+        user = userMapper.selectByPrimaryKey(user.getUid());
+        user.setUserUploadCount(user.getUserUploadCount()+1);
+        userMapper.updateByPrimaryKeySelective(user);
+        storeFileToSys(multipartFile,realPath);
+    }
+
+    /**
+     * 事务保存文件+插入数据到数据库
+     * @param multipartFile
+     * @param file
+     * @param user
+     * @param fileKeys
+     */
+    public boolean storeFileToFileSystemAndinInsertIntoDB(MultipartFile multipartFile, File file, User user, FileKeys fileKeys){
+        // 调用之前的代码，里面抛出异常，异常的话这个storeFile这个老方法会回滚，同时这里捕捉异常又能打印异常信息
+        boolean flag = false;
+        try {
+            storeFile(multipartFile, file, user, fileKeys);
+            flag = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 执行到这里成功了
+        return flag;
     }
 
     /**
@@ -152,9 +167,9 @@ public class FileService{
      * @param file
      * @return
      */
-    private boolean storeFileToDB(MultipartFile multipartFile, File file,User user){
-        boolean finish ;
-        try{
+    private boolean storeFileToDB(MultipartFile multipartFile, File file,User user) throws IOException {
+        //boolean finish ;
+        //try{
             System.out.println("存入数据库");
             file.setFileUpper(user.getUid());
             file.setFileName(multipartFile.getOriginalFilename());
@@ -167,11 +182,13 @@ public class FileService{
             file.setFileDesc("");
             System.out.println(file);
             fileMapper.insertSelective(file);
-            finish = true;
-        }catch (Exception e){
-            finish = false;
-        }
-        return finish;
+            //finish = true;
+        //}catch (Exception e){
+            //finish = false;
+        //}
+        //return finish;
+        // 执行到这里都没有报错，就是完成成储存到数据库的过程
+        return true;
     }
 
     /**

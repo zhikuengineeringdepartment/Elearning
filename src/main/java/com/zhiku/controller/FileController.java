@@ -51,7 +51,8 @@ public class FileController {
         System.out.println(user.getUid());
         FileStatus fileStatus = fileService.checkFile(multipartFile);
         if(fileStatus == FileStatus.NORMAL){
-            if(fileService.storeFile(multipartFile,file,user,fileKeys)){
+            // 这里调用了一个事务的方法，如果这个方法报错，整个操作会回滚
+            if(fileService.storeFileToFileSystemAndinInsertIntoDB(multipartFile,file,user,fileKeys)){
                 responseData = ResponseData.ok();
             }else{
                 responseData = ResponseData.serverInternalError();
