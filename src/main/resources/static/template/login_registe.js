@@ -7,9 +7,9 @@ var loginRegisteTemplate = `
             <el-col :span="12" style="border: 1px solid #ebebeb;padding:20px;">
                 <div style="display: flex;flex-direction: column;align-items: center">
                     <div style="margin: 20px;">
-                        <router-link to="/login">登录</router-link>
+                        <router-link to="/login" style="text-decoration:none; color: #66b1ff;">登录</router-link>
                         <b>.</b>
-                        <router-link to="/registe">注册</router-link>
+                        <router-link to="/registe" style="text-decoration:none;color: #66b1ff; ">注册</router-link>                
                     </div>
                     <template v-if="isLoginPage">
                         <el-form ref="form" :model="loginForm" label-width="80px" style="display: flex;flex-direction: column;align-items: center">
