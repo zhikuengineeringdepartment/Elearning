@@ -131,7 +131,7 @@ var fileMainModule = {
                         if(response.data.data.files.length != 0){
                             _this.my_files = _this.my_files.concat(response.data.data.files);
                         }else{
-                            alert("已经到最后了")
+                            // alert("已经到最后了")
                         }
                     })
                     .catch(function(err){
