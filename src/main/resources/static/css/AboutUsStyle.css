@@ -1092,8 +1092,10 @@ div.header_div{
 
 img.headerPic{
   vertical-align: middle;
-  max-width: 100%;
-  object-fit: fill;
+  /* max-width: 100%; */
+  /* object-fit: fill; */
+	max-height: 100%;
+	width: 60%;
 }
 option {
   background-color: #000;
