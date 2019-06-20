@@ -50,7 +50,7 @@ var indexMainTemplate = `
 <div>
     <div class="agile_banner">
         <div  class="header_div">
-            <img class="headerPic" src="./img/WEBSITE_BG.png">
+            <img class="headerPic" src="img/header.png">
         </div>
 		
 	</div>
@@ -79,8 +79,8 @@ var indexMainTemplate = `
 						<img :src="item.imgPath"
 							style="width: 100%;height: 100%; object-fit: cover;object-position: center;">
 						<div class="showText">
-							<span style="margin-top:15vh;">{{item.content1}}</span>
-							<span style="margin-top:3%;">{{item.content2}}</span>
+							<h3 style="margin-top:15vh;">{{item.content1}}</h3>
+							<h4 style="margin-top:3%;">{{item.content2}}</h4>
 							<span style="margin-top:3%;">{{item.content3}}</span>
 						</div>
 					</el-carousel-item>
@@ -90,19 +90,19 @@ var indexMainTemplate = `
 	</el-row>
 
 	<!-- footer -->
-	<div class="contact" id="contact">
+	<div class="contact_us" id="contact_us">
 		<div class="container">
 			<div class="f-bg-w3l">
                 <h3>关注我们</h3>
 				<div class="col-md-4  w3layouts_footer_grid">
-					<img src="./img/QRcode.jpg" width="262" height="262"></img>
+					<img src="img/QRcode.jpg" width="262" height="262"></img>
 				</div>
 				<div class="col-md-4  w3layouts_footer_grid">
 					<p>
-						给我们发站内信来说一说你的意见和遇到的问题吧，
-						也可以关注公众号在后台留言，
-						并随时追踪我们的最新动态
-					</p>
+                        关注公众号即可随时追踪我们的最新动态
+                        你也可以在后台留言，来说一说你的意见和遇到的问题
+                        你的意见和建议会帮助我们更好的成长！
+                    </p>
                 </div>
                 
 				<div class="clearfix"> </div>
@@ -119,22 +119,22 @@ var indexMainModule = {
             courses: [],
             majors: [],
             departments: [{
-                imgPath: "./img/知识部.jpg",
+                imgPath: "img/知识部.jpg",
                 content1: "内容部",
                 content2: "设计与创作学习内容",
                 content3: "不只是知识见解，线上线下全方位走入你的学习生活"
             }, {
-                imgPath: "./img/工程部.jpg",
+                imgPath: "img/工程部.jpg",
                 content1: "工程部",
                 content2: "产品调研与开发",
                 content3: "有什么比新的世界在手中构建更让人愉悦的事情呢？"
             }, {
-                imgPath: "./img/科研部.jpg",
+                imgPath: "img/科研部.jpg",
                 content1: "科研部",
                 content2: "本科科研探索",
                 content3: "专业知识图谱建模，学习行为数据挖掘，为智库的未来赋能。"
             }, {
-                imgPath: "./img/运营部.jpg",
+                imgPath: "img/运营部.jpg",
                 content1: "运营部",
                 content2: "让价值传播",
                 content3: "把我们的产品轻轻放进你的怀里，引导和记录你与智库的今世今生。"
@@ -143,36 +143,36 @@ var indexMainModule = {
     },
     props: [],
     template: indexMainTemplate,
-    created: function () {
-        this.getMajors();
-        this.getCourses();
-    },
-    methods: {
-        getMajors() {
-            var _this = this;
-            axios.get('getAllMajors')
-                .then(function (response) {
-                    _this.majors = response.data.data.majors;
-                })
-                .catch(function (err) {
-                    console.log(err);
-                });
-        },
-        getCourses: function () {
-            var _this = this;
-            axios.get('course/getAllCourse')
-                .then(function (response) {
-                    _this.courses = response.data.data.courses;
-                })
-                .catch(function (err) {
-                    console.log(err);
-                });
-        },
-        handleClose(tag) {
-            this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-        },
-        handleOpen() { }
-    },
+    // created: function () {
+    //     this.getMajors();
+    //     this.getCourses();
+    // },
+    // methods: {
+    //     getMajors() {
+    //         var _this = this;
+    //         axios.get('getAllMajors')
+    //             .then(function (response) {
+    //                 _this.majors = response.data.data.majors;
+    //             })
+    //             .catch(function (err) {
+    //                 console.log(err);
+    //             });
+    //     },
+    //     getCourses: function () {
+    //         var _this = this;
+    //         axios.get('course/getAllCourse')
+    //             .then(function (response) {
+    //                 _this.courses = response.data.data.courses;
+    //             })
+    //             .catch(function (err) {
+    //                 console.log(err);
+    //             });
+    //     },
+    //     handleClose(tag) {
+    //         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+    //     },
+    //     handleOpen() { }
+    // },
 
 }
 
