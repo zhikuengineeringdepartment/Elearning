@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/toTop.css" />
     <link rel="stylesheet" href="css/header.css" />
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all">
-	<!-- <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"> -->
-	<link href="css/AboutUsStyle.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"> -->
+    <!-- <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all"> -->
+    <link href="css/AboutUsStyle.css" rel="stylesheet" type="text/css" media="all" />
     <script src="common/vue.js"></script>
     <script src="common/vue-router.js"></script>
     <script src="common/jquery.min.js"></script>
@@ -27,7 +27,7 @@
     <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui@2.9.1/lib/theme-chalk/index.css"> -->
     <!-- 引入组件库 -->
     <!-- <script src="https://unpkg.com/element-ui@2.9.1/lib/index.js"></script> -->
-	<script src="common/index.js"></script>
+    <script src="common/index.js"></script>
     <script src="wangEditor/wangEditor.min.js"></script>
     <script src="js/date.js"></script>
     <script src="common/axios.js"></script>
@@ -63,28 +63,16 @@
     <script src="template/tag.js"></script>
     <script src="template/user_info_form.js"></script>
     <script src="template/user_main.js"></script>
-	
-	<!-- for testimonials slider-js-script-->
 
-	<!--script-->
-	<script src="js/easyResponsiveTabs.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('#horizontalTab').easyResponsiveTabs({
-				type: 'default', //Types: default, vertical, accordion           
-				width: 'auto', //auto or any width like 600px
-				fit: true // 100% fit in a container
-			});
-		});
-	</script>
+    <!-- for testimonials slider-js-script-->
 
     <title>山软智库</title>
     <style>
         /*@font-face {*/
-            /*font-family: element-icons;*/
-            /*src: url('common/fonts/element-icons.woff') format('woff'), url('common/fonts/element-icons.ttf') format('truetype');*/
-            /*font-weight: 400;*/
-            /*font-style: normal*/
+        /*font-family: element-icons;*/
+        /*src: url('common/fonts/element-icons.woff') format('woff'), url('common/fonts/element-icons.ttf') format('truetype');*/
+        /*font-weight: 400;*/
+        /*font-style: normal*/
         /*}*/
 
         .el-submenu .el-menu-item {
@@ -138,7 +126,58 @@
             box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1) !important;
         }
     </style>
+    <script language="JavaScript">
+        //动态加载一个js/css文件
 
+        function loadjscssfile(filename, filetype) {
+
+            if (filetype == "js") {
+
+                var fileref = document.createElement('script')
+
+                fileref.setAttribute("type", "text/javascript")
+
+                fileref.setAttribute("src", filename)
+
+            } else if (filetype == "css") {
+
+                var fileref = document.createElement("link")
+
+                fileref.setAttribute("rel", "stylesheet")
+
+                fileref.setAttribute("type", "text/css")
+
+                fileref.setAttribute("href", filename)
+
+            }
+
+            if (typeof fileref != "undefined")
+
+                document.getElementsByTagName("head")[0].appendChild(fileref)
+
+        }
+
+        //移动已经加载过的js/css
+
+        function removejscssfile(filename, filetype) {
+
+            var targetelement = (filetype == "js") ? "script" : (filetype == "css") ? "link" : "none"
+
+            var targetattr = (filetype == "js") ? "src" : (filetype == "css") ? "href" : "none"
+
+            var allsuspects = document.getElementsByTagName(targetelement)
+
+            for (var i = allsuspects.length; i >= 0; i--) {
+
+                if (allsuspects[i] && allsuspects[i].getAttribute(targetattr) != null && allsuspects[i].getAttribute(
+                        targetattr).indexOf(filename) != -1)
+
+                    allsuspects[i].parentNode.removeChild(allsuspects[i])
+
+            }
+
+        }
+    </script>
 </head>
 
 <body>
