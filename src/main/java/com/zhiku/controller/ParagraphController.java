@@ -1,6 +1,5 @@
 package com.zhiku.controller;
 
-import com.zhiku.entity.ColParagraph;
 import com.zhiku.entity.Note;
 import com.zhiku.entity.User;
 import com.zhiku.service.ParagraphService;
@@ -10,12 +9,14 @@ import com.zhiku.view.ColParagraphView;
 import com.zhiku.view.NoteView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+@CrossOrigin(value = "*")
 @Controller
 @RequestMapping(value = "paragraph")
 public class ParagraphController {

@@ -7,6 +7,7 @@ import com.zhiku.util.ResponseData;
 import com.zhiku.view.FileView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.ConnectException;
 import java.util.List;
 
+@CrossOrigin(value = "*")
 @Controller
 @RequestMapping(value = "admin")
 public class AdminController {

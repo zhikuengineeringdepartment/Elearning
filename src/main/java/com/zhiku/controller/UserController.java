@@ -16,10 +16,7 @@ import freemarker.template.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
@@ -28,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
-
+@CrossOrigin(value = "*")
 @Controller
 @RequestMapping("user")
 public class UserController {
