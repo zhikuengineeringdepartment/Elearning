@@ -34,7 +34,7 @@ mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
 server:
-  port: 10234
+  port: 18888
 #logging:
 #  level:
 #    com.zhiku.*: debug
