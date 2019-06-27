@@ -35,7 +35,7 @@ public class ParagraphService {
     /**
      * 获取一个用户的所有收藏段落
      * @param uid 用户名
-     * @return
+     * @return 收藏段落列表
      */
     public List<ColParagraphView> getColParagraphViews( Integer uid, Integer cid,Integer ordtime, Integer page,Integer pagesize){
 //        return colParagraphMapper.selectParagraphView(uid);
@@ -44,9 +44,9 @@ public class ParagraphService {
 
     /**
      * 收藏一个段落
-     * @param uid
-     * @param paragraphSeq
-     * @return
+     * @param uid 用户
+     * @param paragraphSeq 段落序列
+     * @return 是否收藏成功
      */
     public boolean addColParagraph(int uid, int paragraphSeq) {
         ColParagraph colParagraph = new ColParagraph();
@@ -63,8 +63,8 @@ public class ParagraphService {
 
     /**
      * 删除一个收藏的段落
-     * @param uid
-     * @param paragraphSeq
+     * @param uid 用户
+     * @param paragraphSeq 段落序列
      * @return
      */
     public boolean removeColParagraph(int uid,int paragraphSeq){
@@ -81,9 +81,9 @@ public class ParagraphService {
 
     /**
      * 获得某用户对应小节的全部笔记
-     * @param uid
-     * @param sid
-     * @return
+     * @param uid 用户id
+     * @param sid 节id
+     * @return 笔记视图列表
      */
     public List<NoteView> getNotesBySid(int uid, int sid){
         return noteMapper.selectBySid(uid,sid);
@@ -91,9 +91,9 @@ public class ParagraphService {
 
     /**
      * 依据note的联合主键找到对应的note
-     * @param user  联合主键中的uid
-     * @param paragraphSeq  联合主键中pid
-     * @return
+     * @param user  用户id
+     * @param paragraphSeq  段落序列
+     * @return Note 笔记
      */
     public Note getNoteByNoteKey(User user, int paragraphSeq){
         NoteKey noteKey = new NoteKey();
@@ -150,6 +150,13 @@ public class ParagraphService {
         }
     }
 
+    /**
+     * 获得用户某课程第几页的笔记
+     * @param uid 用户id
+     * @param cid 课程id
+     * @param page 页数
+     * @return 笔记视图
+     */
     public List<NoteView> getNoteViews(int uid , int cid, int page){
         return noteMapper.selectNoteViewByUid(uid);
     }

@@ -12,7 +12,7 @@ public class LogEntity {
     private User user;
     private String ip;
     private String requestName;
-    private Map<String,Object> args = new HashMap<>();
+    private Map<String,Object> args = new HashMap<>();      //记录参数名和参数值
 
     public void addItemToArgs(String key,Object value){
         args.put(key,value);

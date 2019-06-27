@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 节控制器，处理和节相关的所有请求
+ */
 @CrossOrigin(value = "*")
 @Controller
 @RequestMapping(value = "section")
@@ -32,7 +35,6 @@ public class SectionController {
         return  responseData;
     }
 
-    //TODO 存在推荐为空的情况，推荐内容重复，正常使用爬虫和网络使用爬虫差距巨大
 
     /**
      * 获得csdn推荐的爬虫

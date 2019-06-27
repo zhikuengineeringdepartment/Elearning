@@ -2,6 +2,9 @@ package com.zhiku.view;
 
 import com.zhiku.entity.ColParagraph;
 
+/**
+ * 个人中心收藏段落视图
+ */
 public class ColParagraphView extends ColParagraph {
     private Integer paragraphSeq;
 

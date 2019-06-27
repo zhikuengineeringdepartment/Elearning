@@ -3,6 +3,9 @@ package com.zhiku.view;
 import com.zhiku.entity.File;
 import com.zhiku.entity.FileKeys;
 
+/**
+ * 文件视图
+ */
 public class FileView extends File {
     private String upperName;
 

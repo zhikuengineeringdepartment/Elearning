@@ -23,10 +23,19 @@ public class CourseService {
     @Autowired
     private ScheduleMapper scheduleMapper;
 
+    /**
+     * 获得所有课程
+     * @return 课程列表
+     */
     public List<Course> getAllCourse(){
         return courseMapper.getAllCourse();
     }
 
+    /**
+     * 获得课程详情及目录
+     * @param cid 课程id
+     * @return 课程详情，包含所有的节
+     */
     public CourseView getCourseDetails(int cid){
         return courseMapper.getCourseView(cid);
     }
@@ -42,9 +51,9 @@ public class CourseService {
 
     /**
      * 添加收藏课程
-     * @param uid
-     * @param cid
-     * @return
+     * @param uid 用户id
+     * @param cid 课程id
+     * @return 是否收藏成功
      */
     public boolean colCourse(int uid,int cid){
         boolean finish ;
@@ -61,13 +70,18 @@ public class CourseService {
         return finish;
     }
 
+    /**
+     *删除收藏课程
+     * @param uid 用户id
+     * @param cid 课程id
+     */
     public void removeColCourse(int uid,int cid){
         //删除所收藏的课
         ColCourseKey colCourseKey = new ColCourseKey();
         colCourseKey.setColcCourse(cid);
         colCourseKey.setColcUser(uid);
         colCourseMapper.deleteByPrimaryKey(colCourseKey);
-        //删除所收藏课对应的学习进度
+        //TODO 删除所收藏课对应的学习进度
 
     }
 

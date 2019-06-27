@@ -36,7 +36,9 @@ import java.util.UUID;
 @Transactional
 public class FileService{
 
+    //TODO 将这些值移到配置文件中，避免硬编码
 //    @Value("${basePath_upload}")
+    //文件的上传路径/var/zhiku/upload
     private String uploadPath = "/var"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
 //    private String uploadPath = "E:\\14_zhiku\\upload";
     @Value("${basePath_preview}")
@@ -45,6 +47,7 @@ public class FileService{
     private int max_size;
     @Value("${type_reg}")
     private String type_reg;
+    //默认的用户预览页数
     public static int PAGE_SIZE = 10;
     @Autowired
     private FileMapper fileMapper;
@@ -57,7 +60,7 @@ public class FileService{
 
     /**
      * 检查上传的文件是否符合要求
-     * @param multipartFile
+     * @param multipartFile 文件流对象
      * @return FileStatus
      */
     public FileStatus checkFile(MultipartFile multipartFile){
@@ -86,9 +89,11 @@ public class FileService{
 
     /**
      * 事务保存文件+插入数据到数据库
-     * @param multipartFile
-     * @param file
-     * @return
+     * @param multipartFile 文件流对象
+     * @param file 数据库文件实例
+     * @param user 用户
+     * @param fileKeys 关键字
+     * @exception IOException io异常
      */
     @Transactional(rollbackFor = Exception.class)
     public void storeFile(MultipartFile multipartFile, File file, User user, FileKeys fileKeys) throws IOException {
@@ -116,10 +121,10 @@ public class FileService{
 
     /**
      * 事务保存文件+插入数据到数据库
-     * @param multipartFile
-     * @param file
-     * @param user
-     * @param fileKeys
+     * @param multipartFile 文件流
+     * @param file 文件实例
+     * @param user 用户
+     * @param fileKeys 关键字
      */
     public boolean storeFileToFileSystemAndinInsertIntoDB(MultipartFile multipartFile, File file, User user, FileKeys fileKeys){
         // 调用之前的代码，里面抛出异常，异常的话这个storeFile这个老方法会回滚，同时这里捕捉异常又能打印异常信息
@@ -144,8 +149,8 @@ public class FileService{
 
     /**
      * 将文件存入文件系统
-     * @param multipartFile
-     * @param realPath
+     * @param multipartFile 文件流
+     * @param realPath 保存的具体路径
      * @return
      */
     private boolean storeFileToSys(MultipartFile multipartFile,String realPath){
@@ -163,9 +168,10 @@ public class FileService{
 
     /**
      * 将文件信息存入数据库
-     * @param multipartFile
-     * @param file
-     * @return
+     * @param multipartFile 文件流
+     * @param file 文件实例
+     * @param user 用户
+     * @return 是否保存成功
      */
     private boolean storeFileToDB(MultipartFile multipartFile, File file,User user) throws IOException {
         //boolean finish ;
@@ -193,7 +199,7 @@ public class FileService{
 
     /**
      * 产生新的文件名
-     * @param filename
+     * @param filename 原文件名
      * @return
      */
     private String makeFileName(String filename){
@@ -201,10 +207,10 @@ public class FileService{
     }
 
     /**
-     * 产生保存路径
-     * @param filename
-     * @param savePath
-     * @return
+     * 产生保存路径，在savePath下生成两级目录
+     * @param filename 文件名
+     * @param savePath 保存目录
+     * @return 新路径
      */
     private String makePath(String filename,String savePath){
         //得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
@@ -223,6 +229,13 @@ public class FileService{
         return dir;
     }
 
+    /**
+     * 文件下载
+     * @param request 请求
+     * @param response 响应
+     * @param user 用户
+     * @param file 文件实例
+     */
     public void fileDownload(HttpServletRequest request, HttpServletResponse response, User user, File file) {
         java.io.File realFile = new java.io.File(file.getFilePath());
         //保存用户的文件操作记录
@@ -254,6 +267,7 @@ public class FileService{
         }catch (Exception e){
             e.printStackTrace();
         }
+        //注释原先的ResponseEntity方式
 //        ResponseEntity<byte[]> entity = null;
 //        try{
 //            byte[] body ;
@@ -274,6 +288,12 @@ public class FileService{
 //        return entity;
     }
 
+    /**
+     * 依据fid找到文件
+     * @param fid 文件id
+     * @return 文件实例
+     * @throws FileNotExistException 文件找不到异常
+     */
     public File getFileByFid(int fid) throws FileNotExistException {
         File file = null;
         try{
@@ -285,18 +305,22 @@ public class FileService{
         return file;
     }
 
+    /**
+     * 更新文件状态
+     * @param file 文件
+     */
     public void updateFileStatus(File file){
         fileMapper.updateByPrimaryKeySelective(file);
     }
 
     /**
-     * 将文件的操作记录进数据库
+     * 将文件的操作记录存进数据库
      *
-     * @param request
-     * @param uid
-     * @param fid
-     * @param type
-     * @return
+     * @param request 请求
+     * @param uid 用户id
+     * @param fid 文件id
+     * @param type 操作的类型
+     * @return 是否存入成功
      */
     public boolean storeFileOp(HttpServletRequest request, int uid, int fid, String type){
         Fileop fileop = new Fileop();
@@ -309,6 +333,15 @@ public class FileService{
         return true;
     }
 
+    /**
+     * 获得文件列表
+     * @param keyWord 关键字
+     * @param file 文件，主要是fileCourse属性，即所属课程
+     * @param page 第几页
+     * @param order 是否按照时间降序
+     * @param status 获取什么状态的文件（待审核，正常等）
+     * @return
+     */
     public List<FileView> getFileList(String keyWord, File file, int page, boolean order,String status) {
         int startLine = (page-1)*PAGE_SIZE;
         System.out.println(startLine);
@@ -317,17 +350,21 @@ public class FileService{
 
     /**
      * 处理文件的预览操作
-     * @param response
-     * @param file
-     * @return
-     * @throws ConnectException
+     * 管理员可预览全部文件，用户只能浏览默认的10页
+     * @param response 响应
+     * @param file 文件
+     * @param isAdmin 是否管理员
+     * @return 操作结果
+     * @throws ConnectException openoffice的链接异常
      */
     public String filePreview(HttpServletResponse response, File file,boolean isAdmin) throws ConnectException {
         String rmsg = "";
+        //检查文件是否是openoffice支持的可转化类型
         if(Office2PDF.isConvert(file.getFilePath())){
             String outputFilePath = file.getFilePath();
-            //如果可以转化并且不是pdf
+            //如果可以转化并且不是pdf，则进行转化
             if(!"pdf".equals(Office2PDF.getPostfix(file.getFilePath()))){
+                //获得转化后文件的全路径
                 outputFilePath = Office2PDF.getOutputFilePath(file.getFilePath());
                 if(!Office2PDF.openOfficeToPDF(file.getFilePath(), outputFilePath)){
                     rmsg = "发生了一个未知的错误code:1，稍后重试";
@@ -338,6 +375,7 @@ public class FileService{
                 response.setContentType("application/pdf;charset=utf-8");
                 response.setHeader("pragme", "no-cache");
                 OutputStream outer = response.getOutputStream();
+                //预览文件输出
                 Office2PDF.writeOut(new java.io.File(outputFilePath), outer,isAdmin);
                 outer.close();
                 return null;
@@ -353,9 +391,9 @@ public class FileService{
 
     /**
      * 获得下载记录
-     * @param user
-     * @param page
-     * @return
+     * @param user 用户
+     * @param page 第几页
+     * @return 文件列表
      */
     public List<FileDownloadRecordView> getFileDownloadRecords(User user, int page){
         int startLine = (page -1)*PAGE_SIZE;
@@ -364,9 +402,9 @@ public class FileService{
 
     /**
      * 获得上传记录
-     * @param user
-     * @param page
-     * @return
+     * @param user 用户
+     * @param page 第几页
+     * @return 文件列表
      */
     public List<FileView> getFileUploadRecords(User user, int page){
         int startLine = (page -1)*PAGE_SIZE;

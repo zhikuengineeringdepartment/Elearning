@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 暂时用不到
+ */
 @Service
 public class MajorService {
     @Autowired

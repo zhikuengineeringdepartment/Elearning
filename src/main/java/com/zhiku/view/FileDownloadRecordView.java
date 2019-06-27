@@ -2,6 +2,9 @@ package com.zhiku.view;
 
 import com.zhiku.entity.Fileop;
 
+/**
+ * 文件下载记录视图
+ */
 public class FileDownloadRecordView extends Fileop {
     private FileView fileView;
     private String upperName;

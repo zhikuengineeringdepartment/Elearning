@@ -20,5 +20,7 @@ public interface ColCourseMapper {
 
     int updateByPrimaryKey(ColCourse record);
 
+    //====================自定义SQL=====================================
+    //根据用户id查找收藏的课程及进度
     List<ColCourseView> selectColCourseView(Integer uid);
 }

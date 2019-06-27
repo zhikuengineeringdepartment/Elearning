@@ -21,19 +21,20 @@ public class EmailUtil {
 
     /**
      * 发邮件的异常不处理，抛出到上一层
-     * @param javaMailSender
-     * @param act
-     * @param user
-     * @param subject
-     * @param emailAdress
-     * @param freemarkerConfig
+     * @param javaMailSender 邮件发送对象
+     * @param act 邮件性质
+     * @param user 用户
+     * @param subject 邮件主题
+     * @param emailAdress 收件人地址
+     * @param freemarkerConfig 邮件模板
      * @return
-     * @throws MessagingException
+     * @throws MessagingException 发邮件异常
      */
     public String sendMail(JavaMailSender javaMailSender, String act, User user, String subject, String emailAdress, Configuration freemarkerConfig) throws MessagingException {
         MimeMessage mMessage = javaMailSender.createMimeMessage();// 创建邮件对象
         MimeMessageHelper mMessageHelper;
 //        Properties prop = new Properties();
+        //获得邮件文本
         String text = getText(freemarkerConfig,act,user);
         //try {
 //            prop.load(this.getClass().getResourceAsStream("/mail.properties"));
@@ -59,14 +60,24 @@ public class EmailUtil {
         return "发送成功";
     }
 
+    /**
+     * 依据模板产生邮件内容
+     * @param freemarkerConfig 邮件模板
+     * @param act 邮件性质
+     * @param user 用户
+     * @return 邮件内容文本
+     */
     private String getText(Configuration freemarkerConfig, String act, User user){
         String text = "";
         try {
+            //获得email.ftl模板
             Template template = freemarkerConfig.getTemplate("email.ftl");
+            //构建模板参数
             Map<String,Object> map = new HashMap<String,Object>();
             map.put("user",user.getUserUsername());
             map.put("act",act);
             map.put("code",String.valueOf(user.hashCode()));
+            //传入参数构建模板文本
             text = FreeMarkerTemplateUtils.processTemplateIntoString(template,map);
         } catch (IOException e) {
             e.printStackTrace();

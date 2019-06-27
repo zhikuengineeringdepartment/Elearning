@@ -14,6 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+/**
+ * 基本信息控制层，原计划写一些无需登录的杂的请求，后来有了Token验证也给搁置了，展示没有用处
+ */
 @CrossOrigin(value = "*")
 @Controller
 public class InfoController {

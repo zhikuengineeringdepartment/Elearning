@@ -1,24 +1,20 @@
 package com.zhiku.exception;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+//TODO 缺乏数据异常的处理
+//TODO 异常处理没法返回页面
 @RestControllerAdvice
 public class CommonExceptionResolver {
 
+    //处理UserNotFoundException异常
     @ExceptionHandler(value = UserNotFoundException.class)
     public String handlerUserNotFoundException(UserNotFoundException e) {
         return "/test.html";
     }
 
+    //处理TokenVerifyErrorException异常
     @ExceptionHandler(value = TokenVerifyErrorException.class)
     public String handlerTokenVerifyErrorException(TokenVerifyErrorException e){
         return "/test.html";

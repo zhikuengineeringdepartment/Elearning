@@ -2,6 +2,9 @@ package com.zhiku.view;
 
 import com.zhiku.entity.Note;
 
+/**
+ * 笔记视图
+ */
 public class NoteView extends Note {
     private ColParagraphView colParagraphView;
 

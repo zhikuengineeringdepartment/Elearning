@@ -16,6 +16,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 用户身份验证的切面
+ */
 @Component
 @Aspect
 public class TokenAop {
@@ -24,6 +27,7 @@ public class TokenAop {
 
     /**
      *用户登录检测的切面
+     * 该切面面向controller下所有第一个参数为User的请求，在进入请求前嵌入
      * @param pjp 切点
      * @throws UserNotFoundException 未找到用户异常
      * @throws TokenVerifyErrorException token验证失败异常
@@ -33,22 +37,29 @@ public class TokenAop {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = getCookieByName("token",request.getCookies());
         User user = ((User)(pjp.getArgs()[0]));     //获取切面的第一个参数对象user
+        //依据token解析的结果重新给切面的user对象赋值
         user.setUid(JWTUtil.getUid(token));
         user.setUserUsername(JWTUtil.getUserName(token));
     }
 
+    /**
+     * 管理员登录认证的切面
+     * 该切面面向AdminController下的所有请求，在进入请求前嵌入
+     * @param pjp   切点
+     * @throws UserNotFoundException 未找到用户异常
+     * @throws TokenVerifyErrorException    token验证失败异常
+     */
     @Before(value = "execution(* com.zhiku.controller.AdminController.*(..)))")
     public void adminBefore(JoinPoint pjp) throws UserNotFoundException, TokenVerifyErrorException{
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = getCookieByName("token",request.getCookies());
         User user = userService.getUserByUsername(JWTUtil.getUserName(token));
+        //检查该用户是否是admin用户，即它的权限值为a（admin），普通的用户权限值为u（user）
         if(!"a".equals(user.getUserAuth())){
             throw new TokenVerifyErrorException("抱歉，您没有该权限！");
         }
 
     }
-
-    //TODO 添加日志记录的切面，主要记录用户的各种点击行为
 
 
     /**

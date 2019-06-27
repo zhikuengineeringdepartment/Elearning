@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * 偏好服务层，暂时未使用
+ */
 @Service
 public class PreferenceService {
     @Autowired

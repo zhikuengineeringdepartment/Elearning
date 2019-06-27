@@ -24,8 +24,8 @@ public class Office2PDF {
     public static String MAC_PATH = "";
 
     public static String LOCAL_IP = "127.0.0.1";
-    public static String REMOTE_IP = "123.206.229.207";
 
+    //默认的预览页数
     public static int DEFAULT_PAGE = 10;
 
 
@@ -38,9 +38,9 @@ public class Office2PDF {
      * 使Office2003-2007全 部格式的文档(.doc|.docx|.xls|.xlsx|.ppt|.pptx) 转化为pdf文件<br>
      *
      * @param inputFilePath
-     *            源文件路径，如："e:/test.docx"
+     *            源文件路径，如："/var/zhiku/upload/test.docx"
      * @param outputFilePath
-     *            目标文件路径，如："e:/test_docx.pdf"
+     *            目标文件路径，如："/var/lib/preview/test_docx.pdf"
      * @return
      * @throws ConnectException
      */
@@ -67,6 +67,7 @@ public class Office2PDF {
     }
 
 
+    //TODO 当时是想如果openoffice没有开启，就程序化开启openoffice，暂时没有实现
     /**
      * 启动openoffice服务，并使用8100端口
      * @return
@@ -107,20 +108,20 @@ public class Office2PDF {
 
 
     /**
-     * 获取输出文件
+     * 获得输出文件的地址
      *
      * @param inputFilePath
      * @return
      */
     public static String getOutputFilePath(String inputFilePath) {
         String file_name = inputFilePath.substring(inputFilePath.lastIndexOf(java.io.File.separator)+1,inputFilePath.lastIndexOf("."));
-        String outputFilePath = "/var/zhiku/" + file_name + ".pdf";
+        String outputFilePath = "/var/zhiku/preview" + file_name + ".pdf";
         return outputFilePath;
     }
 
 
     /**
-     * 获取inputFilePath的后缀名，如："e:/test.pptx"的后缀名为："pptx"<br>
+     * 获取inputFilePath的后缀名，如："/var/zhiku/upload/test.pptx"的后缀名为："pptx"<br>
      *
      * @param inputFilePath
      * @return
@@ -135,9 +136,9 @@ public class Office2PDF {
      * 使Office2003-2007全部格式的文档(.doc|.docx|.xls|.xlsx|.ppt|.pptx) 转化为pdf文件<br>
      *
      * @param inputFilePath
-     *            源文件路径，如："e:/test.docx"
+     *            源文件路径，如："/var/zhiku/upload/test.docx"
      * @param outputFilePath
-     *            目标文件路径，如："e:/test_docx.pdf"
+     *            目标文件路径，如："/var/zhiku/preview/test_docx.pdf"
      * @return
      * @throws ConnectException
      */
@@ -174,11 +175,20 @@ public class Office2PDF {
         return flag;
     }
 
+    /**
+     * 将文件输出
+     * @param file 文件实例
+     * @param out 输出流
+     * @param admin 是否管理员模式
+     * @throws Exception
+     */
     public static void writeOut(File file, OutputStream out,boolean admin) throws Exception{
         System.out.println(file.getAbsolutePath());
+        //加载pdf文档对象
         PDDocument document = PDDocument.load(file, MemoryUsageSetting.setupTempFileOnly());
         document.getPages();
         int endPage = 0;
+        //管理员预览全部文件，普通用户预览默认的10页
         if(!admin){
             endPage = document.getNumberOfPages()>DEFAULT_PAGE?DEFAULT_PAGE:document.getNumberOfPages();
         }else{
@@ -194,7 +204,7 @@ public class Office2PDF {
         document.close();
     }
 
-
+    //开发时用于测试，现在没有用，建议删除
     public static void main(String[] args) throws ConnectException {
         String inputPath = "E:"+java.io.File.separator + "test.docx";
         if(isConvert(inputPath)){
