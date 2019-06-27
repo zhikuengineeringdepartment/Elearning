@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-@CrossOrigin(value = "*")
+@CrossOrigin(value = "localhost:8080")
 @Controller
 @RequestMapping(value = "paragraph")
 public class ParagraphController {

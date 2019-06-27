@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@CrossOrigin(value = "*")
+@CrossOrigin(value = "localhost:8080")
 @Controller
 public class InfoController {
     @Autowired

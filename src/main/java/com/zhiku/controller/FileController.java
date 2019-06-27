@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.ConnectException;
 import java.util.List;
 
-@CrossOrigin(value = "*")
+@CrossOrigin(value = "localhost:8080")
 @Controller
 @RequestMapping(value = "file")
 public class FileController {

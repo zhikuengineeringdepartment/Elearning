@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin(value = "*")
+@CrossOrigin(value = "localhost:8080")
 @Controller
 @RequestMapping("user")
 public class UserController {

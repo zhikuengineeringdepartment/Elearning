@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(value = "*")
+@CrossOrigin(value = "localhost:8080")
 @Controller
 @RequestMapping(value = "section")
 public class SectionController {
