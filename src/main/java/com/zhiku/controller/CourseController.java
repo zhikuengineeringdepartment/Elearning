@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(value = "localhost:8080")
+@CrossOrigin(value = "192.168.2.248:8080")
 @Controller
 @RequestMapping("course")
 public class CourseController {

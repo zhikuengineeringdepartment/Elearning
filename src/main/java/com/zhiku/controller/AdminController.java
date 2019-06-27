@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.ConnectException;
 import java.util.List;
 
-@CrossOrigin(value = "localhost:8080")
+@CrossOrigin(value = "192.168.2.248:8080")
 @Controller
 @RequestMapping(value = "admin")
 public class AdminController {
