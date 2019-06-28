@@ -1,5 +1,5 @@
 /*
-活动模块组件
+活动组件
  */
 var activityTemplate = `
 <a :href="activity.link" target="_blank" style="text-decoration:none;">

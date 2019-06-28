@@ -1,6 +1,7 @@
 /*
-文件模块的主页面组件
+管理员文件模块的主页面组件
  */
+//TODO 套用普通管理员的界面，样式有待改善，一些无关的属性可以移除
 var adminFileMainTemplate = `
 <el-main id="fileList" style="margin-top: 20px">
         <el-row style="display: flex;flex-direction: column;align-items: center">

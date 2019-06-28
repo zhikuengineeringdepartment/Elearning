@@ -38,6 +38,7 @@ var fileModule = {
             console.log("预览文件"+fid);
             window.open("/preview.html?fid="+fid)
         },
+        //下载文件请求
         handleDownload:function(fid){
             if(root.login){
                 window.open('file/download?fid='+fid+'&uid='+0)

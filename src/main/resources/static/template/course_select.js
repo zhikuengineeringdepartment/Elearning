@@ -1,5 +1,5 @@
 /*
-文件模块的主页面组件
+课程选择器组件组件
  */
 var courseSelectTemplate = `
 <el-select v-model="course_value" @change="get_value" filterable placeholder="请选择课程">
@@ -34,6 +34,7 @@ var courseSelectModule = {
         this.getCourses();
     },
     methods:{
+        //事件触发器，将该组件所选的课程对应值返回给父组件
         get_value:function(){
             this.$emit('get-course-value', this.course_value)
         },

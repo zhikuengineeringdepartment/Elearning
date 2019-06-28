@@ -1,6 +1,7 @@
 /*
-文件上传下载记录组件
+文件上传记录组件
  */
+//TODO 编辑按钮不可用，原计划是在用户上传文件待审核期间，可以修改添加的标签等，在文件正常之后该按钮失效
 var fileUploadRecordTemplate = `
 <el-card shadow="hover" style="margin: 10px 0px">
                     <el-row style="margin-bottom: 0px">

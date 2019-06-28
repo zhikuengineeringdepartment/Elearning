@@ -1,3 +1,6 @@
+/*
+无用模板
+ */
 let majorTemplate = `
 <el-menu-item :index="major.majorId">\
     <i class="el-icon-arrow-right"></i>

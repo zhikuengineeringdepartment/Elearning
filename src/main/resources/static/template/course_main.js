@@ -20,7 +20,7 @@ var courseMainTemplate = `
 var courseMainModule = {
     data:function () {
         return{
-            courses: []
+            courses: []     //课程列表
         }
     },
     props:[],
@@ -29,6 +29,7 @@ var courseMainModule = {
         this.getCourses();
     },
     methods:{
+        //获得所有课程
         getCourses:function(){
             var _this =this;
             axios.get('course/getAllCourse')

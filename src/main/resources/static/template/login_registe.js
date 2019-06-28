@@ -1,6 +1,7 @@
 /*
 登录界面组件
  */
+//TODO 样式啥的还需要改进
 var loginRegisteTemplate = `
 <el-main>
         <el-row type="flex" justify="center">
@@ -90,6 +91,7 @@ var loginRegisteModule = {
     props: [],
     template: loginRegisteTemplate,
     watch: {
+        //监听路径，跳转登录还是注册
         '$route'(to) {
             if (to.fullPath === '/login') {
                 this.isLoginPage = true;
@@ -138,6 +140,7 @@ var loginRegisteModule = {
                 )
                 .then(function (response) {
                     if (response.data.code == 200) {
+                        //将头像信息存入localStorage中，避免单独请求头像
                         localStorage['user_icon'] = response.data.data.userIcon;
                         // root.user_icon = response.data.data.user_icon;
                         _this.$emit('login-state')

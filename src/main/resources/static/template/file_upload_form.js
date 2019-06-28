@@ -1,6 +1,7 @@
 /*
 文件上传表单组件
  */
+//TODO 重点解决样式中批量上传的问题，后台目前只能接受一个文件，但是前端样式给人一种可以批量上传的感觉，酌情考虑修改前端或者后端
 var fileUploadFormTemplate = `
 <el-main>
 <el-row type="flex" justify="center">
@@ -13,7 +14,7 @@ var fileUploadFormTemplate = `
                                 ref="upload"
                                 name="multipartFile"
                                 :file-list="uploadForm.multipartFile"
-                                :limit="3"
+                                :limit="1"
                                 :on-exceed="handleExceed"
                                 :on-change="change_file_list"
                                 :on-success="handleSuccess"
@@ -81,11 +82,12 @@ var fileUploadFormModule = {
     },
     methods:{
         handleExceed(files, fileList) {
-            this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            this.$message.warning(`当前限制只能选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
         handleClose(tag) {
             this.uploadForm.file_tags.splice(this.uploadForm.file_tags.indexOf(tag), 1);
         },
+        //没用上，忘记写的原因了，建议删除
         change_file_list(file,flist){
             console.log(this.$refs.upload.uploadFiles)
             this.uploadForm.multipartFile=flist
@@ -93,6 +95,7 @@ var fileUploadFormModule = {
         set_course_value:function(cid){
             this.uploadForm.fileCourse = cid;
         },
+        //配合tag的样式
         handleInputConfirm() {
             let tagValue = this.tagValue;
             if (tagValue) {
@@ -101,6 +104,7 @@ var fileUploadFormModule = {
             this.tagVisible = false;
             this.tagValue = '';
         },
+        //显示tag的输入框
         showInput() {
             this.tagVisible = true;
             this.$nextTick(_ => {
@@ -110,6 +114,7 @@ var fileUploadFormModule = {
         handleSuccess(respnose,file,fileList){
             alert(respnose.data.data.message)
         },
+        //无用函数，建议删除
         handlePreview(file){
             console.log(file);
         },
@@ -156,6 +161,7 @@ var fileUploadFormModule = {
                 this.$router.push("/login")
             }
         },
+        //回到上个页面
         returnBack(){
           this.$router.go(-1);
         }
