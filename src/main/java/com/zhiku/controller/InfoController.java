@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@CrossOrigin(value = "192.168.2.248:8080")
+@CrossOrigin(value = "*")
 @Controller
 public class InfoController {
     @Autowired

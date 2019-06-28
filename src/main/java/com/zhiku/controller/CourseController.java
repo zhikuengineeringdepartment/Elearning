@@ -14,16 +14,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(value = "192.168.2.248:8080")
+/**
+ * 课程控制层
+ */
+@CrossOrigin(value = "*")
 @Controller
 @RequestMapping("course")
 public class CourseController {
     @Autowired
     private CourseService courseService;
-    @Autowired
-    private SectionService sectionService;
 
-    //TODO 获得全部课程，在讨论完学院专业课程的设计之后可以考虑修改这部分逻辑
+    //TODO 获得全部课程，在讨论完学院专业课程关系及表的设计之后可以考虑修改获得课程的逻辑，采用学院-专业-课程这样多级选择器
     /**
      * 获得所有的课
      * 后期修改为可按照专业搜课
