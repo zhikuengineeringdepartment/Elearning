@@ -1,0 +1,38 @@
+// 使用vuex进行全局的数据状态管理
+
+import Vue from 'vue'
+import Vuex from 'vuex'
+import {user, isLogin, tabIndex, isMobile, backEndIp} from './global'
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    user, // 用户对象
+    isLogin, // 登录状态
+    tabIndex, // 选中了哪个tab
+    isMobile, // 是否为手机端
+    backEndIp, // 后台ip
+  },
+  mutations: {
+    // 设置user
+    setUser (state, newUser) {
+      state.user.username = newUser.username;
+      state.user.userIcon = newUser.userIcon;
+    },
+    // 设置tabBarStatus
+    setTabIndex (state, newTabIndex) {
+      state.tabIndex = newTabIndex;
+    },
+    // 更改浏览模式
+    changeMode (state, isMobile) {
+      state.isMobile = isMobile;
+    },
+    // 更改浏览模式
+    changeLoginStatus (state, loginStatus) {
+      state.isLogin = loginStatus;
+    },
+  }
+});
+
+export default store
