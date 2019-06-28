@@ -22,10 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.ConnectException;
 import java.util.List;
 
-/**
- * 文件控制层
- */
-@CrossOrigin(value = "*")
+@CrossOrigin(value = "192.168.2.248:8080")
 @Controller
 @RequestMapping(value = "file")
 public class FileController {
@@ -38,7 +35,7 @@ public class FileController {
      *用户上传文件
      * @param user 用户
      * @param multipartFile 上传的文件对象
-     * @param file 将要保存的文件实体（数据库实体），包含了fileCourse属性
+     * @param file 将要保存的文件实体（数据库实体）
      * @param fileKeys 上传时用户提供的文件关键字
      * @return 是否操作成功
      */
@@ -51,10 +48,10 @@ public class FileController {
             FileKeys fileKeys){
         ResponseData responseData = null;
         //检查文件是否规范
+        System.out.println(user.getUid());
         FileStatus fileStatus = fileService.checkFile(multipartFile);
         if(fileStatus == FileStatus.NORMAL){
             // 这里调用了一个事务的方法，如果这个方法报错，整个操作会回滚
-            //将文件存到数据库和内存中
             if(fileService.storeFileToFileSystemAndinInsertIntoDB(multipartFile,file,user,fileKeys)){
                 responseData = ResponseData.ok();
             }else{
@@ -72,7 +69,7 @@ public class FileController {
      * 文件下载请求
      * @param user 用户
      * @param request 请求
-     * @param response 响应，用于文件流的写出
+     * @param response 响应
      * @param fid 下载的文件id
      * @throws FileNotExistException 文件找不到异常
      */
@@ -89,8 +86,8 @@ public class FileController {
 
     //TODO 待处理抛出的ConnectException
     /**
-     * 非管理员文件预览请求，仅可预览10页
-     * @param response 响应，用于pdf流的写出
+     * 文件预览请求
+     * @param response 响应
      * @param fid 预览的文件id
      * @throws ConnectException openoffice服务找不到
      */
@@ -98,7 +95,6 @@ public class FileController {
     public void filePreview(HttpServletResponse response,int fid) throws ConnectException {
         File file = fileService.getFileByFid(fid);
         if(file != null){
-            //以非管理员预览文件
             String  rmsg = fileService.filePreview(response,file,false);
             System.out.println(rmsg);
         }
@@ -107,7 +103,7 @@ public class FileController {
     /**
      * 获得文件列表
      * @param keyWord   关键字，可以是文件名，文件作者，标签
-     * @param file  文件对象，主要用来接收文件所属课程的信息，即fileCourse属性
+     * @param file  文件对象，主要用来接收文件所属课程的信息
      * @param page  获得第几页的列表
      * @param order 排序的依据，（时间顺序，时间倒序）
      * @return  文件列表
@@ -116,7 +112,6 @@ public class FileController {
     @RequestMapping(value = "getFileList",method = RequestMethod.GET)
     public ResponseData getFileList(String keyWord,File file,int page,boolean order){
         ResponseData responseData = null;
-        //查询正常的文件列表
         List<FileView> files = fileService.getFileList(keyWord,file,page,order,FileStatus.NORMAL.getCode());
         responseData = ResponseData.ok();
         responseData.putDataValue("files",files);

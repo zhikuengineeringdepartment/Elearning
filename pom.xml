@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.zhiku</groupId>
     <artifactId>elearning</artifactId>
-    <version>1.2</version>
+    <version>1.0_18888</version>
     <name>elearning</name>
     <description>Springboot project for Elearning</description>
 
@@ -147,6 +147,13 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-web</artifactId>
             <version>2.11.1</version>
+        </dependency>
+
+        <!--增加日志输出到文件的依赖-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.24</version>
         </dependency>
 
 

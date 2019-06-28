@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-/**
- * 段落控制层，处理段落的所有请求
- */
-@CrossOrigin(value = "*")
+@CrossOrigin(value = "192.168.2.248:8080")
 @Controller
 @RequestMapping(value = "paragraph")
 public class ParagraphController {
@@ -42,9 +39,9 @@ public class ParagraphController {
         return responseData;
     }
 
-    //TODO 缺乏对于不存在段落的异常处理
     /**
      * 收藏段落请求
+     * 缺乏对于不存在段落的异常处理
      * @param user 用户
      * @param paragraphSeq 段落序列
      * @return 是否收藏成功
@@ -62,7 +59,6 @@ public class ParagraphController {
         return responseData;
     }
 
-    //TODO 缺乏对于不存在段落的异常处理
     /**
      * 移除收藏的段落
      * @param user 用户
@@ -84,8 +80,8 @@ public class ParagraphController {
 
     /**
      * 获得一个用户一门课的所有收藏
-     * 个人中心的请求
      * 可换页
+     * 暂时还不支持cid和page属性
      * @param user 用户
      * @param cid 课程号
      * @param page 想要查看的页数
@@ -94,10 +90,17 @@ public class ParagraphController {
     @ResponseBody
     @RequestMapping(value = "getColParagraphViews",method = RequestMethod.GET)
     public ResponseData getColParagraphViews(User user, Integer cid, Integer page){
+//        //todo:删除下面测试
+//        System.out.println("查询课程："+cid);////////////////
         ResponseData responseData = null;
         List<ColParagraphView> colParagraphViews = paragraphService.getColParagraphViews(user.getUid(),cid,1,page,null);
         responseData = ResponseData.ok();
         responseData.putDataValue("colParagraphViews",colParagraphViews);
+//        //todo:删除下面测试
+//        for(ColParagraphView cpv:colParagraphViews){
+//            System.out.println("查询段落："+cpv.getCourseName()+"|||"+cpv.getParagraphContent());////////////////
+//        }
+
         return responseData;
     }
 
@@ -119,18 +122,17 @@ public class ParagraphController {
 
     /**
      * 编辑笔记，包括添加笔记和修改笔记和删除笔记
-     * @param user 用户
-     * @param paragraphSeq 段落序列
-     * @param note 笔记对象，接收noteContent属性
+     * @param user
+     * @param paragraphSeq
+     * @param note
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "editNote",method = RequestMethod.POST)
     public ResponseData editNote(User user, int paragraphSeq , Note note){
         ResponseData responseData = null;
-        //查询是否已经做过笔记
         Note my_note = paragraphService.getNoteByNoteKey(user,paragraphSeq);
-        if(note.getNoteContent().equals("<p><br></p>")){    //判断是否为空，因为前端编辑器的原因<p><br></p>就是空的标识
+        if(note.getNoteContent().equals("<p><br></p>")){    //判断是否为空
             paragraphService.removeNote(my_note);
         }else if(my_note != null){
             my_note.setNoteContent(note.getNoteContent());
@@ -142,15 +144,13 @@ public class ParagraphController {
         return responseData;
     }
 
-    //TODO 前端页面暂时被搁置
     /**
      * 获得用户某个课的所有笔记
-     * 个人中心的请求
      * 可换页
      * 暂时没有使用cid和page属性
-     * @param user 用户
-     * @param page 第几页
-     * @param cid 课程id
+     * @param user
+     * @param page
+     * @param cid
      * @return
      */
     @ResponseBody
