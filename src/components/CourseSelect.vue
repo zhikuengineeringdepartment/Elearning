@@ -11,7 +11,7 @@
 
 <script>
   export default {
-    name: "ResourcesCourseSelect",
+    name: "CourseSelect",
     data() {
       return {
         course_value: '',

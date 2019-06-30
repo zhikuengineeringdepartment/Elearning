@@ -2,7 +2,7 @@
 <template>
   <div>
     <div>全部消息</div>
-    <div class="message-item" v-for="message in messages">
+    <div class="message-item" v-for="(message, index) in messages" :key="index">
       <user-message-item :msg="message"></user-message-item>
     </div>
   </div>
@@ -26,10 +26,10 @@
     methods: {
       // 获取用户信息
       getMessages: function () {
-        var _this = this;
+        const _this = this;
         
         // 写个假数据
-        this.messages = [
+        _this.messages = [
           {
             toAvatar: 'img/default.png',
             toUserName: 'user',

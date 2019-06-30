@@ -12,6 +12,11 @@ let router = new Router({
       component: () => import(/* webpackChunkName: "knowledge" */'../pages/knowledge/Knowledge.vue')
     },
     {
+      path: '/knowledge/detail',
+      name: 'KnowledgeDetail',
+      component: () => import(/* webpackChunkName: "knowledge" */'../pages/knowledge/KnowledgeDetail.vue')
+    },
+    {
       path: '/resources',
       name: 'Resources',
       component: () => import(/* webpackChunkName: "resources" */'../pages/resources/Resources'),

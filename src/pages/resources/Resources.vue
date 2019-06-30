@@ -1,9 +1,8 @@
 <template>
-  <el-main id="fileList" style="margin-top: 20px">
-    <el-row style="">
-      <el-col :span="16" style="margin-bottom: 20px">
-        <el-card shadow="always" style="padding: 20px;">
-          <h1 style="margin-bottom: 10px;font-size: 48px">Hello , world</h1>
+  <el-main class="resources">
+      <el-col :span="16">
+        <el-card shadow="always" class="resources-card">
+          <h1>Hello , world</h1>
           <p>每一个不曾起舞的日子都是对生命的浪费</p>
           <el-button type="primary" @click="gotoUpload">上传<i class="el-icon-upload el-icon--right"></i></el-button>
         </el-card>
@@ -11,33 +10,33 @@
       
       <el-col :span="16" @scroll.native="lazyLoading">
         <el-row>
-          <el-col :span="10">
+          <div class="resources-select">
             <course-select v-on:get-course-value="set_course_value"></course-select>
-          </el-col>
-          <el-col :span="10">
-            <el-input placeholder="搜索" v-model="fileListForm.keyWord" class="input-with-select">
+            <el-input placeholder="搜索" v-model="fileListForm.keyWord">
               <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
             </el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-button id="file_order" icon="el-icon-sort-down" style="margin-left:10px;" @click="changeOrder">按时间降序
-            </el-button>
-          </el-col>
+            <div v-if="fileListForm.order">
+              <el-button icon="el-icon-sort-down" @click="changeOrder">按时间降序</el-button>
+            </div>
+            <div v-if="!fileListForm.order">
+              <el-button icon="el-icon-sort-up" @click="changeOrder">按时间升序</el-button>
+            </div>
+            
+          </div>
         </el-row>
-      
       </el-col>
       
-      <el-col :span="16" style="margin-top: 20px">
-        <resources-file v-for="jfile in my_files" :jfile="jfile"></resources-file>
+      <el-col :span="16" class="file-list-detail">
+        <resources-file v-for="fileItem in my_files" :fileItem="fileItem"></resources-file>
       </el-col>
-    </el-row>
   </el-main>
 </template>
 
 <script>
   import CourseSelect from "../../components/CourseSelect";
   import ResourcesFile from "./ResourcesFile";
-  
+  import {routerChange} from "../../tools";
+
   export default {
     name: "Resources",
     components: {ResourcesFile, CourseSelect},
@@ -49,32 +48,78 @@
           fileCourse: '',
           page: 1
         },
-        my_files: [],
+        my_files: [
+          {
+            "fid": 44,
+            "filePath": null,
+            "fileName": "数据库系统_山软智库知识见解_V1.0.pdf",
+            "fileCourse": 124,
+            "fileTeacher": "",
+            "fileType": "pdf",
+            "fileUpper": 10038,
+            "fileUploadTime": "2019-06-20 08:29:06",
+            "fileDownloadCount": 15,
+            "fileDesc": "",
+            "fileStatus": "n",
+            "fileScore": 3.0,
+            "fileSha": null,
+            "upperName": "宁叔",
+            "fileKeys": {
+              "fid": 44,
+              "key1": "智库知识见解",
+              "key2": "下载多",
+              "key3": "好评多",
+              "key4": null,
+              "key5": null,
+              "key6": null,
+              "key7": null,
+              "key8": null,
+              "key9": null,
+              "key10": null
+            }
+          },
+          {
+            "fid": 43,
+            "filePath": null,
+            "fileName": "操作系统_山软智库知识见解_V1.0.pdf",
+            "fileCourse": 125,
+            "fileTeacher": "",
+            "fileType": "pdf",
+            "fileUpper": 10038,
+            "fileUploadTime": "2019-06-20 08:28:48",
+            "fileDownloadCount": 16,
+            "fileDesc": "",
+            "fileStatus": "n",
+            "fileScore": 3.0,
+            "fileSha": null,
+            "upperName": "宁叔",
+            "fileKeys": {
+              "fid": 43,
+              "key1": "智库知识见解",
+              "key2": "好评多",
+              "key3": null,
+              "key4": null,
+              "key5": null,
+              "key6": null,
+              "key7": null,
+              "key8": null,
+              "key9": null,
+              "key10": null
+            }
+          }
+        ],
       }
     },
     methods: {
       gotoUpload: function () {
-        this.$router.push('/fileUpload')
+        routerChange('/resources/upload' , this);
       },
       changeOrder() {
-        this.fileListForm.order = !this.fileListForm.order
-        this.$nextTick(() => {
-          if (!this.fileListForm.order) {
-            document.getElementById('file_order').children[0].className = 'el-icon-sort-up'
-            document.getElementById("file_order").children[1].innerHTML = '按时间升序'
-          } else {
-            document.getElementById('file_order').children[0].className = 'el-icon-sort-down'
-            document.getElementById("file_order").children[1].innerHTML = '按时间降序'
-          }
-          this.my_files.reverse();
-        })
-        
+        this.fileListForm.order = !this.fileListForm.order;
+        this.my_files.reverse();
       },
       set_course_value: function (cid) {
         this.fileListForm.fileCourse = cid;
-      },
-      set_keyword: function (key) {
-        this.fileListForm.keyWord = key;
       },
       doSearch: function () {
         this.my_files = [];
@@ -128,6 +173,35 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  .resources {
+    margin-top: 3vmin;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .resources-card {
+      margin-bottom: 3vmin;
+      padding: 20px;
+      
+      h1 {
+        font-size: 5vmin;
+        margin: 1vmin auto;
+      }
+      
+      p {
+        font-size: 2vmin;
+        margin: 2vmin auto;
+      }
+    }
+  
+    .resources-select {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 3vmin;
+    }
+  
+    .file-list-detail {
+    }
+  }
 </style>

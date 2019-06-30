@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-for="(tag,name,index) in tags">
+    <el-tag v-if="status" class="file-tag">
+      {{status}}
+    </el-tag>
+    <div v-for="(tag,name,index) in tags" :key="index">
       <div v-if="name !== 'fid' && tag !== null">
         <el-tag type="danger" class="file-tag">
           {{tag}}
@@ -13,12 +16,19 @@
 <script>
   export default {
     name: "FileTag",
-    props: ["tags"]
+    props: ["tags", "status"]
   }
 </script>
 
-<style scoped>
-  .file-tag {
-    margin: 0 2vmin
+<style lang="less" scoped>
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    .file-tag {
+      margin: 1vmin
+    }
+    
   }
 </style>
