@@ -1,12 +1,10 @@
 <template>
   <el-main>
-    <el-row type="flex" class="row-bg" justify="center">
-      <el-col :span="15">
-        <el-row :gutter="20">
-          <div v-for="course in courses" class="course-row">
-            <knowledge-item :course="course" :schedule="true"></knowledge-item>
-          </div>
-        </el-row>
+    <el-row type="flex" justify="center">
+      <el-col :span="20">
+        <div v-for="course in courses">
+          <knowledge-item :course="course"></knowledge-item>
+        </div>
       </el-col>
     </el-row>
   </el-main>
@@ -20,7 +18,18 @@
     components: {KnowledgeItem},
     data() {
       return {
-        courses: [
+        courses: []
+      }
+    },
+    created() {
+      this.getCourses();
+    },
+    methods: {
+      getCourses: function () {
+        const _this = this;
+        
+        // 写个假数据
+        _this.courses = [
           {
             cid: 112,
             courseName: "面向对象",
@@ -39,22 +48,25 @@
             courseDesc: "V2.0",
             courseIcon: "img/logo.jpg"
           }
-        ]
-      }
-    },
-    created() {
-      this.getCourses();
-    },
-    methods: {
-      getCourses: function () {
-        var _this = this;
-        axios.get('course/getAllCourse')
-          .then(function (response) {
-            _this.courses = response.data.data.courses;
-          })
-          .catch(function (err) {
-            console.log(err);
-          });
+        ];
+        
+        // 在这里发起请求
+        // _this.$http.get('course/getAllCourse', {
+        //   params: {
+        //     uid: 0
+        //   }
+        // }).then(
+        //   function (response) {
+        //     if (response.data.code === 200) {
+        //       console.log(response.data);
+        //       _this.courses = response.data.data.courses;
+        //     } else {
+        //       this.$message({showClose: true, message: response.data.message, type: 'error'});
+        //     }
+        //   }
+        // ).catch(function (err) {
+        //   console.log(err);
+        // });
       }
     }
   }

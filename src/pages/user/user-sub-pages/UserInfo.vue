@@ -55,7 +55,7 @@
         };
         
         // 在这里发起请求
-        // this.$http.get('/user/getBaseInfo', {
+        // _this.$http.get('/user/getBaseInfo', {
         //   params: {
         //     uid: 0
         //   }
