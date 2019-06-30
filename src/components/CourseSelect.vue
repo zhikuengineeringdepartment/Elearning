@@ -1,3 +1,4 @@
+<!--课程选择组件-->
 <template>
   <el-select v-model="course_value" @change="get_value" filterable placeholder="请选择课程">
     <el-option

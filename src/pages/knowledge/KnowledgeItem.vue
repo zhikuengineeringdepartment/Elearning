@@ -1,3 +1,4 @@
+<!--知识见解页面-每门课程组件-->
 <template>
   <el-card class="knowledge-item">
     <img :src="course.courseIcon">
@@ -16,7 +17,7 @@
     props: ['course'],
     methods: {
       goKnowledgeDetail: function () {
-        routerChange("/knowledge/test", this);
+        routerChange("/knowledge/detail", this);
       }
     },
   }

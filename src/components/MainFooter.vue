@@ -1,4 +1,4 @@
-// 页面的footer
+<!--页面页脚组件-->
 <template>
   <div class="footer">&copy;山软智库&nbsp;让知识回归平凡&nbsp;&nbsp;since&nbsp;2017</div>
 </template>

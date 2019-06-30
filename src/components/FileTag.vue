@@ -1,3 +1,4 @@
+<!--文件标签组件-->
 <template>
   <div>
     <el-tag v-if="status" class="file-tag">
@@ -25,6 +26,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    overflow: hidden;
     
     .file-tag {
       margin: 1vmin

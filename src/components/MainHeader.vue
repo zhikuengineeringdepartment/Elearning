@@ -1,4 +1,4 @@
-// 页面的header
+<!--页面页眉组件-->
 <template>
   <div class="menu-bar">
     <!--智库logo-->

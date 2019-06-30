@@ -9,17 +9,17 @@ let router = new Router({
     {
       path: '/',
       name: 'Knowledge',
-      component: () => import(/* webpackChunkName: "knowledge" */'../pages/knowledge/Knowledge.vue')
+      component: () => import(/* webpackChunkName: "knowledge" */'../pages/knowledge/Knowledge')
     },
     {
       path: '/knowledge/detail',
       name: 'KnowledgeDetail',
-      component: () => import(/* webpackChunkName: "knowledge" */'../pages/knowledge/KnowledgeDetail.vue')
+      component: () => import(/* webpackChunkName: "knowledge-detail" */'../pages/knowledge/KnowledgeDetail')
     },
     {
       path: '/resources',
       name: 'Resources',
-      component: () => import(/* webpackChunkName: "resources" */'../pages/resources/Resources'),
+      component: () => import(/* webpackChunkName: "resources" */'../pages/resources/Resources')
     },
     {
       path: '/resources/upload',
@@ -85,7 +85,7 @@ let router = new Router({
 // 路由设定
 router.beforeEach((to, from, next) => {
   // 这里之所以要再进行一次路由的判断，就是为了让"通过复制url进入指定页面"的用户看到正确的tab状态。
-  if (to.path === '/') {
+  if (to.path === '/' || to.path === '/knowledge/detail') {
     store.commit('setTabIndex', 0);
     next();
     

@@ -1,3 +1,4 @@
+<!--知识见解页面组件-->
 <template>
   <el-main>
     <el-row type="flex" justify="center">

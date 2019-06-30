@@ -1,4 +1,4 @@
-<!--关于智库界面的footer-->
+<!--关于智库界面的页脚-->
 <template>
   <div class="about-footer">
     <div class="about-footer-title">关注我们</div>

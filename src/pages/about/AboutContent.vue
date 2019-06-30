@@ -1,3 +1,4 @@
+<!--关于智库-详情介绍-->
 <template>
   <div class="about-content">
     <h3>改造线上线下学习模式的学生组织</h3>

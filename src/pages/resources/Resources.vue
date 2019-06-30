@@ -1,34 +1,43 @@
+<!--文件资源页面-->
 <template>
   <el-main class="resources">
-      <el-col :span="16">
-        <el-card shadow="always" class="resources-card">
-          <h1>Hello , world</h1>
-          <p>每一个不曾起舞的日子都是对生命的浪费</p>
-          <el-button type="primary" @click="gotoUpload">上传<i class="el-icon-upload el-icon--right"></i></el-button>
-        </el-card>
-      </el-col>
-      
-      <el-col :span="16" @scroll.native="lazyLoading">
-        <el-row>
-          <div class="resources-select">
-            <course-select v-on:get-course-value="set_course_value"></course-select>
+    <el-col :span="20">
+      <el-card shadow="always" class="resources-card">
+        <h1>Hello , world</h1>
+        <p>每一个不曾起舞的日子都是对生命的浪费</p>
+        <el-button type="primary" @click="gotoUpload">上传<i class="el-icon-upload el-icon--right"></i></el-button>
+      </el-card>
+    </el-col>
+    
+    <el-col :span="20" @scroll.native="lazyLoading">
+      <el-row>
+        <div class="resources-select">
+          <course-select v-on:get-course-value="set_course_value"></course-select>
+          <div v-if="!$store.state.isMobile">
+            <!--手机端不提供搜索功能-->
             <el-input placeholder="搜索" v-model="fileListForm.keyWord">
               <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
             </el-input>
-            <div v-if="fileListForm.order">
-              <el-button icon="el-icon-sort-down" @click="changeOrder">按时间降序</el-button>
-            </div>
-            <div v-if="!fileListForm.order">
-              <el-button icon="el-icon-sort-up" @click="changeOrder">按时间升序</el-button>
-            </div>
-            
           </div>
-        </el-row>
-      </el-col>
-      
-      <el-col :span="16" class="file-list-detail">
-        <resources-file v-for="fileItem in my_files" :fileItem="fileItem"></resources-file>
-      </el-col>
+          <div v-if="fileListForm.order && $store.state.isMobile">
+            <el-button icon="el-icon-sort-down" @click="changeOrder"></el-button>
+          </div>
+          <div v-if="!fileListForm.order && $store.state.isMobile">
+            <el-button icon="el-icon-sort-up" @click="changeOrder"></el-button>
+          </div>
+          <div v-if="fileListForm.order && !$store.state.isMobile">
+            <el-button icon="el-icon-sort-down" @click="changeOrder">按时间降序</el-button>
+          </div>
+          <div v-if="!fileListForm.order && !$store.state.isMobile">
+            <el-button icon="el-icon-sort-up" @click="changeOrder">按时间升序</el-button>
+          </div>
+        </div>
+      </el-row>
+    </el-col>
+    
+    <el-col :span="20" class="file-list-detail">
+      <resources-file v-for="fileItem in my_files" :fileItem="fileItem"></resources-file>
+    </el-col>
   </el-main>
 </template>
 
@@ -36,7 +45,7 @@
   import CourseSelect from "../../components/CourseSelect";
   import ResourcesFile from "./ResourcesFile";
   import {routerChange} from "../../tools";
-
+  
   export default {
     name: "Resources",
     components: {ResourcesFile, CourseSelect},
@@ -112,7 +121,7 @@
     },
     methods: {
       gotoUpload: function () {
-        routerChange('/resources/upload' , this);
+        routerChange('/resources/upload', this);
       },
       changeOrder() {
         this.fileListForm.order = !this.fileListForm.order;
@@ -127,28 +136,30 @@
         this.getFileList(this.fileListForm.page);
       },
       getFileList: function (page) {
-        var _this = this;
-        axios.get('file/getFileList', {
-          params: {
-            keyWord: this.fileListForm.keyWord,
-            fileCourse: this.fileListForm.fileCourse,
-            page: page,
-            order: this.fileListForm.order
-          }
-        })
-          .then(function (response) {
-            for (var i = 0; i < response.data.data.files.length; i++) {
-              response.data.data.files[i].fileUploadTime = getFormatDate(response.data.data.files[i].fileUploadTime)
-            }
-            if (response.data.data.files.length != 0) {
-              _this.my_files = _this.my_files.concat(response.data.data.files);
-            } else {
-              // alert("已经到最后了")
-            }
-          })
-          .catch(function (err) {
-            console.log(err);
-          });
+        const _this = this;
+        
+        // 在这里发起请求
+        // axios.get('file/getFileList', {
+        //   params: {
+        //     keyWord: this.fileListForm.keyWord,
+        //     fileCourse: this.fileListForm.fileCourse,
+        //     page: page,
+        //     order: this.fileListForm.order
+        //   }
+        // })
+        //   .then(function (response) {
+        //     for (var i = 0; i < response.data.data.files.length; i++) {
+        //       response.data.data.files[i].fileUploadTime = getFormatDate(response.data.data.files[i].fileUploadTime)
+        //     }
+        //     if (response.data.data.files.length != 0) {
+        //       _this.my_files = _this.my_files.concat(response.data.data.files);
+        //     } else {
+        //       // alert("已经到最后了")
+        //     }
+        //   })
+        //   .catch(function (err) {
+        //     console.log(err);
+        //   });
       },
       scrollToDown() {
         //TODO 目前通过判断路径的方式只在文件部分实现滚动事件，不过不是长久之计，应该修改为只对特定组件或者特定页面的滚动事件
@@ -179,6 +190,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: left;
     
     .resources-card {
       margin-bottom: 3vmin;
@@ -194,14 +206,11 @@
         margin: 2vmin auto;
       }
     }
-  
+    
     .resources-select {
       display: flex;
       flex-direction: row;
       margin-bottom: 3vmin;
-    }
-  
-    .file-list-detail {
     }
   }
 </style>

@@ -1,7 +1,8 @@
+<!--文件资源上传-->
 <template>
   <el-main>
     <el-row type="flex" justify="center">
-      <el-col :span="12" class="resources-file-upload">
+      <el-col :span="20" class="resources-file-upload">
         <el-form ref="form" :model="uploadForm" label-width="80px">
           <el-form-item label="选择文件">
             <el-upload
@@ -17,8 +18,11 @@
               :auto-upload="false"
               :with-credentials="true">
               <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-              <div slot="tip" class="resources-file-upload-tips">
-                可上传word,ppt,pdf类型文件，且不超过100M
+              <!--手机端不显示此提示-->
+              <div v-if="!$store.state.isMobile">
+                <div slot="tip" class="resources-file-upload-tips">
+                  可上传word,ppt,pdf类型文件，且不超过100M
+                </div>
               </div>
             </el-upload>
           </el-form-item>

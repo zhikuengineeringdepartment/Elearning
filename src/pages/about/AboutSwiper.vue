@@ -1,3 +1,4 @@
+<!--关于智库界面的轮播图-->
 <template>
   <div class="about-swiper">
     <el-carousel :interval="4000" height="50vmin">

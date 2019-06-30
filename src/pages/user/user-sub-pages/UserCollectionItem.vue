@@ -1,10 +1,10 @@
+<!--用户-收藏项组件-->
 <template>
   <el-card shadow="hover" class="user-collection-item">
     <h3>{{col_paragraph.sectionName}}</h3>
     <div :id="col_paragraph_content"></div>
     <div>
-      <span style="margin-right: 10px">{{col_paragraph.courseName}}</span>
-      <span style="margin-right: 10px">{{col_paragraph.colCount}}</span>
+      <span>{{col_paragraph.courseName}} - {{col_paragraph.colCount}}</span>
     </div>
   </el-card>
 </template>
