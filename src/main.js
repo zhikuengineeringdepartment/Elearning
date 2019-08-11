@@ -8,6 +8,12 @@ import axios from 'axios';
 import Vueaxios from 'vue-axios';
 import Qs from 'qs';
 
+window.axios = axios;
+axios.defaults.withCredentials = true;
+
+// 公共方法
+import './app/funcitons'
+
 // import {throttle} from './tools'
 
 // 创建一个axios实例
