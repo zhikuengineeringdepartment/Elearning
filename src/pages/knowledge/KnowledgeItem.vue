@@ -1,7 +1,7 @@
 <!--知识见解页面-每门课程组件-->
 <template>
   <el-card class="knowledge-item">
-    <img :src="course.courseIcon">
+    <img :src="course.courseIcon" />
     <div>
       <span>{{course.courseName}} - {{course.courseDesc}}</span>
     </div>
@@ -10,22 +10,29 @@
 </template>
 
 <script>
-  import {routerChange} from "../../tools";
-  
-  export default {
-    name: "KnowledgeItem",
-    props: ['course'],
-    methods: {
-      goKnowledgeDetail: function () {
-        routerChange("/knowledge/detail", this);
-      }
-    },
+import { routerChange } from "../../tools";
+
+export default {
+  name: "KnowledgeItem",
+  props: ["course"],
+  methods: {
+    goKnowledgeDetail: function() {
+      routerChange("/knowledge/detail", this);
+    }
   }
+};
 </script>
 
 <style scoped>
+.knowledge-item {
+  float: left;
+  margin: 5vmin;
+}
+
+@media only screen and (max-width: 750px) {
   .knowledge-item {
     float: left;
-    margin: 5vmin;
+    margin: 5vmin 0;
   }
+}
 </style>
