@@ -36,41 +36,23 @@
         // 获取用户的基本信息
         const _this = this;
         
-        // 写个假数据
-        _this.baseInfo = {
-          userUsername: "123",
-          userNick: "123",
-          userAvatar: "img/default.png",  //用户头像base64，过长，样例数据仅表示一下
-          userSign: null,
-          userGender: "u",
-          userCoin: 0,
-          userEmail: "123@123.com",
-          userPhone: null,
-          userQq: null,
-          userCollege: null,
-          userMajor: null,
-          userStatus: "n",
-          userUploadCount: 19,
-          userDownloadCount: 12
-        };
-        
         // 在这里发起请求
-        // _this.$http.get('/user/getBaseInfo', {
-        //   params: {
-        //     uid: 0
-        //   }
-        // }).then(
-        //   function (response) {
-        //     if (response.data.code === 200) {
-        //       console.log(response.data);
-        //       _this.baseInfo = response.data.data.baseInfo;
-        //     } else {
-        //       this.$message({showClose: true, message: response.data.message, type: 'error'});
-        //     }
-        //   }
-        // ).catch(function (err) {
-        //   console.log(err);
-        // });
+        _this.$http.get('/user/getBaseInfo', {
+          params: {
+            uid: 0
+          }
+        }).then(
+          function (response) {
+            if (response.data.code === 200) {
+              console.log(response.data);
+              _this.baseInfo = response.data.data.baseInfo;
+            } else {
+              this.$message({showClose: true, message: response.data.message, type: 'error'});
+            }
+          }
+        ).catch(function (err) {
+          console.log(err);
+        });
       }
     }
   }

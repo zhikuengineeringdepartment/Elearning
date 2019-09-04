@@ -24,7 +24,7 @@
 
 <script>
   import {routerChange} from "../../tools";
-  
+
   export default {
     name: "UserLogin",
     data() {
@@ -40,24 +40,19 @@
       userLogin: function () {
         const _this = this;
         
-        // 假的登录
-        _this.$store.commit('changeLoginStatus', true);
-        _this.$store.commit('setUser', {username: '123', userIcon: 'img/default.png'});
-        routerChange('/user/info', _this);
-        
         // 在这里发起请求
-        // _this.$http.post('/user/login', this.loginForm).then(
-        //   function (response) {
-        //     if (response.data.code === 200) {
-        //       console.log(response.data);
-        //       _this.$store.commit('changeLoginStatus', true);
-        //       _this.$store.commit('setUser', {username: _this.loginForm.identity, userIcon: response.data.data.userIcon});
-        //       routerChange('/user/info', _this);
-        //     } else {
-        //       _this.$message({showClose: true, message: response.data.message, type: 'error'});
-        //     }
-        //   }
-        // );
+        _this.$http.post('/user/login', this.loginForm).then(
+          function (response) {
+            if (response.data.code === 200) {
+              console.log(response.data);
+              _this.$store.commit('changeLoginStatus', true);
+              _this.$store.commit('setUser', {username: _this.loginForm.identity, userIcon: response.data.data.userIcon});
+              routerChange('/user/info', _this);
+            } else {
+              _this.$message({showClose: true, message: response.data.message, type: 'error'});
+            }
+          }
+        );
       },
       // 路由跳转到注册界面
       goRegister: function () {

@@ -1,11 +1,8 @@
 <!--用户-收藏项组件-->
 <template>
   <el-card shadow="hover" class="user-collection-item">
-    <h3>{{col_paragraph.sectionName}}</h3>
-    <div :id="col_paragraph_content"></div>
-    <div>
-      <span>{{col_paragraph.courseName}} - {{col_paragraph.colCount}}</span>
-    </div>
+    <h3>{{col_paragraph.courseName}} - {{col_paragraph.courseDesc}}</h3>
+    <p>{{col_paragraph.paragraphContent}}</p>
   </el-card>
 </template>
 
@@ -26,7 +23,8 @@
   .user-collection-item {
     margin: 3vmin 2vmin;
   
-    div {
+    p {
+      text-align: left;
       margin: 2vmin;
     }
   }

@@ -26,6 +26,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "showdown": "^1.9.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -37,7 +38,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

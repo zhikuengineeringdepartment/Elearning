@@ -2,7 +2,7 @@
 <template>
   <div class="user-body">
     <!--左边栏-->
-    <el-col :span="6" class="user-left-selection">
+    <el-col :span="4" class="user-left-selection">
       <el-menu>
         <el-menu-item @click="toUserInfo">
           <i class="el-icon-user"></i>
@@ -27,7 +27,7 @@
       </el-menu>
     </el-col>
     <!--右边栏，是路由界面-->
-    <el-col :span="18" class="user-right-router">
+    <el-col :span="20" class="user-right-router">
       <router-view/>
     </el-col>
   </div>
@@ -60,12 +60,12 @@
 
 <style lang="less" scoped>
   .user-body {
-    margin: 3vmin;
+    padding: 3vmin;
     display: flex;
     flex-direction: row;
     
     .user-left-selection {
-      margin: 0 3vmin 0 0;
+      margin: 0 auto;
       
       span {
         font-size: 2vmin;
@@ -74,7 +74,6 @@
     
     .user-right-router {
       padding: 20px;
-      height: 50vh;
     }
   }
 </style>

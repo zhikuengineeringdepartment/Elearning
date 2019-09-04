@@ -58,24 +58,21 @@
       // 用户注册
       userRegister: function () {
         const _this = this;
-        
-        // 假的注册
-        _this.$message({showClose: true, message: '注册请求已收到，请进行邮箱验证', type: 'success'});
   
         // 在这里发起请求
-        // if (!_this.registerForm.password || !_this.registerForm.password2 || _this.registerForm.password !== _this.registerForm.password2) {
-        //   _this.$message({showClose: true, message: '密码不一致或为空', type: 'error'});
-        // } else {
-        //   _this.$http.post(_this.$store.state.backEndIp + '/user/registe', _this.registerForm).then(
-        //     function (response) {
-        //       if (response.data.code === 200) {
-        //         _this.$message({showClose: true, message: '注册请求已收到，请进行邮箱验证', type: 'success'});
-        //       } else {
-        //         _this.$message({showClose: true, message: response.data.message, type: 'error'});
-        //       }
-        //     }
-        //   );
-        // }
+        if (!_this.registerForm.password || !_this.registerForm.password2 || _this.registerForm.password !== _this.registerForm.password2) {
+          _this.$message({showClose: true, message: '密码不一致或为空', type: 'error'});
+        } else {
+          _this.$http.post('/user/registe', _this.registerForm).then(
+            function (response) {
+              if (response.data.code === 200) {
+                _this.$message({showClose: true, message: '注册请求已收到，请进行邮箱验证', type: 'success'});
+              } else {
+                _this.$message({showClose: true, message: response.data.message, type: 'error'});
+              }
+            }
+          );
+        }
       },
       // 前往登录页面
       goLogin() {

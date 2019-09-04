@@ -24,7 +24,8 @@ const axiosInstance = axios.create({
   // 可携带cookies
   withCredentials: true,
   
-  baseURL: 'http://sharingideas.cn:18888'
+  // baseURL: 'http://211.87.227.234:10234/'  // 正式环境下用这个
+  baseURL: '/api'  // 开发环境下用这个
 });
 
 Vue.use(ElementUI);

@@ -1,22 +1,25 @@
 <!--知识见解页面-每门课程组件-->
 <template>
   <el-card class="knowledge-item">
-    <img :src="course.courseIcon">
-    <div>
-      <span>{{course.courseName}} - {{course.courseDesc}}</span>
+    <div @click="goKnowledgeDetail">
+      <img :src="course.courseIcon">
+      <div>
+        <span>{{course.courseName}} - {{course.courseDesc}}</span>
+      </div>
     </div>
-    <el-button @click="goKnowledgeDetail" type="text">learn</el-button>
   </el-card>
 </template>
 
 <script>
-  import {routerChange} from "../../tools";
+  import {routerChange} from "../../../tools";
   
   export default {
     name: "KnowledgeItem",
     props: ['course'],
     methods: {
       goKnowledgeDetail: function () {
+        // console.log('current course id:', this.course.cid);
+        this.$store.commit('setCourseId', this.course.cid);
         routerChange("/knowledge/detail", this);
       }
     },

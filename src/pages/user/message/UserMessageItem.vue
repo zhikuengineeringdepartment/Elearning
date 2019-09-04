@@ -32,7 +32,7 @@ div {
   }
   
   p {
-    overflow: scroll;
+    overflow: auto;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 50vmin;

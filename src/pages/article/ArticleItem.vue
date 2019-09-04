@@ -36,7 +36,7 @@
         font-size: 2vmin;
         text-align: left;
         font-weight: bold;
-        overflow: scroll;
+        overflow: hidden;
       }
       
       img {

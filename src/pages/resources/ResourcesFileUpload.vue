@@ -1,4 +1,5 @@
 <!--文件资源上传-->
+<!--TODO 后台上传文件会返回500，需要解决-->
 <template>
   <el-main>
     <el-row type="flex" justify="center">
@@ -27,7 +28,7 @@
             </el-upload>
           </el-form-item>
           <el-form-item label="所属课程">
-            <course-select v-on:get-course-value="set_course_value"></course-select>
+            <course-select @:get-course-value="setCourseValue"></course-select>
           </el-form-item>
           <el-form-item label="任课教师">
             <el-input v-model="uploadForm.fileTeacher"></el-input>
@@ -65,7 +66,8 @@
 
 <script>
   import CourseSelect from "../../components/CourseSelect";
-  
+  import {routerChange} from "../../tools";
+
   export default {
     name: "ResourcesFileUpload",
     components: {CourseSelect},
@@ -92,7 +94,7 @@
         console.log(this.$refs.upload.uploadFiles);
         this.uploadForm.multipartFile = flist
       },
-      set_course_value: function (cid) {
+      setCourseValue: function (cid) {
         this.uploadForm.fileCourse = cid;
       },
       handleInputConfirm() {
@@ -105,12 +107,12 @@
       },
       showInput() {
         this.tagVisible = true;
-        this.$nextTick(_ => {
+        this.$nextTick(() => {
           this.$refs.saveTagInput.$refs.input.focus();
         });
       },
-      handleSuccess(respnose, file, fileList) {
-        alert(respnose.data.data.message)
+      handleSuccess(response) {
+        alert(response.data.data.message)
       },
       handlePreview(file) {
         console.log(file);
@@ -119,43 +121,36 @@
         console.log(file, fileList)
       },
       submitUpload() {
+        const _this = this;
+        
         if (this.$store.state.isLogin) {
-          var _this = this;
-          var form = new FormData();
+          let form = new FormData();
           form.append("multipartFile", document.getElementsByClassName('el-upload__input')[0].files[0]);
-          form.append("uid", 0);
+          form.append("uid", '0');
           form.append("fileCourse", this.uploadForm.fileCourse);
           form.append("fileTeacher", this.uploadForm.fileTeacher);
-          console.log(this.uploadForm.file_tags)
-          for (var i = 1; i <= this.uploadForm.file_tags.length; i++) {
+          console.log(this.uploadForm.file_tags);
+          
+          for (let i = 1; i <= this.uploadForm.file_tags.length; i++) {
             form.append("key" + i, this.uploadForm.file_tags[i - 1])
           }
-          const instance = axios.create({
-            withCredentials: true
-          })
-          instance.post('file/upload', form).then(res => {
+          
+          _this.$http.post('/file/upload', form).then(res => {
             console.log(res);
-            if (res.data.code == 200) {
-              alert('提交成功');
-              this.$router.push({path: "/"});
+            if (res.data.code === 200) {
+              _this.$message({message: '提交成功'});
+              _this.$router.push({path: "/"});
               
             } else {
-              this.$message({
-                message: res.data.message,
-                type: 'warning'
-              });
+              _this.$message({message: res.data.message, type: 'warning'});
             }
           })
             .catch(res => {
-              // console.log(JSON.stringify(res))
-              // res = (JSON.stringify(res))
-              this.$message({
-                message: '请输入完整文件信息',
-                type: 'warning'
-              });
+              console.log(JSON.stringify(res));
+              _this.$message({message: '请输入完整文件信息', type: 'warning'});
             })
         } else {
-          this.$router.push("/login")
+          routerChange("/user/login", _this);
         }
       },
       returnBack() {

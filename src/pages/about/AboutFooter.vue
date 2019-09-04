@@ -43,10 +43,9 @@
     
     .about-footer-text {
       width: 80vw;
-      height: 8vmin;
       margin: 4vmin auto;
       font-size: 2vmin;
-      overflow: scroll;
+      overflow: hidden;
       color: #FFFFFF;
     }
   }

@@ -103,7 +103,7 @@
     }
     
     .header-menu {
-      width: 70vw;
+      width: 82vw;
       height: 10vmin;
       margin: 0 3vmin;
     }

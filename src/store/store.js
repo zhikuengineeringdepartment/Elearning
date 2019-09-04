@@ -2,7 +2,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {user, isLogin, tabIndex, isMobile, backEndIp} from './global'
+import {user, isLogin, tabIndex, isMobile, courseId, sectionId} from './global'
 
 Vue.use(Vuex);
 
@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     isLogin, // 登录状态
     tabIndex, // 选中了哪个tab
     isMobile, // 是否为手机端
-    backEndIp, // 后台ip
+    courseId, // 课程Id
+    sectionId // 章节id
   },
   mutations: {
     // 设置user
@@ -28,11 +29,17 @@ const store = new Vuex.Store({
     changeMode (state, isMobile) {
       state.isMobile = isMobile;
     },
-    // 更改浏览模式
+    // 更改登录状态
     changeLoginStatus (state, loginStatus) {
       state.isLogin = loginStatus;
     },
+    setCourseId(state, cid) {
+      state.courseId = cid;
+    },
+    setSectionId(state, sid) {
+      state.sectionId = sid;
+    }
   }
 });
 
-export default store
+export default store;

@@ -12,7 +12,7 @@
     <el-col :span="20" @scroll.native="lazyLoading">
       <el-row>
         <div class="resources-select">
-          <course-select v-on:get-course-value="set_course_value"></course-select>
+          <course-select v-on:get-course-value="setCourseValue"></course-select>
           <div v-if="!$store.state.isMobile">
             <!--手机端不提供搜索功能-->
             <el-input placeholder="搜索" v-model="fileListForm.keyWord">
@@ -36,7 +36,7 @@
     </el-col>
     
     <el-col :span="20" class="file-list-detail">
-      <resources-file v-for="fileItem in my_files" :fileItem="fileItem"></resources-file>
+      <resources-file v-for="fileItem in myFiles" :fileItem="fileItem"></resources-file>
     </el-col>
   </el-main>
 </template>
@@ -57,66 +57,7 @@
           fileCourse: '',
           page: 1
         },
-        my_files: [
-          {
-            "fid": 44,
-            "filePath": null,
-            "fileName": "数据库系统_山软智库知识见解_V1.0.pdf",
-            "fileCourse": 124,
-            "fileTeacher": "",
-            "fileType": "pdf",
-            "fileUpper": 10038,
-            "fileUploadTime": "2019-06-20 08:29:06",
-            "fileDownloadCount": 15,
-            "fileDesc": "",
-            "fileStatus": "n",
-            "fileScore": 3.0,
-            "fileSha": null,
-            "upperName": "宁叔",
-            "fileKeys": {
-              "fid": 44,
-              "key1": "智库知识见解",
-              "key2": "下载多",
-              "key3": "好评多",
-              "key4": null,
-              "key5": null,
-              "key6": null,
-              "key7": null,
-              "key8": null,
-              "key9": null,
-              "key10": null
-            }
-          },
-          {
-            "fid": 43,
-            "filePath": null,
-            "fileName": "操作系统_山软智库知识见解_V1.0.pdf",
-            "fileCourse": 125,
-            "fileTeacher": "",
-            "fileType": "pdf",
-            "fileUpper": 10038,
-            "fileUploadTime": "2019-06-20 08:28:48",
-            "fileDownloadCount": 16,
-            "fileDesc": "",
-            "fileStatus": "n",
-            "fileScore": 3.0,
-            "fileSha": null,
-            "upperName": "宁叔",
-            "fileKeys": {
-              "fid": 43,
-              "key1": "智库知识见解",
-              "key2": "好评多",
-              "key3": null,
-              "key4": null,
-              "key5": null,
-              "key6": null,
-              "key7": null,
-              "key8": null,
-              "key9": null,
-              "key10": null
-            }
-          }
-        ],
+        myFiles: []
       }
     },
     methods: {
@@ -125,62 +66,57 @@
       },
       changeOrder() {
         this.fileListForm.order = !this.fileListForm.order;
-        this.my_files.reverse();
+        this.myFiles.reverse();
       },
-      set_course_value: function (cid) {
+      setCourseValue: function (cid) {
         this.fileListForm.fileCourse = cid;
       },
       doSearch: function () {
-        this.my_files = [];
+        this.myFiles = [];
         this.fileListForm.page = 1;
         this.getFileList(this.fileListForm.page);
       },
       getFileList: function (page) {
         const _this = this;
         
+        console.log('123');
+        
         // 在这里发起请求
-        // axios.get('file/getFileList', {
-        //   params: {
-        //     keyWord: this.fileListForm.keyWord,
-        //     fileCourse: this.fileListForm.fileCourse,
-        //     page: page,
-        //     order: this.fileListForm.order
-        //   }
-        // })
-        //   .then(function (response) {
-        //     for (var i = 0; i < response.data.data.files.length; i++) {
-        //       response.data.data.files[i].fileUploadTime = getFormatDate(response.data.data.files[i].fileUploadTime)
-        //     }
-        //     if (response.data.data.files.length != 0) {
-        //       _this.my_files = _this.my_files.concat(response.data.data.files);
-        //     } else {
-        //       // alert("已经到最后了")
-        //     }
-        //   })
-        //   .catch(function (err) {
-        //     console.log(err);
-        //   });
-      },
-      scrollToDown() {
-        //TODO 目前通过判断路径的方式只在文件部分实现滚动事件，不过不是长久之计，应该修改为只对特定组件或者特定页面的滚动事件
-        document.onscroll = e => {
-          if (this.$route.path === '/fileMain') {
-            this.lazyLoading();
+        this.$http.get('file/getFileList', {
+          params: {
+            keyWord: this.fileListForm.keyWord,
+            fileCourse: this.fileListForm.fileCourse,
+            page: page,
+            order: this.fileListForm.order
           }
-        }
+        })
+          .then(function (response) {
+            _this.myFiles = _this.myFiles.concat(response.data.data.files);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
       },
-      lazyLoading() { // 滚动到底部，再加载的处理事件
+      lazyLoading() {
+        // 滚动到底部，自动加载数据
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         let clientHeight = document.documentElement.clientHeight;
         let scrollHeight = document.documentElement.scrollHeight;
-        if (scrollTop + clientHeight >= scrollHeight) { // 如果滚动到接近底部，自动加载下一页
-          //事件处理
+        if (scrollTop + clientHeight >= scrollHeight) {
           this.fileListForm.page++;
-          console.log(this.fileListForm.page)
-          this.getFileList(this.fileListForm.page)
+          console.log(this.fileListForm.page);
+          this.getFileList(this.fileListForm.page);
         }
       }
-    }
+    },
+    mounted () {
+      this.getFileList(this.fileListForm.page);
+      document.onscroll = () => {
+        if (this.$route.path === '/resources') {
+          this.lazyLoading();
+        }
+      }
+    },
   }
 </script>
 

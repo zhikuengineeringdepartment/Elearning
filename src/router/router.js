@@ -9,12 +9,12 @@ let router = new Router({
     {
       path: '/',
       name: 'Knowledge',
-      component: () => import(/* webpackChunkName: "knowledge" */'../pages/knowledge/Knowledge')
+      component: () => import(/* webpackChunkName: "knowledge" */'../pages/knowledge/overview/Knowledge')
     },
     {
       path: '/knowledge/detail',
       name: 'KnowledgeDetail',
-      component: () => import(/* webpackChunkName: "knowledge-detail" */'../pages/knowledge/KnowledgeDetail')
+      component: () => import(/* webpackChunkName: "knowledge-detail" */'../pages/knowledge/detail/KnowledgeDetail')
     },
     {
       path: '/resources',
@@ -43,23 +43,23 @@ let router = new Router({
       children: [
         {
           path: 'info',
-          component: () => import(/* webpackChunkName: "user-info" */ '../pages/user/user-sub-pages/UserInfo')
+          component: () => import(/* webpackChunkName: "user-info" */ '../pages/user/information/UserInfo')
         },
         {
           path: 'message',
-          component: () => import(/* webpackChunkName: "user-message" */ '../pages/user/user-sub-pages/UserMessage')
+          component: () => import(/* webpackChunkName: "user-message" */ '../pages/user/message/UserMessage')
         },
         {
           path: 'upload',
-          component: () => import(/* webpackChunkName: "user-upload" */ '../pages/user/user-sub-pages/UserUpload')
+          component: () => import(/* webpackChunkName: "user-upload" */ '../pages/user/upload/UserUpload')
         },
         {
           path: 'download',
-          component: () => import(/* webpackChunkName: "user-download" */ '../pages/user/user-sub-pages/UserDownload')
+          component: () => import(/* webpackChunkName: "user-download" */ '../pages/user/download/UserDownload')
         },
         {
           path: 'collection',
-          component: () => import(/* webpackChunkName: "user-collection" */ '../pages/user/user-sub-pages/UserCollection')
+          component: () => import(/* webpackChunkName: "user-collection" */ '../pages/user/collection/UserCollection')
         }
       ]
     },
@@ -85,22 +85,24 @@ let router = new Router({
 // 路由设定
 router.beforeEach((to, from, next) => {
   // 这里之所以要再进行一次路由的判断，就是为了让"通过复制url进入指定页面"的用户看到正确的tab状态。
-  if (to.path === '/' || to.path === '/knowledge/detail') {
+  if (to.path === '/') {
     store.commit('setTabIndex', 0);
     next();
-    
+  } else if (to.path === '/knowledge/detail' && store.state.courseId !== -1) {
+    store.commit('setTabIndex', 0);
+    next();
+  } else if (to.path === '/knowledge/detail' && store.state.courseId === -1) {
+    store.commit('setTabIndex', 0);
+    next({path: '/'});
   } else if (to.path === '/resources' || to.path === '/resources/upload') {
     store.commit('setTabIndex', 1);
     next();
-    
   } else if (to.path === '/article') {
     store.commit('setTabIndex', 2);
     next();
-    
   } else if (to.path === '/about') {
     store.commit('setTabIndex', 3);
     next();
-    
   } else if (to.path === '/user') {
     store.commit('setTabIndex', 4);
     if (!store.state.isLogin) {
@@ -109,7 +111,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next({path: '/user/info'});
     }
-    
   } else if (to.path === '/user/info' || to.path === '/user/message' ||
     to.path === '/user/download' || to.path === '/user/upload' || to.path === '/user/collection') {
     store.commit('setTabIndex', 4);
@@ -119,7 +120,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-    
   } else if (to.path === '/user/login' || to.path === '/user/register') {
     store.commit('setTabIndex', 4);
     if (store.state.isLogin) {
