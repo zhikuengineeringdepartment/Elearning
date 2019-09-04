@@ -5,7 +5,7 @@
 - 知识见解详情页面——收藏、笔记功能的实现
 - 知识见解详情页面——移动端适配
 
-## 目录结构
+## 目录结构（github上markdown目录结构展示有问题，请直接查看源文档）
 ├── README.md                   说明文档
 ├── babel.config.js                 
 ├── package-lock.json           
