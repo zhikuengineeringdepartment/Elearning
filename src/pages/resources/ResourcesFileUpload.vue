@@ -1,5 +1,5 @@
 <!--文件资源上传-->
-<!--TODO 后台上传文件会返回500，需要解决-->
+<!--TODO 后台上传文件会返回500，需要解决，因此这里先disabled掉了上传文件按钮-->
 <template>
   <el-main>
     <el-row type="flex" justify="center">
@@ -55,7 +55,7 @@
             <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+            <el-button size="small" type="success" @click="submitUpload" disabled>上传到服务器</el-button>
             <el-button size="small" type="info" @click="returnBack">取消</el-button>
           </el-form-item>
         </el-form>
