@@ -1,11 +1,10 @@
-# sharing-ideas（山软智库前端）
-## ——by shadowingszy
+# sharing-ideas 山软智库前端 ——by shadowingszy
 
 ## 未完成的工作
 - 知识见解详情页面——收藏、笔记功能的实现
 - 知识见解详情页面——移动端适配
 
-## 目录结构（github上markdown目录结构展示有问题，请直接查看源文档）
+## 目录结构
 ├── README.md                   说明文档
 ├── babel.config.js                 
 ├── package-lock.json           
@@ -26,6 +25,7 @@
 │   ├── store                   vuex配置
 │   └── tools.js                全局的工具函数
 └── vue.config.js               vue-cli-webpack打包配置
+
 
 ### 前端依赖库补全
 ```
