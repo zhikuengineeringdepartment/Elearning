@@ -7,10 +7,10 @@
         <div class="paragraph" @mouseover="currentPid = paragraph.pid" @mouseout="currentPid = -1">
           <div class="paragraph-content" v-html="paragraph.paragraphContentHtml"></div>
           <!--<div v-if="currentPid === paragraph.pid">-->
-            <!--<div class="button-group">-->
-              <!--<div class="button">收藏</div>-->
-              <!--<div class="button">笔记</div>-->
-            <!--</div>-->
+          <!--<div class="button-group">-->
+          <!--<div class="button">收藏</div>-->
+          <!--<div class="button">笔记</div>-->
+          <!--</div>-->
           <!--</div>-->
         </div>
       </div>
@@ -19,63 +19,76 @@
 </template>
 
 <script>
-  export default {
-    name: "KnowledgeSection",
-    props: ["sectionView", "noteViews", "colParas"],
-    data: function () {
-      return {
-        currentPid: -1
-      }
+export default {
+  name: "KnowledgeSection",
+  props: {
+    sectionView: {
+      type: Object,
+      required: true
+    },
+    noteViews: {
+      type: [Array],
+      required: true
+    },
+    colParas: {
+      type: [Array],
+      required: true
     }
+  },
+  data: function() {
+    return {
+      currentPid: -1
+    };
   }
+};
 </script>
 
 <style scoped>
-  .section {
-    text-align: left;
-    margin: 1vmin 5vmin 0 5vmin;
-    padding: 3vmin;
-    border: 1px solid #A7D7F9;
-  }
-  
-  .section-name {
-    padding: 2vmin 0;
-    font-size: 3.5vmin;
-  }
-  
-  .knowledge-name {
-    padding: 2vmin 0;
-    font-size: 3vmin;
-  }
-  
-  .paragraph {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .paragraph:hover {
-    background-color: #E3F3F7;
-  }
-  
-  .paragraph-content {
-    padding: 3vmin 0;
-    font-size: 2vmin;
-  }
-  
-  .button-group {
-    float: right;
-    width: 15vmin;
-    position: absolute;
-    left: 90vmin;
-    display: flex;
-    flex-direction: row;
-  }
+.section {
+  text-align: left;
+  margin: 1vmin 5vmin 0 5vmin;
+  padding: 3vmin;
+  border: 1px solid #a7d7f9;
+}
 
-  .button {
-    background-color: #A3F3F7;
-    width: 5vmin;
-    margin: 0 1vmin;
-    text-align: center;
-    height: 2.5vmin;
-  }
+.section-name {
+  padding: 2vmin 0;
+  font-size: 3.5vmin;
+}
+
+.knowledge-name {
+  padding: 2vmin 0;
+  font-size: 3vmin;
+}
+
+.paragraph {
+  display: flex;
+  flex-direction: row;
+}
+
+.paragraph:hover {
+  background-color: #e3f3f7;
+}
+
+.paragraph-content {
+  padding: 3vmin 0;
+  font-size: 2vmin;
+}
+
+.button-group {
+  float: right;
+  width: 15vmin;
+  position: absolute;
+  left: 90vmin;
+  display: flex;
+  flex-direction: row;
+}
+
+.button {
+  background-color: #a3f3f7;
+  width: 5vmin;
+  margin: 0 1vmin;
+  text-align: center;
+  height: 2.5vmin;
+}
 </style>
