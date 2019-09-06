@@ -24,14 +24,16 @@
               <file-tag :tags="fileItem.fileKeys"></file-tag>
             </el-col>
             <el-col :span="8" class="resources-file-footer-button">
-              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"></el-button>
+              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"
+                         disabled></el-button>
               <el-button type="success" icon="el-icon-download" circle
                          @click="handleDownload(fileItem.fid)"></el-button>
             </el-col>
           </div>
           <div v-else>
             <el-col :span="24" class="resources-file-footer-button">
-              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"></el-button>
+              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"
+                         disabled></el-button>
               <el-button type="success" icon="el-icon-download" circle
                          @click="handleDownload(fileItem.fid)"></el-button>
             </el-col>
@@ -51,6 +53,7 @@
     components: {FileTag},
     props: ["fileItem"],
     methods: {
+      // TODO 预览文件部分功能需要重构
       handlePreview: function (fid) {
         console.log("预览文件" + fid);
         // window.open("/preview.html?fid=" + fid)

@@ -1,10 +1,10 @@
 <template>
   <!--<el-menu :default-active="that.$route.params.sid" class="el-menu-vertical-demo">-->
   <el-menu class="section-select-menu">
-    <div v-for="section in courseView.sections">
+    <div v-for="(section, index) in courseView.sections" :key="index">
       <el-submenu :index="section.index.toString()">
         <span slot="title">{{section.title}}</span>
-        <div v-for="sub in section.sub">
+        <div v-for="(sub, index) in section.sub" :key="index">
           <el-tooltip effect="dark" :content="sub.sectionName.substring(sub.sectionName.indexOf(' '))" placement="top-start">
             <el-menu-item :index="sub.sid.toString()" @click="handleMenu(sub.sid)">
               <span slot="title">{{sub.sectionName.substring(sub.sectionName.indexOf(' '))}}</span>
@@ -34,7 +34,7 @@
 
 <style scoped>
   .section-select-menu {
-    overflow: hidden;
+    overflow: auto;
     text-align: left;
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="blog">
     <h3>相关csdn推荐</h3>
-    <div v-for="item in blog">
+    <div v-for="(item, index) in blog" :key="index">
       <a :href="item.url" class="blog-url">{{item.title}}</a><br>
     </div>
   </div>

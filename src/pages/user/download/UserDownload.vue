@@ -6,10 +6,7 @@
     </div>
     <div v-if="fileDownloadRecords.length > 0">
       <el-card
-        v-for="fileDownloadRecord in fileDownloadRecords"
-        shadow="hover"
-        class="user-download"
-      >
+        v-for="(fileDownloadRecord, index) in fileDownloadRecords" shadow="hover" class="user-download" :key="index">
         <el-row>
           <el-col>
             <h3>{{fileDownloadRecord.fileView.fileName}}</h3>

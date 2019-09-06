@@ -161,7 +161,15 @@
               for (const knowledge of _this.sectionView.knowledgeViews) {
                 knowledge.knowledgeNameHtml = converter.makeHtml(knowledge.knowledgeName.toString());
                 for (const paragraph of knowledge.paragraphs) {
-                  paragraph.paragraphContentHtml = converter.makeHtml(paragraph.paragraphContent.toString());
+                  let paragraphContentHtml = converter.makeHtml(paragraph.paragraphContent.toString());
+                  if (paragraphContentHtml.indexOf('<pre') !== -1) {
+                    paragraphContentHtml = paragraphContentHtml.replace('<pre','<pre class="code-content"');
+                    console.log('===', paragraphContentHtml);
+                  } else if (paragraphContentHtml.indexOf('<img') !== -1) {
+                    paragraphContentHtml = paragraphContentHtml.replace('<img','<img class="img-content"');
+                    console.log('====', paragraphContentHtml);
+                  }
+                  paragraph.paragraphContentHtml = paragraphContentHtml;
                 }
               }
             } else {

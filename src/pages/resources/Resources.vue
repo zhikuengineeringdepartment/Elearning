@@ -36,7 +36,7 @@
     </el-col>
     
     <el-col :span="20" class="file-list-detail">
-      <resources-file v-for="fileItem in myFiles" :fileItem="fileItem"></resources-file>
+      <resources-file v-for="(fileItem, index) in myFiles" :key="index" :fileItem="fileItem"></resources-file>
     </el-col>
   </el-main>
 </template>

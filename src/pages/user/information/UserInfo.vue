@@ -3,19 +3,19 @@
   <el-form ref="form" :model="baseInfo">
     <div class="user-image">
       <img id="user_avatar" :src="baseInfo.userAvatar">
-      <el-button class="user-image-button" type="primary" @click="" disabled>更换头像</el-button>
+      <el-button class="user-image-button" type="primary" disabled>更换头像</el-button>
     </div>
     <div class="user-info-form-item">
       <el-input class="user-info-form-input" v-model="baseInfo.userNick"></el-input>
-      <el-button type="primary" class="user-info-form-button" @click="" disabled>修改昵称</el-button>
+      <el-button type="primary" class="user-info-form-button" disabled>修改昵称</el-button>
     </div>
     <div class="user-info-form-item">
       <el-input class="user-info-form-input" v-model="baseInfo.userEmail" disabled></el-input>
-      <el-button type="primary" class="user-info-form-button" @click="" disabled>修改邮箱</el-button>
+      <el-button type="primary" class="user-info-form-button" disabled>修改邮箱</el-button>
     </div>
     <div class="user-info-form-item">
       <el-input class="user-info-form-input" v-model="baseInfo.userPhone"></el-input>
-      <el-button type="primary" class="user-info-form-button" @click="" disabled>修改电话</el-button>
+      <el-button type="primary" class="user-info-form-button" disabled>修改电话</el-button>
     </div>
   </el-form>
 </template>

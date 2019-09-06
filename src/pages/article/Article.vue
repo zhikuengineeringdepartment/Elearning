@@ -1,7 +1,7 @@
 <!--智库专栏页面-->
 <template>
   <div class="article-body">
-    <article-item v-for="article in articles" :article="article"></article-item>
+    <article-item v-for="(article, index) in articles" :key="index" :article="article"></article-item>
   </div>
 </template>
 
