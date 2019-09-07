@@ -5,26 +5,30 @@
 - 知识见解详情页面——移动端适配
 
 ## 目录结构
-├── README.md                   说明文档
-├── babel.config.js                 
-├── package-lock.json           
-├── package.json                
-├── public                      public目录，放置静态文件以及SPA入口
-├── src                         源代码
-│   ├── App.vue                 页面主容器
-│   ├── assets                  资源文件
-│   ├── components              一些公用的组件
-│   ├── main.js                 vue入口以及vue根实例
-│   ├── pages                   
-│   │   ├── about               关于智库tab
-│   │   ├── article             智库专栏tab
-│   │   ├── knowledge           知识见解tab
-│   │   ├── resources           文件资源tab
-│   │   └── user                用户tab
-│   ├── router                  vue-router配置
-│   ├── store                   vuex配置
-│   └── tools.js                全局的工具函数
-└── vue.config.js               vue-cli-webpack打包配置
+|-- README.md                   说明文档<br/>
+|-- babel.config.js             babel设置<br/>                                                
+|-- package-lock.json           package-lock<br/>          
+|-- package.json                依赖库配置<br/>           
+|-- public                      public目录，放置静态文件以及SPA入口<br/>
+|   |-- img                     图片<br/>
+|   |-- preview                 预览知识文档所需要的js库<br/>
+|   |-- index.html              主页面<br/>
+|   |-- preview.html            预览页面<br/>
+|-- src                         源代码<br/>
+|   |-- App.vue                 页面主容器<br/>
+|   |-- assets                  资源文件<br/>
+|   |-- components              一些公用的组件<br/>
+|   |-- main.js                 vue入口以及vue根实例<br/>
+|   |-- pages                   pages目录，放置页面组件<br/>
+|   |   |-- about               关于智库tab<br/>
+|   |   |-- article             智库专栏tab<br/>
+|   |   |-- knowledge           知识见解tab<br/>
+|   |   |-- resources           文件资源tab<br/>
+|   |   |-- user                用户tab<br/>
+|   |-- router                  vue-router配置<br/>
+|   |-- store                   vuex配置<br/>
+|   |-- tools.js                全局的工具函数<br/>
+|-- vue.config.js               vue-cli-webpack打包配置<br/>
 
 
 ### 前端依赖库补全
