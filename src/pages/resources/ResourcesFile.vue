@@ -24,16 +24,14 @@
               <file-tag :tags="fileItem.fileKeys"></file-tag>
             </el-col>
             <el-col :span="8" class="resources-file-footer-button">
-              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"
-                         disabled></el-button>
+              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"></el-button>
               <el-button type="success" icon="el-icon-download" circle
                          @click="handleDownload(fileItem.fid)"></el-button>
             </el-col>
           </div>
           <div v-else>
             <el-col :span="24" class="resources-file-footer-button">
-              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"
-                         disabled></el-button>
+              <el-button type="primary" icon="el-icon-document" circle @click="handlePreview(fileItem.fid)"></el-button>
               <el-button type="success" icon="el-icon-download" circle
                          @click="handleDownload(fileItem.fid)"></el-button>
             </el-col>
@@ -46,22 +44,26 @@
 
 <script>
   import FileTag from "../../components/FileTag";
-  import {routerChange} from "../../tools";
+  import {routerChange, getLocation} from "../../tools";
   
   export default {
     name: "ResourcesFile",
     components: {FileTag},
     props: ["fileItem"],
     methods: {
-      // TODO 预览文件部分功能需要重构
       handlePreview: function (fid) {
         console.log("预览文件" + fid);
-        // window.open("/preview.html?fid=" + fid)
+        this.$store.commit('setFid', fid);
+        const location = getLocation(window.location.href);
+        const host = process.env.NODE_ENV === 'production' ? location.protocol + '//' + location.host : 'http://sharingideas.cn:10234';
+        window.open(host + '/preview.html?fid=' + fid);
       },
       handleDownload: function (fid) {
         if (this.$store.state.isLogin) {
           console.log("下载文件");
-          // window.open('file/download?fid=' + fid + '&uid=' + 0)
+          const location = getLocation(window.location.href);
+          const host = process.env.NODE_ENV === 'production' ? location.protocol + '//' + location.host : 'http://sharingideas.cn:10234';
+          window.open(host + '/file/download?fid=' + fid + '&uid=' + 0);
         } else {
           routerChange("/user/login", this);
         }

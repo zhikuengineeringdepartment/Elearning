@@ -3,15 +3,33 @@
   <div class="knowledge-detail-body">
     <el-main>
       <el-row type="flex" class="row-bg" justify="center">
-        <el-col :span="6">
-          <KnowledgeSectionSelect :courseView="courseView" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
-        </el-col>
-        <el-col :span="18">
-          <knowledge-section-navigator :side="side" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
-          <knowledge-section :sectionView="sectionView" :noteViews="noteViews" :colParas="colParas"></knowledge-section>
-          <knowledge-section-navigator :side="side" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
-          <knowledge-section-blog :blog="csdn"/>
-        </el-col>
+        <!--手机端布局，使用drawer来进行章节选择-->
+        <div v-if="$store.state.isMobile">
+          <div>
+            <div class="show-menu" @click="showDrawerClick">章<br/>节<br/>选<br/>择</div>
+            <el-drawer size="80%" title="章节选择" :visible.sync="drawerShow" :direction="drawerDirection">
+              <KnowledgeSectionSelect :courseView="courseView" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
+            </el-drawer>
+          </div>
+          <el-col :span="24">
+            <knowledge-section-navigator :side="side" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
+            <knowledge-section :sectionView="sectionView" :noteViews="noteViews" :colParas="colParas"></knowledge-section>
+            <knowledge-section-navigator :side="side" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
+            <knowledge-section-blog :blog="csdn"/>
+          </el-col>
+        </div>
+        <!--电脑端布局-->
+        <div v-if="!$store.state.isMobile" class="computer-knowledge">
+          <div class="computer-select">
+            <KnowledgeSectionSelect :courseView="courseView" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
+          </div>
+          <div class="computer-content">
+            <knowledge-section-navigator :side="side" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
+            <knowledge-section :sectionView="sectionView" :noteViews="noteViews" :colParas="colParas"></knowledge-section>
+            <knowledge-section-navigator :side="side" @getSectionView="getSectionView" @getCsdn="getCsdn"/>
+            <knowledge-section-blog :blog="csdn"/>
+          </div>
+        </div>
       </el-row>
     </el-main>
   </div>
@@ -29,6 +47,8 @@
     components: {KnowledgeSectionSelect, KnowledgeSectionNavigator, KnowledgeSectionBlog, KnowledgeSection},
     data: function () {
       return {
+        drawerDirection: 'ltr',
+        drawerShow: false,
         csdn: {},
         courseView: {},
         side: {
@@ -44,6 +64,9 @@
       this.getCourseView(this.$store.state.courseId);
     },
     methods: {
+      showDrawerClick: function() {
+        this.drawerShow = true;
+      },
       // 获取当前章节所在的位置
       // TODO i,j这样的命名要避免，由于目前只是重构，所以沿用了原先的命名
       getSideSectionIndex: function (sid) {
@@ -259,5 +282,28 @@
 <style scoped>
   .knowledge-detail-body {
     min-height: calc(100vh - 69vmin);
+  }
+  
+  .show-menu {
+    color: #409EFF;
+    border: #A7D7F9 1px solid;
+    padding: 3vmin 0;
+    position: fixed;
+    left: 0;
+    top: 20vmin;
+    width: 6vmin;
+  }
+  
+  .computer-knowledge{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .computer-select {
+    width: 25vw;
+  }
+  
+  .computer-content {
+    width: 75vw;
   }
 </style>

@@ -2,7 +2,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {user, isLogin, tabIndex, isMobile, courseId, sectionId} from './global'
+import {user, isLogin, tabIndex, isMobile, courseId, sectionId, fileId} from './global'
 
 Vue.use(Vuex);
 
@@ -13,7 +13,8 @@ const store = new Vuex.Store({
     tabIndex, // 选中了哪个tab
     isMobile, // 是否为手机端
     courseId, // 课程Id
-    sectionId // 章节id
+    sectionId, // 章节id
+    fileId // 预览文件的id
   },
   mutations: {
     // 设置user
@@ -38,6 +39,9 @@ const store = new Vuex.Store({
     },
     setSectionId(state, sid) {
       state.sectionId = sid;
+    },
+    setFid(state, fid) {
+      state.fileId = fid;
     }
   }
 });

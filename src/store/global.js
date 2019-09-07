@@ -12,6 +12,7 @@ let tabIndex = 0;
 let isMobile = false; // 是否为手机端
 let courseId = -1;
 let sectionId = -1;
+let fileId = -1; // 预览文件的id
 
 export {
   user,
@@ -19,5 +20,6 @@ export {
   tabIndex,
   isMobile,
   courseId,
-  sectionId
+  sectionId,
+  fileId
 }

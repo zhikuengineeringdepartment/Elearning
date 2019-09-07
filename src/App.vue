@@ -28,6 +28,7 @@
     padding: 0;
   }
   
+  /* TODO 移动端字体需要调整*/
   body {
     font-size: 12px;
     font-family: Lato,Helvetica Neue,Helvetica,sans-serif;

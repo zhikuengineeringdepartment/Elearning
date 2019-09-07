@@ -1,3 +1,4 @@
+<!--知识见解详情-章节选择组件-->
 <template>
   <!--<el-menu :default-active="that.$route.params.sid" class="el-menu-vertical-demo">-->
   <el-menu class="section-select-menu">
