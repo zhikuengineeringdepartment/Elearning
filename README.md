@@ -6,9 +6,9 @@
 
 ## 目录结构
 |-- README.md                   说明文档<br/>
-|-- babel.config.js             babel设置<br/>                                                
-|-- package-lock.json           package-lock<br/>          
-|-- package.json                依赖库配置<br/>           
+|-- babel.config.js             babel设置<br/>
+|-- package-lock.json           package-lock<br/>
+|-- package.json                依赖库配置<br/>
 |-- public                      public目录，放置静态文件以及SPA入口<br/>
 |   |-- img                     图片<br/>
 |   |-- preview                 预览知识文档所需要的js库<br/>

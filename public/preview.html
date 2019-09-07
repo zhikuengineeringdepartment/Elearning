@@ -88,24 +88,23 @@
         });
     }
 
-        let fid = window.location.search.substr(1);
-        let loadUrl = 'file/preview?'+fid;
-        showPdf(loadUrl);
+    let fid = window.location.search.substr(1);
+    let loadUrl = 'file/preview?'+fid;
+    showPdf(loadUrl);
 
-
-        document.getElementById('getDown').onclick= function getDown(){
-            let cks = document.cookie.split(';');
-            let hasLogin = false;
-            for(let i = 0; i < cks.length; i++){
-                let key = cks[i].split('=');
-                if(key[0].trim() === 'token' && key.length > 1 && key[1] !== ''){
-                    hasLogin = true;
-                    window.open('file/download?'+fid+'&uid='+0)
-                }
-            }
-            if(hasLogin === false){
-                window.location.href = '/#/login'
+    document.getElementById('getDown').onclick= function getDown(){
+        let cks = document.cookie.split(';');
+        let hasLogin = false;
+        for(let i = 0; i < cks.length; i++){
+            let key = cks[i].split('=');
+            if(key[0].trim() === 'token' && key.length > 1 && key[1] !== ''){
+                hasLogin = true;
+                window.open('file/download?'+fid+'&uid='+0)
             }
         }
+        if(hasLogin === false){
+            window.location.href = '/#/login'
+        }
+    }
 </script>
 </html>
