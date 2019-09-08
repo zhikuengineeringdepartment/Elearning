@@ -28,8 +28,10 @@
     padding: 0;
   }
   
+  /* TODO 移动端字体需要调整*/
   body {
-    font: 12px "宋体", "Arial Narrow", HELVETICA;
+    font-size: 12px;
+    font-family: Lato,Helvetica Neue,Helvetica,sans-serif;
     background: #fff;
     -webkit-text-size-adjust: 100%;
   }

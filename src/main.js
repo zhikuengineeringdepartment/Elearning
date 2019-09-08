@@ -23,9 +23,7 @@ const axiosInstance = axios.create({
   
   // 可携带cookies
   withCredentials: true,
-  
-  // baseURL: 'http://211.87.227.234:10234/'  // 正式环境下用这个
-  baseURL: '/api'  // 开发环境下用这个
+  baseURL: process.env.NODE_ENV === 'production' ? 'http://sharingideas.cn:10000/' : '/api'  // 正式环境与开发环境的url
 });
 
 Vue.use(ElementUI);

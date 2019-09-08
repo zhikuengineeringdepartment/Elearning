@@ -12,13 +12,11 @@
     <el-col :span="20" @scroll.native="lazyLoading">
       <el-row>
         <div class="resources-select">
-          <course-select v-on:get-course-value="setCourseValue"></course-select>
-          <div v-if="!$store.state.isMobile">
-            <!--手机端不提供搜索功能-->
-            <el-input placeholder="搜索" v-model="fileListForm.keyWord">
-              <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
-            </el-input>
-          </div>
+          <!--这里暂不支持课程选择-->
+          <!--<course-select v-on:get-course-value="setCourseValue"></course-select>-->
+          <el-input class="resources-search" placeholder="搜索" v-model="fileListForm.keyWord">
+            <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
+          </el-input>
           <div v-if="fileListForm.order && $store.state.isMobile">
             <el-button icon="el-icon-sort-down" @click="changeOrder"></el-button>
           </div>
@@ -36,19 +34,20 @@
     </el-col>
     
     <el-col :span="20" class="file-list-detail">
-      <resources-file v-for="fileItem in myFiles" :fileItem="fileItem"></resources-file>
+      <resources-file v-for="(fileItem, index) in myFiles" :key="index" :fileItem="fileItem"></resources-file>
     </el-col>
   </el-main>
 </template>
 
 <script>
-  import CourseSelect from "../../components/CourseSelect";
+  // import CourseSelect from "../../components/CourseSelect";
   import ResourcesFile from "./ResourcesFile";
   import {routerChange} from "../../tools";
   
   export default {
     name: "Resources",
-    components: {ResourcesFile, CourseSelect},
+    // components: {ResourcesFile, CourseSelect},
+    components: {ResourcesFile},
     data() {
       return {
         fileListForm: {
@@ -68,9 +67,9 @@
         this.fileListForm.order = !this.fileListForm.order;
         this.myFiles.reverse();
       },
-      setCourseValue: function (cid) {
-        this.fileListForm.fileCourse = cid;
-      },
+      // setCourseValue: function (cid) {
+      //   this.fileListForm.fileCourse = cid;
+      // },
       doSearch: function () {
         this.myFiles = [];
         this.fileListForm.page = 1;
@@ -109,7 +108,7 @@
         }
       }
     },
-    mounted () {
+    mounted() {
       this.getFileList(this.fileListForm.page);
       document.onscroll = () => {
         if (this.$route.path === '/resources') {
@@ -147,6 +146,10 @@
       display: flex;
       flex-direction: row;
       margin-bottom: 3vmin;
+      
+      .resources-search {
+        margin: 0 5vmin 0 0;
+      }
     }
   }
 </style>

@@ -3,7 +3,7 @@
   <el-main>
     <el-row type="flex" justify="center">
       <el-col :span="24">
-        <div v-for="course in courses">
+        <div v-for="(course, index) in courses" :key="index">
           <knowledge-item :course="course"></knowledge-item>
         </div>
       </el-col>

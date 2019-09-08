@@ -44,7 +44,7 @@
 
 <script>
   import FileTag from "../../components/FileTag";
-  import {routerChange} from "../../tools";
+  import {routerChange, getLocation} from "../../tools";
   
   export default {
     name: "ResourcesFile",
@@ -53,12 +53,17 @@
     methods: {
       handlePreview: function (fid) {
         console.log("预览文件" + fid);
-        // window.open("/preview.html?fid=" + fid)
+        this.$store.commit('setFid', fid);
+        const location = getLocation(window.location.href);
+        const host = process.env.NODE_ENV === 'production' ? location.protocol + '//' + location.host : 'http://sharingideas.cn:10234';
+        window.open(host + '/preview.html?fid=' + fid);
       },
       handleDownload: function (fid) {
         if (this.$store.state.isLogin) {
           console.log("下载文件");
-          // window.open('file/download?fid=' + fid + '&uid=' + 0)
+          const location = getLocation(window.location.href);
+          const host = process.env.NODE_ENV === 'production' ? location.protocol + '//' + location.host : 'http://sharingideas.cn:10234';
+          window.open(host + '/file/download?fid=' + fid + '&uid=' + 0);
         } else {
           routerChange("/user/login", this);
         }

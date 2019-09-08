@@ -24,7 +24,7 @@ let router = new Router({
     {
       path: '/resources/upload',
       name: 'ResourcesFileUpload',
-      component: () => import(/* webpackChunkName: "resources-fil-upload" */ '../pages/resources/ResourcesFileUpload')
+      component: () => import(/* webpackChunkName: "resources-file-upload" */ '../pages/resources/ResourcesFileUpload')
     },
     {
       path: '/article',

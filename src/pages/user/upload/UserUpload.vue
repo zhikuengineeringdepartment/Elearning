@@ -5,11 +5,7 @@
       <div>没有上传的文件记录哦！</div>
     </div>
     <div v-if="fileUploadRecords.length > 0">
-      <el-card
-        shadow="hover"
-        class="user-upload"
-        v-for="fileUploadRecord in fileUploadRecords"
-      >
+      <el-card shadow="hover" class="user-upload" v-for="(fileUploadRecord, index) in fileUploadRecords" :key="index">
         <el-row>
           <el-col>
             <h3>{{fileUploadRecord.fileName}}</h3>
