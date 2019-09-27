@@ -35,6 +35,12 @@ mybatis:
   mapper-locations: com/zhiku/mapper/*.xml
 server:
   port: 18888
+
+#信息记录文件位置
+file_path:
+  #访问量记录文件
+  visit_statistics: /opt/zhiku/visit_statistics.log
+#  visit_statistics: E:\ZhikuFiles\zhiku\visit_statistics.log
 #logging:
 #  level:
 #    com.zhiku.*: debug
