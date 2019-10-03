@@ -120,7 +120,22 @@
   </update>
 
   <!--自定义SQL-->
+  <insert id="insertAll" parameterType="java.util.List" >
+        insert into paragraph (pid, paragraph_seq, paragraph_knowledge,
+        paragraph_type, paragraph_newline, paragraph_content
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.pid,jdbcType=INTEGER}, #{item.paragraphSeq,jdbcType=INTEGER}, #{item.paragraphKnowledge,jdbcType=INTEGER},
+            #{item.paragraphType,jdbcType=CHAR}, #{item.paragraphNewline,jdbcType=CHAR}, #{item.paragraphContent,jdbcType=LONGVARCHAR}
+            )
+        </foreach>
+    </insert>
   <select id="selectByParagraphSeq" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from paragraph where paragraph_seq = #{paragraphSeq}
   </select>
+  <delete id="deleteBySeqCourse" parameterType="java.lang.Integer">
+    delete from paragraph
+    where paragraph_seq like concat(#{pid,jdbcType=INTEGER},'%')
+  </delete>
 </mapper>

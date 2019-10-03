@@ -2,7 +2,10 @@ package com.zhiku.mapper;
 
 import com.zhiku.entity.Section;
 import com.zhiku.view.SectionView;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public interface SectionMapper {
@@ -19,5 +22,14 @@ public interface SectionMapper {
     int updateByPrimaryKey(Section record);
 
     //自定义方法
+    int insertAll(List<Section> record);
+
     SectionView getSectionViewBySid(Integer sid);
+
+    Integer selectSectionID(@Param( "sectionName" ) String sectionName, @Param( "sectionCourse" ) Integer sectionCourse);
+
+    Integer selectSectionMaxID(Integer sectionCourse);
+
+    int deleteByCourseId(Integer cid);
+
 }

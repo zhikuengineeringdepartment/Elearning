@@ -3,6 +3,8 @@ package com.zhiku.mapper;
 import com.zhiku.entity.Paragraph;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public interface ParagraphMapper {
     int deleteByPrimaryKey(Integer pid);
@@ -20,5 +22,9 @@ public interface ParagraphMapper {
     int updateByPrimaryKey(Paragraph record);
 
 //    自定义方法
+    int insertAll(List<Paragraph> record);
+
     Paragraph selectByParagraphSeq(Integer paragraphSeq);
+
+    int deleteBySeqCourse(Integer cid);
 }

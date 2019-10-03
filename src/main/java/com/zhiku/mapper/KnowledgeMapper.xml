@@ -84,4 +84,17 @@
   <resultMap id="KnowledgeView" type="com.zhiku.view.KnowledgeView" extends="BaseResultMap">
     <collection property="paragraphs" resultMap="com.zhiku.mapper.ParagraphMapper.ResultMapWithBLOBs"/>
   </resultMap>
+  <insert id="insertAllGetIds" useGeneratedKeys="true" keyProperty="kid"  parameterType="java.util.List">
+        insert into knowledge (kid, knowledge_seq, knowledge_name,
+        knowledge_section)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.kid,jdbcType=INTEGER}, #{item.knowledgeSeq,jdbcType=INTEGER}, #{item.knowledgeName,jdbcType=VARCHAR},
+            #{item.knowledgeSection,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+  <delete id="deleteBySeqCourse" parameterType="java.lang.Integer">
+    delete from knowledge
+    where knowledge_seq like concat(#{kid,jdbcType=INTEGER},'%')
+  </delete>
 </mapper>
