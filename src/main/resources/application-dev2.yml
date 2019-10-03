@@ -51,7 +51,8 @@ file_path:
   visit_statistics: /opt/zhiku/visit_statistics.log
 #  visit_statistics: E:\ZhikuFiles\zhiku\visit_statistics.log
   #md课程内容文件储存目录
-  md_save: E:/ZhikuFiles
+  md_save: /opt/zhiku/mdFiles
+#  md_save: E:/ZhikuFiles
 
 #logging:
 #  level:
