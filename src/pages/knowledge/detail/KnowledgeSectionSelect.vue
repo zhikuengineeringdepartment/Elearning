@@ -35,7 +35,7 @@
 
 <style scoped>
   .section-select-menu {
-    overflow: auto;
+    overflow: hidden;
     text-align: left;
   }
 </style>

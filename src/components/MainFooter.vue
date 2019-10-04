@@ -16,7 +16,7 @@
 
 <style scoped>
   .footer {
-    width: 100vw;
+    width: 100%;
     height: 8vmin;
     line-height: 8vmin;
     background-color: #000000;
