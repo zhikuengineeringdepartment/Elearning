@@ -25,6 +25,7 @@ public class MdSaveController {
     @Autowired
     MdSaveService mdSaveService;
 
+    //访问内容添加页面-临时
     @RequestMapping(value = {"/create","/save","/delete"},method = RequestMethod.GET)
     public String create(User user){
         if(isAdm(user)){
@@ -34,6 +35,14 @@ public class MdSaveController {
         }
     }
 
+    /**
+     * 创建课程
+     * @param user 自动获取
+     * @param file md文件 可选
+     * @param title 课程名称
+     * @param describe 课程描述
+     * @param iconPath 课程图片地址
+     */
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public String create(User user,Model model, @RequestParam("file") MultipartFile file,
                          @RequestParam("title") String title,
@@ -57,7 +66,7 @@ public class MdSaveController {
         model.addAttribute("message","创建成功！");
         //储存文件
         if(Objects.equals( file.getOriginalFilename(), "" )){
-            model.addAttribute("lastCourseId",""+cid);//!!!直接传int，用(string)转换获取，还报错
+            model.addAttribute("lastCourseId",Integer.toString(cid));
             return "saveCourse";
         }
         if (!mdSaveService.checkFile( file )) {
@@ -79,6 +88,12 @@ public class MdSaveController {
         return "saveCourse";
     }
 
+    /**
+     * 添加课程内容
+     * @param user 自动获取
+     * @param file md文件
+     * @param scid 课程id
+     */
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public String save(User user,Model model, @RequestParam("file") MultipartFile file, @RequestParam("cid") String scid)
             throws IOException {
@@ -117,6 +132,11 @@ public class MdSaveController {
         return "saveCourse";
     }
 
+    /**
+     * 删除课程内容 //todo:根据序号seq删除，知识点数目超过1万就会占到下一个课程的序号，有风险
+     * @param user 自动获取
+     * @param scid 课程id
+     */
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public String delete(User user,Model model, @RequestParam("cid") String scid) {
         if(!isAdm(user)) {
@@ -136,11 +156,11 @@ public class MdSaveController {
         return "saveCourse";
     }
 
+    //判断是否是管理员
     private boolean isAdm(User user){
-        boolean isAdm=false;
         int uid=user.getUid();
-        for(int i=0;i<admUids.length;i++){
-            if(uid==admUids[i]){
+        for (int admUid : admUids) {
+            if (uid == admUid) {
                 return true;
             }
         }
