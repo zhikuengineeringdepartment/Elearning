@@ -1,6 +1,6 @@
 module.exports = {
   runtimeCompiler: true,
-  publicPath: '/', // 设置打包文件相对路径
+  publicPath: './', // 设置打包文件相对路径
   devServer: {
     port: 8080,
     proxy: {

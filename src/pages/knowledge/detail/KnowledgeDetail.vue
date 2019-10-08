@@ -35,6 +35,8 @@
               :sectionView="sectionView"
               :noteViews="noteViews"
               :colParas="colParas"
+              @getNoteView="getNoteView"
+              @getColParas="getColParas"
             ></knowledge-section>
             <knowledge-section-navigator
               :side="side"
@@ -63,6 +65,8 @@
               :sectionView="sectionView"
               :noteViews="noteViews"
               :colParas="colParas"
+              @getNoteView="getNoteView"
+              @getColParas="getColParas"
             ></knowledge-section>
             <knowledge-section-navigator
               :side="side"
@@ -109,9 +113,6 @@ export default {
   },
   created: function() {
     this.getCourseView(this.$store.state.courseId);
-    this.colParas = this.getColParas(this.$store.state.sectionId);
-    this.noteViews = this.getNoteView(this.$store.state.sectionId);
-    console.log("noteviews" + this.noteViews);
   },
   methods: {
     showDrawerClick: function() {
@@ -332,6 +333,7 @@ export default {
           }
         )
         .then(function(res) {
+          console.log("noteview-", res.data.data.noteViews, sid);
           _this.noteViews = res.data.data.noteViews;
         })
         .catch(function(err) {
@@ -366,7 +368,7 @@ export default {
           }
         )
         .then(function(res) {
-          console.log(res.data.data.colParagraphList);
+          console.log("colParas-", res.data.data.colParagraphList, sid);
           _this.colParas = res.data.data.colParagraphList;
         })
         .catch(function(err) {

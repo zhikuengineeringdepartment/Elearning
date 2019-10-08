@@ -55,7 +55,7 @@
             <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="success" @click="submitUpload" disabled>上传到服务器</el-button>
+            <el-button size="small" type="success" @click="submitUpload">上传到服务器</el-button>
             <el-button size="small" type="info" @click="returnBack">取消</el-button>
           </el-form-item>
         </el-form>

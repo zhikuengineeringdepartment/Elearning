@@ -57,17 +57,28 @@ export default {
       currentPid: -1,
       wangEditorIDs: [],
       noteId: [],
-      note: {}
+      note: {},
+      sectionId: this.$store.state.sectionId
     };
   },
-  mounted() {
-    if (this.noteViews) {
+  created() {
+    this.$emit("getColParas", this.$store.state.sectionId);
+    this.$emit("getNoteView", this.$store.state.sectionId);
+  },
+  updated() {
+    this.sectionId = this.$store.state.sectionId;
+  },
+  watch: {
+    noteViews() {
       for (let i of this.noteViews) {
         this.noteId.push(i.colParagraphView.paragraphSeq);
         this.note[i.colParagraphView.paragraphSeq] = i.noteContent;
       }
+    },
+    sectionId() {
+      this.$emit("getColParas", this.$store.state.sectionId);
+      this.$emit("getNoteView", this.$store.state.sectionId);
     }
-    console.log("-", this.noteViews);
   },
   methods: {
     mouseenter(pid) {
@@ -116,10 +127,9 @@ export default {
     },
     //wangEditor失焦,修改笔记
     editorOnBlur(wangID, html) {
+      console.log("onblur");
       document.getElementById(wangID).style.background = "#eee";
       document.getElementById(wangID).children[0].style.display = "none";
-      document.getElementById(wangID).children[0].dataset.placeholder =
-        "My Note:";
       let paragraphSeq = wangID.slice(4);
       //如果内容为空，隐藏编辑器
       if (html === "<p><br></p>") {
@@ -334,6 +344,12 @@ export default {
 .w-e-text-container {
   height: auto !important;
   border: none !important;
+}
+
+.w-e-text-container div::before {
+  color: lightgrey;
+  content: attr(data-placeholder);
+  font-size: 2vmin;
 }
 
 .w-e-toolbar {

@@ -17,10 +17,10 @@
 <style scoped>
   .footer {
     width: 100%;
-    height: 8vmin;
-    line-height: 8vmin;
+    height: 8vh;
+    line-height: 8vh;
     background-color: #000000;
-    font-size: 2vmin;
+    font-size: 2vh;
     color: #FFFFFF;
   }
 </style>
