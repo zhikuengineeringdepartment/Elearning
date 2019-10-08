@@ -26,7 +26,7 @@
       </li>
     </ul>
     <!--用户头像/登录注册按钮-->
-    <img class="header-user" :src="$store.state.user.userIcon" @click="menuClick(4)" />
+    <img class="header-user" :src="userIcon || $store.state.user.userIcon" @click="menuClick(4)" />
   </div>
 </template>
 
@@ -35,6 +35,9 @@ import { routerChange } from "../tools";
 
 export default {
   name: "MainHeader",
+  props: {
+    userIcon: String
+  },
   methods: {
     menuClick: function(index) {
       this.$store.commit("setTabIndex", index);

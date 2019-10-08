@@ -53,6 +53,7 @@ export default {
             username: _this.loginForm.identity,
             userIcon: response.data.data.userIcon
           });
+          localStorage["userIcon"] = response.data.data.userIcon;
           routerChange("/user/info", _this);
         } else {
           _this.$message({
