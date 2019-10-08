@@ -80,9 +80,6 @@ public class MdSaveService {
         return Md2Save.toolRun(filePath,cid);
     }
 
-
-
-
     public boolean deleteCourse(Integer cid) {
         paragraphMapper.deleteBySeqCourse( cid );
         knowledgeMapper.deleteBySeqCourse( cid );

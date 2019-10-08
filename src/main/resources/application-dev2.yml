@@ -19,9 +19,13 @@ spring:
           socketFactory:
             fallback: false
   datasource:
-    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8
-    username: root
-    password: Zhiku_123
+    #todo: 临时替换数据库，避免影响上线数据库
+    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8
+    username: zhiku
+    password: zhiku_123b
+#    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8
+#    username: root
+#    password: Zhiku_123
     driver-class-name: com.mysql.cj.jdbc.Driver
   freemarker:
     template-loader-path: classpath:/freemarker/
@@ -53,6 +57,8 @@ file_path:
   #md课程内容文件储存目录
   md_save: /opt/zhiku/mdFiles
 #  md_save: E:/ZhikuFiles
+  #上传文件存储目录
+  upload_path: /var/zhiku/upload
 
 #logging:
 #  level:

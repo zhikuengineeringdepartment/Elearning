@@ -36,10 +36,10 @@ import java.util.UUID;
 @Transactional
 public class FileService{
 
-    //TODO 将这些值移到配置文件中，避免硬编码
-//    @Value("${basePath_upload}")
     //文件的上传路径/var/zhiku/upload
-    private String uploadPath = "/var"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
+    @Value("${file_path.upload_path}")
+    private String uploadPath;
+    //    private String uploadPath = "/var"+ java.io.File.separator + "zhiku" + java.io.File.separator + "upload";
 //    private String uploadPath = "E:\\14_zhiku\\upload";
     @Value("${basePath_preview}")
     private String previewPath;
