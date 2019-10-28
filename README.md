@@ -1,5 +1,14 @@
 # sharing-ideas 山软智库前端 ——by shadowingszy
 
+
+
+
+>front-master分支为上线的稳定版
+>front-dev分支为开发版
+
+
+
+
 ## 目录结构
 |-- README.md                   说明文档<br/>
 |-- babel.config.js             babel设置<br/>
@@ -51,3 +60,7 @@ npm run test
 ```
 npm run lint
 ```
+
+## 更新日志
++ 2019.10.28	-- by wuchvi
+	整理代码并上传到仓库 
