@@ -108,7 +108,7 @@ router.beforeEach((to, from, next) => {
     next();
   } else if (to.path === '/user') {
     store.commit('setTabIndex', 4);
-    if (!store.state.isLogin) {
+    if (!store.state.isLogin && !getCookie("token")) {
       // 未登录却跳转到user的情况
       next({
         path: '/user/login'

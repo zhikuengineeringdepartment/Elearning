@@ -32,7 +32,7 @@ div {
   }
   
   p {
-    overflow: auto;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 50vmin;
