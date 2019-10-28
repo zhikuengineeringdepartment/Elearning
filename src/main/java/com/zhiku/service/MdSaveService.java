@@ -54,7 +54,7 @@ public class MdSaveService {
             String filename = file.getOriginalFilename();
             assert filename != null;
             String suffix = filename.substring(filename.lastIndexOf('.')+1);
-            path=rootFPath+filename.substring(0,filename.lastIndexOf('.'))+System.currentTimeMillis()+"."+suffix;
+            path=rootFPath+File.separator+filename.substring(0,filename.lastIndexOf('.'))+System.currentTimeMillis()+"."+suffix;
             //上传
             file.transferTo(new File(path));
         }
