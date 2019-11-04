@@ -329,7 +329,6 @@ public class Md2Save {
         int ji=0;
         //序号
         int secseq=md2pagUtils.sectionMapper.selectSectionMaxID(courseID);
-        System.out.println("课程节序号"+secseq);////////////////////////////////////
         if(secseq==0){
             secseq=courseSeq*100;
         }else{//查重

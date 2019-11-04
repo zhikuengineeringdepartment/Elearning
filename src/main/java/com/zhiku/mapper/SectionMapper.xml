@@ -115,9 +115,9 @@
         where section_course = #{sectionCourse,jdbcType=INTEGER}
   </select>
   <select id="selectSectionID" resultType="java.lang.Integer">
-    select ifnull(sid,0)
+    SELECT IFNULL((select sid
     from section
-    where section_course = #{sectionCourse,jdbcType=INTEGER} and section_name=#{sectionName,jdbcType=VARCHAR}
+    where section_course = #{sectionCourse,jdbcType=INTEGER} and section_name = #{sectionName,jdbcType=VARCHAR}),0)
   </select>
   <delete id="deleteByCourseId" parameterType="java.lang.Integer">
     delete from section
