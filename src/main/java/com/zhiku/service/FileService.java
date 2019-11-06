@@ -108,9 +108,11 @@ public class FileService{
         storeFileToDB(multipartFile,file,user);
 
         // 重新赋值file,保存文件的关键字
-        file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
-        fileKeys.setFid(file.getFid());
-        storeFileKeys(fileKeys);
+        if(fileKeys.getKey1()!=null){//数据库中要求key1不为null，用户不设置标签也可以
+            file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
+            fileKeys.setFid(file.getFid());
+            storeFileKeys(fileKeys);
+        }
 
         //更新用户的上传次数
         user = userMapper.selectByPrimaryKey(user.getUid());
