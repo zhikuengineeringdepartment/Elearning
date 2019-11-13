@@ -5,84 +5,80 @@
     <img class="header-icon" :src="sharingIdeaImage" />
     <!--手机端tab-->
     <ul class="header-menu" v-if="$store.state.isMobile">
-      <li class="sub-menu" v-for="(item, index) in mobileList" :key="item.id">
+      <li class="sub-menu" v-for="item in mobileList" :key="item.path">
         <span
-          v-if="$store.state.tabIndex === index"
-          @click="menuClick(index)"
+          v-if="$store.state.path.includes(item.path)"
+          @click="menuClick(item.path)"
           class="content active"
-        >{{item.menu}}</span>
-        <span v-else @click="menuClick(index)" class="content">{{item.menu}}</span>
+          >{{ item.menu }}</span
+        >
+        <span v-else @click="menuClick(item.path)" class="content">{{
+          item.menu
+        }}</span>
       </li>
     </ul>
     <!--PC端tab-->
     <ul class="header-menu" v-else>
-      <li class="sub-menu" v-for="(item, index) in pcList" :key="item.id">
+      <li class="sub-menu" v-for="item in pcList" :key="item.path">
         <span
-          v-if="$store.state.tabIndex === index"
-          @click="menuClick(index)"
+          v-if="$store.state.path.includes(item.path)"
+          @click="menuClick(item.path)"
           class="content active"
-        >{{item.menu}}</span>
-        <span v-else @click="menuClick(index)" class="content">{{item.menu}}</span>
+          >{{ item.menu }}</span
+        >
+        <span v-else @click="menuClick(item.path)" class="content">{{
+          item.menu
+        }}</span>
       </li>
     </ul>
     <!--用户头像/登录注册按钮-->
-    <img class="header-user" :src="userIcon || $store.state.user.userIcon" @click="menuClick(4)" />
+    <img
+      class="header-user"
+      :src="userIcon || $store.state.user.userIcon"
+      @click="menuClick('/user')"
+    />
   </div>
 </template>
 
 <script>
-import { routerChange } from "../tools";
-
 export default {
   name: "MainHeader",
   props: {
     userIcon: String
-  },
-  methods: {
-    menuClick: function(index) {
-      this.$store.commit("setTabIndex", index);
-      switch (this.$store.state.tabIndex) {
-        case 0:
-          routerChange("/", this);
-          break;
-        case 1:
-          routerChange("/resources", this);
-          break;
-        case 2:
-          routerChange("/article", this);
-          break;
-        case 3:
-          routerChange("/about", this);
-          break;
-        case 4:
-          if (this.$store.state.isLogin) {
-            routerChange("/user", this);
-          } else {
-            routerChange("/user/login", this);
-          }
-          break;
-        default:
-          routerChange("/", this);
-      }
-    }
   },
   data() {
     return {
       sharingIdeaImage: require("../assets/sharing-idea-logo.png"),
       // userImage: require("../assets/user-default.png"),
       mobileList: [
-        { id: 0, menu: "见解" },
-        { id: 1, menu: "文件" },
-        { id: 2, menu: "专栏" },
-        { id: 3, menu: "关于" }
+        { menu: "见解", path: "/knowledge" },
+        { menu: "文件", path: "/resources" },
+        { menu: "论坛", path: "/forum" },
+        { menu: "专栏", path: "/article" },
+        { menu: "关于", path: "/about" }
       ],
       pcList: [
-        { id: 0, menu: "知识见解" },
-        { id: 1, menu: "文件资源" },
-        { id: 2, menu: "智库专栏" },
-        { id: 3, menu: "关于智库" }
+        { menu: "知识见解", path: "/knowledge" },
+        { menu: "文件资源", path: "/resources" },
+        { menu: "在线论坛", path: "/forum" },
+        { menu: "智库专栏", path: "/article" },
+        { menu: "关于智库", path: "/about" }
       ]
     };
+  },
+  methods: {
+    menuClick: function(path) {
+      console.log(path);
+      if (path.includes("/user")) {
+        if (this.$store.state.isLogin) {
+          this.$router.push("/user");
+        } else {
+          this.$router.push("/user/login");
+        }
+      } else {
+        this.$router.push(path);
+      }
+    }
   }
 };
 </script>
@@ -133,7 +129,7 @@ li {
 
   .sub-menu {
     float: left;
-    width: 25%;
+    width: 20%;
     max-width: 17vmin;
 
     .content {

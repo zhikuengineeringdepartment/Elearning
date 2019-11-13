@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import MainHeader from "./components/MainHeader.vue";
+import MainHeader from "./components/MainHeader";
 import MainFooter from "./components/MainFooter";
 import { getCookie } from "./tools.js";
 
@@ -26,9 +26,7 @@ export default {
   },
   created() {
     if (getCookie("token")) {
-      this.$store.commit("changeLoginStatus", true);
       this.userIcon = localStorage["userIcon"];
-      console.log(this.$store.state.isLogin);
     }
   }
 };

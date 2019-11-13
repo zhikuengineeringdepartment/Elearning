@@ -10,6 +10,12 @@ Vue.use(Router);
 let router = new Router({
   routes: [{
       path: '/',
+      name: 'home',
+      redirect:'/knowledge',
+      component: () => import( /* webpackChunkName: "knowledge" */ '../pages/knowledge/overview/Knowledge')
+    },
+    {
+      path: '/knowledge',
       name: 'Knowledge',
       component: () => import( /* webpackChunkName: "knowledge" */ '../pages/knowledge/overview/Knowledge')
     },
@@ -65,6 +71,11 @@ let router = new Router({
       ]
     },
     {
+      path: '/forum',
+      name: 'Forum',
+      component: () => import( /* webpackChunkName: "user-login" */ '../pages/forum/overview/forum')
+    },
+    {
       path: '/user/login',
       name: 'UserLogin',
       component: () => import( /* webpackChunkName: "user-login" */ '../pages/user/UserLogin')
@@ -86,29 +97,15 @@ let router = new Router({
 // 路由设定
 router.beforeEach((to, from, next) => {
   // 这里之所以要再进行一次路由的判断，就是为了让"通过复制url进入指定页面"的用户看到正确的tab状态。
-  if (to.path === '/') {
-    store.commit('setTabIndex', 0);
-    next();
-  } else if (to.path === '/knowledge/detail' && store.state.courseId !== -1) {
-    store.commit('setTabIndex', 0);
+  store.commit('setPath', to.path);
+  if (to.path === '/knowledge/detail' && store.state.courseId !== -1) {
     next();
   } else if (to.path === '/knowledge/detail' && store.state.courseId === -1) {
-    store.commit('setTabIndex', 0);
     next({
-      path: '/'
+      path: '/knowledge'
     });
-  } else if (to.path === '/resources' || to.path === '/resources/upload') {
-    store.commit('setTabIndex', 1);
-    next();
-  } else if (to.path === '/article') {
-    store.commit('setTabIndex', 2);
-    next();
-  } else if (to.path === '/about') {
-    store.commit('setTabIndex', 3);
-    next();
-  } else if (to.path === '/user') {
-    store.commit('setTabIndex', 4);
-    if (!store.state.isLogin && !getCookie("token")) {
+    } else if (to.path === '/user' || to.path === '/user/') {
+    if (!getCookie("token")) {
       // 未登录却跳转到user的情况
       next({
         path: '/user/login'
@@ -118,20 +115,8 @@ router.beforeEach((to, from, next) => {
         path: '/user/info'
       });
     }
-  } else if (to.path === '/user/info' || to.path === '/user/message' ||
-    to.path === '/user/download' || to.path === '/user/upload' || to.path === '/user/collection') {
-    store.commit('setTabIndex', 4);
-    if (!store.state.isLogin && !getCookie("token")) {
-      // 未登录却跳转到user的情况
-      next({
-        path: '/user/login'
-      });
-    } else {
-      next();
-    }
   } else if (to.path === '/user/login' || to.path === '/user/register') {
-    store.commit('setTabIndex', 4);
-    if (getCookie("token") || store.state.isLogin) {
+    if (getCookie("token")) {
       // 已登录却跳转到login或register的情况
       next({
         path: '/user/info'
@@ -139,8 +124,17 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-
+  } else if (to.path.includes('/user/')) {
+    if (!getCookie("token")) {
+      // 未登录却跳转到user的情况
+      next({
+        path: '/user/login'
+      });
+    } else {
+      next();
+    }
   }
+  next();
 });
 
 export default router;

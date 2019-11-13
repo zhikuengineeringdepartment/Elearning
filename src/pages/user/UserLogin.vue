@@ -48,7 +48,6 @@ export default {
       _this.$http.post("/user/login", this.loginForm).then(function(response) {
         if (response.data.code === 200) {
           console.log(response.data);
-          _this.$store.commit("changeLoginStatus", true);
           _this.$store.commit("setUser", {
             username: _this.loginForm.identity,
             userIcon: response.data.data.userIcon
