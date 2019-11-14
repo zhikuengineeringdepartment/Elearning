@@ -1,14 +1,30 @@
 <template>
-  <div>论坛</div>
+  <div class="container">
+    <el-row type="flex" justify="center">
+      <search-bar></search-bar>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+      <post></post>
+    </el-row>
+  </div>
 </template>
 
 <script>
+import post from "./post";
+import searchBar from "./searchBar";
+
 export default {
   name: "forum",
+  components: { post, searchBar },
   data() {
     return {};
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  margin: 3vmin 0;
+}
+</style>
