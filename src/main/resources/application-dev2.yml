@@ -18,10 +18,13 @@ spring:
         ssl:
           socketFactory:
             fallback: false
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/zhiku
   datasource:
-    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/zhiku?characterEncoding=utf-8&serverTimezone=UTC
     username: root
-    password: Zhiku_123
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   freemarker:
     template-loader-path: classpath:/freemarker/

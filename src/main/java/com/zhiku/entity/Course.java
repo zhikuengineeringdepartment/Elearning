@@ -1,13 +1,31 @@
 package com.zhiku.entity;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+@Document(collection = "course")
 public class Course {
+    @Id
+    private ObjectId objectId;
+    @Indexed
     private Integer cid;
-
+    @Field("course_name")
     private String courseName;
-
+    @Field("course_desc")
     private String courseDesc;
-
+    @Field("course_icon")
     private String courseIcon;
+//    @PersistenceConstructor
+//    public Course(Integer cid, String course_name, String course_desc, String course_icon){
+//        this.cid = cid;
+//        this.courseName = course_name;
+//        this.courseDesc = course_desc;
+//        this.courseIcon = course_icon;
+//    }
 
     public Integer getCid() {
         return cid;
@@ -40,4 +58,6 @@ public class Course {
     public void setCourseIcon(String courseIcon) {
         this.courseIcon = courseIcon == null ? null : courseIcon.trim();
     }
+
+
 }

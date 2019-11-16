@@ -1,5 +1,7 @@
 package com.zhiku.view;
 
+import com.zhiku.entity.Child;
+import com.zhiku.entity.Index;
 import com.zhiku.entity.Section;
 
 import java.util.List;
@@ -10,13 +12,13 @@ import java.util.List;
  * 节-知识点-段落
  */
 public class SectionView extends Section {
-    private List<KnowledgeView> knowledgeViews;
+    private List<Child> knowledgeViews;
 
-    public List<KnowledgeView> getKnowledgeViews(){
+    public List<Child> getKnowledgeViews(){
         return this.knowledgeViews;
     }
 
-    public void setKnowledgeViews(List<KnowledgeView> knowledgeViews){
+    public void setKnowledgeViews(List<Child> knowledgeViews){
         this.knowledgeViews = knowledgeViews;
     }
 }
