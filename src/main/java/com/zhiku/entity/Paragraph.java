@@ -1,17 +1,30 @@
 package com.zhiku.entity;
 
+import org.bson.types.ObjectId;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+@Document("content")
 public class Paragraph {
+    @Id
+    private ObjectId id;
     private Integer pid;
-
+    @Field("paragraph_seq")
     private Integer paragraphSeq;
-
+    @Field("paragraph_knowledge")
     private Integer paragraphKnowledge;
-
+    @Field("paragraph_type")
     private String paragraphType;
-
+    @Field("paragraph_newline")
     private String paragraphNewline;
-
+    @Field("paragraph_content")
     private String paragraphContent;
+
+    public ObjectId getId() {
+        return id;
+    }
 
     public Integer getPid() {
         return pid;
@@ -23,6 +36,10 @@ public class Paragraph {
 
     public Integer getParagraphSeq() {
         return paragraphSeq;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public void setParagraphSeq(Integer paragraphSeq) {
