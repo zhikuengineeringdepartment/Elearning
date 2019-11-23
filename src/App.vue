@@ -1,34 +1,10 @@
 <template>
-  <div id="app">
-    <main-header :userIcon="userIcon"></main-header>
-    <div id="router-view">
-      <router-view />
-    </div>
-    <main-footer></main-footer>
-  </div>
+  <router-view id="app" />
 </template>
 
 <script>
-import MainHeader from "./components/MainHeader";
-import MainFooter from "./components/MainFooter";
-import { getCookie } from "./tools.js";
-
 export default {
-  name: "app",
-  components: {
-    MainFooter,
-    MainHeader
-  },
-  data() {
-    return {
-      userIcon: ""
-    };
-  },
-  created() {
-    if (getCookie("token")) {
-      this.userIcon = localStorage["userIcon"];
-    }
-  }
+  name: "app"
 };
 </script>
 
@@ -104,10 +80,5 @@ p {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-#router-view {
-  /* 通过设置router-view的min-height，使footer位置的自动适配,主内容不足一屏时显示在最底部，超出一屏时跟随主内容显示 */
-  min-height: calc(100vh - 18vmin);
 }
 </style>

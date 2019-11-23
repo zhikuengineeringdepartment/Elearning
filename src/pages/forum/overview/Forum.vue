@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import post from "./post";
-import searchBar from "./searchBar";
+import post from "./Post";
+import searchBar from "./SearchBar";
 
 export default {
   name: "Forum",

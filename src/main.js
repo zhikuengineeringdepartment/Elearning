@@ -7,6 +7,10 @@ import router from './router/router';
 import axios from 'axios';
 import Vueaxios from 'vue-axios';
 import Qs from 'qs';
+import animate from 'animate.css'
+
+
+Vue.use(animate)
 
 // import {throttle} from './tools'
 

@@ -63,10 +63,15 @@ npm run lint
 
 ## 更新日志
 + 2019.10.28	-- by wuchvi
-	整理代码并上传到仓库 
+
+    整理代码并上传到仓库 
 	
 + 2019.11.13    --by wuchvi
 
-  修改tab判断逻辑和路由守卫，用getCookie('token')代替status.isLogin,删除status.isLogin和status.tabIndex
+    修改tab判断逻辑和路由守卫，用getCookie('token')代替status.isLogin,删除status.isLogin和status.tabIndex
 
-  增加 论坛 模块（仅增加模块，无内容）
+    增加 论坛 模块（仅增加模块，无内容）
+
++ 2019.11.23    --by wuchvi
+
+    修改路由，分管理模块和普通用户模块，新建管理页面
