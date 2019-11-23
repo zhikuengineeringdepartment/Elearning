@@ -73,7 +73,7 @@ let router = new Router({
     {
       path: '/forum',
       name: 'Forum',
-      component: () => import( /* webpackChunkName: "user-login" */ '../pages/forum/overview/forum')
+      component: () => import( /* webpackChunkName: "user-login" */ '../pages/forum/overview/Forum')
     },
     {
       path: '/user/login',

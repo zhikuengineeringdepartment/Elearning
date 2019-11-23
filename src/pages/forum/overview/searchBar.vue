@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "searchBar",
+  name: "SearchBar",
   data() {
     return {
       courselist: ["选项1", "黄金糕", "选项2", "双皮奶"],

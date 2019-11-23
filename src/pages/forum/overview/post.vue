@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "post",
+  name: "Post",
   data() {
     return {
       title: "100 美元一行代码，开源软件到底咋赚钱",

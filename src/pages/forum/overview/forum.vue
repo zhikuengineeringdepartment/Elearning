@@ -15,7 +15,7 @@ import post from "./post";
 import searchBar from "./searchBar";
 
 export default {
-  name: "forum",
+  name: "Forum",
   components: { post, searchBar },
   data() {
     return {};
