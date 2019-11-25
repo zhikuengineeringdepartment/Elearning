@@ -34,9 +34,6 @@ spring:
       max-file-size: 30MB
       max-request-size: 30MB
       location: /var/zhiku/temp
-#  thymeleaf:
-#    prefix: /tem/
-#    suffix: .jsp
   mvc:
     view:
       prefix: /tem/
@@ -46,20 +43,23 @@ mybatis:
   mapper-locations: com/zhiku/mapper/*.xml
 server:
   port: 18888
-
-
-
-#记录文件位置
-file_path:
-  #访问量记录文件
-  visit_statistics: /opt/zhiku/visit_statistics.log
-#  visit_statistics: E:\ZhikuFiles\zhiku\visit_statistics.log
-  #md课程内容文件储存目录
-#  md_save: /opt/zhiku/mdFiles
-  md_save: E:\ZhikuFiles
-  #上传文件存储目录
-  upload_path: /var/zhiku/upload
-
 #logging:
 #  level:
 #    com.zhiku.*: debug
+
+#自定义值#
+#智库工程储存根路径
+#root_path: /var/zhiku
+root_path: E:/ZhikuFiles
+#记录文件位置
+file_path:
+  #访问量记录文件
+  visit_statistics: ${root_path}/visit_statistics.log
+  #md课程内容文件储存目录
+  md_save: ${root_path}/mdFiles
+  #上传文件存储目录
+  upload_path: ${root_path}/zhiku/upload
+#图床
+picture:
+  #图片储存根位置，改变记得要将历史文件移动到新路径下，不然课程无法显示图片
+  save_path: ${root_path}/pictures/

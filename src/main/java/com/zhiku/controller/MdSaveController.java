@@ -158,6 +158,8 @@ public class MdSaveController {
 
     //判断是否是管理员
     private boolean isAdm(User user){
+        if(user==null)
+            return false;
         int uid=user.getUid();
         for (int admUid : admUids) {
             if (uid == admUid) {

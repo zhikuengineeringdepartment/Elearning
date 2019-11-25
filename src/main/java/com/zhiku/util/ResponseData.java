@@ -32,7 +32,11 @@ public class ResponseData {
         return this;
     }
 
-    private ResponseData(int code, String message) {
+    public ResponseData() {
+        this.code = 200;
+    }
+
+    public ResponseData(int code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -64,5 +68,13 @@ public class ResponseData {
 
     public static ResponseData customerError() {
         return new ResponseData(1001, "customer Error");
+    }
+
+    public static ResponseData loginError() {
+        return new ResponseData(1002, "未登陆");
+    }
+
+    public static ResponseData powerError() {
+        return new ResponseData(1003, "权限不足");
     }
 }
