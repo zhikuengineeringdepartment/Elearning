@@ -13,7 +13,7 @@ public class PostReply {
 
     private ObjectId pid; //对应帖子Id (正确性待考察)
 
-    private List<PostFirstlevelComment> postFirstlevelCommentList;
+    private List<PostFirstReply> postFirstReplyList;
 
     public ObjectId getPrId() {
         return prId;
@@ -31,11 +31,11 @@ public class PostReply {
         this.pid = pid;
     }
 
-    public List<PostFirstlevelComment> getPostFirstlevelCommentList() {
-        return postFirstlevelCommentList;
+    public List<PostFirstReply> getPostFirstReplyList() {
+        return postFirstReplyList;
     }
 
-    public void setPostFirstlevelCommentList(List<PostFirstlevelComment> postFirstlevelCommentList) {
-        this.postFirstlevelCommentList = postFirstlevelCommentList;
+    public void setPostFirstReplyList(List<PostFirstReply> postFirstReplyList) {
+        this.postFirstReplyList = postFirstReplyList;
     }
 }
