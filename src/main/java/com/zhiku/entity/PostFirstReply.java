@@ -1,15 +1,14 @@
 package com.zhiku.entity;
 
-
 import java.util.List;
 
-public class PostFirstlevelComment {
+public class PostFirstReply {
 
-    private String cid;    //id 不重复
+    private String rId;
 
-    private Integer author;  //评论用户Id
+    private String replyContent; //回复内容(待定)
 
-    private String comment_content; //回答内容(待定)
+    private Integer replyAuthor;  //回复者Id
 
     private Integer agreeCount;   //点赞数
 
@@ -19,31 +18,30 @@ public class PostFirstlevelComment {
 
     private List<Integer> disagreeUsers; //反对用户列表
 
-    private List<PostMultistageReply> postMultistageReplyList;
+    private List<PostMultistepReply> postMultistepReplyList;
 
-
-    public String getCid() {
-        return cid;
+    public String getrId() {
+        return rId;
     }
 
-    public void setCid(String cid) {
-        this.cid = cid;
+    public void setrId(String rId) {
+        this.rId = rId;
     }
 
-    public Integer getAuthor() {
-        return author;
+    public String getReplyContent() {
+        return replyContent;
     }
 
-    public void setAuthor(Integer author) {
-        this.author = author;
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
     }
 
-    public String getComment_content() {
-        return comment_content;
+    public Integer getReplyAuthor() {
+        return replyAuthor;
     }
 
-    public void setComment_content(String comment_content) {
-        this.comment_content = comment_content;
+    public void setReplyAuthor(Integer replyAuthor) {
+        this.replyAuthor = replyAuthor;
     }
 
     public Integer getAgreeCount() {
@@ -78,11 +76,11 @@ public class PostFirstlevelComment {
         this.disagreeUsers = disagreeUsers;
     }
 
-    public List<PostMultistageReply> getPostMultistageReplyList() {
-        return postMultistageReplyList;
+    public List<PostMultistepReply> getPostMultistepReplyList() {
+        return postMultistepReplyList;
     }
 
-    public void setPostMultistageReplyList(List<PostMultistageReply> postMultistageReplyList) {
-        this.postMultistageReplyList = postMultistageReplyList;
+    public void setPostMultistepReplyList(List<PostMultistepReply> postMultistepReplyList) {
+        this.postMultistepReplyList = postMultistepReplyList;
     }
 }

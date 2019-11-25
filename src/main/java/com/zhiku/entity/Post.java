@@ -1,16 +1,12 @@
 package com.zhiku.entity;
 
-
-
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.Date;
 import java.util.List;
 
 @Document(value = "post")
 public class Post {
-
 
     private ObjectId pid;    //帖子Id
 
@@ -20,9 +16,9 @@ public class Post {
 
     private Integer author;  //关联用户Id
 
-    private Date createtime; //创建时间
+    private Date createTime; //创建时间
 
-    private Date updatetime; //更新时间
+    private Date updateTime; //更新时间
 
     private Integer agreeCount;  //点赞数
 
@@ -38,6 +34,7 @@ public class Post {
 
     private Integer courseId;      //关联的课程Id,没有则为0
 
+    private List<PostFirstReply> postFirstReplyList;
 
     public ObjectId getPid() {
         return pid;
@@ -71,20 +68,20 @@ public class Post {
         this.author = author;
     }
 
-    public Date getCreatetime() {
-        return createtime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getUpdatetime() {
-        return updatetime;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatetime(Date updatetime) {
-        this.updatetime = updatetime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public Integer getAgreeCount() {
@@ -141,5 +138,13 @@ public class Post {
 
     public void setCourseId(Integer courseId) {
         this.courseId = courseId;
+    }
+
+    public List<PostFirstReply> getPostFirstReplyList() {
+        return postFirstReplyList;
+    }
+
+    public void setPostFirstReplyList(List<PostFirstReply> postFirstReplyList) {
+        this.postFirstReplyList = postFirstReplyList;
     }
 }
