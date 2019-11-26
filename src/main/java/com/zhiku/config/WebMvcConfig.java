@@ -6,6 +6,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.io.File;
+
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
@@ -14,6 +16,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         if(!registry.hasMappingForPattern("/pictures/**")){
+            File dir =new File(picSavePath);
+            if  (!dir.exists()&&!dir.isDirectory()) {
+                dir .mkdirs();
+            }
             registry.addResourceHandler("/pictures/**")
                     .addResourceLocations("file:"+picSavePath);
         }

@@ -3543,3 +3543,341 @@ Caused by: java.lang.ClassNotFoundException: Cannot find class: com.zhiku.entity
 2019:11:25 20:44:04.580 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.594 seconds (JVM running for 5.844)
 2019:11:25 20:46:16.990 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
 2019:11:25 20:46:17.005 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 15 ms
+2019:11:26 16:49:01.217 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 154448 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 16:49:01.218 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 16:49:04.707 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 16:49:05.244 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 3960 ms
+2019:11:26 16:49:07.698 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 16:49:07.863 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 16:49:08.385 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 16:49:08.396 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 7.719 seconds (JVM running for 10.821)
+2019:11:26 17:04:34.986 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 17:04:35.009 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 22 ms
+2019:11:26 17:05:58.035 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 134752 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 17:05:58.036 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 17:05:59.495 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 17:05:59.831 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1745 ms
+2019:11:26 17:06:01.047 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 17:06:01.172 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 17:06:01.416 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 17:06:01.419 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.847 seconds (JVM running for 6.135)
+2019:11:26 17:06:38.276 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 154872 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 17:06:38.277 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 17:06:39.726 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 17:06:39.955 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1643 ms
+2019:11:26 17:06:40.829 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 17:06:40.963 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 17:06:41.234 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 17:06:41.239 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.362 seconds (JVM running for 5.437)
+2019:11:26 17:06:46.409 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 17:06:46.428 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 18 ms
+2019:11:26 17:12:44.713 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 137588 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 17:12:44.714 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 17:12:46.330 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 17:12:46.591 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1838 ms
+2019:11:26 17:12:47.617 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 17:12:47.762 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 17:12:48.083 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 17:12:48.085 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.885 seconds (JVM running for 6.302)
+2019:11:26 17:13:13.648 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 155888 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 17:13:13.648 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 17:13:15.136 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 17:13:15.368 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1679 ms
+2019:11:26 17:13:16.307 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 17:13:16.460 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 17:13:16.719 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 17:13:16.722 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.491 seconds (JVM running for 5.601)
+2019:11:26 17:13:20.519 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 17:13:20.551 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 32 ms
+2019:11:26 17:15:34.117 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 157076 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 17:15:34.118 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 17:15:35.466 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 17:15:35.682 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1525 ms
+2019:11:26 17:15:36.544 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 17:15:36.670 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 17:15:36.920 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 17:15:36.922 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.255 seconds (JVM running for 5.332)
+2019:11:26 17:15:42.428 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 17:15:42.455 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 26 ms
+2019:11:26 17:16:32.411 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 151560 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 17:16:32.412 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 17:16:33.770 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 17:16:34.064 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1618 ms
+2019:11:26 17:16:34.968 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 17:16:35.107 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 17:16:35.358 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 17:16:35.360 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.353 seconds (JVM running for 5.68)
+2019:11:26 17:16:42.028 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 17:16:42.049 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 21 ms
+2019:11:26 19:32:28.684 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 151264 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 19:32:28.684 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 19:32:30.138 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 19:32:30.356 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1631 ms
+2019:11:26 19:32:31.287 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 19:32:31.412 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 19:32:31.707 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 19:32:31.711 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.479 seconds (JVM running for 5.829)
+2019:11:26 19:36:37.731 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 19:36:37.746 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 15 ms
+2019:11:26 19:37:52.006 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 111288 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 19:37:52.007 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 19:37:53.677 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 19:37:53.900 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1847 ms
+2019:11:26 19:37:54.925 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 19:37:55.050 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 19:37:55.329 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 19:37:55.332 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.858 seconds (JVM running for 6.21)
+2019:11:26 19:37:59.508 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 19:37:59.537 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 28 ms
+2019:11:26 19:41:07.991 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 158272 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 19:41:07.992 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 19:41:09.184 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 19:41:09.394 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1362 ms
+2019:11:26 19:41:10.245 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 19:41:10.368 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 19:41:10.631 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 19:41:10.634 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.019 seconds (JVM running for 5.264)
+2019:11:26 19:42:50.733 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 19:42:50.747 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 14 ms
+2019:11:26 19:44:11.213 INFO  com.zhiku.aop.LogAop 54 after - {user=null, ip='127.0.0.1', requestName='getCourseDetails', args={"cid":134}}
+2019:11:26 20:17:36.180 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 99992 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:17:36.181 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:17:37.634 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:17:37.966 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1746 ms
+2019:11:26 20:17:38.838 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:17:38.961 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:17:39.204 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:17:39.206 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.45 seconds (JVM running for 5.769)
+2019:11:26 20:17:52.903 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:17:52.926 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 22 ms
+2019:11:26 20:20:07.131 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 154896 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:20:07.132 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:20:08.342 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:20:08.569 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1404 ms
+2019:11:26 20:20:09.376 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:20:09.502 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:20:09.791 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:20:09.795 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.001 seconds (JVM running for 5.014)
+2019:11:26 20:20:20.822 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:20:20.834 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 11 ms
+2019:11:26 20:23:00.424 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 153396 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:23:00.425 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:23:01.763 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:23:02.088 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1628 ms
+2019:11:26 20:23:03.531 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:23:03.679 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:23:03.919 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:23:03.922 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.937 seconds (JVM running for 6.323)
+2019:11:26 20:23:17.298 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:23:17.317 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 19 ms
+2019:11:26 20:25:34.449 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 164396 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:25:34.450 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:25:35.958 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:25:36.169 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1680 ms
+2019:11:26 20:25:37.075 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:25:37.215 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:25:37.461 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:25:37.463 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.463 seconds (JVM running for 5.747)
+2019:11:26 20:25:40.719 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:25:40.747 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 28 ms
+2019:11:26 20:26:24.034 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 160032 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:26:24.035 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:26:25.715 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:26:26.049 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1962 ms
+2019:11:26 20:26:27.207 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:26:27.363 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:26:27.660 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:26:27.662 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 4.139 seconds (JVM running for 7.317)
+2019:11:26 20:26:33.972 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:26:33.996 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 24 ms
+2019:11:26 20:30:47.982 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 208 shutdown - Shutting down ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:31:10.504 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 90264 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:31:10.505 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:31:11.883 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:31:12.100 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1556 ms
+2019:11:26 20:31:13.029 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:31:13.157 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:31:13.398 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:31:13.400 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.26 seconds (JVM running for 6.504)
+2019:11:26 20:31:18.490 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:31:18.511 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 20 ms
+2019:11:26 20:32:17.115 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 161228 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:32:17.116 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:32:18.524 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:32:18.788 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1620 ms
+2019:11:26 20:32:19.775 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:32:19.921 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:32:20.201 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:32:20.204 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.558 seconds (JVM running for 6.125)
+2019:11:26 20:32:22.282 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:32:22.307 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 24 ms
+2019:11:26 20:34:21.846 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 208 shutdown - Shutting down ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:36:08.647 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 164924 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:36:08.648 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:36:09.947 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:36:10.154 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1463 ms
+2019:11:26 20:36:11.193 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:36:11.307 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:36:11.545 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:36:11.547 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.319 seconds (JVM running for 5.561)
+2019:11:26 20:36:31.124 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 164944 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:36:31.125 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:36:32.411 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:36:32.625 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1463 ms
+2019:11:26 20:36:33.444 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:36:33.563 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:36:33.799 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:36:33.801 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.043 seconds (JVM running for 5.103)
+2019:11:26 20:36:37.639 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:36:37.659 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 19 ms
+2019:11:26 20:38:45.162 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 163612 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:38:45.162 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:38:46.607 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:38:46.911 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1698 ms
+2019:11:26 20:38:47.803 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:38:47.941 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:38:48.216 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:38:48.219 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.451 seconds (JVM running for 5.504)
+2019:11:26 20:38:50.938 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:38:50.948 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 9 ms
+2019:11:26 20:49:48.900 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 153360 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:49:48.900 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:49:50.215 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:49:50.436 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1500 ms
+2019:11:26 20:49:51.281 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:49:51.413 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:49:51.659 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:49:51.661 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 3.176 seconds (JVM running for 5.273)
+2019:11:26 20:49:54.763 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:49:54.778 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 15 ms
+2019:11:26 20:54:18.926 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 165228 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:54:18.926 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:54:20.156 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:54:20.367 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1406 ms
+2019:11:26 20:54:21.170 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:54:21.283 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:54:21.501 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:54:21.504 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 2.947 seconds (JVM running for 5.07)
+2019:11:26 20:54:32.073 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:54:32.082 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 8 ms
+2019:11:26 20:58:43.569 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 164904 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:58:43.571 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:58:46.520 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:58:47.021 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 3331 ms
+2019:11:26 20:58:48.973 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:58:49.303 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:58:50.163 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:58:50.172 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 7.473 seconds (JVM running for 11.369)
+2019:11:26 20:58:53.259 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 20:58:53.295 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 36 ms
+2019:11:26 20:59:06.387 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 208 shutdown - Shutting down ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:59:30.188 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 165864 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 20:59:30.189 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 20:59:32.362 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 20:59:32.752 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2496 ms
+2019:11:26 20:59:34.155 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 20:59:34.366 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 20:59:34.805 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 20:59:34.810 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 5.254 seconds (JVM running for 8.863)
+2019:11:26 21:00:16.984 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 21:00:17.008 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 23 ms
+2019:11:26 21:01:46.674 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 165012 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 21:01:46.676 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 21:01:49.292 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 21:01:49.817 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 3024 ms
+2019:11:26 21:01:51.458 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 21:01:51.686 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 21:01:52.158 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 21:01:52.165 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 6.272 seconds (JVM running for 10.24)
+2019:11:26 21:01:54.938 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 21:01:54.963 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 24 ms
+2019:11:26 21:02:40.403 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 208 shutdown - Shutting down ExecutorService 'applicationTaskExecutor'
+2019:11:26 21:03:13.114 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 165992 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 21:03:13.115 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 21:03:15.135 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 21:03:15.494 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2316 ms
+2019:11:26 21:03:16.822 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 21:03:17.014 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 21:03:17.381 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 21:03:17.385 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 4.9 seconds (JVM running for 8.412)
+2019:11:26 21:04:23.671 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 21:04:23.700 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 27 ms
+2019:11:26 21:05:37.502 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 50264 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 21:05:37.502 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 21:05:39.544 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 21:05:39.921 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2354 ms
+2019:11:26 21:05:41.245 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 21:05:41.431 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 21:05:41.839 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 21:05:41.843 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 4.95 seconds (JVM running for 8.424)
+2019:11:26 21:05:45.385 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 21:05:45.419 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 32 ms
+2019:11:26 21:06:18.574 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 165820 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 21:06:18.575 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 21:06:21.209 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 21:06:21.614 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2935 ms
+2019:11:26 21:06:23.162 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 21:06:23.389 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 21:06:23.842 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 21:06:23.847 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 6.124 seconds (JVM running for 10.31)
+2019:11:26 21:06:33.325 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 21:06:33.349 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 24 ms
+2019:11:26 21:09:00.635 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 208 shutdown - Shutting down ExecutorService 'applicationTaskExecutor'
+2019:11:26 21:09:11.060 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 164252 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 21:09:11.061 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 21:09:13.448 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 21:09:13.844 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2694 ms
+2019:11:26 21:09:15.409 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 21:09:15.644 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 21:09:16.129 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 21:09:16.134 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 5.715 seconds (JVM running for 9.601)
+2019:11:26 22:26:36.316 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 22:26:36.805 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 473 ms
+2019:11:26 22:39:30.038 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 208 shutdown - Shutting down ExecutorService 'applicationTaskExecutor'
+2019:11:26 22:55:04.010 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 160056 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 22:55:04.012 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 22:55:05.626 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 22:55:05.868 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1781 ms
+2019:11:26 22:55:07.164 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 22:55:07.391 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 22:55:07.860 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 22:55:07.862 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 4.432 seconds (JVM running for 7.179)
+2019:11:26 23:03:21.454 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 23:03:21.471 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 17 ms
+2019:11:26 23:25:55.106 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 167780 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 23:25:55.107 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 23:25:56.830 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 23:25:57.105 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1901 ms
+2019:11:26 23:25:58.389 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 23:25:58.586 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 23:25:58.919 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 23:25:58.923 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 4.4 seconds (JVM running for 7.449)
+2019:11:26 23:26:49.236 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 23:26:49.264 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 27 ms
+2019:11:26 23:31:16.573 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 208 shutdown - Shutting down ExecutorService 'applicationTaskExecutor'
+2019:11:26 23:31:52.877 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 172472 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:26 23:31:52.878 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:26 23:31:54.132 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 18888 (http)
+2019:11:26 23:31:54.346 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 1434 ms
+2019:11:26 23:31:55.147 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:26 23:31:55.266 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:26 23:31:55.501 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 18888 (http) with context path ''
+2019:11:26 23:31:55.503 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 2.959 seconds (JVM running for 5.166)
+2019:11:26 23:32:10.884 INFO  org.springframework.web.servlet.FrameworkServlet 524 initServletBean - Initializing Servlet 'dispatcherServlet'
+2019:11:26 23:32:10.897 INFO  org.springframework.web.servlet.FrameworkServlet 546 initServletBean - Completed initialization in 12 ms
+2019:11:27 00:02:00.066 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 177764 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:27 00:02:00.070 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:27 00:02:02.598 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 12321 (http)
+2019:11:27 00:02:02.983 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 2743 ms
+2019:11:27 00:02:04.519 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:27 00:02:04.721 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:27 00:02:05.132 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 12321 (http) with context path ''
+2019:11:27 00:02:05.140 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 5.879 seconds (JVM running for 9.789)
+2019:11:27 00:06:15.861 INFO  org.springframework.boot.StartupInfoLogger 50 logStarting - Starting ElearningApplication on DESKTOP-MB4R5RL with PID 178220 (E:\Workbench\IDEA\Zhiku_workbench\Elearning\target\classes started by Think in E:\Workbench\IDEA\Zhiku_workbench\Elearning)
+2019:11:27 00:06:15.862 INFO  org.springframework.boot.SpringApplication 679 logStartupProfileInfo - The following profiles are active: dev2
+2019:11:27 00:06:18.590 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 90 initialize - Tomcat initialized with port(s): 12321 (http)
+2019:11:27 00:06:18.989 INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext 296 prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 3029 ms
+2019:11:27 00:06:20.650 INFO  org.springframework.scheduling.concurrent.ExecutorConfigurationSupport 171 initialize - Initializing ExecutorService 'applicationTaskExecutor'
+2019:11:27 00:06:20.891 INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping 56 <init> - Adding welcome page: class path resource [static/index.html]
+2019:11:27 00:06:21.395 INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer 204 start - Tomcat started on port(s): 12321 (http) with context path ''
+2019:11:27 00:06:21.402 INFO  org.springframework.boot.StartupInfoLogger 59 logStarted - Started ElearningApplication in 6.441 seconds (JVM running for 10.699)

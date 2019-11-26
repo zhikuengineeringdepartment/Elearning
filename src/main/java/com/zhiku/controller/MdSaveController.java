@@ -3,18 +3,21 @@ package com.zhiku.controller;
 
 import com.zhiku.entity.User;
 import com.zhiku.service.MdSaveService;
+import com.zhiku.util.ResponseData;
+import com.zhiku.view.CourseView;
+import com.zhiku.view.SectionView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import sun.swing.SwingUtilities2;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/backstage/course")
@@ -154,6 +157,46 @@ public class MdSaveController {
             model.addAttribute("message","删除失败!");
         }
         return "saveCourse";
+    }
+
+    /**
+     * 预览课程内容
+     * @param user 自动获取
+     * @param file md文件
+     */
+    @RequestMapping(value = "/preview",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData preview(User user, Model model, MultipartFile file)
+            throws IOException {
+        if(!isAdm(user)) {
+            return ResponseData.powerError();
+        }
+
+        //储存文件
+        if(Objects.equals( file.getOriginalFilename(), "" )){
+            return new ResponseData(400,"课程文件不能为空");
+        }
+        if (!mdSaveService.checkFile( file )) {
+            return new ResponseData(400,"文件类型不符合，请上传.md或.txt类型！");
+        }
+        String filePath="";
+        try{
+            filePath= mdSaveService.saveFile( file );
+        }catch (Exception e){
+            return new ResponseData(400,"文件上传失败！");
+        }
+
+        CourseView courseView=new CourseView();
+        Map<Integer,SectionView> sectionViewMap=new HashMap<>(  );
+        String re=mdSaveService.preview( filePath,sectionViewMap,courseView );
+        if(re!=null){
+            return new ResponseData(400, re+"!" );
+        }
+        ResponseData responseData=new ResponseData( );
+        responseData.putDataValue( "courseView",courseView );
+        responseData.putDataValue( "sectionViewMap",sectionViewMap );
+
+        return responseData;
     }
 
     //判断是否是管理员

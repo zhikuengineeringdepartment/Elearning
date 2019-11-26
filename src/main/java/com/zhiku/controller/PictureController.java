@@ -28,16 +28,15 @@ public class PictureController {
 
     @Autowired
     PictureService pictureService;
-    @Autowired
-    protected HttpServletRequest request;
-    @Value( "http://www.sharingideas.cn" )
-    private String hostIP;
+    //todo:暂时url不拼接ip
+//    @Autowired
+//    protected HttpServletRequest request;
     /**
      * 上传图片
      * @param user 自动获取
      * @param file jpg|png|Gif
      *  cid 课程id
-     *  sections 章节索引字符串数组["第一章","第一节"...]
+     *  sections 章节索引数组字符串["第一章","第一节"...]
      */
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     @ResponseBody
@@ -53,7 +52,8 @@ public class PictureController {
         }
         ResponseData responseData=new ResponseData(  );
         //拼接url前地址
-        String url=request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+picture.getUrl();
+//        String url=request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+picture.getUrl();
+        String url=picture.getUrl();
         responseData.putDataValue( "url",url);
         return responseData;
     }
@@ -73,9 +73,9 @@ public class PictureController {
         }
         List<PictureView> pictures=pictureService.getList( user.getUid(),page,pageSize );
         //拼接url前地址
-        for (PictureView pictureView:pictures) {
-            pictureView.setUrl(request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+pictureView.getUrl(  ) );
-        }
+//        for (PictureView pictureView:pictures) {
+//            pictureView.setUrl(request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+pictureView.getUrl(  ) );
+//        }
 
         ResponseData responseData=new ResponseData(  );
         responseData.putDataValue( "pictures",pictures );

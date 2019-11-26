@@ -30,10 +30,6 @@ public class Md2Save {
      */
     @Autowired
     private SectionMapper sectionMapper;
-    @Autowired
-    private KnowledgeMapper knowledgeMapper;
-    @Autowired
-    private ParagraphMapper paragraphMapper;
 
     public static final  char[] type;
     static {
@@ -46,61 +42,6 @@ public class Md2Save {
         md2pagUtils = this;
     }
 
-    /**
-     * 调用该方法储存md文件
-     * 注：多线程同时调用是，尽管其他变量均在方法内创建，但sectionMapper等是注入的全局变量，可能会有干扰，也可能不会，需要测试
-     * @param filePath 文件完整路径
-     * @param courseID 课程id
-     * @return 错误码 为null表示没有错
-     * @throws IOException _
-     */
-    public static String toolRun(String filePath,Integer courseID) throws IOException {
-        int courseSeq=courseID;
-        //读取文件
-        FileUtils fu = new FileUtils();
-        ArrayList<String> strArr = fu.read2Array(filePath, "UTF-8");
-        ArrayList<tempParagraph> saveP=new ArrayList<tempParagraph>( );
-        String errorstr;
-        //识别表格、列表、标题、图片、代码块
-        errorstr=findType( strArr,saveP );
-        if(errorstr!=null){
-            return errorstr;
-        }
-
-//        //test输出识别结果
-//        for(tempParagraph tp:saveP){
-//            if(tp.getContent()==null){
-//            }else if(tp.getType()==type[0]){
-//                System.out.print( "\n"+tp.id+":<标题1>:"+tp.getContent());
-//            }else if(tp.getType()==type[1]){
-//                System.out.print( "\n"+tp.id+":<标题2>:"+tp.getContent());
-//            }else if(tp.getType()==type[2]){
-//                System.out.print( "\n"+tp.id+":<标题3>:"+tp.getContent());
-//            }else if(tp.getType()==type[3]){
-//                System.out.print( "\n"+tp.id+":<图片>:"+tp.getContent());
-//            }else if(tp.getType()==type[4]){
-//                System.out.print( "\n"+tp.id+":<表格>:"+tp.getContent());
-//            }else if(tp.getType()==type[5]){
-//                System.out.print( "\n"+tp.id+":<列表>:"+tp.getContent());
-//            }else if(tp.getType()==type[7]){
-//                System.out.print( "\n"+tp.id+":<段落>:"+tp.getContent());
-//            }else if(tp.getType()==type[6]){//脚注
-//                System.out.print( "[<"+tp.getContent()+">]");
-//            }else if(tp.getType()==type[8]){//不换行
-//                System.out.print(tp.getContent());
-//            }else if(tp.getType()==type[9]){
-//                System.out.print( "\n"+tp.id+":<代码块>:"+tp.getContent());
-//            }
-//        }
-
-        //储存
-        errorstr=saveParagraph(saveP,courseID,courseSeq);
-        if(errorstr!=null){
-            return errorstr;
-        }
-
-        return null;//返回null表示没有问题
-    }
     //按CSDN编辑器的标准判断，不一定符合所有的morkdown标准
     private static String findType(ArrayList<String> strArr, ArrayList<tempParagraph> saveP){
         int jid=0;//行号
@@ -322,23 +263,33 @@ public class Md2Save {
         strA2.clear();
     }
 
-    private static String saveParagraph(ArrayList<tempParagraph> saveP,Integer courseID,Integer courseSeq){
-        List<Section> sections=new ArrayList<>( );
-        List<Knowledge> knowledges=new ArrayList<>( );
-        List<Paragraph> paragraphs=new ArrayList<>( );
-        int ji=0;
-        //序号
+    /**
+     * 读取md文件内容储存为实体类列表
+     * @param filePath 文件完整路径
+     * @param courseID 课程id
+     * 注：paragraphs的kid，储存所属第i个知识点，从0开始
+     * @return 错误码 为null表示没有错
+     * @throws IOException _
+     */
+    public static String md2Entitys(String filePath, Integer courseID,
+                                    List<Section> sections, List<Knowledge> knowledges, List<Paragraph> paragraphs) throws IOException {
+        int courseSeq=courseID;
+        //读取文件
+        FileUtils fu = new FileUtils();
+        ArrayList<String> strArr = fu.read2Array(filePath, "UTF-8");
+        ArrayList<tempParagraph> saveP=new ArrayList<tempParagraph>( );
+        String errorstr;
+        //识别表格、列表、标题、图片、代码块
+        errorstr=findType( strArr,saveP );
+        if(errorstr!=null){
+            return errorstr;
+        }
+        //转化到实体类中
         int secseq=md2pagUtils.sectionMapper.selectSectionMaxID(courseID);
         if(secseq==0){
             secseq=courseSeq*100;
-        }else{//查重
-            for(tempParagraph tp:saveP){
-                if((tp.getType()==type[1]||tp.getType()==type[0])&&
-                        md2pagUtils.sectionMapper.selectSectionID(tp.getContent(),courseID)!=0){
-                    return "error:文件内容与数据库中章节(名)有重复！请检测文件或先清空原课程数据";
-                }
-            }
         }
+        int ji=0;
         int knowseq=0,pagseq=0;
         int secid=-1,knowid=-1;
         int jkids=-1;
@@ -353,8 +304,7 @@ public class Md2Save {
                 section.setSectionCourse( courseID );
                 section.setSectionName( tp.getContent() );
                 section.setSectionSeq( ""+secseq );
-                section.setSectionRecommendPath( secseq+".txt" );////////////////////
-//                md2pagUtils.sectionMapper.insert(section);
+                section.setSectionRecommendPath( secseq+".txt" );//todo:节推荐列表储存路径，目前没有这个功能，随便存一个字符串
                 sections.add(section);
                 knowseq=0;
                 pagseq=0;
@@ -366,11 +316,9 @@ public class Md2Save {
                 knowledge.setKnowledgeName( tp.getContent());
                 knowledge.setKnowledgeSection(secid);
                 knowledge.setKnowledgeSeq( secseq*100+(++knowseq) );
-//                md2pagUtils.knowledgeMapper.insertGetId(knowledge);
                 knowledges.add(knowledge);
                 jkids++;
                 pagseq=0;
-//                knowledge.getKid()//没有赋值kid还报错
                 knowid=0;
             }else{//段落
                 if(knowid==-1){//这个段落没有知识点,储存节为知识点
@@ -378,17 +326,11 @@ public class Md2Save {
                         ji++;
                         continue;
                     }
-//                    if(saveP.get(ji-1).getType()==type[1]){
-//                        knowledge.setKnowledgeName( "#"+saveP.get(ji-1).getContent());//补成三级标题
-//                    }else{
-//                        knowledge.setKnowledgeName( "##"+saveP.get(ji-1).getContent());
-//                    }
                     Knowledge knowledge=new Knowledge();
                     knowledge.setKid( null );
                     knowledge.setKnowledgeName( "");
                     knowledge.setKnowledgeSection(secid);
                     knowledge.setKnowledgeSeq(  secseq*100+(++knowseq) );
-//                    md2pagUtils.knowledgeMapper.insertGetId(knowledge);
                     knowledges.add(knowledge);
                     jkids++;
                     pagseq=0;
@@ -400,40 +342,12 @@ public class Md2Save {
                 paragraph.setParagraphKnowledge( jkids );//记下是第几号知识点
                 paragraph.setParagraphSeq( secseq*100000+knowseq*1000+(++pagseq) );
                 paragraph.setParagraphNewline( "y" );
-//                md2pagUtils.paragraphMapper.insert( paragraph );
                 paragraphs.add(paragraph);
             }
             ji++;
         }
-        int re=0;
-        //批量存入节
-        re=md2pagUtils.sectionMapper.insertAll(sections);
-        if(re==0)
-            return "插入失败或文件中没有节";
-        //批量存入知识点
-        re=md2pagUtils.knowledgeMapper.insertAllGetIds( knowledges );
-        if(re==0)
-            return "插入失败或文件中没有段落";
-        int[] kids=new int[jkids+1];
-        int j=0;
-        //如果数组是从头按顺序储存和遍历的，kid才准确
-        for (Knowledge knowledge:knowledges) {
-            kids[j]=knowledge.getKid();
-            j++;
-        }
-        //如果传的别名，而非clone，才能改变成功
-        for (Paragraph paragraph:paragraphs) {
-            paragraph.setParagraphKnowledge( kids[paragraph.getParagraphKnowledge()] );
-        }
-        re=md2pagUtils.paragraphMapper.insertAll( paragraphs );
-        if(re==0)
-            return "插入失败或文件中没有段落";
 
-        return null;
+        return null;//返回null表示没有问题
     }
 
-//    //
-//    public static void main(String args[]) throws IOException {
-//        md2Pag.toolRun("E:\\Workbench\\IDEA\\Zhiku_workbench\\写作模板.md",102);
-//    }
 }

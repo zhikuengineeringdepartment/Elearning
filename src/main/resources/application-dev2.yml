@@ -20,12 +20,12 @@ spring:
             fallback: false
   datasource:
     #todo: 临时替换数据库，避免影响上线数据库
-    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8
-    username: zhiku
-    password: zhiku_123b
-#    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8
-#    username: root
-#    password: Zhiku_123
+#    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8
+#    username: zhiku
+#    password: zhiku_123b
+    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8
+    username: root
+    password: Zhiku_123
     driver-class-name: com.mysql.cj.jdbc.Driver
   freemarker:
     template-loader-path: classpath:/freemarker/
@@ -42,15 +42,15 @@ mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
 server:
-  port: 18888
+  port: 12321
 #logging:
 #  level:
 #    com.zhiku.*: debug
 
 #自定义值#
 #智库工程储存根路径
-#root_path: /var/zhiku
-root_path: E:/ZhikuFiles
+root_path: /var/zhiku
+#root_path: E:/ZhikuFiles
 #记录文件位置
 file_path:
   #访问量记录文件
