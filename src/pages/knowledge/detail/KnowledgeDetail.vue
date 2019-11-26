@@ -275,6 +275,9 @@ export default {
             });
           }
         })
+        .then(() => {
+          MathJax.typesetPromise();
+        })
         .catch(function(err) {
           console.log(err);
         });

@@ -27,9 +27,22 @@ export default {
 </script>
 
 <style scoped>
-.el-header{
-    font-size: 1.5rem;
-    padding: 20px 0;
-    height: auto !important;
+.el-header {
+  font-size: 1.5rem;
+  padding: 20px 0;
+  height: auto !important;
+}
+
+.el-container {
+  min-width: 1000px;
+}
+
+.el-main {
+  padding: 40px 80px;
+  min-width: 1200px;
+}
+
+.el-aside {
+  padding: 20px 0;
 }
 </style>

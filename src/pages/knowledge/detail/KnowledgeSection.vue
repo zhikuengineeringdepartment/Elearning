@@ -1,5 +1,4 @@
 <!--知识见解详情-段落组件-->
-<!--TODO 收藏和笔记功能暂时注释掉了，因为没有想好如何做移动端适配-->
 <template>
   <div class="section">
     <div class="section-name" v-html="sectionView.sectionNameHtml"></div>

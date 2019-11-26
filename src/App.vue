@@ -48,8 +48,9 @@ a {
 }
 
 a:hover {
-  color: #cd0200;
-  text-decoration: underline;
+  /* color: #cd0200;
+  text-decoration: underline; */
+  cursor: pointer;
 }
 
 em {

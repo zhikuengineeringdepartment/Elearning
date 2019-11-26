@@ -64,6 +64,7 @@
 <script>
 import CourseSelect from "../../components/CourseSelect";
 import { routerChange } from "../../tools";
+import { getCookie } from "../../tools.js";
 
 export default {
   name: "ResourcesFileUpload",
@@ -127,7 +128,7 @@ export default {
     submitUpload() {
       const _this = this;
 
-      if (this.$store.state.isLogin) {
+      if (getCookie("token")) {
         let form = new FormData();
         form.append(
           "multipartFile",

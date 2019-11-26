@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     getValue: function() {
-      this.$emit("get-course-value", this.courseValue);
+      this.$emit("get-course-value", this.courseValue, this.courses);
     },
     // 获取所有课程
     getCourses: function() {
