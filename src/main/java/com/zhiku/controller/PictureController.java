@@ -3,10 +3,10 @@ package com.zhiku.controller;
 import com.zhiku.entity.Picture;
 import com.zhiku.entity.User;
 import com.zhiku.service.PictureService;
-import com.zhiku.util.HostUrl;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.PictureView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,9 @@ public class PictureController {
     @Autowired
     PictureService pictureService;
     @Autowired
-    protected HostUrl hostUrl;
+    protected HttpServletRequest request;
+    @Value( "http://www.sharingideas.cn" )
+    private String hostIP;
     /**
      * 上传图片
      * @param user 自动获取
@@ -51,7 +53,7 @@ public class PictureController {
         }
         ResponseData responseData=new ResponseData(  );
         //拼接url前地址
-        String url=hostUrl.getUrl()+picture.getUrl();
+        String url=request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+picture.getUrl();
         responseData.putDataValue( "url",url);
         return responseData;
     }
@@ -72,7 +74,7 @@ public class PictureController {
         List<PictureView> pictures=pictureService.getList( user.getUid(),page,pageSize );
         //拼接url前地址
         for (PictureView pictureView:pictures) {
-            pictureView.setUrl( hostUrl.getUrl()+pictureView.getUrl(  ) );
+            pictureView.setUrl(request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+pictureView.getUrl(  ) );
         }
 
         ResponseData responseData=new ResponseData(  );
