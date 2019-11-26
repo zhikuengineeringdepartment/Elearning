@@ -11,14 +11,33 @@ import java.util.List;
  * 主要用于展示一小节的所有内容
  * 节-知识点-段落
  */
-public class SectionView extends Section {
-    private List<Child> knowledgeViews;
+public class SectionView{
+    private String title;
+    private int index;
+    private List<SubView> sub;
 
-    public List<Child> getKnowledgeViews(){
-        return this.knowledgeViews;
+    public String getTitle() {
+        return title;
     }
 
-    public void setKnowledgeViews(List<Child> knowledgeViews){
-        this.knowledgeViews = knowledgeViews;
+    public void setTitle(String title) {
+        this.title = title;
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public List<SubView> getSub() {
+        return sub;
+    }
+
+    public void setSub(List<SubView> sub) {
+        this.sub = sub;
+    }
+
 }

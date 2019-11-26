@@ -1,10 +1,32 @@
 package com.zhiku.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+
 public class Child {
-    private String sid;
+    private int sid;
     private String section_seq;
     private String section_name;
-    private String level;
+    private int level;
+    private ArrayList<Document> contents;
+    private ArrayList<Child> sub;
+
+    public ArrayList<Document> getContents() {
+        return contents;
+    }
+
+    public void setContents(ArrayList<Document> contents) {
+        this.contents = contents;
+    }
+
+    public ArrayList<Child> getSub() {
+        return sub;
+    }
+
+    public void setSub(ArrayList<Child> sub) {
+        this.sub = sub;
+    }
 
     public String getSection_name() {
         return section_name;
@@ -14,11 +36,11 @@ public class Child {
         this.section_name = section_name;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
@@ -30,11 +52,11 @@ public class Child {
         this.section_seq = section_seq;
     }
 
-    public String getSid() {
+    public int getSid() {
         return sid;
     }
 
-    public void setSid(String sid) {
+    public void setSid(int sid) {
         this.sid = sid;
     }
 }

@@ -47,19 +47,11 @@ public class CourseController {
      * @param cid 课程id
      * @return 课程视图（包含了目录结构）
      */
-//    @ResponseBody
-//    @RequestMapping(value = "getCourseDetails",method = RequestMethod.GET)
-//    public ResponseData getCourseDetails(@RequestParam(value = "cid") int cid){
-//        ResponseData responseData = ResponseData.ok();
-//        CourseView courseView = courseService.getCourseDetails(cid);
-//        responseData.putDataValue("courseView",courseView);
-//        return responseData;
-//    }
     @ResponseBody
     @RequestMapping(value = "getCourseDetails", method = RequestMethod.GET)
     public ResponseData getCourseDetails(@RequestParam(value = "cid")int cid){
         ResponseData responseData = ResponseData.ok();
-        CourseView courseView = indexService.getFirstLevelIndex(cid);
+        CourseView courseView = indexService.getLeftIndex(cid);
         responseData.putDataValue("courseView",courseView);
         return responseData;
     }

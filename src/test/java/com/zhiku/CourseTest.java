@@ -22,12 +22,12 @@ public class CourseTest extends  ApplicationTest{
     }
 
     @Test
-    public void TestGetIndexOfCourse(){
-        indexTemplate.getIndexOfCourse(112);
+    public void TestGetLeftIndex(){
+        indexTemplate.getLeftIndex(112);
     }
 
     @Test
     public void TestGetSecondLevelIndex(){
-        indexTemplate.getSecondLevelIndex(11203);
+        indexTemplate.getSectionContent(11203);
     }
 }
