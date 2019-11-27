@@ -1,9 +1,12 @@
 package com.zhiku.controller;
 
+import com.zhiku.service.IndexService;
 import com.zhiku.service.SectionService;
 import com.zhiku.util.ResponseData;
 import com.zhiku.util.spider.SpiderBoot;
 import com.zhiku.util.spider.model.TitleAndUrl;
+import com.zhiku.view.IndexView;
+import com.zhiku.view.SectionContentView;
 import com.zhiku.view.SectionView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,18 +20,28 @@ import java.util.List;
 public class SectionController {
     @Autowired
     SectionService sectionService;
+    @Autowired
+    IndexService indexService;
 
     /**
      * 获得指定小节的内容
      * @param sid 节号
      * @return 节-知识点-段落视图
      */
+//    @ResponseBody
+//    @RequestMapping(value = "getSection",method = RequestMethod.GET)
+//    public ResponseData getSection(@RequestParam(value = "sid") int sid){
+//        ResponseData responseData = ResponseData.ok();
+//        SectionView sectionView = sectionService.getSectionView(sid);
+//        responseData.putDataValue("sectionView",sectionView);
+//        return  responseData;
+//    }
     @ResponseBody
     @RequestMapping(value = "getSection",method = RequestMethod.GET)
     public ResponseData getSection(@RequestParam(value = "sid") int sid){
         ResponseData responseData = ResponseData.ok();
-        SectionView sectionView = sectionService.getSectionView(sid);
-        responseData.putDataValue("sectionView",sectionView);
+        SectionContentView sectionContentView = indexService.getSecondLevelIndex(sid);
+        responseData.putDataValue("sectionView",sectionContentView);
         return  responseData;
     }
 

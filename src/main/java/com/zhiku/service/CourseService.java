@@ -6,8 +6,11 @@ import com.zhiku.entity.Course;
 import com.zhiku.mapper.ColCourseMapper;
 import com.zhiku.mapper.CourseMapper;
 import com.zhiku.mapper.ScheduleMapper;
+import com.zhiku.mongo.CourseTemplate;
+import com.zhiku.mongo.IndexTemplate;
 import com.zhiku.view.ColCourseView;
 import com.zhiku.view.CourseView;
+import com.zhiku.view.IndexView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +25,20 @@ public class CourseService {
     private ColCourseMapper colCourseMapper;
     @Autowired
     private ScheduleMapper scheduleMapper;
+    @Autowired
+    private CourseTemplate courseTemplate;
+    @Autowired
+    private IndexTemplate indexTemplate;
 
+//    public List<Course> getAllCourse(){
+//        return courseMapper.getAllCourse();
+//    }
     /**
      * 获得所有课程
      * @return 课程列表
      */
     public List<Course> getAllCourse(){
-        return courseMapper.getAllCourse();
+        return courseTemplate.getAllCourse();
     }
 
     /**

@@ -18,6 +18,9 @@ spring:
         ssl:
           socketFactory:
             fallback: false
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/zhiku
   datasource:
     #todo: 临时替换数据库，避免影响上线数据库
 #    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8
@@ -42,7 +45,7 @@ mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
 server:
-  port: 12321
+  port: 18888
 #logging:
 #  level:
 #    com.zhiku.*: debug
