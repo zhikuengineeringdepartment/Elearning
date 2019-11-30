@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Paragraph;
+import com.zhiku.entity.mysql.ParagraphMysql;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,22 +9,22 @@ import java.util.List;
 public interface ParagraphMapper {
     int deleteByPrimaryKey(Integer pid);
 
-    int insert(Paragraph record);
+    int insert(ParagraphMysql record);
 
-    int insertSelective(Paragraph record);
+    int insertSelective(ParagraphMysql record);
 
-    Paragraph selectByPrimaryKey(Integer pid);
+    ParagraphMysql selectByPrimaryKey(Integer pid);
 
-    int updateByPrimaryKeySelective(Paragraph record);
+    int updateByPrimaryKeySelective(ParagraphMysql record);
 
-    int updateByPrimaryKeyWithBLOBs(Paragraph record);
+    int updateByPrimaryKeyWithBLOBs(ParagraphMysql record);
 
-    int updateByPrimaryKey(Paragraph record);
+    int updateByPrimaryKey(ParagraphMysql record);
 
 //    自定义方法
     int insertAll(List<Paragraph> record);
 
-    Paragraph selectByParagraphSeq(Integer paragraphSeq);
+    ParagraphMysql selectByParagraphSeq(Integer paragraphSeq);
 
     int deleteBySeqCourse(Integer cid);
 }

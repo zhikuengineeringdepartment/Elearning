@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.ScheduleMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Schedule">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Schedule">
     <id column="schedule_user" jdbcType="INTEGER" property="scheduleUser" />
     <id column="schedule_section" jdbcType="INTEGER" property="scheduleSection" />
     <result column="schedule_date" jdbcType="TIMESTAMP" property="scheduleDate" />
@@ -9,25 +9,25 @@
   <sql id="Base_Column_List">
     schedule_user, schedule_section, schedule_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.ScheduleKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.mysql.ScheduleKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from schedule
     where schedule_user = #{scheduleUser,jdbcType=INTEGER}
       and schedule_section = #{scheduleSection,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.ScheduleKey">
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.mysql.ScheduleKey">
     delete from schedule
     where schedule_user = #{scheduleUser,jdbcType=INTEGER}
       and schedule_section = #{scheduleSection,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Schedule">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Schedule">
     insert into schedule (schedule_user, schedule_section, schedule_date
       )
     values (#{scheduleUser,jdbcType=INTEGER}, #{scheduleSection,jdbcType=INTEGER}, #{scheduleDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Schedule">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Schedule">
     insert into schedule
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="scheduleUser != null">
@@ -52,7 +52,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Schedule">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Schedule">
     update schedule
     <set>
       <if test="scheduleDate != null">
@@ -62,7 +62,7 @@
     where schedule_user = #{scheduleUser,jdbcType=INTEGER}
       and schedule_section = #{scheduleSection,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Schedule">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Schedule">
     update schedule
     set schedule_date = #{scheduleDate,jdbcType=TIMESTAMP}
     where schedule_user = #{scheduleUser,jdbcType=INTEGER}

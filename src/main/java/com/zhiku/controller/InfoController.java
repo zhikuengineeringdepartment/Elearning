@@ -1,7 +1,7 @@
 package com.zhiku.controller;
 
-import com.zhiku.entity.Major;
-import com.zhiku.entity.Preference;
+import com.zhiku.entity.mysql.Major;
+import com.zhiku.entity.mysql.Preference;
 import com.zhiku.service.MajorService;
 import com.zhiku.service.PreferenceService;
 import com.zhiku.util.ResponseData;

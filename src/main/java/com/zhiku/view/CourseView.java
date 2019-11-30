@@ -1,8 +1,6 @@
 package com.zhiku.view;
 
 import com.zhiku.entity.Course;
-import com.zhiku.entity.Index;
-import com.zhiku.entity.Section;
 
 import java.util.List;
 

@@ -38,9 +38,10 @@ public class SectionController {
 //    }
     @ResponseBody
     @RequestMapping(value = "getSection",method = RequestMethod.GET)
-    public ResponseData getSection(@RequestParam(value = "sid") int sid){
+    public ResponseData getSection(@RequestParam(value = "sid") int sid,
+                                   @RequestParam(required = false) Integer cid,@RequestParam(required = false) String vid){
         ResponseData responseData = ResponseData.ok();
-        SectionContentView sectionContentView = indexService.getSecondLevelIndex(sid);
+        SectionContentView sectionContentView = indexService.getSecondLevelIndex2(sid,cid,vid);
         responseData.putDataValue("sectionView",sectionContentView);
         return  responseData;
     }

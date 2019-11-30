@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.BoardcastMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Boardcast">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Boardcast">
     <id column="bid" jdbcType="INTEGER" property="bid" />
     <result column="boardcast_date" jdbcType="DATE" property="boardcastDate" />
     <result column="boardcast_img" jdbcType="VARCHAR" property="boardcastImg" />
     <result column="boardcast_link" jdbcType="VARCHAR" property="boardcastLink" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.Boardcast">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.mysql.Boardcast">
     <result column="boardcast_content" jdbcType="LONGVARCHAR" property="boardcastContent" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -28,13 +28,13 @@
     delete from boardcast
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Boardcast">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Boardcast">
     insert into boardcast (bid, boardcast_date, boardcast_img, 
       boardcast_link, boardcast_content)
     values (#{bid,jdbcType=INTEGER}, #{boardcastDate,jdbcType=DATE}, #{boardcastImg,jdbcType=VARCHAR}, 
       #{boardcastLink,jdbcType=VARCHAR}, #{boardcastContent,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Boardcast">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Boardcast">
     insert into boardcast
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="bid != null">
@@ -71,7 +71,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Boardcast">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Boardcast">
     update boardcast
     <set>
       <if test="boardcastDate != null">
@@ -89,7 +89,7 @@
     </set>
     where bid = #{bid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.Boardcast">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.mysql.Boardcast">
     update boardcast
     set boardcast_date = #{boardcastDate,jdbcType=DATE},
       boardcast_img = #{boardcastImg,jdbcType=VARCHAR},
@@ -97,7 +97,7 @@
       boardcast_content = #{boardcastContent,jdbcType=LONGVARCHAR}
     where bid = #{bid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Boardcast">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Boardcast">
     update boardcast
     set boardcast_date = #{boardcastDate,jdbcType=DATE},
       boardcast_img = #{boardcastImg,jdbcType=VARCHAR},

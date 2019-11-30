@@ -1,6 +1,6 @@
 package com.zhiku.controller;
 
-import com.zhiku.entity.File;
+import com.zhiku.entity.mysql.File;
 import com.zhiku.service.FileService;
 import com.zhiku.util.FileStatus;
 import com.zhiku.util.ResponseData;

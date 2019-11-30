@@ -1,11 +1,11 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.ColParagraph;
+import com.zhiku.entity.mysql.ColParagraphMysql;
 
 /**
  * 个人中心收藏段落视图
  */
-public class ColParagraphView extends ColParagraph {
+public class ColParagraphView extends ColParagraphMysql {
     private Integer paragraphSeq;
 
     private Integer paragraphKnowledge;

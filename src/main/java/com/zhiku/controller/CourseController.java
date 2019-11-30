@@ -9,7 +9,6 @@ import com.zhiku.service.IndexService;
 import com.zhiku.service.SectionService;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.CourseView;
-import com.zhiku.view.IndexView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +48,9 @@ public class CourseController {
      */
     @ResponseBody
     @RequestMapping(value = "getCourseDetails", method = RequestMethod.GET)
-    public ResponseData getCourseDetails(@RequestParam(value = "cid")int cid){
+    public ResponseData getCourseDetails(@RequestParam(value = "cid")int cid,@RequestParam(required = false)String vid){
         ResponseData responseData = ResponseData.ok();
-        CourseView courseView = indexService.getLeftIndex(cid);
+        CourseView courseView = indexService.getLeftIndex(cid,vid);
         responseData.putDataValue("courseView",courseView);
         return responseData;
     }

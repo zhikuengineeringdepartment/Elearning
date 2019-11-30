@@ -1,11 +1,11 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.Note;
+import com.zhiku.entity.mysql.NoteMysql;
 
 /**
  * 笔记视图
  */
-public class NoteView extends Note {
+public class NoteView extends NoteMysql {
     private ColParagraphView colParagraphView;
 
     public void setColParagraphView(ColParagraphView colParagraphView) {

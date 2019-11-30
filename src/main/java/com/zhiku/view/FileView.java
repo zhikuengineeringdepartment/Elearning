@@ -1,7 +1,7 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.File;
-import com.zhiku.entity.FileKeys;
+import com.zhiku.entity.mysql.File;
+import com.zhiku.entity.mysql.FileKeys;
 
 /**
  * 文件视图

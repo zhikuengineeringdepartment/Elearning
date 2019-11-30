@@ -1,4 +1,4 @@
-package com.zhiku.entity;
+package com.zhiku.entity.mysql;
 
 public class PreferKey {
     private Integer preferUser;

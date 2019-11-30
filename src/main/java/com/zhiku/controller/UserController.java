@@ -1,6 +1,6 @@
 package com.zhiku.controller;
 
-import com.zhiku.entity.Preference;
+import com.zhiku.entity.mysql.Preference;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.service.CourseService;

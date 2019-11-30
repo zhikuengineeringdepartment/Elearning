@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Section;
+import com.zhiku.entity.mysql.Section;
 import com.zhiku.view.SectionView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;

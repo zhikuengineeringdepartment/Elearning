@@ -1,7 +1,7 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Note;
-import com.zhiku.entity.NoteKey;
+import com.zhiku.entity.mysql.NoteMysql;
+import com.zhiku.entity.mysql.NoteKey;
 import com.zhiku.view.NoteView;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -11,17 +11,17 @@ import java.util.List;
 public interface NoteMapper {
     int deleteByPrimaryKey(NoteKey key);
 
-    int insert(Note record);
+    int insert(NoteMysql record);
 
-    int insertSelective(Note record);
+    int insertSelective(NoteMysql record);
 
-    Note selectByPrimaryKey(NoteKey key);
+    NoteMysql selectByPrimaryKey(NoteKey key);
 
-    int updateByPrimaryKeySelective(Note record);
+    int updateByPrimaryKeySelective(NoteMysql record);
 
-    int updateByPrimaryKeyWithBLOBs(Note record);
+    int updateByPrimaryKeyWithBLOBs(NoteMysql record);
 
-    int updateByPrimaryKey(Note record);
+    int updateByPrimaryKey(NoteMysql record);
 
 //    自定义方法
     List<NoteView> selectBySid(@Param("uid") int uid, @Param("sid") int sid);

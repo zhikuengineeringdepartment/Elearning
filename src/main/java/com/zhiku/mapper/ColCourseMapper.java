@@ -1,7 +1,7 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.ColCourse;
-import com.zhiku.entity.ColCourseKey;
+import com.zhiku.entity.mysql.ColCourse;
+import com.zhiku.entity.mysql.ColCourseKey;
 import com.zhiku.view.ColCourseView;
 import org.springframework.stereotype.Component;
 

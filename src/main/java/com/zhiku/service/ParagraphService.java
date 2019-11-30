@@ -1,6 +1,11 @@
 package com.zhiku.service;
 
 import com.zhiku.entity.*;
+import com.zhiku.entity.mysql.ParagraphMysql;
+import com.zhiku.entity.mysql.ColParagraphKey;
+import com.zhiku.entity.mysql.ColParagraphMysql;
+import com.zhiku.entity.mysql.NoteKey;
+import com.zhiku.entity.mysql.NoteMysql;
 import com.zhiku.mapper.ColParagraphMapper;
 import com.zhiku.mapper.NoteMapper;
 import com.zhiku.mapper.ParagraphMapper;
@@ -49,8 +54,8 @@ public class ParagraphService {
      * @return 是否收藏成功
      */
     public boolean addColParagraph(int uid, int paragraphSeq) {
-        ColParagraph colParagraph = new ColParagraph();
-        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+        ColParagraphMysql colParagraph = new ColParagraphMysql();
+        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
         colParagraph.setColpPara(paragraph.getPid());
         colParagraph.setColpUser(uid);
         colParagraph.setColpDate(new Date());
@@ -69,7 +74,7 @@ public class ParagraphService {
      */
     public boolean removeColParagraph(int uid,int paragraphSeq){
         ColParagraphKey colParagraphKey = new ColParagraphKey();
-        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
         colParagraphKey.setColpUser(uid);
         colParagraphKey.setColpPara(paragraph.getPid());
         if(colParagraphMapper.deleteByPrimaryKey(colParagraphKey)>0){
@@ -95,9 +100,9 @@ public class ParagraphService {
      * @param paragraphSeq  段落序列
      * @return Note 笔记
      */
-    public Note getNoteByNoteKey(User user, int paragraphSeq){
+    public NoteMysql getNoteByNoteKey(User user, int paragraphSeq){
         NoteKey noteKey = new NoteKey();
-        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
         noteKey.setNotePara(paragraph.getPid());
         noteKey.setNoteUser(user.getUid());
         return noteMapper.selectByPrimaryKey(noteKey);
@@ -111,9 +116,9 @@ public class ParagraphService {
      * @param paragraphSeq
      * @return 是否添加成功
      */
-    public boolean addNote(User user, Note note, int paragraphSeq){
+    public boolean addNote(User user, NoteMysql note, int paragraphSeq){
         note.setNoteUser(user.getUid());
-        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
         note.setNotePara(paragraph.getPid());
         note.setNoteDate(new Date());
         if(noteMapper.insert(note)>0){
@@ -141,7 +146,7 @@ public class ParagraphService {
      * @param note
      * @return
      */
-    public boolean modifyNote(Note note){
+    public boolean modifyNote(NoteMysql note){
         note.setNoteDate(new Date());
         if(noteMapper.updateByPrimaryKeyWithBLOBs(note)>0){
             return true;

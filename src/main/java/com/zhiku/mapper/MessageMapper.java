@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Message;
+import com.zhiku.entity.mysql.Message;
 import com.zhiku.view.MessageView;
 import org.springframework.stereotype.Component;
 

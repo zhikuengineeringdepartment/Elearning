@@ -1,9 +1,9 @@
 package com.zhiku.service;
 
 
-import com.zhiku.entity.File;
-import com.zhiku.entity.FileKeys;
-import com.zhiku.entity.Fileop;
+import com.zhiku.entity.mysql.File;
+import com.zhiku.entity.mysql.FileKeys;
+import com.zhiku.entity.mysql.Fileop;
 import com.zhiku.entity.User;
 import com.zhiku.exception.FileNotExistException;
 import com.zhiku.mapper.FileKeysMapper;
