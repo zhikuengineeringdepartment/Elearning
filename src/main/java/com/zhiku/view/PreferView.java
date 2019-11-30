@@ -1,7 +1,7 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.PreferKey;
-import com.zhiku.entity.Preference;
+import com.zhiku.entity.mysql.PreferKey;
+import com.zhiku.entity.mysql.Preference;
 
 import java.util.List;
 

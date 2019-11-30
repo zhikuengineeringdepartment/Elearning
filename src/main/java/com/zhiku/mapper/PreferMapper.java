@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.PreferKey;
+import com.zhiku.entity.mysql.PreferKey;
 import com.zhiku.view.PreferView;
 import org.springframework.stereotype.Component;
 

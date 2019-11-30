@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.FileopMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Fileop">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Fileop">
     <id column="fopid" jdbcType="INTEGER" property="fopid" />
     <result column="fop_user" jdbcType="INTEGER" property="fopUser" />
     <result column="fop_file" jdbcType="INTEGER" property="fopFile" />
@@ -23,7 +23,7 @@
     delete from fileop
     where fopid = #{fopid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Fileop">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Fileop">
     insert into fileop (fopid, fop_user, fop_file, 
       fop_date, fop_ip, fop_type, 
       fop_desc)
@@ -31,7 +31,7 @@
       #{fopDate,jdbcType=TIMESTAMP}, #{fopIp,jdbcType=VARCHAR}, #{fopType,jdbcType=CHAR}, 
       #{fopDesc,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Fileop">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Fileop">
     insert into fileop
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="fopid != null">
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Fileop">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Fileop">
     update fileop
     <set>
       <if test="fopUser != null">
@@ -104,7 +104,7 @@
     </set>
     where fopid = #{fopid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Fileop">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Fileop">
     update fileop
     set fop_user = #{fopUser,jdbcType=INTEGER},
       fop_file = #{fopFile,jdbcType=INTEGER},

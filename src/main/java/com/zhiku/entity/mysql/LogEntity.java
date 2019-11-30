@@ -1,6 +1,7 @@
-package com.zhiku.entity;
+package com.zhiku.entity.mysql;
 
 import com.google.gson.Gson;
+import com.zhiku.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;

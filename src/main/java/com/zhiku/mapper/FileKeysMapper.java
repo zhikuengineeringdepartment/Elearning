@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.FileKeys;
+import com.zhiku.entity.mysql.FileKeys;
 import org.springframework.stereotype.Component;
 
 @Component

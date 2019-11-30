@@ -1,6 +1,6 @@
 package com.zhiku.service;
 
-import com.zhiku.entity.Message;
+import com.zhiku.entity.mysql.Message;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.mapper.FileopMapper;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.beans.Transient;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

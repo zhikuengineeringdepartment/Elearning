@@ -1,4 +1,4 @@
-package com.zhiku.entity;
+package com.zhiku.entity.mongodb;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Child {
     private int sid;
-    private String section_seq;
+    private Integer section_seq;
     private String section_name;
     private int level;
     private ArrayList<Document> contents;
@@ -44,11 +44,11 @@ public class Child {
         this.level = level;
     }
 
-    public String getSection_seq() {
+    public Integer getSection_seq() {
         return section_seq;
     }
 
-    public void setSection_seq(String section_seq) {
+    public void setSection_seq(Integer section_seq) {
         this.section_seq = section_seq;
     }
 

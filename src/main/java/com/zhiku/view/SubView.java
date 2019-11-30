@@ -3,7 +3,7 @@ package com.zhiku.view;
 public class SubView {
     private int sid;
     private String sectionName;
-    private String sectionSeq;
+    private Integer sectionSeq;
     private int sectionCourse;
 
     public int getSid() {
@@ -22,11 +22,11 @@ public class SubView {
         this.sectionName = sectionName;
     }
 
-    public String getSectionSeq() {
+    public Integer getSectionSeq() {
         return sectionSeq;
     }
 
-    public void setSectionSeq(String sectionSeq) {
+    public void setSectionSeq(Integer sectionSeq) {
         this.sectionSeq = sectionSeq;
     }
 

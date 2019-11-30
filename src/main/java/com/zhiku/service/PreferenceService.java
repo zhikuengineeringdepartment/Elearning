@@ -1,7 +1,7 @@
 package com.zhiku.service;
 
-import com.zhiku.entity.PreferKey;
-import com.zhiku.entity.Preference;
+import com.zhiku.entity.mysql.PreferKey;
+import com.zhiku.entity.mysql.Preference;
 import com.zhiku.mapper.PreferMapper;
 import com.zhiku.mapper.PreferenceMapper;
 import com.zhiku.view.PreferView;

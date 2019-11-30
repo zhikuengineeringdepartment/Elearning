@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.PreferenceMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Preference">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Preference">
     <id column="prfid" jdbcType="INTEGER" property="prfid" />
     <result column="prf_name" jdbcType="VARCHAR" property="prfName" />
   </resultMap>
@@ -18,11 +18,11 @@
     delete from preference
     where prfid = #{prfid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Preference">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Preference">
     insert into preference (prfid, prf_name)
     values (#{prfid,jdbcType=INTEGER}, #{prfName,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Preference">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Preference">
     insert into preference
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="prfid != null">
@@ -41,7 +41,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Preference">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Preference">
     update preference
     <set>
       <if test="prfName != null">
@@ -50,7 +50,7 @@
     </set>
     where prfid = #{prfid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Preference">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Preference">
     update preference
     set prf_name = #{prfName,jdbcType=VARCHAR}
     where prfid = #{prfid,jdbcType=INTEGER}

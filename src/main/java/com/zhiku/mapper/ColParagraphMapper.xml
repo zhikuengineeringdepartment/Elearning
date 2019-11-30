@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.ColParagraphMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.ColParagraph">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.ColParagraphMysql">
     <id column="colp_para" jdbcType="INTEGER" property="colpPara" />
     <id column="colp_user" jdbcType="INTEGER" property="colpUser" />
     <result column="colp_date" jdbcType="TIMESTAMP" property="colpDate" />
@@ -9,25 +9,25 @@
   <sql id="Base_Column_List">
     colp_para, colp_user, colp_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.ColParagraphKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColParagraphKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from col_paragraph
     where colp_para = #{colpPara,jdbcType=INTEGER}
       and colp_user = #{colpUser,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.ColParagraphKey">
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColParagraphKey">
     delete from col_paragraph
     where colp_para = #{colpPara,jdbcType=INTEGER}
       and colp_user = #{colpUser,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.ColParagraph">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     insert into col_paragraph (colp_para, colp_user, colp_date
       )
     values (#{colpPara,jdbcType=INTEGER}, #{colpUser,jdbcType=INTEGER}, #{colpDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.ColParagraph">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     insert into col_paragraph
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="colpPara != null">
@@ -52,7 +52,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.ColParagraph">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     update col_paragraph
     <set>
       <if test="colpDate != null">
@@ -62,7 +62,7 @@
     where colp_para = #{colpPara,jdbcType=INTEGER}
       and colp_user = #{colpUser,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.ColParagraph">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     update col_paragraph
     set colp_date = #{colpDate,jdbcType=TIMESTAMP}
     where colp_para = #{colpPara,jdbcType=INTEGER}

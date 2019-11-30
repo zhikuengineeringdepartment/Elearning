@@ -1,7 +1,6 @@
 package com.zhiku;
 
-import com.zhiku.entity.ColParagraph;
-import com.zhiku.entity.Note;
+import com.zhiku.entity.mongodb.Note;
 import com.zhiku.mongo.CollectTemplate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +19,14 @@ public class Mongo extends ApplicationTest{
         for (int i=0;i<a.size();i++){
             System.out.print(a.get(i).getNoteContent());
             System.out.print(" ");
-            System.out.println(a.get(i).getParaSeq());
         }
     }
 
     @Test
     public void Test2(){
-        List<ColParagraph> a = collectTemplate.getAllColPara();
-        for (int i=0;i<a.size();i++){
-            System.out.println(a.get(i).getParaSeq());
-        }
+//        List<ColParagraph> a = collectTemplate.getAllColPara();
+//        for (int i=0;i<a.size();i++){
+//        }
     }
 
 }

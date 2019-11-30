@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Knowledge;
+import com.zhiku.entity.mysql.Knowledge;
 import org.springframework.stereotype.Component;
 
 @Component

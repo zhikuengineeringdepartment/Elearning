@@ -1,6 +1,6 @@
 package com.zhiku.service;
 
-import com.zhiku.entity.Major;
+import com.zhiku.entity.mysql.Major;
 import com.zhiku.mapper.MajorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

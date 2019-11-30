@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Action;
+import com.zhiku.entity.mysql.Action;
 import org.springframework.stereotype.Component;
 
 @Component

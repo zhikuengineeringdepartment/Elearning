@@ -1,6 +1,6 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.Fileop;
+import com.zhiku.entity.mysql.Fileop;
 
 public class FileDownloadRecordView extends Fileop {
     private FileView fileView;

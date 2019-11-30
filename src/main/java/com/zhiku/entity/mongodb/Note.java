@@ -1,30 +1,43 @@
-package com.zhiku.entity;
+package com.zhiku.entity.mongodb;
 
 import org.bson.types.ObjectId;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
-@Document(collection = "collect")
-public class Note extends NoteKey {
+
+@Document(collection = "note")
+public class Note{
     @Id
     private ObjectId _id;
-    @Field("paragraph_seq")
-    private Integer paraSeq;
-
+    @Field("note_date")
     private Date noteDate;
-
     @Field("note_content")
     private String noteContent;
+    @Field("note_user")
+    private Integer noteUser;
+    @Field("note_para")
+    private ObjectId notePara;
+
+    public Integer getNoteUser() {
+        return noteUser;
+    }
+
+    public void setNoteUser(Integer noteUser) {
+        this.noteUser = noteUser;
+    }
+
+    public ObjectId getNotePara() {
+        return notePara;
+    }
+
+    public void setNotePara(ObjectId notePara) {
+        this.notePara = notePara;
+    }
 
     public ObjectId get_id() {
         return _id;
-    }
-
-    public Integer getParaSeq() {
-        return paraSeq;
     }
 
     public Date getNoteDate() {
@@ -41,10 +54,6 @@ public class Note extends NoteKey {
 
     public void setNoteContent(String noteContent) {
         this.noteContent = noteContent == null ? null : noteContent.trim();
-    }
-
-    public void setParaSeq(Integer paraSeq) {
-        this.paraSeq = paraSeq;
     }
 
     public void set_id(ObjectId _id) {

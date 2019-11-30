@@ -1,6 +1,6 @@
 package com.zhiku.service;
 
-import com.zhiku.entity.Section;
+import com.zhiku.entity.mysql.Section;
 import com.zhiku.mapper.SectionMapper;
 import com.zhiku.view.SectionView;
 import org.springframework.beans.factory.annotation.Autowired;

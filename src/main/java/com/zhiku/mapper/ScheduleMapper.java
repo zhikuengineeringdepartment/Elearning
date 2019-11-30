@@ -1,7 +1,7 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Schedule;
-import com.zhiku.entity.ScheduleKey;
+import com.zhiku.entity.mysql.Schedule;
+import com.zhiku.entity.mysql.ScheduleKey;
 import org.springframework.stereotype.Component;
 
 @Component
