@@ -34,7 +34,6 @@ public class Post {
 
     private Integer courseId;      //关联的课程Id,没有则为0
 
-    private List<PostFirstReply> postFirstReplyList;
 
     public ObjectId getPid() {
         return pid;
@@ -140,11 +139,5 @@ public class Post {
         this.courseId = courseId;
     }
 
-    public List<PostFirstReply> getPostFirstReplyList() {
-        return postFirstReplyList;
-    }
 
-    public void setPostFirstReplyList(List<PostFirstReply> postFirstReplyList) {
-        this.postFirstReplyList = postFirstReplyList;
-    }
 }
