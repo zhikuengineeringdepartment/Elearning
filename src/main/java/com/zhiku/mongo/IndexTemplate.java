@@ -15,10 +15,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -105,51 +102,16 @@ public class IndexTemplate {
             vid = course.getVid();
         }
         //查询出对应课程号的一级索引
+        //TODO:缺少按seq排序
         Criteria index = Criteria.where("cid").is(cid).and("vid").is(vid);
         List<Index> indexlist = mongoTemplate.find(query(index), Index.class);
         if(indexlist==null||indexlist.size()==0){
             return null;
         }
         Index i = indexlist.get(0);//修改表结构之后，indexlist里应该只有一条index记录
-        List<SectionView> sections = new ArrayList<SectionView>();
-        List<Child> children = i.getCatalog();
-        int ind = 0;
-        for(Child c : children){
-            List<SubView> sub = new ArrayList<SubView>();
-            SectionView sec = new SectionView();
-            //获取catalog中的第一层的一个child结构
-            //进行相应的处理，把数据装进SectionView里面
-            sec.setTitle(c.getSection_name());
-            sec.setIndex(ind);
-            ind++;
-            List<Child> children1 = c.getSub();
-            //如果这个child结构下面还有嵌套的child结构，则取出第二层
-            if( children1 != null){
-                for(Child c1 : children1){
-                    //进行相应的处理
-                    //把当前这个child的内容装进subview里，把subview装到sub里面
-                    SubView subView1 = new SubView();
-                    subView1.setSid(c1.getSid());
-                    subView1.setSectionName(c1.getSection_name());
-                    subView1.setSectionSeq(c1.getSection_seq());
-                    subView1.setSectionCourse(cid);
-                    sub.add(subView1);
-                }
-            }
-            //把sub装到sec里面
-            sec.setSub(sub);
-            //把sec装到sections里面
-            sections.add(sec);
-        }
-        //System.out.println(sections);
-        CourseView courseView = new CourseView();
-        courseView.setSections(sections);
-        courseView.setCid(course.getCid());
-        courseView.setVid(course.getVid());
-        courseView.setCourseName(course.getCourseName());
-        courseView.setCourseDesc(course.getCourseDesc());
-        courseView.setCourseIcon(course.getCourseIcon());
-        return courseView;
+
+
+        return index2CourseView(i,course);
     }
 
     /**
@@ -259,43 +221,56 @@ public class IndexTemplate {
         return index;
     }
 
-    public void instertAll(){
-        Query query = new Query();
-
-        List<Index> indexlist = mongoTemplate.find(query, Index.class);
-        int sumSid=0;
-        for(Index index:indexlist){
-            for(Child child:index.getCatalog()){
-                sumSid+=countSid( child );
-            }
-        }
-
-        //查询最大sid,并自增sumSid
-        Update update= new Update().inc("max_sid", sumSid);
-        MongoSystem mongoSystem=mongoTemplate.findAndModify(query,update, MongoSystem.class );
-        int xsid=mongoSystem.getMaxSid();
-
-        for(Index index:indexlist){
-            for(Child child:index.getCatalog()){
-                xsid=handleChild(child,xsid);
-            }
-        }
-
-        //插入新节
-
+    public Index findByPrimaryKey(Integer cid,String vid){
+        Query query=new Query(  );
+        query.addCriteria( Criteria.where( "cid" ).is(cid).and( "vid" ).is(vid) );
+        return mongoTemplate.findOne( query,Index.class );
     }
 
-    private int handleChild(Child child,int xsid){
+    //更新或插入目录索引，自动赋值sid
+    public Map<Integer,Integer> upset(Index index){
+        int sumSid=0;
+        for(Child child:index.getCatalog()){
+            sumSid+=countSid( child );
+        }
+        //查询最大sid,并自增sumSid
+        Update update= new Update().inc("max_sid", sumSid);
+        Query query=new Query(  );
+        MongoSystem mongoSystem=mongoTemplate.findAndModify(query,update, MongoSystem.class );
+        int xsid=mongoSystem.getMaxSid();
+        Map<Integer,Integer> kid2xkid=new HashMap<>(  );
+        //赋值sid
+        for(Child child:index.getCatalog()){
+            xsid=handleChild(child,xsid,kid2xkid);
+        }
+        //插入新节
+        query.addCriteria( Criteria.where( "cid" ).is(index.getCid()).and( "vid" ).is(index.getVid()) );
+        Update update1=new Update();
+        update1.set( "cid",index.getCid() );
+        update1.set("vid",index.getVid());
+        update1.set( "catalog",index.getCatalog() );
+        mongoTemplate.upsert( query,update1,Index.class );
+
+        return kid2xkid;
+    }
+
+    public void deleteByPrimaryKey(Integer cid,String vid){
+        Query query=new Query(  );
+        query.addCriteria( Criteria.where( "cid" ).is(cid).and( "vid" ).is(vid) );
+        mongoTemplate.remove( query,Index.class );
+    }
+
+    private int handleChild(Child child,int xsid,Map<Integer,Integer> kid2xkid){
         xsid+=1;
         if(child.getLevel()==3){//如果是知识点保存新id
-//            kid2xkid.put( child.getSid(),xsid );
+            kid2xkid.put( child.getSid(),xsid );
             //System.out.println("<<"+child.getSid()+":"+xsid);
         }
         child.setSid(xsid);
         List<Child> childList=child.getSub();
         if(childList!=null&&childList.size()>0){
             for(Child child1:childList){
-                xsid=handleChild( child1,xsid );
+                xsid=handleChild( child1,xsid ,kid2xkid);
             }
         }
         return xsid;
@@ -310,6 +285,48 @@ public class IndexTemplate {
             }
         }
         return sum;
+    }
+
+    public static CourseView index2CourseView(Index index,Course course){
+        List<SectionView> sections = new ArrayList<SectionView>();
+        List<Child> children = index.getCatalog();
+        int ind = 0;
+        for(Child c : children){
+            List<SubView> sub = new ArrayList<SubView>();
+            SectionView sec = new SectionView();
+            //获取catalog中的第一层的一个child结构
+            //进行相应的处理，把数据装进SectionView里面
+            sec.setTitle(c.getSection_name());
+            sec.setIndex(ind);
+            ind++;
+            List<Child> children1 = c.getSub();
+            //如果这个child结构下面还有嵌套的child结构，则取出第二层
+            if( children1 != null){
+                for(Child c1 : children1){
+                    //进行相应的处理
+                    //把当前这个child的内容装进subview里，把subview装到sub里面
+                    SubView subView1 = new SubView();
+                    subView1.setSid(c1.getSid());
+                    subView1.setSectionName(c1.getSection_name());
+                    subView1.setSectionSeq(c1.getSection_seq());
+                    subView1.setSectionCourse(course.getCid());
+                    sub.add(subView1);
+                }
+            }
+            //把sub装到sec里面
+            sec.setSub(sub);
+            //把sec装到sections里面
+            sections.add(sec);
+        }
+        //System.out.println(sections);
+        CourseView courseView = new CourseView();
+        courseView.setSections(sections);
+        courseView.setCid(course.getCid());
+        courseView.setVid(course.getVid());
+        courseView.setCourseName(course.getCourseName());
+        courseView.setCourseDesc(course.getCourseDesc());
+        courseView.setCourseIcon(course.getCourseIcon());
+        return courseView;
     }
 
 }

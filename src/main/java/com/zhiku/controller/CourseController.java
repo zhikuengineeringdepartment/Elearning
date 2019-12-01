@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(value = "*")
@@ -53,5 +54,20 @@ public class CourseController {
         CourseView courseView = indexService.getLeftIndex(cid,vid);
         responseData.putDataValue("courseView",courseView);
         return responseData;
+    }
+
+    /**
+     * 获得课程全部版本号
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value ="getVids")
+    public ResponseData getVids(Integer cid){
+        List<String> vids=courseService.getVids( cid );
+        if(vids==null)
+            vids=new ArrayList<>(  );
+        ResponseData re=new ResponseData(  );
+        re.putDataValue( "vids",vids );
+        return re;
     }
 }

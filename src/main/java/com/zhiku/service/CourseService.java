@@ -94,4 +94,8 @@ public class CourseService {
 
     }
 
+    public List<String> getVids(Integer cid){
+        return courseTemplate.getVids( cid );
+    }
+
 }

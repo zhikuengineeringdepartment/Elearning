@@ -1,15 +1,9 @@
 package com.zhiku.util.md2Database;
 
-import com.zhiku.entity.Knowledge;
-import com.zhiku.entity.Paragraph;
-import com.zhiku.entity.Section;
-import com.zhiku.mapper.KnowledgeMapper;
-import com.zhiku.mapper.ParagraphMapper;
-import com.zhiku.mapper.SectionMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.zhiku.entity.mongodb.Child;
+import com.zhiku.entity.mongodb.Paragraph;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.*;
 
@@ -28,19 +22,19 @@ public class Md2Save {
      * |9|代码块|'C'|
      * content==null表示在其他段中合并储存
      */
-    @Autowired
-    private SectionMapper sectionMapper;
+//    @Autowired
+//    private SectionMapper sectionMapper;
 
     public static final  char[] type;
     static {
         type = new char[]{21, 22, 23, 'I', 'T', 'L', 60, 'P', 72, 'C'};
     }
 
-    private static Md2Save md2pagUtils;
-    @PostConstruct
-    public void init() {
-        md2pagUtils = this;
-    }
+//    private static Md2Save md2pagUtils;
+//    @PostConstruct
+//    public void init() {
+//        md2pagUtils = this;
+//    }
 
     //按CSDN编辑器的标准判断，不一定符合所有的morkdown标准
     private static String findType(ArrayList<String> strArr, ArrayList<tempParagraph> saveP){
@@ -177,18 +171,6 @@ public class Md2Save {
                 isstartTable=false;
                 saveP.add(new tempParagraph(jid, Md2Save.type[7],str0));
             }
-//            /////////////////////////////
-//            System.out.println( "<<<<<<<<<<<<<<<<<<<<<<<<<");
-//            System.out.println( str0 );
-//            System.out.println( strArr.get( jid ) );
-//
-//            System.out.println( "istable:"+istable );
-//            System.out.println( "islist:"+islist );
-//            System.out.println( "isstartTable:"+isstartTable );
-//            System.out.println( "isendList:"+isendList );
-//            System.out.println( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
-//
-//            ///////////////////////////////////////
         }
         if(islist){
             saveTabListCode(strA2,saveP, Md2Save.type[5],jid);
@@ -264,19 +246,30 @@ public class Md2Save {
     }
 
     /**
+     * 处理windows下txt文件会在第一行第一个字符处添加编码的情况
+     */
+    private static ArrayList<String> dealWinTxt(ArrayList<String> strs){
+        String str=strs.get( 0 );
+        if(!str.contains( "#" ))
+            return strs;
+        strs.set( 0,str.substring(str.indexOf("#")) );
+        return strs;
+    }
+    /**
      * 读取md文件内容储存为实体类列表
      * @param filePath 文件完整路径
-     * @param courseID 课程id
-     * 注：paragraphs的kid，储存所属第i个知识点，从0开始
+     * @param chapterList、paragraphs 储存结果，
+     * 章段落id均不生成，所有seq按从1开始依次生成，章下直接有内容自动生成seq为0的节
+     * kid,sid将从1开始储存，与数据库无关，便于和段落对应
      * @return 错误码 为null表示没有错
      * @throws IOException _
      */
-    public static String md2Entitys(String filePath, Integer courseID,
-                                    List<Section> sections, List<Knowledge> knowledges, List<Paragraph> paragraphs) throws IOException {
-        int courseSeq=courseID;
+    public static String md2Entitys(String filePath, List<Child> chapterList, List<Paragraph> paragraphs)
+            throws IOException {
         //读取文件
         FileUtils fu = new FileUtils();
         ArrayList<String> strArr = fu.read2Array(filePath, "UTF-8");
+        strArr=dealWinTxt(strArr);
         ArrayList<tempParagraph> saveP=new ArrayList<tempParagraph>( );
         String errorstr;
         //识别表格、列表、标题、图片、代码块
@@ -285,69 +278,208 @@ public class Md2Save {
             return errorstr;
         }
         //转化到实体类中
-        int secseq=md2pagUtils.sectionMapper.selectSectionMaxID(courseID);
-        if(secseq==0){
-            secseq=courseSeq*100;
-        }
-        int ji=0;
-        int knowseq=0,pagseq=0;
-        int secid=-1,knowid=-1;
-        int jkids=-1;
+        boolean isStart=false;//是否开始处理
+        int chaseq=0,secseq=0,knowseq=0,pagseq=0;
+        int kid=0,sid=0;
+
+        //预设章节知识点
+        Child chapter=null;
+        Child section=null;
+        Child konwledge=null;
+
+        int lastLevel=0;
 
         for(tempParagraph tp:saveP){
             if(tp.getContent()==null) {
                 continue;
             }
-            if(tp.getType()==type[1]||tp.getType()==type[0]){//章或节
-                Section section=new Section();
-                section.setSid( ++secseq );
-                section.setSectionCourse( courseID );
-                section.setSectionName( tp.getContent() );
-                section.setSectionSeq( ""+secseq );
-                section.setSectionRecommendPath( secseq+".txt" );//todo:节推荐列表储存路径，目前没有这个功能，随便存一个字符串
-                sections.add(section);
+            if(!isStart){//第一段不是标题，无效段落，防止window自动在开头加"?"
+                if(tp.getType()==type[1]||tp.getType()==type[0]) {
+                    isStart=true;
+                }else{//出现章或节才开始处理，增强健壮性
+                    continue;
+                }
+            }
+            if(tp.getType()==type[0]){//章
+                chapter=new Child();
+                chapter.setSection_name( tp.getContent()  );
+                chapter.setLevel( 1 );
+                chapter.setSection_seq( ++chaseq );
+                chapter.setSub( new ArrayList<Child>(  ) );
+                chapterList.add( chapter );//存上一章
+
+                secseq=0;
                 knowseq=0;
                 pagseq=0;
-                secid=secseq;
-                knowid=-1;//上一个知识点id不可使用
-            }else if(tp.getType()==type[2]){//知识点
-                Knowledge knowledge=new Knowledge();
-                knowledge.setKid( null );
-                knowledge.setKnowledgeName( tp.getContent());
-                knowledge.setKnowledgeSection(secid);
-                knowledge.setKnowledgeSeq( secseq*100+(++knowseq) );
-                knowledges.add(knowledge);
-                jkids++;
+                lastLevel=1;
+            }else if(tp.getType()==type[1]){//节
+                section=new Child();
+                section.setSid( ++sid );
+                section.setSection_name( tp.getContent()  );
+                section.setLevel( 2 );
+                section.setSection_seq( ++secseq );
+                section.setSub( new ArrayList<Child>(  ) );
+                if(chapter!=null){
+                    chapter.getSub().add(section);
+                }
+
+                knowseq=0;
                 pagseq=0;
-                knowid=0;
-            }else{//段落
-                if(knowid==-1){//这个段落没有知识点,储存节为知识点
-                    if(ji==0){//第一段不是标题，无效段落，防止window自动在开头加"?"
-                        ji++;
-                        continue;
+                lastLevel=2;
+            }else if(tp.getType()==type[2]){//知识点
+                if(lastLevel==1){//知识点上直接是章，创建节
+                    section=new Child();
+                    section.setSid( ++sid );
+                    section.setSection_name( chapter.getSection_name()  );
+                    section.setLevel( 2 );
+                    section.setSection_seq( 0 );
+                    section.setSub( new ArrayList<Child>(  ) );
+                    if(chapter!=null){
+                        chapter.getSub().add(section);
                     }
-                    Knowledge knowledge=new Knowledge();
-                    knowledge.setKid( null );
-                    knowledge.setKnowledgeName( "");
-                    knowledge.setKnowledgeSection(secid);
-                    knowledge.setKnowledgeSeq(  secseq*100+(++knowseq) );
-                    knowledges.add(knowledge);
-                    jkids++;
+                    knowseq=0;
                     pagseq=0;
-                    knowid=0;
+                    lastLevel=2;
+                }
+                konwledge=new Child();
+                konwledge.setSid( ++kid );
+                konwledge.setSection_name( tp.getContent()  );
+                konwledge.setLevel( 3 );
+                konwledge.setSection_seq( ++knowseq );
+                konwledge.setSub( null );
+                if(section!=null){
+                    section.getSub().add(konwledge);
+                }
+
+                pagseq=0;
+                lastLevel=3;
+            }else{//段落
+                if(lastLevel==1){//段落上直接是章，创建节
+                    section=new Child();
+                    section.setSid( ++sid );
+                    section.setSection_name( chapter.getSection_name()  );
+                    section.setLevel( 2 );
+                    section.setSection_seq( 0 );
+                    section.setSub( new ArrayList<Child>(  ) );
+                    if(chapter!=null){
+                        chapter.getSub().add(section);
+                    }
+                    knowseq=0;
+                    pagseq=0;
+                    lastLevel=2;
+                }
+                if(lastLevel==2){//目前段落上面直接是节，创建空知识点
+                    konwledge=new Child();
+                    konwledge.setSid( ++kid );
+                    konwledge.setSection_name( "" );
+                    konwledge.setLevel( 3 );
+                    konwledge.setSection_seq( ++knowseq );
+                    konwledge.setSub( null );
+                    if(section!=null){
+                        section.getSub().add(konwledge);
+                    }
+                    pagseq=0;
+                    lastLevel=3;
                 }
                 Paragraph paragraph=new Paragraph();
                 paragraph.setParagraphType( ""+tp.getType() );
                 paragraph.setParagraphContent( tp.getContent() );
-                paragraph.setParagraphKnowledge( jkids );//记下是第几号知识点
-                paragraph.setParagraphSeq( secseq*100000+knowseq*1000+(++pagseq) );
-                paragraph.setParagraphNewline( "y" );
+                paragraph.setParagraphKnowledge( kid );//记下是第几号知识点
+                paragraph.setParagraph_seq( ++pagseq );
                 paragraphs.add(paragraph);
             }
-            ji++;
         }
 
         return null;//返回null表示没有问题
     }
+
+
+
+//    /**
+//     * 读取md文件内容储存为实体类列表
+//     * @param filePath 文件完整路径
+//     * @param courseID 课程id
+//     * 注：paragraphs的kid，储存所属第i个知识点，从0开始
+//     * @return 错误码 为null表示没有错
+//     * @throws IOException _
+//     */
+//    public static String md2Entitys(String filePath, Integer courseID,
+//                                    List<Section> sections, List<Knowledge> knowledges, List<Paragraph> paragraphs) throws IOException {
+//        int courseSeq=courseID;
+//        //读取文件
+//        FileUtils fu = new FileUtils();
+//        ArrayList<String> strArr = fu.read2Array(filePath, "UTF-8");
+//        ArrayList<tempParagraph> saveP=new ArrayList<tempParagraph>( );
+//        String errorstr;
+//        //识别表格、列表、标题、图片、代码块
+//        errorstr=findType( strArr,saveP );
+//        if(errorstr!=null){
+//            return errorstr;
+//        }
+//        //转化到实体类中
+//        int secseq=md2pagUtils.sectionMapper.selectSectionMaxID(courseID);
+//        if(secseq==0){
+//            secseq=courseSeq*100;
+//        }
+//        int ji=0;
+//        int knowseq=0,pagseq=0;
+//        int secid=-1,knowid=-1;
+//        int jkids=-1;
+//
+//        for(tempParagraph tp:saveP){
+//            if(tp.getContent()==null) {
+//                continue;
+//            }
+//            if(tp.getType()==type[1]||tp.getType()==type[0]){//章或节
+//                Section section=new Section();
+//                section.setSid( ++secseq );
+//                section.setSectionCourse( courseID );
+//                section.setSectionName( tp.getContent() );
+//                section.setSectionSeq( ""+secseq );
+//                section.setSectionRecommendPath( secseq+".txt" );//todo:节推荐列表储存路径，目前没有这个功能，随便存一个字符串
+//                sections.add(section);
+//                knowseq=0;
+//                pagseq=0;
+//                secid=secseq;
+//                knowid=-1;//上一个知识点id不可使用
+//            }else if(tp.getType()==type[2]){//知识点
+//                Knowledge knowledge=new Knowledge();
+//                knowledge.setKid( null );
+//                knowledge.setKnowledgeName( tp.getContent());
+//                knowledge.setKnowledgeSection(secid);
+//                knowledge.setKnowledgeSeq( secseq*100+(++knowseq) );
+//                knowledges.add(knowledge);
+//                jkids++;
+//                pagseq=0;
+//                knowid=0;
+//            }else{//段落
+//                if(knowid==-1){//这个段落没有知识点,储存节为知识点
+//                    if(ji==0){//第一段不是标题，无效段落，防止window自动在开头加"?"
+//                        ji++;
+//                        continue;
+//                    }
+//                    Knowledge knowledge=new Knowledge();
+//                    knowledge.setKid( null );
+//                    knowledge.setKnowledgeName( "");
+//                    knowledge.setKnowledgeSection(secid);
+//                    knowledge.setKnowledgeSeq(  secseq*100+(++knowseq) );
+//                    knowledges.add(knowledge);
+//                    jkids++;
+//                    pagseq=0;
+//                    knowid=0;
+//                }
+//                Paragraph paragraph=new Paragraph();
+//                paragraph.setParagraphType( ""+tp.getType() );
+//                paragraph.setParagraphContent( tp.getContent() );
+//                paragraph.setParagraphKnowledge( jkids );//记下是第几号知识点
+//                paragraph.setParagraph_seq( secseq*100000+knowseq*1000+(++pagseq) );
+////                paragraph.setParagraphNewline( "y" );
+//                paragraphs.add(paragraph);
+//            }
+//            ji++;
+//        }
+//
+//        return null;//返回null表示没有问题
+//    }
 
 }

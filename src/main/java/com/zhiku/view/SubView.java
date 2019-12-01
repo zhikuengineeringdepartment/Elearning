@@ -1,16 +1,16 @@
 package com.zhiku.view;
 
 public class SubView {
-    private int sid;
+    private Integer sid;
     private String sectionName;
     private Integer sectionSeq;
-    private int sectionCourse;
+    private Integer sectionCourse;
 
-    public int getSid() {
+    public Integer getSid() {
         return sid;
     }
 
-    public void setSid(int sid) {
+    public void setSid(Integer sid) {
         this.sid = sid;
     }
 
@@ -30,11 +30,11 @@ public class SubView {
         this.sectionSeq = sectionSeq;
     }
 
-    public int getSectionCourse() {
+    public Integer getSectionCourse() {
         return sectionCourse;
     }
 
-    public void setSectionCourse(int sectionCourse) {
+    public void setSectionCourse(Integer sectionCourse) {
         this.sectionCourse = sectionCourse;
     }
 

@@ -78,6 +78,10 @@ public class ContentTemplate {
         mongoTemplate.upsert(query, update, Paragraph.class);
     }
 
+    public void instertAll(List<Paragraph> paragraphs){
+        mongoTemplate.insert( paragraphs,Paragraph.class);
+    }
+
     //不为null的字段更新//不含_class
     public static Update fromDBObjectExcludeNullFields(DBObject object,Update update) {
         for (String key : object.keySet()) {
@@ -88,7 +92,4 @@ public class ContentTemplate {
         }
         return update;
     }
-
-
-
 }

@@ -89,6 +89,7 @@ public class IndexService {
             }
             knowledgeView.getParagraphs().add( paragraph );
         }
+        //TODO:知识点列表已排序，段落缺少按seq排序
 
         sectionContentView.setKnowledgeViews(knowledgeViews);
         return sectionContentView;

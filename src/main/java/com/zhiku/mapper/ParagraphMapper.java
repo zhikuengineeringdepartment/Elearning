@@ -22,7 +22,7 @@ public interface ParagraphMapper {
     int updateByPrimaryKey(ParagraphMysql record);
 
 //    自定义方法
-    int insertAll(List<Paragraph> record);
+    int insertAll(List<ParagraphMysql> record);
 
     ParagraphMysql selectByParagraphSeq(Integer paragraphSeq);
 

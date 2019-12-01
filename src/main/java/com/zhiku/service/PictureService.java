@@ -83,8 +83,9 @@ public class PictureService {
 
         picture.setOrgName( orgName );
         picture.setUrl( url );
-        picture.setCreateTime( new Date(  ) );
-
+        if(picture.getCreateTime()==null){
+            picture.setCreateTime( new Date(  ) );
+        }
         pictureMapper.insertSelective( picture );
         return null;
     }
