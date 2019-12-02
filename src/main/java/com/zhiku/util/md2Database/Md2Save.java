@@ -385,7 +385,7 @@ public class Md2Save {
                 paragraph.setParagraphType( ""+tp.getType() );
                 paragraph.setParagraphContent( tp.getContent() );
                 paragraph.setParagraphKnowledge( kid );//记下是第几号知识点
-                paragraph.setParagraph_seq( ++pagseq );
+                paragraph.setParagraphSeq( ++pagseq );
                 paragraphs.add(paragraph);
             }
         }
@@ -472,7 +472,7 @@ public class Md2Save {
 //                paragraph.setParagraphType( ""+tp.getType() );
 //                paragraph.setParagraphContent( tp.getContent() );
 //                paragraph.setParagraphKnowledge( jkids );//记下是第几号知识点
-//                paragraph.setParagraph_seq( secseq*100000+knowseq*1000+(++pagseq) );
+//                paragraph.setParagraphSeq( secseq*100000+knowseq*1000+(++pagseq) );
 ////                paragraph.setParagraphNewline( "y" );
 //                paragraphs.add(paragraph);
 //            }

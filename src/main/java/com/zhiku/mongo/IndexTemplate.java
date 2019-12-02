@@ -5,6 +5,7 @@ import com.zhiku.entity.mongodb.Child;
 import com.zhiku.entity.Course;
 import com.zhiku.entity.mongodb.Index;
 import com.zhiku.entity.mongodb.Paragraph;
+import com.zhiku.util.ChildUtil;
 import com.zhiku.view.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,14 +103,15 @@ public class IndexTemplate {
             vid = course.getVid();
         }
         //查询出对应课程号的一级索引
-        //TODO:缺少按seq排序
+
         Criteria index = Criteria.where("cid").is(cid).and("vid").is(vid);
         List<Index> indexlist = mongoTemplate.find(query(index), Index.class);
         if(indexlist==null||indexlist.size()==0){
             return null;
         }
         Index i = indexlist.get(0);//修改表结构之后，indexlist里应该只有一条index记录
-
+        //按seq排序
+        ChildUtil.childSort( i.getCatalog() );
 
         return index2CourseView(i,course);
     }
@@ -296,7 +298,11 @@ public class IndexTemplate {
             SectionView sec = new SectionView();
             //获取catalog中的第一层的一个child结构
             //进行相应的处理，把数据装进SectionView里面
-            sec.setTitle(c.getSection_name());
+            String title=c.getSection_name();
+            if(title.indexOf( "# " )==0){//去除章前"# "
+                title=title.substring( 2 );
+            }
+            sec.setTitle(title);
             sec.setIndex(ind);
             ind++;
             List<Child> children1 = c.getSub();

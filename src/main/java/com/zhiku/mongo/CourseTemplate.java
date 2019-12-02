@@ -68,7 +68,7 @@ public class CourseTemplate {
     public void updateByPrimaryKey(Course course){
         Query query = new Query();
         Update update = new Update();
-        query.addCriteria( Criteria.where("_id").is(course.getCid()));
+        query.addCriteria( Criteria.where("cid").is(course.getCid()));
         DBObject dbDoc = new BasicDBObject();
         mongoTemplate.getConverter().write(course, (Bson) dbDoc );
         update=ContentTemplate.fromDBObjectExcludeNullFields(dbDoc,update);

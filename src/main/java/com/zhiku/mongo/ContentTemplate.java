@@ -36,36 +36,44 @@ public class ContentTemplate {
     /**
      * 查询多个知识点的段落，有顺序
      * @param kids 知识点列表
-     * @return 排序：按传入时知识点顺序，知识点相同，按段落seq从小到大
      */
-    public List<Paragraph> findBySortKids(List<Integer> kids){
+    public List<Paragraph> findByKids(List<Integer> kids){
         Query query=new Query(  );
         query.addCriteria( Criteria.where("paragraph_knowledge").in(kids) );
         query.with( Sort.by( "paragraph_knowledge","paragraph_seq" ) );
         List<Paragraph> paragraphs=mongoTemplate.find(query, Paragraph.class);
-        //排序
-        Paragraph[] paragraphsA=new Paragraph[paragraphs.size()];
-        Map<Integer,Integer> kid2L=new HashMap<>( kids.size()*3/2 );//每个知识点段落数
+        ///////////////
         for(Paragraph paragraph:paragraphs){
-            Integer n=kid2L.get(paragraph.getParagraphKnowledge());
-            if(n==null)
-                n=0;
-            kid2L.put( paragraph.getParagraphKnowledge(),n+1 );
+            System.out.println(paragraph.getParagraphContent());/////////////////////
         }
-        Map<Integer,Integer> kid2i=new HashMap<>( kids.size()*3/2 );//每个知识点段落数
-        int oldi=0;
-        for(Integer kid:kids){
-            kid2i.put( kid,oldi );
-            oldi+= kid2L.get(kid)==null ? 0:kid2L.get( kid );
-        }
-        for(Paragraph paragraph:paragraphs){
-            Integer i=kid2i.get(paragraph.getParagraphKnowledge());
-            if(i==null)
-                continue;
-            paragraphsA[i]=paragraph;
-            kid2i.put(paragraph.getParagraphKnowledge(),i+1);
-        }
-        return Arrays.asList(paragraphsA);
+
+        ////////////////////
+
+
+//        //排序
+//        Paragraph[] paragraphsA=new Paragraph[paragraphs.size()];
+//        Map<Integer,Integer> kid2L=new HashMap<>( kids.size()*3/2 );//每个知识点段落数
+//        for(Paragraph paragraph:paragraphs){
+//            Integer n=kid2L.get(paragraph.getParagraphKnowledge());
+//            if(n==null)
+//                n=0;
+//            kid2L.put( paragraph.getParagraphKnowledge(),n+1 );
+//        }
+//        Map<Integer,Integer> kid2i=new HashMap<>( kids.size()*3/2 );//每个知识点段落数
+//        int oldi=0;
+//        for(Integer kid:kids){
+//            kid2i.put( kid,oldi );
+//            oldi+= kid2L.get(kid)==null ? 0:kid2L.get( kid );
+//        }
+//        for(Paragraph paragraph:paragraphs){
+//            Integer i=kid2i.get(paragraph.getParagraphKnowledge());
+//            if(i==null)
+//                continue;
+//            paragraphsA[i]=paragraph;
+//            kid2i.put(paragraph.getParagraphKnowledge(),i+1);
+//        }
+
+        return paragraphs;
     }
 
     public void updateByPrimaryKey(Paragraph paragraph){

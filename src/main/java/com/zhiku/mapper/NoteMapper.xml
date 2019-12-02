@@ -102,7 +102,7 @@
     from note ,paragraph,course
     where pid = note_para
       and note_user = #{uid}
-      and paragraph_seq div 100000 = #{sid}
+      and paragraphSeq div 100000 = #{sid}
       and #{sid} div 100 = course.cid
 
   </select>

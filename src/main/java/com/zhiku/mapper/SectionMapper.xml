@@ -107,7 +107,7 @@
   <select id="getSectionViewBySid" parameterType="java.lang.Integer" resultMap="SectionView">
     select *
     from section ,knowledge ,paragraph
-    where sid = #{sid} and section.sid = knowledge.knowledge_section and knowledge.kid = paragraph.paragraph_knowledge order by paragraph_seq
+    where sid = #{sid} and section.sid = knowledge.knowledge_section and knowledge.kid = paragraph.paragraph_knowledge order by paragraphSeq
   </select>
   <select id="selectSectionMaxID" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select ifnull(max(sid),0)<!--返回null报错-->

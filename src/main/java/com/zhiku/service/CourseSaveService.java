@@ -8,6 +8,7 @@ import com.zhiku.entity.mongodb.Paragraph;
 import com.zhiku.mongo.ContentTemplate;
 import com.zhiku.mongo.CourseTemplate;
 import com.zhiku.mongo.IndexTemplate;
+import com.zhiku.util.ChildUtil;
 import com.zhiku.util.SmallTools;
 import com.zhiku.view.CourseView;
 import com.zhiku.view.KnowledgeView;
@@ -168,7 +169,7 @@ public class CourseSaveService {
             childList=new ArrayList<>(  );
             childList.add( chapter );
         }
-        index.setCatalog(merge(index.getCatalog(),childList));
+        index.setCatalog(ChildUtil.merge(index.getCatalog(),childList));
         //储存
         Map<Integer,Integer> kid2xkid=indexTemplate.upset(index);
         for(Paragraph paragraph:paragraphs){
@@ -268,7 +269,7 @@ public class CourseSaveService {
         index.setCatalog( chapterList );
         CourseView courseView1= IndexTemplate.index2CourseView(index,course);
         //生成节视图对应
-        int maxKid=maxSid(chapterList,3);
+        int maxKid= ChildUtil.maxSid(chapterList,3);
         KnowledgeView[] knowledgeViews=new KnowledgeView[maxKid+1];//储存地址，便于找到
         //创建KnowledgeView，SectionContentView
         for(Child child1:chapterList){//章
@@ -310,7 +311,7 @@ public class CourseSaveService {
 //            sSeq=Integer.parseInt(sections.get( oldSid ).getSectionSeq());
 //        }
 //        for(Paragraph paragraph:paragraphs){
-//            int pSeq=paragraph.getParagraph_seq();
+//            int pSeq=paragraph.getParagraphSeq();
 //            int pKSeq=pSeq/1000;
 //            if(pKSeq>kSeq){//新知识点
 //                //存旧知识点视图
@@ -409,78 +410,5 @@ public class CourseSaveService {
 //        return false;
 //    }
 
-    //child按seq从小到大排序
-    private void childSort(List<Child> children){
-        Collections.sort( children, new Comparator<Child>() {
-            @Override
-            public int compare(Child o1, Child o2) {
-                return o1.getSection_seq()-o2.getSection_seq();
-            }
-        });
-        for (Child child:children){
-            if(child!=null&&child.getSub()!=null){
-                childSort( child.getSub() );
-            }
-        }
-    }
 
-    //合并两目录结构,newChildren可以覆盖orgChildren
-    // 注:要确保level同层级
-    private List<Child> merge(List<Child> orgChildren,List<Child> newChildren){
-        if(newChildren==null){
-            return orgChildren;
-        }else if(orgChildren==null){
-            return newChildren;
-        }
-        //找出最大seq
-        int maxseq=0;
-        for(Child child:orgChildren){
-            if(child.getSection_seq()>maxseq){
-                maxseq=child.getSection_seq();
-            }
-        }
-        for(Child child:newChildren){
-            if(child.getSection_seq()>maxseq){
-                maxseq=child.getSection_seq();
-            }
-        }
-        //seq小为0,大部分时从0开始，不用省空间
-        Child[] children=new Child[maxseq+1];
-        //先赋值newChildren，可以覆盖orgChildren
-        for(Child child:newChildren){
-            children[child.getSection_seq()]=child;
-        }
-        for(Child child:orgChildren){
-            if(children[child.getSection_seq()]==null){
-                children[child.getSection_seq()]=child;
-            }else if(child.getLevel()==1){//如果是章，到节再覆盖
-                children[child.getSection_seq()].setSub(
-                        merge(child.getSub(),children[child.getSection_seq()].getSub()));
-            }//非章，不能覆盖newChildren
-        }
-        List<Child> re=new ArrayList<>(  );
-        for (Child child : children) {
-            if (child != null) {
-                re.add( child );
-            }
-        }
-        return re;
-    }
-
-    private int maxSid(List<Child> children,int level){
-        int max=0;
-        for(Child child:children){
-            if(child.getLevel()==level){
-                if(max<child.getSid()){
-                    max=child.getSid();
-                }
-            }else if(child.getLevel()<level&&child.getSub()!=null){
-                int m=maxSid(child.getSub(),level);
-                if(max<m){
-                    max=m;
-                }
-            }
-        }
-        return max;
-    }
 }

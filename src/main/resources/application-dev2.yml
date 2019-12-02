@@ -20,6 +20,7 @@ spring:
             fallback: false
   data:
     mongodb:
+#      uri: mongodb://admin:admin@211.87.227.234:27017/zhiku?authSource=admin&readPreference=primary&appname=MongoDB%20Compass%20Beta&ssl=false
       uri: mongodb://127.0.0.1:27017/zhiku
   datasource:
     #todo: 临时替换数据库，避免影响上线数据库
@@ -45,15 +46,15 @@ mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
 server:
-  port: 8080
+  port: 12321
 #logging:
 #  level:
 #    com.zhiku.*: debug
 
 #自定义值#
 #智库工程储存根路径
-#root_path: /var/zhiku
-root_path: E:/ZhikuFiles
+root_path: /var/zhiku
+#root_path: E:/ZhikuFiles
 #记录文件位置
 file_path:
   #访问量记录文件
