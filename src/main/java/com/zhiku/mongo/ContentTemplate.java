@@ -4,9 +4,11 @@ import com.zhiku.entity.ColParagraph;
 import com.zhiku.entity.Paragraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -15,7 +17,8 @@ public class ContentTemplate {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    private List<Paragraph> getAll(){
+
+    public List<Paragraph> getAll(){
         Query query = new Query();
         List<Paragraph> courses = mongoTemplate.find(query, Paragraph.class);
         ListIterator<Paragraph> iter = courses.listIterator();
@@ -27,5 +30,7 @@ public class ContentTemplate {
         }
         return courses;
     }
+
+
 
 }

@@ -50,12 +50,12 @@ public class ParagraphController {
     @RequestMapping(value = "addColParagraph",method = RequestMethod.POST)
     public ResponseData addColParagraph(User user, int paragraphSeq){
         ResponseData responseData = null;
-        if(paragraphService.addColParagraph(user.getUid(),paragraphSeq)){
-            responseData = ResponseData.ok();
-        }else{
-            responseData = ResponseData.serverInternalError();
-            responseData.setMessage("收藏失败，请稍后重试");
-        }
+//        if(paragraphService.addColParagraph(user.getUid(),paragraphSeq)){
+//            responseData = ResponseData.ok();
+//        }else{
+//            responseData = ResponseData.serverInternalError();
+//            responseData.setMessage("收藏失败，请稍后重试");
+//        }
         return responseData;
     }
 

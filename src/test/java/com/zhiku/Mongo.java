@@ -26,10 +26,12 @@ public class Mongo extends ApplicationTest{
 
     @Test
     public void Test2(){
-        List<ColParagraph> a = collectTemplate.getAllColPara();
-        for (int i=0;i<a.size();i++){
-            System.out.println(a.get(i).getParaSeq());
-        }
+//        List<ColParagraph> a = collectTemplate.getAllColPara();
+//        for (int i=0;i<a.size();i++){
+//            System.out.println(a.get(i).getParaSeq());
+//        }
+        collectTemplate.insertColPar(10005,4265);
+
     }
 
 }

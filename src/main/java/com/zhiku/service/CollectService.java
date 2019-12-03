@@ -13,9 +13,9 @@ public class CollectService {
     @Autowired
     private CollectTemplate template;
 
-    public List<ColParagraph> getAllColPara(){
-        return this.template.getAllColPara();
-    }
+//    public List<ColParagraph> getAllColPara(){
+//        return this.template.getAllColPara();
+//    }
     public List<Note> getAllNote(){
         return this.template.getAllNote();
     }

@@ -4,6 +4,8 @@ import com.zhiku.entity.*;
 import com.zhiku.mapper.ColParagraphMapper;
 import com.zhiku.mapper.NoteMapper;
 import com.zhiku.mapper.ParagraphMapper;
+import com.zhiku.mongo.CollectTemplate;
+import com.zhiku.mongo.ContentTemplate;
 import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import com.zhiku.view.NoteView;
@@ -21,6 +23,8 @@ public class ParagraphService {
     ColParagraphMapper colParagraphMapper;
     @Autowired
     NoteMapper noteMapper;
+    @Autowired
+    private CollectTemplate template;
 
     /**
      * 获取某一节的收藏段落
@@ -48,17 +52,19 @@ public class ParagraphService {
      * @param paragraphSeq
      * @return
      */
-    public boolean addColParagraph(int uid, int paragraphSeq) {
-        ColParagraph colParagraph = new ColParagraph();
-        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
-        colParagraph.setColpPara(paragraph.getPid());
-        colParagraph.setColpUser(uid);
-        colParagraph.setColpDate(new Date());
-        if(colParagraphMapper.insert(colParagraph)>0){
-            return true;
-        }else{
-            return false;
-        }
+    public void addColParagraph(int uid, int paragraphSeq) {
+//        ColParagraph colParagraph = new ColParagraph();
+//        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        colParagraph.setColpPara(paragraph.getPid());
+//        colParagraph.setColpUser(uid);
+//        colParagraph.setColpDate(new Date());
+//        if(colParagraphMapper.insert(colParagraph)>0){
+//            return true;
+//        }else{
+//            return false;
+//        }
+        this.template.insertColPar(uid, paragraphSeq);
+
     }
 
     /**
@@ -68,15 +74,16 @@ public class ParagraphService {
      * @return
      */
     public boolean removeColParagraph(int uid,int paragraphSeq){
-        ColParagraphKey colParagraphKey = new ColParagraphKey();
-        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
-        colParagraphKey.setColpUser(uid);
-        colParagraphKey.setColpPara(paragraph.getPid());
-        if(colParagraphMapper.deleteByPrimaryKey(colParagraphKey)>0){
-            return true;
-        }else {
-            return false;
-        }
+//        ColParagraphKey colParagraphKey = new ColParagraphKey();
+//        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        colParagraphKey.setColpUser(uid);
+//        colParagraphKey.setColpPara(paragraph.getPid());
+//        if(colParagraphMapper.deleteByPrimaryKey(colParagraphKey)>0){
+//            return true;
+//        }else {
+//            return false;
+//        }
+        return true;
     }
 
     /**

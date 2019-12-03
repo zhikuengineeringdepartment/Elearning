@@ -6,19 +6,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
-@Document(collection = "content")
-public class ColParagraph extends ColParagraphKey {
+@Document(collection = "collect")
+public class ColParagraph{
     @Id
     private ObjectId id;
     @Field("paragraph_seq")
-    private Integer paraSeq;
+    private ObjectId paraSeq;
+    @Field("colp_date")
     private Date colpDate;
+    @Field("colp_user")
+    private int colpUser;
 
     public ObjectId getId() {
         return id;
     }
 
-    public Integer getParaSeq() {
+    public ObjectId getParaSeq() {
         return paraSeq;
     }
 
@@ -26,15 +29,23 @@ public class ColParagraph extends ColParagraphKey {
         return colpDate;
     }
 
+    public int getColpUser() {
+        return colpUser;
+    }
+
     public void setId(ObjectId id) {
         this.id = id;
     }
 
-    public void setParaSeq(Integer paraSeq) {
+    public void setParaSeq(ObjectId paraSeq) {
         this.paraSeq = paraSeq;
     }
 
     public void setColpDate(Date colpDate) {
         this.colpDate = colpDate;
+    }
+
+    public void setColpUser(int colpUser) {
+        this.colpUser = colpUser;
     }
 }
