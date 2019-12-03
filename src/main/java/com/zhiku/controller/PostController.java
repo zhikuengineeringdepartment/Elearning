@@ -39,25 +39,9 @@ public class PostController {
             responseData.setMessage("帖子内容为空");
             return responseData;
         }
-        Date currentDate=new Date();
-        Post post=new Post();
-        post.setContent(postContent);
-        post.setTitle(postTitle);
-        post.setAuthor(user.getUid());
-        post.setDelete(false);
-        post.setReplyCount(0);
-        post.setAgreeCount(0);
-        post.setDisagreeUsers(new ArrayList<>());
-        post.setUpdateTime(currentDate);
-        post.setCreateTime(currentDate);
-        post.setAgreeUsers(new ArrayList<>());
-        if(courseId==null){
-            post.setCourseId(0);
-        }else{
-            post.setCourseId(courseId);
-        }
         try {
-            postService.add(post);
+            //postService.add(post);
+            postService.add(user.getUid(),postTitle,postContent,courseId);
             responseData=ResponseData.ok();
         }catch (Exception e){
             e.printStackTrace();

@@ -72,6 +72,20 @@ public class PostReplyController {
     }
 
     /**
+     * 删除评论接口
+     * 传入参数:
+     * 1.评论类型
+     * 2.评论id
+     * 返回情况:
+     * 评论不存在
+     * 删除成功
+     * */
+    @RequestMapping("/deletereply")
+    public ResponseData deleteReply(@RequestParam("type") int type,@RequestParam("rId") int rId){
+        return null;
+    }
+
+    /**
      * 查询评论接口
      * 传入参数:
      * 1.帖子id

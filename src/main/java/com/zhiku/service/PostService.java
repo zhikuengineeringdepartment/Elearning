@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 @Service
 public class PostService {
 
@@ -23,19 +26,39 @@ public class PostService {
     //排序规则：不排|更新时间倒序|点赞数倒序
     private int[] orderRule={0,1,2};
 
-    public void add(Post post) {
-        postTemplate.add(post);
-    }
 
     public Post get(String postId) {
         return  postTemplate.get(postId);
     }
+
 
     public void deleteOne(String postId) {
         long num = postTemplate.deleteOne(postId);
         if(num!=1){
             throw new RuntimeException("删除异常");
         }
+    }
+
+    public void add(Integer uid, String postTitle, String postContent,Integer courseId) {
+
+        Date currentDate=new Date();
+        Post post=new Post();
+        post.setContent(postContent);
+        post.setTitle(postTitle);
+        post.setAuthor(uid);
+        post.setDelete(false);
+        post.setReplyCount(0);
+        post.setAgreeCount(0);
+        post.setDisagreeUsers(new ArrayList<>());
+        post.setUpdateTime(currentDate);
+        post.setCreateTime(currentDate);
+        post.setAgreeUsers(new ArrayList<>());
+        if(courseId==null){
+            post.setCourseId(0);
+        }else{
+            post.setCourseId(courseId);
+        }
+        postTemplate.add(post);
     }
 
     public List<PostView> list(Integer page, Integer pageSize,Integer order){
