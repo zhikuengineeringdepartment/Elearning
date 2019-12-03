@@ -117,6 +117,19 @@ public class IndexTemplate {
     }
 
     /**
+     * 获取目录，仅章、节部分
+     * @param cid 课程id
+     * @param vid 版本号
+     */
+    public Index getCatalog(int cid,String vid){
+        //查询出对应课程号的一级索引
+        Query query=new Query(  );
+        query.addCriteria( Criteria.where("cid").is(cid).and( "vid" ).is( vid ) );
+        query.fields().exclude("catalog.sub.sub");//不包含第三层知识点
+        return mongoTemplate.findOne(query, Index.class);
+    }
+
+    /**
      * 获取指定节的全部内容
      * @param sid
      * @return

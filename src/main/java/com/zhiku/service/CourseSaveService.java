@@ -10,21 +10,22 @@ import com.zhiku.mongo.CourseTemplate;
 import com.zhiku.mongo.IndexTemplate;
 import com.zhiku.util.ChildUtil;
 import com.zhiku.util.SmallTools;
-import com.zhiku.view.CourseView;
-import com.zhiku.view.KnowledgeView;
-import com.zhiku.view.SectionContentView;
-import com.zhiku.view.SectionView;
+import com.zhiku.view.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.zhiku.util.md2Database.Md2Save;
 
+import javax.jnlp.IntegrationService;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
 public class CourseSaveService {
@@ -98,46 +99,54 @@ public class CourseSaveService {
      * 储存课程内容
      * 适用于添加新课程内容，增加内容，替换内容
      */
-    public String saveContent(String filePath,int cid,String vid,Integer[][] seqs) throws IOException {
+    public String saveContent(String filePath,int cid,String vid,List<ChapterProgressView> seqs) throws IOException {
         List<Child> childList=new ArrayList<>(  );
         List<Paragraph> paragraphs=new ArrayList<>(  );
         //存入实体类中
         String errorStr=Md2Save.md2Entitys( filePath,childList,paragraphs );
         if(errorStr!=null)
             return errorStr;
+        //确保结构严格，没有章添加空章
+        if(childList.get( 0 ).getLevel()!=1){
+            Child chapter=new Child();
+            if(seqs==null||seqs.size()==0||seqs.get( 0 ).getChapter()==null)
+                return "解析失败，不确定章号";
+            chapter.setSection_seq( seqs.get( 0 ).getChapter() );
+            chapter.setLevel( 1 );
+            chapter.setSection_name( "" );
+            chapter.setSub( childList );
+            childList=new ArrayList<>(  );
+            childList.add( chapter );
+        }
         //修改序列
-        //seqs=[[1,1],[1,2],[2,2]]//[[章,节]]
-        if(seqs!=null){
+        if(seqs!=null&&seqs.size()>0){
             List<Child> tempList=new ArrayList<>(  );//不在seq中的要移除
-            int i=0;
+            int i=-1;
             for(Child child:childList){
-                if(i<seqs.length){
-                    if(child.getLevel()==1){//章
-                        child.setSection_seq( seqs[i][0] );
-                    }else if(child.getLevel()==2){//节
-                        child.setSection_seq( seqs[i][1] );
-                        i+=1;
-                    }
-                    tempList.add( child );
-                }else{
-                    break;//1、为章，不在seq中，移除；2、为知识点，在第一层，没有目录结构，本方法暂不处理没有目录结构的部分
-                }
-                List<Child> sections=child.getSub();
-                if(child.getLevel()==2||sections==null)
+                if(i>=(seqs.size()-1))
+                   break;
+                if(child.getLevel()!=1)//第一层只存章
                     continue;
-                List<Child> tempSections=new ArrayList<>(  );
-                for (Child child1:sections){
-                    if(child1.getLevel()==2){//节
-                        if(i<seqs.length){
-                            child.setSection_seq( seqs[i][1] );
-                            i+=1;
-                            tempList.add( child );
+                tempList.add( child );
+                ChapterProgressView chapterProgressView=seqs.get( ++i );
+                child.setSection_seq( chapterProgressView.getChapter() );
+                List<Integer> secseq=chapterProgressView.getSections();
+                List<Child> sections=child.getSub();
+                if(secseq!=null&&secseq.size()>0&&sections!=null){//否则不用改变原顺序
+                    int j=-1;
+                    List<Child> tempSections=new ArrayList<>(  );
+                    for (Child section:sections){
+                        if(section.getLevel()!=2) {//节
+                            continue;
                         }
-                    }else{
-                        tempSections.add(child1);
+                        if(j>=(secseq.size()-1))
+                            break;
+                        child.setSection_seq( secseq.get(j) );
+                        tempSections.add( child );
                     }
+                    child.setSub( tempSections );
                 }
-                child.setSub( tempSections );
+
             }
             childList=tempList;
         }
@@ -157,18 +166,8 @@ public class CourseSaveService {
             index.setVid( vid );
             index.setCatalog( new ArrayList<>(  ) );
         }
+
         //合并目录
-        if(childList.get( 0 ).getLevel()!=1){//确保结构严格，没有章
-            Child chapter=new Child();
-            if(seqs==null)
-                return "解析失败，不确定章号";
-            chapter.setSection_seq( seqs[0][0] );
-            chapter.setLevel( 1 );
-            chapter.setSection_name( "" );
-            chapter.setSub( childList );
-            childList=new ArrayList<>(  );
-            childList.add( chapter );
-        }
         index.setCatalog(ChildUtil.merge(index.getCatalog(),childList));
         //储存
         Map<Integer,Integer> kid2xkid=indexTemplate.upset(index);
@@ -392,6 +391,41 @@ public class CourseSaveService {
         sectionView.setSectionName( child.getSection_name()  );
         sectionView.setSectionSeq( child.getSection_seq());
         return sectionView;
+    }
+
+    public List<ChapterProgressView> getProgress(Integer cid,String vid){
+        if(vid==null){
+            //查询出课程
+            Course course=courseTemplate.findByPrimaryKey( cid );
+            if (course==null)
+                return null;
+            vid=course.getVid();
+        }
+        Index index=indexTemplate.getCatalog(cid,vid);
+        if (index==null)
+            return null;
+        //记录序号
+        List<ChapterProgressView> chapterProgressViews=new ArrayList<>(  );
+
+        List<Child> chapters=index.getCatalog();
+        for(Child chapter:chapters){
+            if(chapter==null||chapter.getLevel()!=1)//第一层不是章，没有上级章无法记录
+                continue;
+            ChapterProgressView chapterProgressView=new ChapterProgressView();
+            chapterProgressView.setChapter( chapter.getSection_seq() );
+            chapterProgressView.setSections( new ArrayList<>(  ) );
+            //节
+            List<Child> sections=chapter.getSub();
+            if(sections!=null){
+                for (Child section:sections){
+                    if (section==null||section.getLevel()!=2)
+                        continue;
+                    chapterProgressView.getSections().add( section.getSection_seq() );
+                }
+            }
+            chapterProgressViews.add( chapterProgressView );
+        }
+        return chapterProgressViews;
     }
 
 //    //查重

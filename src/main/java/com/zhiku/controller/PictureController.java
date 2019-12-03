@@ -4,6 +4,7 @@ import com.zhiku.entity.Picture;
 import com.zhiku.entity.User;
 import com.zhiku.service.PictureService;
 import com.zhiku.util.ResponseData;
+import com.zhiku.view.ChapterProgressView;
 import com.zhiku.view.PictureView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.lang.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.*;
 
 @CrossOrigin(value = "*")
@@ -40,11 +40,15 @@ public class PictureController {
      */
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData save(User user, @RequestParam("file") MultipartFile file, Picture picture) {
+    public ResponseData save(User user, @RequestParam("file") MultipartFile file,
+                             Integer cid, String[] sections) {
         if(!isAdm(user)) {
             return ResponseData.powerError();
         }
         //储存图片
+        Picture picture=new Picture();
+        picture.setCid( cid );
+        picture.setSections(StringUtils.join(sections,','));
         picture.setUid( user.getUid() );
         String re=pictureService.addPicture( file,picture );
         if(re!=null){

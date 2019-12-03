@@ -3,7 +3,9 @@ package com.zhiku.controller;
 
 import com.zhiku.entity.User;
 import com.zhiku.service.CourseSaveService;
+import com.zhiku.service.IndexService;
 import com.zhiku.util.ResponseData;
+import com.zhiku.view.ChapterProgressView;
 import com.zhiku.view.CourseView;
 import com.zhiku.view.SectionContentView;
 import com.zhiku.view.SectionView;
@@ -84,13 +86,12 @@ public class CourseSaveController {
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
     public ResponseData save(User user, MultipartFile file,Integer cid,
-                             @RequestParam(required = false) String vid, @RequestParam(required = false) Integer[][] seqs)
+                             @RequestParam(required = false) String vid,
+                             @RequestParam(required = false) List<ChapterProgressView> seqs)
             throws IOException {
         if(!isAdm(user)) {
             return ResponseData.powerError();
         }
-
-        Integer[][] seqs2=seqs;
 
         //储存文件
         if(Objects.equals( file.getOriginalFilename(), "" )){
@@ -106,7 +107,7 @@ public class CourseSaveController {
             return new ResponseData(400,"文件上传失败");
         }
         //储存课程内容
-        String re= courseSaveService.saveContent( filePath,cid,vid, seqs2);
+        String re= courseSaveService.saveContent( filePath,cid,vid, seqs);
         if(re!=null){
             return new ResponseData(400,re+"!");
         }
@@ -165,6 +166,24 @@ public class CourseSaveController {
         responseData.putDataValue( "courseView",courseView );
         responseData.putDataValue( "sectionViewMap",sectionViewMap );//？key为Integer的map无法转化为json ！！
 
+        return responseData;
+    }
+
+    /**
+     * 获取课程内容添加进度
+     * @param cid 课程id
+     * @param vid 版本号
+     */
+    @RequestMapping(value = "/progress")
+    @ResponseBody
+    public ResponseData progress(User user,Integer cid,String vid){
+        if(!isAdm(user)) {
+            return ResponseData.powerError();
+        }
+        List<ChapterProgressView> chapterProgressViews=courseSaveService.getProgress(cid,vid);
+
+        ResponseData responseData=new ResponseData(  );
+        responseData.putDataValue( "progress",chapterProgressViews );
         return responseData;
     }
 

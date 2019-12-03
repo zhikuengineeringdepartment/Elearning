@@ -47,7 +47,7 @@ public class CourseTemplate {
     }
 
     /**
-     * 插入新课程，不知道cid
+     * 插入新课程，自动生成cid
      * @param course
      */
     public void insert(Course course){
@@ -95,7 +95,9 @@ public class CourseTemplate {
         mongoTemplate.remove( query ,Course.class);
     }
 
-    //获得课程的全部版本
+    /**
+     *获得课程的全部版本
+     */
     public List<String> getVids(Integer cid){
         Query query = new Query();
         query.addCriteria( Criteria.where( "cid" ).is( cid ) );

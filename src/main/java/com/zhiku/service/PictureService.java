@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -102,7 +103,14 @@ public class PictureService {
         }else{
             m=(page-1)*pageSize;
         }
-        return pictureMapper.selectByUid( uid,m,pageSize );
+
+        List<PictureView> pictureViews=pictureMapper.selectByUid( uid,m,pageSize );
+        for (PictureView pictureView:pictureViews){
+            if(pictureView.getSections()!=null){
+                pictureView.setSectionList( Arrays.asList(pictureView.getSections().split( "," )) );
+            }
+        }
+        return pictureViews;
     }
 
     /**
