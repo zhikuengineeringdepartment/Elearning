@@ -1,6 +1,5 @@
 package com.zhiku.service;
 
-import com.sun.star.presentation.ParagraphTarget;
 import com.zhiku.entity.Course;
 import com.zhiku.entity.mongodb.Child;
 import com.zhiku.entity.mongodb.Index;
@@ -11,15 +10,12 @@ import com.zhiku.mongo.IndexTemplate;
 import com.zhiku.util.ChildUtil;
 import com.zhiku.util.SmallTools;
 import com.zhiku.view.*;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.zhiku.util.md2Database.Md2Save;
 
-import javax.jnlp.IntegrationService;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
