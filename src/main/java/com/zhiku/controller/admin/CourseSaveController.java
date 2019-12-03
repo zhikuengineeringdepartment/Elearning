@@ -1,4 +1,4 @@
-package com.zhiku.controller;
+package com.zhiku.controller.admin;
 
 
 import com.zhiku.entity.User;
@@ -30,7 +30,7 @@ public class CourseSaveController {
 
     /**
      * 创建课程
-     * @param user 自动获取
+//     * @param user 自动获取
      * @param title 课程名称
      * @param vid 版本号
      * @param describe 课程描述
@@ -38,10 +38,10 @@ public class CourseSaveController {
      */
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData create(User user,String title,String describe,String vid,String iconPath){
-        if(!isAdm(user)) {
-            return ResponseData.powerError();
-        }
+    public ResponseData create(String title,String describe,String vid,String iconPath){
+//        if(!isAdm(user)) {
+//            return ResponseData.powerError();
+//        }
         if(title==null||title.equals( "" )){
             return new ResponseData( 400, "课程名称不能为空");
         }
@@ -51,7 +51,7 @@ public class CourseSaveController {
 
     /**
      * 修改课程，可修改课程版本号、标题、图片、描述
-     * @param user 自动获取
+//     * @param user 自动获取
      * @param title 课程名称
      * @param vid 版本号
      * @param describe 课程描述
@@ -59,14 +59,14 @@ public class CourseSaveController {
      */
     @RequestMapping(value = "/update_info",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData update(User user,Integer cid,
+    public ResponseData update(Integer cid,
                                @RequestParam(required = false)String title,
                                @RequestParam(required = false)String describe,
                                @RequestParam(required = false)String vid,
                                @RequestParam(required = false)String iconPath){
-        if(!isAdm(user)) {
-            return ResponseData.powerError();
-        }
+//        if(!isAdm(user)) {
+//            return ResponseData.powerError();
+//        }
         String error=courseSaveService.update( cid,title,vid,describe,iconPath );
         if(error!=null){
             return new ResponseData( 400,error );
@@ -78,20 +78,18 @@ public class CourseSaveController {
     //TODO:覆盖课程内容、删除课程内容，都没有处理段落（目前段落都不删），应当判断段落是否收藏，然后删除或者禁止删
     /**
      * 添加课程内容
-     * @param user 自动获取
      * @param file md文件
      * @param cid 课程id,vid 版本号
      */
-    //TODO:测试，postman无法传二维数组，临时拼接为一维
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData save(User user, MultipartFile file,Integer cid,
+    public ResponseData save( MultipartFile file,Integer cid,
                              @RequestParam(required = false) String vid,
                              @RequestParam(required = false) List<ChapterProgressView> seqs)
             throws IOException {
-        if(!isAdm(user)) {
-            return ResponseData.powerError();
-        }
+//        if(!isAdm(user)) {
+//            return ResponseData.powerError();
+//        }
 
         //储存文件
         if(Objects.equals( file.getOriginalFilename(), "" )){
@@ -116,32 +114,32 @@ public class CourseSaveController {
 
     /**
      * 删除课程
-     * @param user 自动获取
+//     * @param user 自动获取
      * @param cid 课程id
      * @param vid 课程版本号
      * @param seqs 要删除的章节,不传表示课程全部删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData delete(User user,Integer cid,String vid,@RequestParam(required = false) Integer[][] seqs) {
-        if(!isAdm(user)) {
-            return ResponseData.powerError();
-        }
+    public ResponseData delete(Integer cid,String vid,@RequestParam(required = false) List<ChapterProgressView> seqs) {
+//        if(!isAdm(user)) {
+//            return ResponseData.powerError();
+//        }
         courseSaveService.delete( cid,vid,seqs );
         return  ResponseData.ok();
     }
 
     /**
      * 预览课程内容
-     * @param user 自动获取
+//     * @param user 自动获取
      * @param file md|txt文件
      */
     @RequestMapping(value = "/preview",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData preview(User user, MultipartFile file) throws IOException {
-        if(!isAdm(user)) {
-            return ResponseData.powerError();
-        }
+    public ResponseData preview( MultipartFile file) throws IOException {
+//        if(!isAdm(user)) {
+//            return ResponseData.powerError();
+//        }
         //储存文件
         if(Objects.equals( file.getOriginalFilename(), "" )){
             return new ResponseData(400,"课程文件不能为空");
@@ -176,10 +174,10 @@ public class CourseSaveController {
      */
     @RequestMapping(value = "/progress")
     @ResponseBody
-    public ResponseData progress(User user,Integer cid,String vid){
-        if(!isAdm(user)) {
-            return ResponseData.powerError();
-        }
+    public ResponseData progress(Integer cid,String vid){
+//        if(!isAdm(user)) {
+//            return ResponseData.powerError();
+//        }
         List<ChapterProgressView> chapterProgressViews=courseSaveService.getProgress(cid,vid);
 
         ResponseData responseData=new ResponseData(  );

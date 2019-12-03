@@ -1,4 +1,4 @@
-package com.zhiku.controller;
+package com.zhiku.controller.admin;
 
 import com.zhiku.entity.mysql.File;
 import com.zhiku.service.FileService;

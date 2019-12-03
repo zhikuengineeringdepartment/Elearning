@@ -49,7 +49,7 @@ public class TokenAop {
      * @throws UserNotFoundException 未找到用户异常
      * @throws TokenVerifyErrorException    token验证失败异常
      */
-    @Before(value = "execution(* com.zhiku.controller.AdminController.*(..)))")
+    @Before(value = "execution(* com.zhiku.controller.admin.*.*(..)))")
     public void adminBefore(JoinPoint pjp) throws UserNotFoundException, TokenVerifyErrorException{
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = getCookieByName("token",request.getCookies());

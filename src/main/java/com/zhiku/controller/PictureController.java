@@ -2,7 +2,10 @@ package com.zhiku.controller;
 
 import com.zhiku.entity.Picture;
 import com.zhiku.entity.User;
+import com.zhiku.exception.TokenVerifyErrorException;
 import com.zhiku.service.PictureService;
+import com.zhiku.service.UserService;
+import com.zhiku.util.JWTUtil;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.ChapterProgressView;
 import com.zhiku.view.PictureView;
@@ -20,6 +23,8 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "/picture")
 public class PictureController {
+    @Autowired
+    UserService userService;
     //管理员uid，只有登录这些账号只能访问页面和使用功能
     private int[] admUids={101};
 
@@ -161,14 +166,13 @@ public class PictureController {
     }
 
     //判断是否是管理员
-    private boolean isAdm(User user){
-        int uid=user.getUid();
-        for (int admUid : admUids) {
-            if (uid == admUid) {
-                return true;
-            }
+    private boolean isAdm(User user0){
+        User user = userService.getUserById(user0.getUid());
+        //检查该用户是否是admin用户，即它的权限值为a（admin），普通的用户权限值为u（user）
+        if(!"a".equals(user.getUserAuth())){
+            return false;
         }
-        return false;
+        return true;
     }
 
 }

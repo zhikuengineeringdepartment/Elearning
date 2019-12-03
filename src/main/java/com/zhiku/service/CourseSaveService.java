@@ -184,43 +184,52 @@ public class CourseSaveService {
         courseTemplate.deleteByCid(cid);
     }
 
-    public void delete(Integer cid,String vid,Integer[][] seqs) {
-        if(seqs==null){
+    public void delete(Integer cid,String vid,List<ChapterProgressView> seqs) {
+        if(seqs==null||seqs.size()==0){
             indexTemplate.deleteByPrimaryKey(cid,vid);
         }else{
             int maxCata=0,maxSec=0;
-            for(Integer[] seq:seqs){
-                if(seq[0]>maxCata){
-                    maxCata=seq[0];
+            for(ChapterProgressView chapterProgressView:seqs) {
+                if (chapterProgressView.getChapter() > maxCata) {
+                    maxCata = chapterProgressView.getChapter();
                 }
-                if(seq[1]>maxSec){
-                    maxSec=seq[1];
+                if(chapterProgressView.getSections()!=null&&chapterProgressView.getSections().size()>maxSec){
+                    maxSec=chapterProgressView.getSections().size();
                 }
             }
+            boolean[] removeChapter=new boolean[maxCata+1];
             Boolean[][] isRome=new Boolean[maxCata+1][maxSec+1];
-            for(Integer[] seq:seqs){
-                isRome[seq[0]][seq[1]]=true;
+            for(ChapterProgressView chapterProgressView:seqs){
+                if(chapterProgressView.getSections()==null||chapterProgressView.getSections().size()==0) {
+                    removeChapter[chapterProgressView.getChapter()] = true;
+                }else{
+                    for(Integer i:chapterProgressView.getSections()){
+                        isRome[chapterProgressView.getChapter()][i]=true;
+                    }
+                }
             }
             Index index=indexTemplate.findByPrimaryKey( cid,vid );
             List<Child> xchapters=new ArrayList<>(  );
             for(Child chapter:index.getCatalog(  )){
                 if(chapter.getLevel()!=2)
                     continue;
-                if(chapter.getSection_seq()>maxCata){
-                    break;
-                }
-                List<Child> xsectionx=new ArrayList<>(  );
-                for(Child section:chapter.getSub()){
-                    if(section.getSection_seq()<maxSec&&!isRome[chapter.getSection_seq()][section.getSection_seq()]){
-                        xsectionx.add( section );
+                if(chapter.getSection_seq()<=maxCata){
+                    if(removeChapter[chapter.getSection_seq()])//整章删除
+                        continue;
+                    List<Child> xsectionx=new ArrayList<>(  );
+                    for(Child section:chapter.getSub()){
+                        if(section.getSection_seq()<maxSec&&!isRome[chapter.getSection_seq()][section.getSection_seq()]){
+                            xsectionx.add( section );
+                        }
+                    }
+                    if (xsectionx.size()>0){
+                        chapter.setSub( xsectionx );
+                        xchapters.add( chapter );
                     }
                 }
-                if (xsectionx.size()>0){
-                    chapter.setSub( xsectionx );
-                    xchapters.add( chapter );
-                }
+                xchapters.add( chapter );
             }
-            if(xchapters.size()==0){
+            if(xchapters.size()>0){
                 index.setCatalog( xchapters );
                 indexTemplate.upset( index );
             }else{

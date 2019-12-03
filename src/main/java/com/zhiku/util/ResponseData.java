@@ -75,6 +75,6 @@ public class ResponseData {
     }
 
     public static ResponseData powerError() {
-        return new ResponseData(1003, "权限不足");
+        return new ResponseData(1003, "抱歉，您没有该权限！");
     }
 }
