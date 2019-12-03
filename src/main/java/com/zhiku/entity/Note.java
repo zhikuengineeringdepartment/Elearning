@@ -7,28 +7,34 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
-@Document(collection = "collect")
-public class Note extends NoteKey {
+@Document(collection = "note")
+public class Note{
     @Id
     private ObjectId _id;
-    @Field("paragraph_seq")
-    private Integer paraSeq;
-
+    @Field("note_para")
+    private ObjectId paraSeq;
+    @Field("note_date")
     private Date noteDate;
 
     @Field("note_content")
     private String noteContent;
+    @Field("note_user")
+    private int noteUser;
 
     public ObjectId get_id() {
         return _id;
     }
 
-    public Integer getParaSeq() {
+    public ObjectId getParaSeq() {
         return paraSeq;
     }
 
     public Date getNoteDate() {
         return noteDate;
+    }
+
+    public int getNoteUser() {
+        return noteUser;
     }
 
     public void setNoteDate(Date noteDate) {
@@ -43,11 +49,15 @@ public class Note extends NoteKey {
         this.noteContent = noteContent == null ? null : noteContent.trim();
     }
 
-    public void setParaSeq(Integer paraSeq) {
+    public void setParaSeq(ObjectId paraSeq) {
         this.paraSeq = paraSeq;
     }
 
     public void set_id(ObjectId _id) {
         this._id = _id;
+    }
+
+    public void setNoteUser(int noteUser) {
+        this.noteUser = noteUser;
     }
 }

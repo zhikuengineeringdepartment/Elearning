@@ -3,6 +3,7 @@ package com.zhiku.mongo;
 import com.zhiku.entity.ColParagraph;
 import com.zhiku.entity.Note;
 import com.zhiku.entity.Paragraph;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -43,23 +44,18 @@ public class CollectTemplate {
         }
         return courses;
     }
-    public void insertColPar(int uid, int paragraphSeq){
-        Query query = new Query();
-        query.addCriteria(new Criteria("paragraph_seq").is(paragraphSeq));
-        Paragraph p = mongoTemplate.findOne(query,Paragraph.class);
+    public boolean insertColPar(int uid, ObjectId paragraphSeq){
         ColParagraph cp = new ColParagraph();
         cp.setColpDate(new Date());
-        cp.setParaSeq(p.getId());
+        cp.setParaSeq(paragraphSeq);
         cp.setColpUser(uid);
         mongoTemplate.insert(cp);
+        return true;
     }
-    public void removeColPar(int uid,int paragraphSeq){
+    public boolean removeColPar(int uid,ObjectId paragraphSeq){
         Query query = new Query();
-        query.addCriteria(new Criteria("paragraph_seq").is(paragraphSeq));
-        Paragraph p = mongoTemplate.findOne(query,Paragraph.class);
-        Query query1 = new Query();
-        query1.addCriteria(new Criteria("colp_para").is(p.getId()).and("colp_user").is(uid));
-        mongoTemplate.remove(query1,ColParagraph.class);
-
+        query.addCriteria(new Criteria("colp_para").is(paragraphSeq).and("colp_user").is(uid));
+        mongoTemplate.remove(query,ColParagraph.class);
+        return true;
     }
 }

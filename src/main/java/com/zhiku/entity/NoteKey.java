@@ -1,9 +1,11 @@
 package com.zhiku.entity;
 
+import org.bson.types.ObjectId;
+
 public class NoteKey {
     private Integer noteUser;
 
-    private Integer notePara;
+    private ObjectId notePara;
 
     public Integer getNoteUser() {
         return noteUser;
@@ -13,11 +15,11 @@ public class NoteKey {
         this.noteUser = noteUser;
     }
 
-    public Integer getNotePara() {
+    public ObjectId getNotePara() {
         return notePara;
     }
 
-    public void setNotePara(Integer notePara) {
+    public void setNotePara(ObjectId notePara) {
         this.notePara = notePara;
     }
 }

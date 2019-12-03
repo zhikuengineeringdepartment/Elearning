@@ -7,6 +7,7 @@ import com.zhiku.util.ResponseData;
 import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import com.zhiku.view.NoteView;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -48,14 +49,14 @@ public class ParagraphController {
      */
     @ResponseBody
     @RequestMapping(value = "addColParagraph",method = RequestMethod.POST)
-    public ResponseData addColParagraph(User user, int paragraphSeq){
+    public ResponseData addColParagraph(User user, ObjectId paragraphSeq){
         ResponseData responseData = null;
-//        if(paragraphService.addColParagraph(user.getUid(),paragraphSeq)){
-//            responseData = ResponseData.ok();
-//        }else{
-//            responseData = ResponseData.serverInternalError();
-//            responseData.setMessage("收藏失败，请稍后重试");
-//        }
+        if(paragraphService.addColParagraph(user.getUid(),paragraphSeq)){
+            responseData = ResponseData.ok();
+        }else{
+            responseData = ResponseData.serverInternalError();
+            responseData.setMessage("收藏失败，请稍后重试");
+        }
         return responseData;
     }
 
@@ -67,7 +68,7 @@ public class ParagraphController {
      */
     @ResponseBody
     @RequestMapping("removeColParagraph")
-    public ResponseData removeColParagraph(User user, int paragraphSeq){
+    public ResponseData removeColParagraph(User user, ObjectId paragraphSeq){
         ResponseData responseData = null;
         if(paragraphService.removeColParagraph(user.getUid(), paragraphSeq)){
             responseData = ResponseData.ok();
@@ -129,11 +130,11 @@ public class ParagraphController {
      */
     @ResponseBody
     @RequestMapping(value = "editNote",method = RequestMethod.POST)
-    public ResponseData editNote(User user, int paragraphSeq , Note note){
+    public ResponseData editNote(User user, ObjectId paragraphSeq , Note note){
         ResponseData responseData = null;
         Note my_note = paragraphService.getNoteByNoteKey(user,paragraphSeq);
         if(note.getNoteContent().equals("<p><br></p>")){    //判断是否为空
-            paragraphService.removeNote(my_note);
+            paragraphService.removeNote(note.getNoteUser(),note.getParaSeq());
         }else if(my_note != null){
             my_note.setNoteContent(note.getNoteContent());
             paragraphService.modifyNote(my_note);
