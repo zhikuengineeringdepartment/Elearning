@@ -22,9 +22,6 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "/backstage/course")
 public class CourseSaveController {
-    //todo：前端页面目前使用webapp下的jsp，待修改
-    //管理员uid，只有登录这些账号只能访问页面和使用功能
-    private int[] admUids={101};
     @Autowired
     CourseSaveService courseSaveService;
 
@@ -183,19 +180,6 @@ public class CourseSaveController {
         ResponseData responseData=new ResponseData(  );
         responseData.putDataValue( "progress",chapterProgressViews );
         return responseData;
-    }
-
-    //判断是否是管理员
-    private boolean isAdm(User user){
-        if(user==null)
-            return false;
-        int uid=user.getUid();
-        for (int admUid : admUids) {
-            if (uid == admUid) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

@@ -25,8 +25,6 @@ import java.util.*;
 public class PictureController {
     @Autowired
     UserService userService;
-    //管理员uid，只有登录这些账号只能访问页面和使用功能
-    private int[] admUids={101};
 
     //临时大事年记表示：用改uid上传的图片为大事年记图
     private int chronologyUid=-100;
@@ -115,7 +113,7 @@ public class PictureController {
      *  cid 课程id
      *  sections 章节索引数组字符串["第一章","第一节"...]
      */
-    @RequestMapping(value = "/chronology/update",method = RequestMethod.POST)
+    @RequestMapping(value = "/chronology/upload",method = RequestMethod.POST)
     @ResponseBody
     public ResponseData chronologyUpdate(User user, @RequestParam("file") MultipartFile file,
                                          @RequestParam(required = false) Date date) {
@@ -156,7 +154,7 @@ public class PictureController {
         for (PictureView pictureView:pictures) {
             Map<String,Object> map=new HashMap<>(  );
             map.put( "url",".."+pictureView.getUrl(  ) );
-            map.put( "date",pictureView.getCreateTime() );
+            map.put( "date",pictureView.getCreateTime( ) );
             re[++i]=map;
         }
 
