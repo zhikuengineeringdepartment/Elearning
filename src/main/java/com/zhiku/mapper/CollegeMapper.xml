@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.CollegeMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.College">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.College">
     <id column="college_id" jdbcType="INTEGER" property="collegeId" />
     <result column="college_name" jdbcType="VARCHAR" property="collegeName" />
   </resultMap>
@@ -18,11 +18,11 @@
     delete from college
     where college_id = #{collegeId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.College">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.College">
     insert into college (college_id, college_name)
     values (#{collegeId,jdbcType=INTEGER}, #{collegeName,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.College">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.College">
     insert into college
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="collegeId != null">
@@ -41,7 +41,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.College">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.College">
     update college
     <set>
       <if test="collegeName != null">
@@ -50,7 +50,7 @@
     </set>
     where college_id = #{collegeId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.College">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.College">
     update college
     set college_name = #{collegeName,jdbcType=VARCHAR}
     where college_id = #{collegeId,jdbcType=INTEGER}

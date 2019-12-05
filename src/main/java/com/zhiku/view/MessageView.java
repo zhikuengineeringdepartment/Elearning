@@ -1,6 +1,6 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.Message;
+import com.zhiku.entity.mysql.Message;
 
 public class MessageView extends Message {
     private String toUserName;

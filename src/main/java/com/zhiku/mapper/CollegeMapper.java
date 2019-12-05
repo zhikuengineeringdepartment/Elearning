@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.College;
+import com.zhiku.entity.mysql.College;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.FileMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.File">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.File">
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
@@ -15,7 +15,7 @@
     <result column="file_status" jdbcType="CHAR" property="fileStatus" />
     <result column="file_score" jdbcType="REAL" property="fileScore" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.File">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.mysql.File">
     <result column="file_sha" jdbcType="LONGVARCHAR" property="fileSha" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -37,7 +37,7 @@
     delete from file
     where fid = #{fid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.File">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.File">
     insert into file (fid, file_path, file_name, 
       file_course, file_teacher, file_type, 
       file_upper, file_upload_time, file_download_count, 
@@ -49,7 +49,7 @@
       #{fileDesc,jdbcType=VARCHAR}, #{fileStatus,jdbcType=CHAR}, #{fileScore,jdbcType=REAL}, 
       #{fileSha,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.File">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.File">
     insert into file
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="fid != null">
@@ -134,7 +134,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.File">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.File">
     update file
     <set>
       <if test="filePath != null">
@@ -176,7 +176,7 @@
     </set>
     where fid = #{fid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.File">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.mysql.File">
     update file
     set file_path = #{filePath,jdbcType=VARCHAR},
       file_name = #{fileName,jdbcType=VARCHAR},
@@ -192,7 +192,7 @@
       file_sha = #{fileSha,jdbcType=LONGVARCHAR}
     where fid = #{fid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.File">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.File">
     update file
     set file_path = #{filePath,jdbcType=VARCHAR},
       file_name = #{fileName,jdbcType=VARCHAR},

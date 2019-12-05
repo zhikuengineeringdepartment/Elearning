@@ -1,11 +1,16 @@
 package com.zhiku.service;
 
 import com.zhiku.entity.*;
+import com.zhiku.entity.mongodb.Note;
+import com.zhiku.entity.mysql.ParagraphMysql;
+import com.zhiku.entity.mysql.ColParagraphKey;
+import com.zhiku.entity.mysql.ColParagraphMysql;
+import com.zhiku.entity.mysql.NoteKey;
+import com.zhiku.entity.mysql.NoteMysql;
 import com.zhiku.mapper.ColParagraphMapper;
 import com.zhiku.mapper.NoteMapper;
 import com.zhiku.mapper.ParagraphMapper;
 import com.zhiku.mongo.CollectTemplate;
-import com.zhiku.mongo.ContentTemplate;
 import com.zhiku.mongo.NoteTemplate;
 import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
@@ -14,7 +19,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.Query;
 import java.util.Date;
 import java.util.List;
 
@@ -27,9 +31,9 @@ public class ParagraphService {
     @Autowired
     NoteMapper noteMapper;
     @Autowired
-    private CollectTemplate template;
+    CollectTemplate collectTemplate;
     @Autowired
-    private NoteTemplate noteTemplate;
+    NoteTemplate noteTemplate;
 
     /**
      * 获取某一节的收藏段落
@@ -58,8 +62,8 @@ public class ParagraphService {
      * @return
      */
     public boolean addColParagraph(int uid, ObjectId paragraphSeq) {
-//        ColParagraph colParagraph = new ColParagraph();
-//        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        ColParagraphMysql colParagraph = new ColParagraphMysql();
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
 //        colParagraph.setColpPara(paragraph.getPid());
 //        colParagraph.setColpUser(uid);
 //        colParagraph.setColpDate(new Date());
@@ -68,9 +72,7 @@ public class ParagraphService {
 //        }else{
 //            return false;
 //        }
-        return this.template.insertColPar(uid, paragraphSeq);
-
-
+        return collectTemplate.insertColPar(uid, paragraphSeq);
     }
 
     /**
@@ -81,7 +83,7 @@ public class ParagraphService {
      */
     public boolean removeColParagraph(int uid,ObjectId paragraphSeq){
 //        ColParagraphKey colParagraphKey = new ColParagraphKey();
-//        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
 //        colParagraphKey.setColpUser(uid);
 //        colParagraphKey.setColpPara(paragraph.getPid());
 //        if(colParagraphMapper.deleteByPrimaryKey(colParagraphKey)>0){
@@ -89,7 +91,7 @@ public class ParagraphService {
 //        }else {
 //            return false;
 //        }
-        return this.template.removeColPar(uid, paragraphSeq);
+        return collectTemplate.removeColPar(uid, paragraphSeq);
     }
 
     /**
@@ -110,13 +112,11 @@ public class ParagraphService {
      */
     public Note getNoteByNoteKey(User user, ObjectId paragraphSeq){
 //        NoteKey noteKey = new NoteKey();
-//        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
 //        noteKey.setNotePara(paragraph.getPid());
 //        noteKey.setNoteUser(user.getUid());
 //        return noteMapper.selectByPrimaryKey(noteKey);
-//        Query query = new Query();
-//        query.
-        return this.noteTemplate.selectNote(user.getUid(),paragraphSeq);
+        return noteTemplate.selectNote(user.getUid(),paragraphSeq);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ParagraphService {
      */
     public boolean addNote(User user, Note note, ObjectId paragraphSeq){
 //        note.setNoteUser(user.getUid());
-//        Paragraph paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
 //        note.setNotePara(paragraph.getPid());
 //        note.setNoteDate(new Date());
 //        if(noteMapper.insert(note)>0){
@@ -137,21 +137,21 @@ public class ParagraphService {
 //        }else{
 //            return false;
 //        }
-        return this.noteTemplate.addNote(user.getUid(),note,paragraphSeq);
+        return noteTemplate.addNote(user.getUid(),note,paragraphSeq);
     }
 
     /**
      * 删除一条笔记
-     * @param noteKey
+     *
      * @return 是否删除成功
      */
-    public boolean removeNote(int uid,ObjectId paragraphSeq){
+    public boolean removeNote(int uid,ObjectId note_para){
 //        if(noteMapper.deleteByPrimaryKey(noteKey)>0){
 //            return true;
 //        }else{
 //            return false;
 //        }
-        return this.noteTemplate.removeNote(uid, paragraphSeq);
+        return noteTemplate.removeNote(uid, note_para);
     }
 
     /**
@@ -166,7 +166,7 @@ public class ParagraphService {
 //        }else{
 //            return false;
 //        }
-        return this.noteTemplate.modifyNote(note);
+        return noteTemplate.modifyNote(note);
     }
 
     public List<NoteView> getNoteViews(int uid , int cid, int page){

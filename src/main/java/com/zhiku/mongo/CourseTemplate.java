@@ -1,15 +1,12 @@
 package com.zhiku.mongo;
 
 import com.zhiku.entity.Course;
-import com.zhiku.view.CourseView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.ListIterator;
 
 @Component
 public class CourseTemplate {

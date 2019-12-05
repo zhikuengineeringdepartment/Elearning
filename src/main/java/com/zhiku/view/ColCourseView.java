@@ -1,6 +1,6 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.ColCourse;
+import com.zhiku.entity.mysql.ColCourse;
 import com.zhiku.entity.Course;
 
 /**

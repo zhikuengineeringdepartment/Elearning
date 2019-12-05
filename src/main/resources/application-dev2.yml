@@ -20,7 +20,7 @@ spring:
             fallback: false
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/temp
+      uri: mongodb://211.87.227.234:27017/zhiku
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/zhiku?characterEncoding=utf-8&serverTimezone=UTC
     username: root

@@ -1,7 +1,7 @@
 package com.zhiku.service;
 
-import com.zhiku.entity.ColCourse;
-import com.zhiku.entity.ColCourseKey;
+import com.zhiku.entity.mysql.ColCourse;
+import com.zhiku.entity.mysql.ColCourseKey;
 import com.zhiku.entity.Course;
 import com.zhiku.mapper.ColCourseMapper;
 import com.zhiku.mapper.CourseMapper;
@@ -10,7 +10,6 @@ import com.zhiku.mongo.CourseTemplate;
 import com.zhiku.mongo.IndexTemplate;
 import com.zhiku.view.ColCourseView;
 import com.zhiku.view.CourseView;
-import com.zhiku.view.IndexView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

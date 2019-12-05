@@ -2,7 +2,7 @@ package com.zhiku.aop;
 
 
 import com.google.gson.Gson;
-import com.zhiku.entity.LogEntity;
+import com.zhiku.entity.mysql.LogEntity;
 import com.zhiku.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

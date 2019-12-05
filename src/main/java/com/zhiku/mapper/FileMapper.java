@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.File;
+import com.zhiku.entity.mysql.File;
 import com.zhiku.entity.User;
 import com.zhiku.view.FileView;
 import org.apache.ibatis.annotations.Param;

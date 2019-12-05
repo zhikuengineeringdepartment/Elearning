@@ -79,7 +79,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
         <!--数据库依赖-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

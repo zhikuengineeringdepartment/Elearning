@@ -1,6 +1,7 @@
 package com.zhiku.controller;
 
-import com.zhiku.entity.Note;
+import com.zhiku.entity.mongodb.Note;
+import com.zhiku.entity.mysql.NoteMysql;
 import com.zhiku.entity.User;
 import com.zhiku.service.ParagraphService;
 import com.zhiku.util.ResponseData;
@@ -91,16 +92,10 @@ public class ParagraphController {
     @ResponseBody
     @RequestMapping(value = "getColParagraphViews",method = RequestMethod.GET)
     public ResponseData getColParagraphViews(User user, Integer cid, Integer page){
-//        //todo:删除下面测试
-//        System.out.println("查询课程："+cid);////////////////
         ResponseData responseData = null;
         List<ColParagraphView> colParagraphViews = paragraphService.getColParagraphViews(user.getUid(),cid,1,page,null);
         responseData = ResponseData.ok();
         responseData.putDataValue("colParagraphViews",colParagraphViews);
-//        //todo:删除下面测试
-//        for(ColParagraphView cpv:colParagraphViews){
-//            System.out.println("查询段落："+cpv.getCourseName()+"|||"+cpv.getParagraphContent());////////////////
-//        }
 
         return responseData;
     }
@@ -134,7 +129,7 @@ public class ParagraphController {
         ResponseData responseData = null;
         Note my_note = paragraphService.getNoteByNoteKey(user,paragraphSeq);
         if(note.getNoteContent().equals("<p><br></p>")){    //判断是否为空
-            paragraphService.removeNote(note.getNoteUser(),note.getParaSeq());
+            paragraphService.removeNote(my_note.getNoteUser(),my_note.getNotePara());
         }else if(my_note != null){
             my_note.setNoteContent(note.getNoteContent());
             paragraphService.modifyNote(my_note);

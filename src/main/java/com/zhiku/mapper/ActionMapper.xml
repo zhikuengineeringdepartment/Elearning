@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.ActionMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Action">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Action">
     <id column="aid" jdbcType="INTEGER" property="aid" />
     <result column="action_user" jdbcType="INTEGER" property="actionUser" />
     <result column="action_date" jdbcType="TIMESTAMP" property="actionDate" />
     <result column="action_type" jdbcType="CHAR" property="actionType" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.Action">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.mysql.Action">
     <result column="action_item" jdbcType="LONGVARCHAR" property="actionItem" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -28,13 +28,13 @@
     delete from action
     where aid = #{aid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Action">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Action">
     insert into action (aid, action_user, action_date, 
       action_type, action_item)
     values (#{aid,jdbcType=INTEGER}, #{actionUser,jdbcType=INTEGER}, #{actionDate,jdbcType=TIMESTAMP}, 
       #{actionType,jdbcType=CHAR}, #{actionItem,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Action">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Action">
     insert into action
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="aid != null">
@@ -71,7 +71,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Action">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Action">
     update action
     <set>
       <if test="actionUser != null">
@@ -89,7 +89,7 @@
     </set>
     where aid = #{aid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.Action">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.mysql.Action">
     update action
     set action_user = #{actionUser,jdbcType=INTEGER},
       action_date = #{actionDate,jdbcType=TIMESTAMP},
@@ -97,7 +97,7 @@
       action_item = #{actionItem,jdbcType=LONGVARCHAR}
     where aid = #{aid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Action">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Action">
     update action
     set action_user = #{actionUser,jdbcType=INTEGER},
       action_date = #{actionDate,jdbcType=TIMESTAMP},

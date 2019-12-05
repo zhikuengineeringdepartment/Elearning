@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.FileKeysMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.FileKeys">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.FileKeys">
     <id column="fid" jdbcType="INTEGER" property="fid" />
     <result column="key1" jdbcType="VARCHAR" property="key1" />
     <result column="key2" jdbcType="VARCHAR" property="key2" />
@@ -27,7 +27,7 @@
     delete from file_keys
     where fid = #{fid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.FileKeys">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.FileKeys">
     insert into file_keys (fid, key1, key2, 
       key3, key4, key5, key6, 
       key7, key8, key9, key10
@@ -37,7 +37,7 @@
       #{key7,jdbcType=VARCHAR}, #{key8,jdbcType=VARCHAR}, #{key9,jdbcType=VARCHAR}, #{key10,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.FileKeys">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.FileKeys">
     insert into file_keys
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="fid != null">
@@ -110,7 +110,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.FileKeys">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.FileKeys">
     update file_keys
     <set>
       <if test="key1 != null">
@@ -146,7 +146,7 @@
     </set>
     where fid = #{fid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.FileKeys">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.FileKeys">
     update file_keys
     set key1 = #{key1,jdbcType=VARCHAR},
       key2 = #{key2,jdbcType=VARCHAR},

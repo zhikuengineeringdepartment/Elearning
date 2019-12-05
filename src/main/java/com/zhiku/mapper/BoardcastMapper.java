@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Boardcast;
+import com.zhiku.entity.mysql.Boardcast;
 import org.springframework.stereotype.Component;
 
 @Component
