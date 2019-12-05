@@ -17,10 +17,11 @@ var activityMainTemplate =
 var activityMainModule = {
     data: function () {
         return {
+            //活动列表
             activities: [{
-                    title: "六一就该聊点羞羞哒R18少儿不宜鸭 | 山软杂谈",
-                    img: "img/img_1.jpg",
-                    link: "https://mp.weixin.qq.com/s/drfJGm0W043P6btPZjcLLg"
+                    title: "六一就该聊点羞羞哒R18少儿不宜鸭 | 山软杂谈",      //活动标题
+                    img: "img/img_1.jpg",   //活动图片
+                    link: "https://mp.weixin.qq.com/s/drfJGm0W043P6btPZjcLLg"   //活动详情链接
                 },
                 {
                     title: "软件运行老不好，多半是装的...装的不好！| 山软小便签",

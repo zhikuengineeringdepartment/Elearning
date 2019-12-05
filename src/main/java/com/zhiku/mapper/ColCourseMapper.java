@@ -1,7 +1,7 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.ColCourse;
-import com.zhiku.entity.ColCourseKey;
+import com.zhiku.entity.mysql.ColCourse;
+import com.zhiku.entity.mysql.ColCourseKey;
 import com.zhiku.view.ColCourseView;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +20,7 @@ public interface ColCourseMapper {
 
     int updateByPrimaryKey(ColCourse record);
 
+    //====================自定义SQL=====================================
+    //根据用户id查找收藏的课程及进度
     List<ColCourseView> selectColCourseView(Integer uid);
 }

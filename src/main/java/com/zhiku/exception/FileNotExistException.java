@@ -1,5 +1,8 @@
 package com.zhiku.exception;
 
+/*
+ * 下载预览时如果遇到文件不存在时抛出该异常
+ */
 public class FileNotExistException extends RuntimeException {
     private String msg;
 

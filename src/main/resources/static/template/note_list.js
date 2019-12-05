@@ -1,5 +1,5 @@
 /*
-文件上传下载记录组件
+个人中心中的笔记列表组件
  */
 var noteListTemplate = `
 <div>

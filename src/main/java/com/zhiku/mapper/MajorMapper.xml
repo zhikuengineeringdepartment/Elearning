@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.MajorMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Major">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Major">
     <id column="major_id" jdbcType="INTEGER" property="majorId" />
     <result column="major_name" jdbcType="VARCHAR" property="majorName" />
     <result column="major_college" jdbcType="INTEGER" property="majorCollege" />
@@ -19,13 +19,13 @@
     delete from major
     where major_id = #{majorId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Major">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Major">
     insert into major (major_id, major_name, major_college
       )
     values (#{majorId,jdbcType=INTEGER}, #{majorName,jdbcType=VARCHAR}, #{majorCollege,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Major">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Major">
     insert into major
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="majorId != null">
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Major">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Major">
     update major
     <set>
       <if test="majorName != null">
@@ -62,7 +62,7 @@
     </set>
     where major_id = #{majorId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Major">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Major">
     update major
     set major_name = #{majorName,jdbcType=VARCHAR},
       major_college = #{majorCollege,jdbcType=INTEGER}

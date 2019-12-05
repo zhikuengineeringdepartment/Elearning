@@ -19,6 +19,8 @@ public class Course {
     private String courseDesc;
     @Field("course_icon")
     private String courseIcon;
+    @Field("vid")
+    private String vid;
 //    @PersistenceConstructor
 //    public Course(Integer cid, String course_name, String course_desc, String course_icon){
 //        this.cid = cid;
@@ -26,6 +28,13 @@ public class Course {
 //        this.courseDesc = course_desc;
 //        this.courseIcon = course_icon;
 //    }
+    public String getVid() {
+        return vid;
+    }
+
+    public void setVid(String vid) {
+        this.vid = vid;
+    }
 
     public Integer getCid() {
         return cid;

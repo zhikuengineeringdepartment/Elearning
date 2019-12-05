@@ -1,5 +1,5 @@
 /*
-文件上传下载记录组件
+收藏段落列表组件
  */
 var colParagraphListTemplate = `
 <div>
@@ -47,17 +47,19 @@ var colParagraphListModule = {
         this.getColParagraphViews();
     },
     methods:{
+        //选择具体课程的收藏段落
         set_course_value:function(cid){
                     this.Course = cid;
             this.getColParagraphViews();
         },
+        //发送收藏段落的请求
         getColParagraphViews:function () {
             var _this = this;
             axios.get("paragraph/getColParagraphViews",{
                 params:{
                     uid:0,
                     cid:_this.Course,
-                    page:1
+                    page:1  //TODO 添加翻页，或者下拉加载
                 },
                 withCredentials:true
             })

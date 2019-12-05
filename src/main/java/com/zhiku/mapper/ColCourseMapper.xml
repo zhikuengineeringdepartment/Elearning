@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.ColCourseMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.ColCourse">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.ColCourse">
     <id column="colc_user" jdbcType="INTEGER" property="colcUser" />
     <id column="colc_course" jdbcType="INTEGER" property="colcCourse" />
     <result column="colc_date" jdbcType="TIMESTAMP" property="colcDate" />
@@ -9,25 +9,25 @@
   <sql id="Base_Column_List">
     colc_user, colc_course, colc_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.ColCourseKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColCourseKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from col_course
     where colc_user = #{colcUser,jdbcType=INTEGER}
       and colc_course = #{colcCourse,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.ColCourseKey">
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColCourseKey">
     delete from col_course
     where colc_user = #{colcUser,jdbcType=INTEGER}
       and colc_course = #{colcCourse,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.ColCourse">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.ColCourse">
     insert into col_course (colc_user, colc_course, colc_date
       )
     values (#{colcUser,jdbcType=INTEGER}, #{colcCourse,jdbcType=INTEGER}, #{colcDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.ColCourse">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.ColCourse">
     insert into col_course
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="colcUser != null">
@@ -52,7 +52,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.ColCourse">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.ColCourse">
     update col_course
     <set>
       <if test="colcDate != null">
@@ -62,7 +62,7 @@
     where colc_user = #{colcUser,jdbcType=INTEGER}
       and colc_course = #{colcCourse,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.ColCourse">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColCourse">
     update col_course
     set colc_date = #{colcDate,jdbcType=TIMESTAMP}
     where colc_user = #{colcUser,jdbcType=INTEGER}

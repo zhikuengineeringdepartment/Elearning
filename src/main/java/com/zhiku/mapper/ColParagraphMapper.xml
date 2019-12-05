@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.ColParagraphMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.ColParagraph">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.ColParagraphMysql">
     <id column="colp_para" jdbcType="INTEGER" property="colpPara" />
     <id column="colp_user" jdbcType="INTEGER" property="colpUser" />
     <result column="colp_date" jdbcType="TIMESTAMP" property="colpDate" />
@@ -9,25 +9,25 @@
   <sql id="Base_Column_List">
     colp_para, colp_user, colp_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.ColParagraphKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColParagraphKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from col_paragraph
     where colp_para = #{colpPara,jdbcType=INTEGER}
       and colp_user = #{colpUser,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.ColParagraphKey">
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColParagraphKey">
     delete from col_paragraph
     where colp_para = #{colpPara,jdbcType=INTEGER}
       and colp_user = #{colpUser,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.ColParagraph">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     insert into col_paragraph (colp_para, colp_user, colp_date
       )
     values (#{colpPara,jdbcType=INTEGER}, #{colpUser,jdbcType=INTEGER}, #{colpDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.ColParagraph">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     insert into col_paragraph
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="colpPara != null">
@@ -52,7 +52,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.ColParagraph">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     update col_paragraph
     <set>
       <if test="colpDate != null">
@@ -62,7 +62,7 @@
     where colp_para = #{colpPara,jdbcType=INTEGER}
       and colp_user = #{colpUser,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.ColParagraph">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.ColParagraphMysql">
     update col_paragraph
     set colp_date = #{colpDate,jdbcType=TIMESTAMP}
     where colp_para = #{colpPara,jdbcType=INTEGER}
@@ -71,7 +71,7 @@
 
   <!--自定义SQL-->
   <resultMap id="ColParagraphView" type="com.zhiku.view.ColParagraphView" extends="BaseResultMap">
-    <result column="paragraph_seq" jdbcType="INTEGER" property="paragraphSeq" />
+    <result column="paragraphSeq" jdbcType="INTEGER" property="paragraphSeq" />
     <result column="paragraph_knowledge" jdbcType="INTEGER" property="paragraphKnowledge" />
     <result column="paragraph_type" jdbcType="CHAR" property="paragraphType" />
     <result column="paragraph_newline" jdbcType="CHAR" property="paragraphNewline" />
@@ -82,16 +82,16 @@
     <result column="course_icon" jdbcType="VARCHAR" property="courseIcon" />
   </resultMap>
   <resultMap id="ColParagraphSectionView" type="com.zhiku.view.ColParagraphSectionView" extends="BaseResultMap">
-    <result column="paragraph_seq" jdbcType="INTEGER" property="paragraphSeq" />
+    <result column="paragraphSeq" jdbcType="INTEGER" property="paragraphSeq" />
   </resultMap>
   <!--接收uid和sid作为参数-->
   <select id="selectBySid" resultMap="ColParagraphSectionView">
-    select paragraph_seq,
+    select paragraphSeq,
     <include refid="Base_Column_List"/>
     from col_paragraph,paragraph
     where colp_user = #{uid}
       and colp_para = pid
-      and paragraph_seq between #{sid}*100000 and #{sid}*100000+9999
+      and paragraphSeq between #{sid}*100000 and #{sid}*100000+9999
   </select>
 
   <select id="selectParagraphView" parameterType="java.lang.Integer" resultMap="ColParagraphView">
@@ -99,7 +99,7 @@
     from col_paragraph,paragraph,course
     where colp_user = #{uid}
       and colp_para = pid
-      and paragraph.paragraph_seq div 10000000 = course.cid
+      and paragraph.paragraphSeq div 10000000 = course.cid
   </select>
 
   <select id="selectParagraphViewByWhere" resultMap="ColParagraphView">
@@ -107,7 +107,7 @@
     from col_paragraph,paragraph,course
     where colp_user = #{uid}
       and colp_para = pid
-      and paragraph.paragraph_seq div 10000000 = course.cid
+      and paragraph.paragraphSeq div 10000000 = course.cid
     <if test="cid != null">
       and course.cid=#{cid,jdbcType=INTEGER}
     </if>

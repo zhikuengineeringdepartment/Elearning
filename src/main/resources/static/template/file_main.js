@@ -86,10 +86,13 @@ var fileMainModule = {
         //         customClass: 'messageBox-confirm',
         //     });
         // }
+        //路由到上传页面组件
             gotoUpload:function(){
                 this.$router.push('/fileUpload')
             },
+        //改变文件的排序方法
             changeOrder(){
+                //原先采用的是改变order重新发请求，现在是直接前端将数组reverse
                 this.fileListForm.order = !this.fileListForm.order
                 this.$nextTick(()=>{
                     if(!this.fileListForm.order){
@@ -114,6 +117,7 @@ var fileMainModule = {
                 this.fileListForm.page = 1;
                 this.getFileList(this.fileListForm.page);
             },
+        //获得文件列表
             getFileList:function(page){
                 var _this =this;
                 axios.get('file/getFileList',{

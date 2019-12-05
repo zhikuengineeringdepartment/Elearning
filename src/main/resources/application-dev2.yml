@@ -20,11 +20,16 @@ spring:
             fallback: false
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/temp
+      uri: mongodb://admin:admin@211.87.227.234:27017/zhiku?authSource=admin&readPreference=primary&appname=MongoDB%20Compass%20Beta&ssl=false
+#      uri: mongodb://127.0.0.1:27017/zhiku
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/zhiku?characterEncoding=utf-8&serverTimezone=UTC
+    #todo: 临时替换数据库，避免影响上线数据库
+#    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8
+#    username: zhiku
+#    password: zhiku_123b
+    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8&serverTimezone=UTC
     username: root
-    password: 123456
+    password: Zhiku_123
     driver-class-name: com.mysql.cj.jdbc.Driver
   freemarker:
     template-loader-path: classpath:/freemarker/
@@ -33,11 +38,32 @@ spring:
       max-file-size: 30MB
       max-request-size: 30MB
       location: /var/zhiku/temp
+#  mvc:
+#    view:
+#      prefix: /tem/
+#      suffix: .jsp
 mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
 server:
-  port: 8080
+  port: 12321
 #logging:
 #  level:
 #    com.zhiku.*: debug
+
+#自定义值#
+#智库工程储存根路径
+root_path: /var/zhiku
+#root_path: E:/ZhikuFiles
+#记录文件位置
+file_path:
+  #访问量记录文件
+  visit_statistics: ${root_path}/logs/visit_statistics.log
+  #md课程内容文件储存目录
+  md_save: ${root_path}/mdFiles
+  #上传文件存储目录
+  upload_path: ${root_path}/zhiku/upload
+#图床
+picture:
+  #图片储存根位置，改变记得要将历史文件移动到新路径下，不然课程无法显示图片
+  save_path: ${root_path}/pictures/

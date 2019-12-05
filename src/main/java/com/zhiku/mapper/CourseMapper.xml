@@ -84,15 +84,27 @@
   <resultMap id="CourseView" type="com.zhiku.view.CourseView" extends="BaseResultMap">
     <collection property="sections" resultMap="com.zhiku.mapper.SectionMapper.BaseResultMap"/>
   </resultMap>
+  <insert id="insertGetId" useGeneratedKeys="true" keyProperty="cid" parameterType="com.zhiku.entity.Course">
+    insert into course (cid, course_name, course_desc,
+      course_icon)
+    values (#{cid,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR}, #{courseDesc,jdbcType=VARCHAR},
+      #{courseIcon,jdbcType=VARCHAR})
+  </insert>
   <select id="getAllCourse" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from course
   </select>
-  
   <select id="getCourseView" parameterType="java.lang.Integer" resultMap="CourseView">
     select *
     from course ,section
     where section.section_course = cid and cid = #{cid};
   </select>
+  <select id="selectByTitleDec" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from course
+        where course_name = #{title,jdbcType=VARCHAR}
+        and course_desc =#{describe,jdbcType=VARCHAR}
+    </select>
 </mapper>

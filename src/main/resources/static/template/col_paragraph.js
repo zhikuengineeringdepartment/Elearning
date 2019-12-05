@@ -1,5 +1,5 @@
 /*
-文件上传下载记录组件
+收藏段落组件
  */
 var colParagraphTemplate = `
 <el-card shadow="hover" style="margin: 10px 0px">
@@ -28,6 +28,7 @@ var colParagraphModule = {
         this.load_content();
     },
     methods:{
+        //加载收藏段落的内容
         load_content:function () {
             document.getElementById(this.col_paragraph_content).innerHTML = marked(this.col_paragraph.paragraphContent);
         }

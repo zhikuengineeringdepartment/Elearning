@@ -1,6 +1,7 @@
 /*
-文件上传下载记录组件
+文件下载记录组件
  */
+//TODO 缺乏给文件打分和算分的机制，所以展示隐藏了文件的分数显示
 var fileDownloadRecordTemplate = `
 <el-card shadow="hover" style="margin: 10px 0px">
                     <el-row style="margin-bottom: 0px">
@@ -18,6 +19,7 @@ var fileDownloadRecordTemplate = `
                                 <label>下载时间</label>
                                 {{file_download_record.fopDate}}
                             </span>
+                            <!--评价过的显示评价的分数-->
                             <!--<template v-if="commented">-->
                                 <!--<el-rate-->
                                     <!--v-model="value"-->
@@ -27,6 +29,7 @@ var fileDownloadRecordTemplate = `
                                     <!--score-template="{value}">-->
                                 <!--</el-rate>-->
                             <!--</template>-->
+                            <!--未评价的显示立即评价，然后变为一个打星的组件-->
                             <!--<template v-else>-->
                                 <!--<div>-->
                                     <!--<span size="small" style="float: right" @click="commentFile">立即评价</span>-->

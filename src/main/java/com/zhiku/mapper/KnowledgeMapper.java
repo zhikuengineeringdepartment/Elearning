@@ -1,7 +1,9 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Knowledge;
+import com.zhiku.entity.mysql.Knowledge;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public interface KnowledgeMapper {
@@ -16,4 +18,9 @@ public interface KnowledgeMapper {
     int updateByPrimaryKeySelective(Knowledge record);
 
     int updateByPrimaryKey(Knowledge record);
+
+    //自定义
+    int insertAllGetIds(List<Knowledge> record);
+
+    int deleteBySeqCourse(Integer cid);
 }

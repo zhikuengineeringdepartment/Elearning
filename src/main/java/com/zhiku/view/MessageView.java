@@ -1,7 +1,10 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.Message;
+import com.zhiku.entity.mysql.Message;
 
+/**
+ * 消息视图
+ */
 public class MessageView extends Message {
     private String toUserName;
     private String toAvatar;

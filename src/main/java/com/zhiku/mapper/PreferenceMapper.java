@@ -1,6 +1,6 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.Preference;
+import com.zhiku.entity.mysql.Preference;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

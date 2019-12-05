@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.PictureMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.Picture">
+    <id column="pic_id" jdbcType="INTEGER" property="picId" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="sections" jdbcType="VARCHAR" property="sections" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="bup_url" jdbcType="VARCHAR" property="bupUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+    <resultMap id="ExcResultMap" extends="BaseResultMap" type="com.zhiku.view.PictureView">
+        <result column="course_name" jdbcType="VARCHAR" property="course" />
+    </resultMap>
+  <sql id="Base_Column_List">
+    pic_id, uid, org_name, cid, sections, url, bup_url, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where pic_id = #{picId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from picture
+    where pic_id = #{picId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.Picture">
+    insert into picture (pic_id, uid, org_name, 
+      cid, sections, url, 
+      bup_url, create_time)
+    values (#{picId,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{orgName,jdbcType=VARCHAR}, 
+      #{cid,jdbcType=INTEGER}, #{sections,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{bupUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.Picture">
+    insert into picture
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="picId != null">
+        pic_id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="orgName != null">
+        org_name,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="sections != null">
+        sections,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="bupUrl != null">
+        bup_url,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="picId != null">
+        #{picId,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null">
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="sections != null">
+        #{sections,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="bupUrl != null">
+        #{bupUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Picture">
+    update picture
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="orgName != null">
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="sections != null">
+        sections = #{sections,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="bupUrl != null">
+        bup_url = #{bupUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pic_id = #{picId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Picture">
+    update picture
+    set uid = #{uid,jdbcType=INTEGER},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=INTEGER},
+      sections = #{sections,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      bup_url = #{bupUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where pic_id = #{picId,jdbcType=INTEGER}
+  </update>
+
+    <!--自定义-->
+    <select id="selectByUid" resultMap="ExcResultMap">
+        select picture.pic_id,picture.uid,picture.url,picture.cid,picture.org_name,picture.sections,picture.create_time,course_name
+        from picture NATURAL LEFT JOIN (SELECT cid,course_name FROM course) c
+        where picture.uid = #{uid,jdbcType=INTEGER}
+        order by picture.create_time desc
+        <if test="n != null and m != null">
+            LIMIT #{m,jdbcType=INTEGER},#{n,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <!---->
+</mapper>

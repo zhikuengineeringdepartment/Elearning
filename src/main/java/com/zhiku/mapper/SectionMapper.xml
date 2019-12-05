@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.SectionMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Section">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Section">
     <id column="sid" jdbcType="INTEGER" property="sid" />
     <result column="section_name" jdbcType="VARCHAR" property="sectionName" />
     <result column="section_seq" jdbcType="VARCHAR" property="sectionSeq" />
@@ -21,13 +21,13 @@
     delete from section
     where sid = #{sid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Section">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Section">
     insert into section (sid, section_name, section_seq, 
       section_recommend_path, section_course)
     values (#{sid,jdbcType=INTEGER}, #{sectionName,jdbcType=VARCHAR}, #{sectionSeq,jdbcType=VARCHAR}, 
       #{sectionRecommendPath,jdbcType=VARCHAR}, #{sectionCourse,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Section">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Section">
     insert into section
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="sid != null">
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Section">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Section">
     update section
     <set>
       <if test="sectionName != null">
@@ -82,7 +82,7 @@
     </set>
     where sid = #{sid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Section">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Section">
     update section
     set section_name = #{sectionName,jdbcType=VARCHAR},
       section_seq = #{sectionSeq,jdbcType=VARCHAR},
@@ -95,10 +95,32 @@
   <resultMap id="SectionView" type="com.zhiku.view.SectionView" extends="BaseResultMap">
     <collection property="knowledgeViews" resultMap="com.zhiku.mapper.KnowledgeMapper.KnowledgeView"/>
   </resultMap>
-
+  <insert id="insertAll" parameterType="java.util.List" >
+        insert into section (sid, section_name, section_seq,
+        section_recommend_path, section_course)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sid,jdbcType=INTEGER}, #{item.sectionName,jdbcType=VARCHAR}, #{item.sectionSeq,jdbcType=VARCHAR},
+            #{item.sectionRecommendPath,jdbcType=VARCHAR}, #{item.sectionCourse,jdbcType=INTEGER})
+        </foreach>
+    </insert>
   <select id="getSectionViewBySid" parameterType="java.lang.Integer" resultMap="SectionView">
     select *
     from section ,knowledge ,paragraph
-    where sid = #{sid} and section.sid = knowledge.knowledge_section and knowledge.kid = paragraph.paragraph_knowledge order by paragraph_seq
+    where sid = #{sid} and section.sid = knowledge.knowledge_section and knowledge.kid = paragraph.paragraph_knowledge order by paragraphSeq
   </select>
+  <select id="selectSectionMaxID" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select ifnull(max(sid),0)<!--返回null报错-->
+        from section
+        where section_course = #{sectionCourse,jdbcType=INTEGER}
+  </select>
+  <select id="selectSectionID" resultType="java.lang.Integer">
+    SELECT IFNULL((select sid
+    from section
+    where section_course = #{sectionCourse,jdbcType=INTEGER} and section_name = #{sectionName,jdbcType=VARCHAR}),0)
+  </select>
+  <delete id="deleteByCourseId" parameterType="java.lang.Integer">
+    delete from section
+    where section_course = #{sid,jdbcType=INTEGER}
+  </delete>
 </mapper>

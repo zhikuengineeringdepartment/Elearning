@@ -1,3 +1,6 @@
+/*
+课程详情模块组件
+ */
 let sectionMainTemplate = `
 <el-main>
         <el-row type="flex" class="row-bg" justify="center">
@@ -82,6 +85,7 @@ var sectionMainModule = {
             that:this,
             csdn:'',
             courseView: '',
+            //设置上一节和下一节
             side:{
                 preSection:'',
                 nextSection:''

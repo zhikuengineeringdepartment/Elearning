@@ -1,5 +1,8 @@
 package com.zhiku.view;
 
+/**
+ * 用户基本信息视图
+ */
 public class UserBaseInfoView {
     private String userUsername;
 

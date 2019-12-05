@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.ParagraphMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Paragraph">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.ParagraphMysql">
     <id column="pid" jdbcType="INTEGER" property="pid" />
-    <result column="paragraph_seq" jdbcType="INTEGER" property="paragraphSeq" />
+    <result column="paragraphSeq" jdbcType="INTEGER" property="paragraphSeq" />
     <result column="paragraph_knowledge" jdbcType="INTEGER" property="paragraphKnowledge" />
     <result column="paragraph_type" jdbcType="CHAR" property="paragraphType" />
     <result column="paragraph_newline" jdbcType="CHAR" property="paragraphNewline" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.Paragraph">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zhiku.entity.mysql.ParagraphMysql">
     <result column="paragraph_content" jdbcType="LONGVARCHAR" property="paragraphContent" />
   </resultMap>
   <sql id="Base_Column_List">
-    pid, paragraph_seq, paragraph_knowledge, paragraph_type, paragraph_newline
+    pid, paragraphSeq, paragraph_knowledge, paragraph_type, paragraph_newline
   </sql>
   <sql id="Blob_Column_List">
     paragraph_content
@@ -29,22 +29,22 @@
     delete from paragraph
     where pid = #{pid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Paragraph">
-    insert into paragraph (pid, paragraph_seq, paragraph_knowledge, 
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
+    insert into paragraph (pid, paragraphSeq, paragraph_knowledge,
       paragraph_type, paragraph_newline, paragraph_content
       )
     values (#{pid,jdbcType=INTEGER}, #{paragraphSeq,jdbcType=INTEGER}, #{paragraphKnowledge,jdbcType=INTEGER}, 
       #{paragraphType,jdbcType=CHAR}, #{paragraphNewline,jdbcType=CHAR}, #{paragraphContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Paragraph">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     insert into paragraph
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="pid != null">
         pid,
       </if>
       <if test="paragraphSeq != null">
-        paragraph_seq,
+        paragraphSeq,
       </if>
       <if test="paragraphKnowledge != null">
         paragraph_knowledge,
@@ -80,11 +80,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Paragraph">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     update paragraph
     <set>
       <if test="paragraphSeq != null">
-        paragraph_seq = #{paragraphSeq,jdbcType=INTEGER},
+        paragraphSeq = #{paragraphSeq,jdbcType=INTEGER},
       </if>
       <if test="paragraphKnowledge != null">
         paragraph_knowledge = #{paragraphKnowledge,jdbcType=INTEGER},
@@ -101,18 +101,18 @@
     </set>
     where pid = #{pid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.Paragraph">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     update paragraph
-    set paragraph_seq = #{paragraphSeq,jdbcType=INTEGER},
+    set paragraphSeq = #{paragraphSeq,jdbcType=INTEGER},
       paragraph_knowledge = #{paragraphKnowledge,jdbcType=INTEGER},
       paragraph_type = #{paragraphType,jdbcType=CHAR},
       paragraph_newline = #{paragraphNewline,jdbcType=CHAR},
       paragraph_content = #{paragraphContent,jdbcType=LONGVARCHAR}
     where pid = #{pid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Paragraph">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     update paragraph
-    set paragraph_seq = #{paragraphSeq,jdbcType=INTEGER},
+    set paragraphSeq = #{paragraphSeq,jdbcType=INTEGER},
       paragraph_knowledge = #{paragraphKnowledge,jdbcType=INTEGER},
       paragraph_type = #{paragraphType,jdbcType=CHAR},
       paragraph_newline = #{paragraphNewline,jdbcType=CHAR}
@@ -120,7 +120,22 @@
   </update>
 
   <!--自定义SQL-->
+  <insert id="insertAll" parameterType="java.util.List" >
+        insert into paragraph (pid, paragraphSeq, paragraph_knowledge,
+        paragraph_type, paragraph_newline, paragraph_content
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.pid,jdbcType=INTEGER}, #{item.paragraphSeq,jdbcType=INTEGER}, #{item.paragraphKnowledge,jdbcType=INTEGER},
+            #{item.paragraphType,jdbcType=CHAR}, #{item.paragraphNewline,jdbcType=CHAR}, #{item.paragraphContent,jdbcType=LONGVARCHAR}
+            )
+        </foreach>
+    </insert>
   <select id="selectByParagraphSeq" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from paragraph where paragraph_seq = #{paragraphSeq}
+    select * from paragraph where paragraphSeq = #{paragraphSeq}
   </select>
+  <delete id="deleteBySeqCourse" parameterType="java.lang.Integer">
+    delete from paragraph
+    where paragraphSeq like concat(#{pid,jdbcType=INTEGER},'%')
+  </delete>
 </mapper>

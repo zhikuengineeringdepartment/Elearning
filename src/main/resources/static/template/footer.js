@@ -1,6 +1,7 @@
 /*
 底部栏组件
  */
+//TODO 现在只展示了copyright，没有其他的样式，后续可以完善
 var footerTemplate = `
 <el-footer>
         <el-row type="flex" class="row-bg" justify="center">

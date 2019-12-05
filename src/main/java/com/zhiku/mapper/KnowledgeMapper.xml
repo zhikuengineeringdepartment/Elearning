@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhiku.mapper.KnowledgeMapper">
-  <resultMap id="BaseResultMap" type="com.zhiku.entity.Knowledge">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.Knowledge">
     <id column="kid" jdbcType="INTEGER" property="kid" />
     <result column="knowledge_seq" jdbcType="INTEGER" property="knowledgeSeq" />
     <result column="knowledge_name" jdbcType="VARCHAR" property="knowledgeName" />
@@ -20,13 +20,13 @@
     delete from knowledge
     where kid = #{kid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhiku.entity.Knowledge">
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.Knowledge">
     insert into knowledge (kid, knowledge_seq, knowledge_name, 
       knowledge_section)
     values (#{kid,jdbcType=INTEGER}, #{knowledgeSeq,jdbcType=INTEGER}, #{knowledgeName,jdbcType=VARCHAR}, 
       #{knowledgeSection,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhiku.entity.Knowledge">
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.Knowledge">
     insert into knowledge
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="kid != null">
@@ -57,7 +57,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Knowledge">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.Knowledge">
     update knowledge
     <set>
       <if test="knowledgeSeq != null">
@@ -72,7 +72,7 @@
     </set>
     where kid = #{kid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.Knowledge">
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.Knowledge">
     update knowledge
     set knowledge_seq = #{knowledgeSeq,jdbcType=INTEGER},
       knowledge_name = #{knowledgeName,jdbcType=VARCHAR},
@@ -84,4 +84,17 @@
   <resultMap id="KnowledgeView" type="com.zhiku.view.KnowledgeView" extends="BaseResultMap">
     <collection property="paragraphs" resultMap="com.zhiku.mapper.ParagraphMapper.ResultMapWithBLOBs"/>
   </resultMap>
+  <insert id="insertAllGetIds" useGeneratedKeys="true" keyProperty="kid"  parameterType="java.util.List">
+        insert into knowledge (kid, knowledge_seq, knowledge_name,
+        knowledge_section)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.kid,jdbcType=INTEGER}, #{item.knowledgeSeq,jdbcType=INTEGER}, #{item.knowledgeName,jdbcType=VARCHAR},
+            #{item.knowledgeSection,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+  <delete id="deleteBySeqCourse" parameterType="java.lang.Integer">
+    delete from knowledge
+    where knowledge_seq like concat(#{kid,jdbcType=INTEGER},'%')
+  </delete>
 </mapper>

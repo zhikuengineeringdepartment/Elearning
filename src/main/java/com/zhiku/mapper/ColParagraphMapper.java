@@ -1,7 +1,7 @@
 package com.zhiku.mapper;
 
-import com.zhiku.entity.ColParagraph;
-import com.zhiku.entity.ColParagraphKey;
+import com.zhiku.entity.mysql.ColParagraphMysql;
+import com.zhiku.entity.mysql.ColParagraphKey;
 import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import org.apache.ibatis.annotations.Param;
@@ -12,15 +12,15 @@ import java.util.List;
 public interface ColParagraphMapper {
     int deleteByPrimaryKey(ColParagraphKey key);
 
-    int insert(ColParagraph record);
+    int insert(ColParagraphMysql record);
 
-    int insertSelective(ColParagraph record);
+    int insertSelective(ColParagraphMysql record);
 
-    ColParagraph selectByPrimaryKey(ColParagraphKey key);
+    ColParagraphMysql selectByPrimaryKey(ColParagraphKey key);
 
-    int updateByPrimaryKeySelective(ColParagraph record);
+    int updateByPrimaryKeySelective(ColParagraphMysql record);
 
-    int updateByPrimaryKey(ColParagraph record);
+    int updateByPrimaryKey(ColParagraphMysql record);
 
     List<ColParagraphSectionView> selectBySid(@Param("uid") int uid, @Param("sid") int sid);
 

@@ -6,6 +6,7 @@ import com.zhiku.util.ResponseData;
 import com.zhiku.util.spider.SpiderBoot;
 import com.zhiku.util.spider.model.TitleAndUrl;
 import com.zhiku.view.IndexView;
+import com.zhiku.view.SectionContentView;
 import com.zhiku.view.SectionView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,10 +38,11 @@ public class SectionController {
 //    }
     @ResponseBody
     @RequestMapping(value = "getSection",method = RequestMethod.GET)
-    public ResponseData getSection(@RequestParam(value = "sid") int sid){
+    public ResponseData getSection(@RequestParam(value = "sid") int sid,
+                                   @RequestParam(required = false) Integer cid,@RequestParam(required = false) String vid){
         ResponseData responseData = ResponseData.ok();
-        SectionView sectionView = indexService.getSecondLevelIndex(sid);
-        responseData.putDataValue("sectionView",sectionView);
+        SectionContentView sectionContentView = indexService.getSecondLevelIndex2(sid,cid,vid);
+        responseData.putDataValue("sectionView",sectionContentView);
         return  responseData;
     }
 

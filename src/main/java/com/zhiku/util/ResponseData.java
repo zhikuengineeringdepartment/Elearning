@@ -3,10 +3,13 @@ package com.zhiku.util;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 返回数据模板
+ */
 public class ResponseData {
-    private String message;
-    private int code;
-    private final Map<String, Object> data = new HashMap<String, Object>();
+    private String message;     //附带的消息
+    private int code;   //状态码
+    private final Map<String, Object> data = new HashMap<String, Object>();     //附带的数据
 
     public String getMessage() {
         return message;
@@ -29,11 +32,16 @@ public class ResponseData {
         return this;
     }
 
-    private ResponseData(int code, String message) {
+    public ResponseData() {
+        this.code = 200;
+    }
+
+    public ResponseData(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
+    //预设一些常用的返回
     public static ResponseData ok() {
         return new ResponseData(200, "Ok");
     }
@@ -60,5 +68,13 @@ public class ResponseData {
 
     public static ResponseData customerError() {
         return new ResponseData(1001, "customer Error");
+    }
+
+    public static ResponseData loginError() {
+        return new ResponseData(1002, "未登陆");
+    }
+
+    public static ResponseData powerError() {
+        return new ResponseData(1003, "抱歉，您没有该权限！");
     }
 }

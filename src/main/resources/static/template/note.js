@@ -1,5 +1,5 @@
 /*
-文件上传下载记录组件
+个人中心中的笔记组件
  */
 var noteTemplate = `
 <el-card shadow="hover" style="margin: 10px 0px">

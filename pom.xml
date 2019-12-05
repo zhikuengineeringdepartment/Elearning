@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.zhiku</groupId>
     <artifactId>elearning</artifactId>
-    <version>1.0_8080</version>
+    <version>1.0_12321</version>
     <name>elearning</name>
     <description>Springboot project for Elearning</description>
 
@@ -79,7 +79,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
         <!--数据库依赖-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -197,7 +201,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.5</version>
+            <version>2.9.10.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
@@ -330,6 +334,13 @@
             <version>5.1.6.RELEASE</version>
         </dependency>
 
+        <!--jsp-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>9.0.20</version>
+        </dependency>
+
 
 
     </dependencies>
@@ -340,6 +351,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!--打包不了临时加-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <!---->
         </plugins>
 
         <resources>

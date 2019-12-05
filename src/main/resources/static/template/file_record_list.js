@@ -46,6 +46,7 @@ var fileRecordListModule = {
         }
     },
     methods:{
+        //根据是上传还是下载调用不同的请求
         getFiles:function(){
             if(this.is_upload_page === 'true'){
                 this.getUploadRecords();
@@ -64,6 +65,7 @@ var fileRecordListModule = {
             })
                 .then(function (response) {
                     _this.file_upload_records = response.data.data.fileUploadRecords;
+                    //根据状态字修改为对应的中文
                     for(var i=0;i<_this.file_upload_records.length;i++){
                         _this.file_upload_records[i].fileUploadTime = getFormatDate(response.data.data.fileUploadRecords[i].fileUploadTime);
                         if(response.data.data.fileUploadRecords[i].fileStatus == 'n'){

@@ -1,6 +1,7 @@
 /*
 头部栏组件
  */
+//TODO 原先头部的全局搜索被隐藏了，此功能待开发
 var headerTemplate = `
 <el-header height="auto">
     <el-row type="flex" class="row-bg" justify="space-around">
@@ -57,7 +58,7 @@ var headerModule = {
             pname: '/user/info'
         }
     },
-    props: ['login', 'user_icon'],
+    props: ['login', 'user_icon'],      //传入参数：是否登录，用户头像
     template: headerTemplate,
     created() {
 
@@ -85,6 +86,7 @@ var headerModule = {
             }
 
         },
+        //为原搜索框提供的enter事件
         keyupEnter() {
             document.onkeydown = e => {
                 let body = document.getElementsByTagName('body')[0]
@@ -97,9 +99,11 @@ var headerModule = {
         handleSearch: function () {
             console.log(this.searchKey)
         },
+        //跳转到登录注册界面
         toLoginRegiste: function (to) {
             root.$router.push(to);
         },
+        //登出，现在的策略是删除前后的token，后台不做任何处理
         loginOut() {
             let _this = this;
             this.$confirm('是否退出登陆', '提示', {

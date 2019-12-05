@@ -1,3 +1,7 @@
+/*
+节展示组件
+内容主要通过marked.js来渲染
+ */
 let sectionTemplate = `
 <div id="sectionView_"></div>
 `
@@ -10,9 +14,10 @@ var sectionModule = {
 
         }
     },
-    props:["sectionView","noteViews","colParas"],
+    props:["sectionView","noteViews","colParas"],   //传入参数：节视图，笔记记录，收藏记录
     template: sectionTemplate,
     watch: {
+        //监听sectionView、noteViews、colParas，改变是重新请求并渲染
         sectionView: function (newSection,oldSection) {
             var _this = this
             load_paragraph(_this.sectionView,"sectionView_",function(pid,noteContent){
@@ -35,6 +40,7 @@ var sectionModule = {
         }
     },
     methods:{
+        //收藏段落
         handleColParagraph(pid){
             var _this = this;
             axios.post('paragraph/addColParagraph',{
@@ -59,6 +65,7 @@ var sectionModule = {
                     console.log(err)
                 });
         },
+        //编辑笔记
         handleNoteParagraph(pid,noteContent){
             axios.post('paragraph/editNote',{
                 uid:0,
@@ -83,6 +90,7 @@ var sectionModule = {
                     console.log(err);
                 });
         },
+        //取消收藏
         handleCancelCol(pid){
             axios.post('paragraph/removeColParagraph',{
                 uid:0,

@@ -1,7 +1,7 @@
 package com.zhiku.view;
 
-import com.zhiku.entity.Knowledge;
-import com.zhiku.entity.Paragraph;
+import com.zhiku.entity.mongodb.Paragraph;
+import com.zhiku.entity.mysql.Knowledge;
 
 import java.util.List;
 
