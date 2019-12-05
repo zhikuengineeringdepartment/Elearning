@@ -1,15 +1,23 @@
 package com.zhiku.service;
 
+import com.zhiku.entity.mongodb.Child;
+import com.zhiku.entity.mongodb.Index;
 import com.zhiku.entity.mysql.Section;
 import com.zhiku.mapper.SectionMapper;
+import com.zhiku.mongo.IndexTemplate;
 import com.zhiku.view.SectionView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SectionService {
     @Autowired
     private SectionMapper sectionMapper;
+
+    @Autowired
+    private IndexTemplate indexTemplate;
 
     //获得节
     public Section getSection(int sid){
@@ -28,4 +36,15 @@ public class SectionService {
 
         return getSectionView(cid*100 + 1);
     }
+
+
+    public Child getLevel2Section(Integer cid, String vid, Integer sid){
+        Index index = indexTemplate.getSectionIndexBySid(sid, cid, vid);
+        if(index==null){
+            return null;
+        }
+        List<Child> catalog = index.getCatalog();
+        return catalog.get(0);
+    }
+
 }
