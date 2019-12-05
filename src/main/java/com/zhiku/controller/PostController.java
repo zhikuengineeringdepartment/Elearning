@@ -95,6 +95,23 @@ public class PostController {
         return responseData;
     }
 
+    /**
+     * 获取帖子列表
+     * @param page 分页-页码，从1开始
+     * @param pageSize 分页-页大小
+     * @return
+     */
+    @RequestMapping("/list")
+    @ResponseBody
+    public ResponseData list(Integer page,Integer pageSize,Integer order){
+        if(page<1||pageSize<1){
+            return ResponseData.badRequest();
+        }
+        ResponseData responseData= ResponseData.ok();
+        responseData.putDataValue( "postView",postService.list( page,pageSize,order ) );
+        return responseData;
+    }
+
 
 
 

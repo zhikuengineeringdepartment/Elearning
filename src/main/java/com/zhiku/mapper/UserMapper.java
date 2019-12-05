@@ -4,6 +4,9 @@ import com.zhiku.entity.User;
 import com.zhiku.view.UserBaseInfoView;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 @Component
 public interface UserMapper {
     @Transactional
@@ -24,4 +27,6 @@ public interface UserMapper {
     User selectByEmail(String email);
 
     UserBaseInfoView selectBaseInfo(Integer uid);
+
+    List<User> selectByUids(List<Integer> uids);
 }

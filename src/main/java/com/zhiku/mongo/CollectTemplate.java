@@ -1,11 +1,7 @@
 package com.zhiku.mongo;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.zhiku.entity.mongodb.ColParagraph;
-import com.zhiku.entity.mongodb.Note;
-import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
+import com.zhiku.entity.ColParagraph;
+import com.zhiku.entity.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -14,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -59,4 +56,17 @@ public class CollectTemplate {
     }
 
 
-}
+    public boolean insertColPar(int uid, ObjectId paragraphSeq){
+        ColParagraph cp = new ColParagraph();
+        cp.setColpDate(new Date());
+        cp.setColpPara(paragraphSeq);
+        cp.setColpUser(uid);
+        mongoTemplate.insert(cp);
+        return true;
+    }
+    public boolean removeColPar(int uid,ObjectId paragraphSeq){
+        Query query = new Query();
+        query.addCriteria(new Criteria("colp_para").is(paragraphSeq).and("colp_user").is(uid));
+        mongoTemplate.remove(query,ColParagraph.class);
+        return true;
+    }

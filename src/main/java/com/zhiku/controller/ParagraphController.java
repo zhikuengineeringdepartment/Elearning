@@ -1,12 +1,15 @@
 package com.zhiku.controller;
 
 import com.zhiku.entity.mysql.NoteMysql;
+import com.zhiku.entity.mongodb.Note;
+import com.zhiku.entity.mysql.NoteMysql;
 import com.zhiku.entity.User;
 import com.zhiku.service.ParagraphService;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import com.zhiku.view.NoteView;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -48,7 +51,7 @@ public class ParagraphController {
      */
     @ResponseBody
     @RequestMapping(value = "addColParagraph",method = RequestMethod.POST)
-    public ResponseData addColParagraph(User user, int paragraphSeq){
+    public ResponseData addColParagraph(User user, ObjectId paragraphSeq){
         ResponseData responseData = null;
         if(paragraphService.addColParagraph(user.getUid(),paragraphSeq)){
             responseData = ResponseData.ok();
@@ -67,7 +70,7 @@ public class ParagraphController {
      */
     @ResponseBody
     @RequestMapping("removeColParagraph")
-    public ResponseData removeColParagraph(User user, int paragraphSeq){
+    public ResponseData removeColParagraph(User user, ObjectId paragraphSeq){
         ResponseData responseData = null;
         if(paragraphService.removeColParagraph(user.getUid(), paragraphSeq)){
             responseData = ResponseData.ok();
@@ -123,11 +126,11 @@ public class ParagraphController {
      */
     @ResponseBody
     @RequestMapping(value = "editNote",method = RequestMethod.POST)
-    public ResponseData editNote(User user, int paragraphSeq , NoteMysql note){
+    public ResponseData editNote(User user, ObjectId paragraphSeq , Note note){
         ResponseData responseData = null;
-        NoteMysql my_note = paragraphService.getNoteByNoteKey(user,paragraphSeq);
+        Note my_note = paragraphService.getNoteByNoteKey(user,paragraphSeq);
         if(note.getNoteContent().equals("<p><br></p>")){    //判断是否为空
-            paragraphService.removeNote(my_note);
+            paragraphService.removeNote(my_note.getNoteUser(),my_note.getNotePara());
         }else if(my_note != null){
             my_note.setNoteContent(note.getNoteContent());
             paragraphService.modifyNote(my_note);
