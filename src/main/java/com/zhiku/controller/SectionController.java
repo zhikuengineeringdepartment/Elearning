@@ -1,5 +1,6 @@
 package com.zhiku.controller;
 
+import com.zhiku.entity.mongodb.Child;
 import com.zhiku.service.IndexService;
 import com.zhiku.service.SectionService;
 import com.zhiku.util.ResponseData;
@@ -58,6 +59,59 @@ public class SectionController {
     public ResponseData getCSDN(int sid){
         ResponseData responseData = ResponseData.ok();
         String key = sectionService.getSection(sid).getSectionName();
+        // 不全把key中的空格删除，把key的前后的空格删除
+        //key = key.replaceAll(" ","").replaceAll("#","").replaceAll("\\*","");
+        key = key.trim().replaceAll("#","").replaceAll("\\*","");
+        SpiderBoot spiderBoot = new SpiderBoot();
+
+
+        // key：爬虫爬取的关键字，对key用空格分开，去掉头部的空格
+        // 用空格分开，分成两个部分，取出索引是1的部分
+        // 如果是通过点分开，而没有通过空格分开，则用点分开，取出最后一个子串
+        // 用空格分开一切都不会有问题，但是.不一定的，没有.会返回空
+        System.out.println("没有处理的key: \n" + key);
+        String[] keySplitWithBlank = key.split(" ");
+        key = keySplitWithBlank[keySplitWithBlank.length-1];
+        if ( key.indexOf(".") != -1){
+            String[] keySplitWithPoint = key.split("\\.");
+            key = keySplitWithPoint[keySplitWithPoint.length-1];
+        }
+
+        System.out.println("处理后的key: \n" + key);
+
+        List<TitleAndUrl> re = spiderBoot.bootSpider(key,"blog",1,3);
+
+        if (re.get(0).getTitle().equals(re.get(1).getTitle()))
+            re.remove(0);
+        if (re.get(0).getTitle().equals(re.get(1).getTitle()))
+            re.remove(0);
+        for (TitleAndUrl titleAndUrl:re){
+            System.out.println("csdn连接标题： " + titleAndUrl.getTitle());
+        }
+        responseData.putDataValue("csdn",re);
+        return responseData;
+    }
+
+    /**
+     * 获得csdn推荐的爬虫
+     * @param cid 课程号
+     * @param vid 版本号
+     * @param sid 具体章节对应小节号
+     * @return csdn推荐列表
+     */
+    @ResponseBody
+    @RequestMapping(value = "getCSDN2",method = RequestMethod.GET)
+    public ResponseData getCSDN2(@RequestParam(value = "cid") Integer cid,
+                                 @RequestParam(value = "vid") String vid,
+                                 @RequestParam(value = "sid") Integer sid){
+        ResponseData responseData = ResponseData.ok();
+        Child childSection = sectionService.getLevel2Section(cid, vid, sid);
+        if(childSection==null){
+            responseData=ResponseData.customerError();
+            responseData.setMessage("参数非法");
+            return responseData;
+        }
+        String key=childSection.getSection_name();
         // 不全把key中的空格删除，把key的前后的空格删除
         //key = key.replaceAll(" ","").replaceAll("#","").replaceAll("\\*","");
         key = key.trim().replaceAll("#","").replaceAll("\\*","");
