@@ -9,7 +9,7 @@
     <result column="user_avatar" jdbcType="LONGVARCHAR" property="userAvatar" />
     <result column="user_sign" jdbcType="VARCHAR" property="userSign" />
     <result column="user_gender" jdbcType="CHAR" property="userGender" />
-    <result column="user_coin" jdbcType="INTEGER" property="userAvatar" />
+    <result column="user_coin" jdbcType="INTEGER" property="userCoin" />
     <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
     <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
     <result column="user_qq" jdbcType="VARCHAR" property="userQq" />
@@ -52,7 +52,7 @@
       user_download_count)
     values (#{uid,jdbcType=INTEGER}, #{userUsername,jdbcType=VARCHAR}, #{userNick,jdbcType=VARCHAR}, 
       #{userPassword,jdbcType=VARCHAR}, #{userAvatar,jdbcType=LONGVARCHAR}, #{userSign,jdbcType=VARCHAR},
-      #{userGender,jdbcType=CHAR}, #{userAvatar,jdbcType=INTEGER}, #{userEmail,jdbcType=VARCHAR},
+      #{userGender,jdbcType=CHAR}, #{userCoin,jdbcType=INTEGER}, #{userEmail,jdbcType=VARCHAR}, 
       #{userPhone,jdbcType=VARCHAR}, #{userQq,jdbcType=VARCHAR}, #{userCollege,jdbcType=INTEGER}, 
       #{userMajor,jdbcType=INTEGER}, #{userAuth,jdbcType=CHAR}, #{userStatus,jdbcType=CHAR}, 
       #{userRegtime,jdbcType=TIMESTAMP}, #{userRegip,jdbcType=VARCHAR}, #{userLasttime,jdbcType=TIMESTAMP}, 
@@ -83,7 +83,7 @@
       <if test="userGender != null">
         user_gender,
       </if>
-      <if test="userAvatar != null">
+      <if test="userCoin != null">
         user_coin,
       </if>
       <if test="userEmail != null">
@@ -151,8 +151,8 @@
       <if test="userGender != null">
         #{userGender,jdbcType=CHAR},
       </if>
-      <if test="userAvatar != null">
-        #{userAvatar,jdbcType=INTEGER},
+      <if test="userCoin != null">
+        #{userCoin,jdbcType=INTEGER},
       </if>
       <if test="userEmail != null">
         #{userEmail,jdbcType=VARCHAR},
@@ -219,8 +219,8 @@
       <if test="userGender != null">
         user_gender = #{userGender,jdbcType=CHAR},
       </if>
-      <if test="userAvatar != null">
-        user_coin = #{userAvatar,jdbcType=INTEGER},
+      <if test="userCoin != null">
+        user_coin = #{userCoin,jdbcType=INTEGER},
       </if>
       <if test="userEmail != null">
         user_email = #{userEmail,jdbcType=VARCHAR},
@@ -275,7 +275,7 @@
       user_avatar = #{userAvatar,jdbcType=LONGVARCHAR},
       user_sign = #{userSign,jdbcType=VARCHAR},
       user_gender = #{userGender,jdbcType=CHAR},
-      user_coin = #{userAvatar,jdbcType=INTEGER},
+      user_coin = #{userCoin,jdbcType=INTEGER},
       user_email = #{userEmail,jdbcType=VARCHAR},
       user_phone = #{userPhone,jdbcType=VARCHAR},
       user_qq = #{userQq,jdbcType=VARCHAR},
@@ -301,7 +301,7 @@
     <result column="user_avatar" jdbcType="LONGVARCHAR" property="userAvatar" />
     <result column="user_sign" jdbcType="VARCHAR" property="userSign" />
     <result column="user_gender" jdbcType="CHAR" property="userGender" />
-    <result column="user_coin" jdbcType="INTEGER" property="userAvatar" />
+    <result column="user_coin" jdbcType="INTEGER" property="userCoin" />
     <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
     <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
     <result column="user_qq" jdbcType="VARCHAR" property="userQq" />
@@ -338,14 +338,4 @@
     <include refid="Base_Info_Column_List" />
     from user where uid = #{uid}
   </select>
-
-    <select id="selectByUids" parameterType="java.util.List" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from user
-        where uid in
-        <foreach collection="list" item="uid" open="(" close=")" index="index" separator=",">
-            #{uid,jdbcType=INTEGER}
-        </foreach>
-    </select>
 </mapper>

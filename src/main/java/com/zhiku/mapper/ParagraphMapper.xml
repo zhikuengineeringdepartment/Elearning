@@ -31,8 +31,6 @@
   </delete>
   <insert id="insert" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     insert into paragraph (pid, paragraphSeq, paragraph_knowledge,
-  <insert id="insert" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
-    insert into paragraph (pid, paragraph_seq, paragraph_knowledge,
       paragraph_type, paragraph_newline, paragraph_content
       )
     values (#{pid,jdbcType=INTEGER}, #{paragraphSeq,jdbcType=INTEGER}, #{paragraphKnowledge,jdbcType=INTEGER}, 
@@ -46,7 +44,7 @@
         pid,
       </if>
       <if test="paragraphSeq != null">
-          paragraph_seq,
+        paragraphSeq,
       </if>
       <if test="paragraphKnowledge != null">
         paragraph_knowledge,
@@ -82,11 +80,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.Paragraph">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     update paragraph
     <set>
       <if test="paragraphSeq != null">
-        paragraph_seq = #{paragraphSeq,jdbcType=INTEGER},
+        paragraphSeq = #{paragraphSeq,jdbcType=INTEGER},
       </if>
       <if test="paragraphKnowledge != null">
         paragraph_knowledge = #{paragraphKnowledge,jdbcType=INTEGER},
@@ -105,7 +103,7 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     update paragraph
-    set paragraph_seq = #{paragraphSeq,jdbcType=INTEGER},
+    set paragraphSeq = #{paragraphSeq,jdbcType=INTEGER},
       paragraph_knowledge = #{paragraphKnowledge,jdbcType=INTEGER},
       paragraph_type = #{paragraphType,jdbcType=CHAR},
       paragraph_newline = #{paragraphNewline,jdbcType=CHAR},
@@ -114,7 +112,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.ParagraphMysql">
     update paragraph
-    set paragraph_seq = #{paragraphSeq,jdbcType=INTEGER},
+    set paragraphSeq = #{paragraphSeq,jdbcType=INTEGER},
       paragraph_knowledge = #{paragraphKnowledge,jdbcType=INTEGER},
       paragraph_type = #{paragraphType,jdbcType=CHAR},
       paragraph_newline = #{paragraphNewline,jdbcType=CHAR}
@@ -134,7 +132,7 @@
         </foreach>
     </insert>
   <select id="selectByParagraphSeq" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from paragraph where paragraph_seq = #{paragraphSeq}
+    select * from paragraph where paragraphSeq = #{paragraphSeq}
   </select>
   <delete id="deleteBySeqCourse" parameterType="java.lang.Integer">
     delete from paragraph

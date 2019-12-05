@@ -8,10 +8,6 @@ import com.zhiku.entity.mongodb.Paragraph;
 import com.zhiku.util.ChildUtil;
 import com.zhiku.view.*;
 import org.bson.types.ObjectId;
-import com.zhiku.entity.mongodb.Index;
-import com.zhiku.entity.mongodb.Paragraph;
-import com.zhiku.view.*;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
@@ -21,10 +17,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -355,21 +347,6 @@ public class IndexTemplate {
         courseView.setCourseIcon(course.getCourseIcon());
         return courseView;
     }
-    /*
-        获取指定课程的二级索引
-     */
-    public SectionView getSecondLevelIndex(int sid){
-        //int cid = Integer.parseInt(String.valueOf(sid).substring(0, 3));
-        //System.out.println(cid);
-        Criteria criteria = Criteria.where("sid").is(sid);
-        Index index = mongoTemplate.findOne(query(criteria), Index.class);
-        SectionView sectionView = new SectionView();
-        sectionView.setKnowledgeViews(index.getChild());
-        sectionView.setSid(index.getSid());
-        sectionView.setSectionName(index.getSection_name());
-        sectionView.setSectionSeq(String.valueOf(index.getSection_seq()));
-        sectionView.setSectionCourse(index.getCid());
-        return sectionView;
-    }
+
 }
 

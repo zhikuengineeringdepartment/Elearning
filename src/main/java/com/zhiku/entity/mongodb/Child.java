@@ -10,22 +10,22 @@ public class Child {
     private Integer section_seq;
     private String section_name;
     private int level;
-    private ArrayList<Document> contents;
-    private ArrayList<Child> sub;
+    private List<Document> contents;
+    private List<Child> sub;
 
-    public ArrayList<Document> getContents() {
+    public List<Document> getContents() {
         return contents;
     }
 
-    public void setContents(ArrayList<Document> contents) {
+    public void setContents(List<Document> contents) {
         this.contents = contents;
     }
 
-    public ArrayList<Child> getSub() {
+    public List<Child> getSub() {
         return sub;
     }
 
-    public void setSub(ArrayList<Child> sub) {
+    public void setSub(List<Child> sub) {
         this.sub = sub;
     }
 

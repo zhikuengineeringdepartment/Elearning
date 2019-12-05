@@ -5,24 +5,15 @@ import com.zhiku.entity.mongodb.Index;
 import com.zhiku.entity.mongodb.Paragraph;
 import com.zhiku.entity.mysql.Knowledge;
 import com.zhiku.mongo.ContentTemplate;
-import com.zhiku.entity.mongodb.Child;
-import com.zhiku.entity.mongodb.Index;
-import com.zhiku.entity.mongodb.Paragraph;
-import com.zhiku.mongo.ContentTemplate;
 import com.zhiku.mongo.IndexTemplate;
 import com.zhiku.util.ChildUtil;
 import com.zhiku.view.CourseView;
 import com.zhiku.view.KnowledgeView;
 import com.zhiku.view.SectionContentView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.*;
-
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
 public class IndexService {

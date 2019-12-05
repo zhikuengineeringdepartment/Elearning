@@ -2,7 +2,6 @@ package com.zhiku.view;
 
 import com.zhiku.entity.mysql.NoteMysql;
 
-public class NoteView extends NoteMysql {
 /**
  * 笔记视图
  */

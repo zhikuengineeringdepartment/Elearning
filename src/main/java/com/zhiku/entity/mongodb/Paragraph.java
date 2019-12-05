@@ -19,12 +19,6 @@ public class Paragraph {
     @Field("paragraph_content")
     private String paragraphContent;
 
-    public Integer getParagraph_seq() {
-        return paragraph_seq;
-    }
-
-    public void setParagraph_seq(Integer paragraph_seq) {
-        this.paragraph_seq = paragraph_seq;
     public Integer getParagraphSeq() {
         return paragraphSeq;
     }
