@@ -307,8 +307,7 @@ public class CourseSaveService {
         }
 
         return courseView1;
-//
-//
+
 //        //通过md2Entitys，三个实体列表都是按seq从小到大的顺序的，可以直接拼装
 //        int oldSid=0,oldKid=0;
 //        int sSeq=Integer.parseInt(sections.get(oldSid).getSectionSeq());

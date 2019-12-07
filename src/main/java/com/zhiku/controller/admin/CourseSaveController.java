@@ -139,15 +139,11 @@ public class CourseSaveController {
 
     /**
      * 预览课程内容
-//     * @param user 自动获取
      * @param file md|txt文件
      */
     @RequestMapping(value = "/preview",method = RequestMethod.POST)
     @ResponseBody
     public ResponseData preview( MultipartFile file) throws IOException {
-//        if(!isAdm(user)) {
-//            return ResponseData.powerError();
-//        }
         //储存文件
         if(Objects.equals( file.getOriginalFilename(), "" )){
             return new ResponseData(400,"课程文件不能为空");

@@ -108,7 +108,7 @@ public class ChildUtil {
                     min=child.getSid();
                 }
             }else if(child.getLevel()<level&&child.getSub()!=null){
-                int m=maxSid(child.getSub(),level);
+                int m=minSid(child.getSub(),level);
                 if(m<min){
                     min=m;
                 }
