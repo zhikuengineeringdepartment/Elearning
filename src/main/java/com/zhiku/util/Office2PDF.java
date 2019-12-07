@@ -183,7 +183,6 @@ public class Office2PDF {
      * @throws Exception
      */
     public static void writeOut(File file, OutputStream out,boolean admin) throws Exception{
-        System.out.println(file.getAbsolutePath());
         //加载pdf文档对象
         PDDocument document = PDDocument.load(file, MemoryUsageSetting.setupTempFileOnly());
         document.getPages();

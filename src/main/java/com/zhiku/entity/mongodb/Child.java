@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Child {
-    private int sid;
+    private Integer sid;
     private Integer section_seq;
     private String section_name;
-    private int level;
+    private Integer level;
     private List<Document> contents;
     private List<Child> sub;
 
@@ -53,11 +53,11 @@ public class Child {
         this.section_seq = section_seq;
     }
 
-    public int getSid() {
+    public Integer getSid() {
         return sid;
     }
 
-    public void setSid(int sid) {
+    public void setSid(Integer sid) {
         this.sid = sid;
     }
 }

@@ -18,10 +18,7 @@ import com.zhiku.util.md2Database.Md2Save;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
-
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
 public class CourseSaveService {
@@ -109,14 +106,14 @@ public class CourseSaveService {
                 return "解析失败，不确定章号";
             chapter.setSection_seq( seqs.get( 0 ).getChapter() );
             chapter.setLevel( 1 );
-            chapter.setSection_name( "" );
+            chapter.setSection_name( null );//空掌以标题为null标识
             chapter.setSub( childList );
             childList=new ArrayList<>(  );
             childList.add( chapter );
         }
         //修改序列
         if(seqs!=null&&seqs.size()>0){
-            List<Child> tempList=new ArrayList<>(  );//不在seq中的要移除
+            List<Child> tempList=new ArrayList<>(  );//不在seqs中的要移除
             int i=-1;
             for(Child child:childList){
                 if(i>=(seqs.size()-1))
@@ -132,13 +129,13 @@ public class CourseSaveService {
                     int j=-1;
                     List<Child> tempSections=new ArrayList<>(  );
                     for (Child section:sections){
+                        if(j>=(secseq.size()-1))
+                            break;
+                        tempSections.add( section );
                         if(section.getLevel()!=2) {//节
                             continue;
                         }
-                        if(j>=(secseq.size()-1))
-                            break;
-                        child.setSection_seq( secseq.get(j) );
-                        tempSections.add( child );
+                        section.setSection_seq( secseq.get(++j) );
                     }
                     child.setSub( tempSections );
                 }
@@ -165,13 +162,21 @@ public class CourseSaveService {
 
         //合并目录
         index.setCatalog(ChildUtil.merge(index.getCatalog(),childList));
-        //储存
-        Map<Integer,Integer> kid2xkid=indexTemplate.upset(index);
-        for(Paragraph paragraph:paragraphs){
-            paragraph.setParagraphKnowledge( kid2xkid.get( paragraph.getParagraphKnowledge() ) );
+        //空章标题为null，改为""
+        for(Child child:index.getCatalog()){
+            if(child.getSection_name(  )==null)
+                child.setSection_name( "" );
         }
-
-        contentTemplate.instertAll(paragraphs);
+        //储存//新加入的节和知识点id均为负
+        Map<Integer,Integer> kid2xkid=indexTemplate.upset(index);
+        List<Paragraph> paragraphsx=new ArrayList<>(  );
+        for(Paragraph paragraph:paragraphs){
+            if(kid2xkid.get( paragraph.getParagraphKnowledge() )!=null){
+                paragraph.setParagraphKnowledge(kid2xkid.get( paragraph.getParagraphKnowledge() ) );
+                paragraphsx.add( paragraph );
+            }
+        }
+        contentTemplate.instertAll(paragraphsx);
 
         return null;
     }
@@ -194,13 +199,13 @@ public class CourseSaveService {
                 }
             }
             boolean[] removeChapter=new boolean[maxCata+1];
-            Boolean[][] isRome=new Boolean[maxCata+1][maxSec+1];
+            Boolean[][] removeSection=new Boolean[maxCata+1][maxSec+1];
             for(ChapterProgressView chapterProgressView:seqs){
                 if(chapterProgressView.getSections()==null||chapterProgressView.getSections().size()==0) {
                     removeChapter[chapterProgressView.getChapter()] = true;
                 }else{
                     for(Integer i:chapterProgressView.getSections()){
-                        isRome[chapterProgressView.getChapter()][i]=true;
+                        removeSection[chapterProgressView.getChapter()][i]=true;
                     }
                 }
             }
@@ -214,7 +219,7 @@ public class CourseSaveService {
                         continue;
                     List<Child> xsectionx=new ArrayList<>(  );
                     for(Child section:chapter.getSub()){
-                        if(section.getSection_seq()<maxSec&&!isRome[chapter.getSection_seq()][section.getSection_seq()]){
+                        if(section.getSection_seq()<maxSec&&!removeSection[chapter.getSection_seq()][section.getSection_seq()]){
                             xsectionx.add( section );
                         }
                     }
@@ -274,7 +279,8 @@ public class CourseSaveService {
         CourseView courseView1= IndexTemplate.index2CourseView(index,course);
         //生成节视图对应
         int maxKid= ChildUtil.maxSid(chapterList,3);
-        KnowledgeView[] knowledgeViews=new KnowledgeView[maxKid+1];//储存地址，便于找到
+        int minKid= ChildUtil.minSid(chapterList,3);
+        KnowledgeView[] knowledgeViews=new KnowledgeView[maxKid-minKid+1];//储存地址，便于找到
         //创建KnowledgeView，SectionContentView
         for(Child child1:chapterList){//章
             if(child1==null||child1.getSub()==null)
@@ -286,8 +292,8 @@ public class CourseSaveService {
                 for(Child child3:child2.getSub()){//知识点
                     if(child3==null)
                         continue;
-                    knowledgeViews[child3.getSid()]=child2KnowledgeView(child3,new ArrayList<>(  ) );
-                    knowledgeViewList.add( knowledgeViews[child3.getSid()] );
+                    knowledgeViews[child3.getSid()-minKid]=child2KnowledgeView(child3,new ArrayList<>(  ) );
+                    knowledgeViewList.add( knowledgeViews[child3.getSid()-minKid] );
                 }
                 sectionViewMap.put( ""+child2.getSid(),child2SectionCView(child2, knowledgeViewList ,0) );
             }
@@ -297,7 +303,7 @@ public class CourseSaveService {
             if(paragraph.getParagraphKnowledge()>maxKid)
                 continue;
 //            paragraph.setPid( new ObjectId(  ) );
-            knowledgeViews[paragraph.getParagraphKnowledge()].getParagraphs().add(paragraph);
+            knowledgeViews[paragraph.getParagraphKnowledge()-minKid].getParagraphs().add(paragraph);
         }
 
         return courseView1;

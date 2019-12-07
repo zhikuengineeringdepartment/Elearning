@@ -178,7 +178,6 @@ public class FileService{
     private boolean storeFileToDB(MultipartFile multipartFile, File file,User user) throws IOException {
         //boolean finish ;
         //try{
-            System.out.println("存入数据库");
             file.setFileUpper(user.getUid());
             file.setFileName(multipartFile.getOriginalFilename());
             file.setFileStatus(FileStatus.UNCHECK.getCode());
@@ -188,7 +187,6 @@ public class FileService{
             file.setFileScore(3.0F);
             file.setFileDownloadCount(0);
             file.setFileDesc("");
-            System.out.println(file);
             fileMapper.insertSelective(file);
             //finish = true;
         //}catch (Exception e){
@@ -346,7 +344,6 @@ public class FileService{
      */
     public List<FileView> getFileList(String keyWord, File file, int page, boolean order,String status) {
         int startLine = (page-1)*PAGE_SIZE;
-        System.out.println(startLine);
         return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order,status);
     }
 

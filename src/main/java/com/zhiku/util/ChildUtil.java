@@ -30,7 +30,7 @@ public class ChildUtil {
     }
 
     /*
-    合并两目录结构,newChildren可以覆盖orgChildren
+    合并两目录结构,newChildren可以覆盖orgChildren，依据同一父节点下seq唯一
     注:要确保level同层级
      */
     public static List<Child> merge(List<Child> orgChildren,List<Child> newChildren){
@@ -63,6 +63,10 @@ public class ChildUtil {
             }else if(child.getLevel()==1){//如果是章，到节再覆盖
                 children[child.getSection_seq()].setSub(
                         merge(child.getSub(),children[child.getSection_seq()].getSub()));
+                if(children[child.getSection_seq()].getSection_name()==null){//空章(标题为null)可以保留原章标题
+                    children[child.getSection_seq()].setSection_name( child.getSection_name() );
+                }
+                children[child.getSection_seq()].setSid( child.getSid() );//原章id可保留，仅章可以
             }//非章，不能覆盖newChildren
         }
         List<Child> re=new ArrayList<>(  );
@@ -78,7 +82,7 @@ public class ChildUtil {
     获得level层的最大sid
      */
     public static int maxSid(List<Child> children,int level){
-        int max=0;
+        int max=Integer.MIN_VALUE;
         for(Child child:children){
             if(child.getLevel()==level){
                 if(max<child.getSid()){
@@ -92,6 +96,25 @@ public class ChildUtil {
             }
         }
         return max;
+    }
+    /*
+    获得level层的最小sid
+    */
+    public static int minSid(List<Child> children,int level){
+        int min=Integer.MAX_VALUE;
+        for(Child child:children){
+            if(child.getLevel()==level){
+                if(child.getSid()<min){
+                    min=child.getSid();
+                }
+            }else if(child.getLevel()<level&&child.getSub()!=null){
+                int m=maxSid(child.getSub(),level);
+                if(m<min){
+                    min=m;
+                }
+            }
+        }
+        return min;
     }
 
 }

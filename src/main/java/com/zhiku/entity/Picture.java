@@ -1,5 +1,7 @@
 package com.zhiku.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Picture {
@@ -75,6 +77,7 @@ public class Picture {
         this.bupUrl = bupUrl == null ? null : bupUrl.trim();
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//无效
     public Date getCreateTime() {
         return createTime;
     }

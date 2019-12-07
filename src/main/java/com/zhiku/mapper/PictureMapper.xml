@@ -29,10 +29,10 @@
   </delete>
   <insert id="insert" parameterType="com.zhiku.entity.Picture">
     insert into picture (pic_id, uid, org_name, 
-      cid, sections, url, 
+      cid, sections, url,
       bup_url, create_time)
     values (#{picId,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{orgName,jdbcType=VARCHAR}, 
-      #{cid,jdbcType=INTEGER}, #{sections,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{cid,jdbcType=INTEGER}, #{sections,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
       #{bupUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.zhiku.entity.Picture">

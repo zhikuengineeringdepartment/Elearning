@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +59,19 @@ public class CollectTemplate {
         mongoTemplate.upsert(query, update, ColParagraph.class);
     }
 
+    public boolean insertColPar(int uid, ObjectId paragraphSeq){
+        ColParagraph cp = new ColParagraph();
+        cp.setColpDate(new Date());
+        cp.setColpPara(paragraphSeq);
+        cp.setColpUser(uid);
+        mongoTemplate.insert(cp);
+        return true;
+    }
+    public boolean removeColPar(int uid,ObjectId paragraphSeq){
+        Query query = new Query();
+        query.addCriteria(new Criteria("colp_para").is(paragraphSeq).and("colp_user").is(uid));
+        mongoTemplate.remove(query,ColParagraph.class);
+        return true;
+    }
 
 }

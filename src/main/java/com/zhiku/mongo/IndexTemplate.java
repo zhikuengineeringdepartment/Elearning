@@ -213,7 +213,7 @@ public class IndexTemplate {
 //            ListIterator<Child> iter = sections.listIterator();
 //            deschild = iter.next();//？总是从第二个开始
             for(Child sec:sections){
-                if(sec.getSid()==sid){
+                if(sec.getSid().equals( sid )){//！都是Integr类型，是对象，不能直接用==比较，否则会比较地址是否相同
                     deschild=sec;
                     break;
                 }
@@ -221,14 +221,13 @@ public class IndexTemplate {
             if(deschild!=null)
                 break;
 //            if(iter.hasNext()){
-//                System.out.println(deschild.getSid());//////////////////
 //                while(iter.hasNext() && deschild.getSid() != sid) {
 //                    deschild = iter.next();
 //                }
 //            }
         }
         //这时候deschild就是目标节
-        if(deschild==null||deschild.getSid()!=sid){
+        if(deschild==null|| !deschild.getSid().equals( sid )){
             return null;
         }
         chapters.clear();
@@ -242,7 +241,7 @@ public class IndexTemplate {
         return mongoTemplate.findOne( query,Index.class );
     }
 
-    //更新或插入目录索引，自动赋值sid
+    //更新或插入目录索引，新加入的自动赋值sid//新加入的节和知识点id均为负
     public Map<Integer,Integer> upset(Index index){
         int sumSid=0;
         for(Child child:index.getCatalog()){
@@ -275,13 +274,16 @@ public class IndexTemplate {
         mongoTemplate.remove( query,Index.class );
     }
 
+    //给新加入的章、节、知识点附id
     private int handleChild(Child child,int xsid,Map<Integer,Integer> kid2xkid){
-        xsid+=1;
-        if(child.getLevel()==3){//如果是知识点保存新id
-            kid2xkid.put( child.getSid(),xsid );
-            //System.out.println("<<"+child.getSid()+":"+xsid);
+        if(child.getSid()==null||child.getSid()<=0){
+            xsid+=1;
+            if(child.getLevel()==3){//如果是知识点保存新id
+                kid2xkid.put( child.getSid(),xsid );
+            }
+            child.setSid(xsid);
         }
-        child.setSid(xsid);
+
         List<Child> childList=child.getSub();
         if(childList!=null&&childList.size()>0){
             for(Child child1:childList){
@@ -291,12 +293,15 @@ public class IndexTemplate {
         return xsid;
     }
 
+    //记新加入的章、节、知识点数目
     private int countSid(Child child){
         int sum=1;
         List<Child> childList=child.getSub();
         if(childList!=null&&childList.size()>0){
             for(Child child1:childList){
-                sum+=countSid( child1 );
+                if(child1.getSid()==null||child1.getSid()<=0){
+                    sum+=countSid( child1 );
+                }
             }
         }
         return sum;

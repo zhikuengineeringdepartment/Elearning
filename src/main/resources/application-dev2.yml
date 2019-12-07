@@ -1,7 +1,3 @@
-basePath_upload: "unknow"
-basePath_preview: "unknow"
-max_size: 100000000
-type_reg: "pptx?|docx?|pdf"
 spring:
   mail:
     host: smtp.163.com
@@ -20,16 +16,16 @@ spring:
             fallback: false
   data:
     mongodb:
-      uri: mongodb://admin:admin@211.87.227.234:27017/zhiku?authSource=admin&readPreference=primary&appname=MongoDB%20Compass%20Beta&ssl=false
-#      uri: mongodb://127.0.0.1:27017/zhiku
+#      uri: mongodb://admin:admin@211.87.227.234:27017/zhiku?authSource=admin&readPreference=primary&appname=MongoDB%20Compass%20Beta&ssl=false
+      uri: mongodb://127.0.0.1:27017/zhiku
   datasource:
     #todo: 临时替换数据库，避免影响上线数据库
-#    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8
-#    username: zhiku
-#    password: zhiku_123b
-    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8&serverTimezone=UTC
-    username: root
-    password: Zhiku_123
+    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8
+    username: zhiku
+    password: zhiku_123b
+#    url: jdbc:mysql://211.87.227.234:3306/zhiku?characterEncoding=utf-8&serverTimezone=UTC
+#    username: root
+#    password: Zhiku_123
     driver-class-name: com.mysql.cj.jdbc.Driver
   freemarker:
     template-loader-path: classpath:/freemarker/
@@ -38,10 +34,9 @@ spring:
       max-file-size: 30MB
       max-request-size: 30MB
       location: /var/zhiku/temp
-#  mvc:
-#    view:
-#      prefix: /tem/
-#      suffix: .jsp
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss #无效
+    time-zone: GMT+8 #无效
 mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
@@ -52,9 +47,13 @@ server:
 #    com.zhiku.*: debug
 
 #自定义值#
+basePath_upload: "unknow"
+basePath_preview: "unknow"
+max_size: 100000000
+type_reg: "pptx?|docx?|pdf"
 #智库工程储存根路径
-root_path: /var/zhiku
-#root_path: E:/ZhikuFiles
+#root_path: /var/zhiku
+root_path: E:/ZhikuFiles
 #记录文件位置
 file_path:
   #访问量记录文件

@@ -260,7 +260,7 @@ public class Md2Save {
      * @param filePath 文件完整路径
      * @param chapterList、paragraphs 储存结果，
      * 章段落id均不生成，所有seq按从1开始依次生成，章下直接有内容自动生成seq为0的节
-     * kid,sid将从1开始储存，与数据库无关，便于和段落对应
+     * kid,sid将从-1开始倒序生成，与数据库无关，便于和段落对应，使用负数便于外面区分那些是来自数据库的，那些是新加入的
      * @return 错误码 为null表示没有错
      * @throws IOException _
      */
@@ -314,7 +314,7 @@ public class Md2Save {
                 lastLevel=1;
             }else if(tp.getType()==type[1]){//节
                 section=new Child();
-                section.setSid( ++sid );
+                section.setSid( --sid );
                 section.setSection_name( tp.getContent()  );
                 section.setLevel( 2 );
                 section.setSection_seq( ++secseq );
@@ -329,7 +329,7 @@ public class Md2Save {
             }else if(tp.getType()==type[2]){//知识点
                 if(lastLevel==1){//知识点上直接是章，创建节
                     section=new Child();
-                    section.setSid( ++sid );
+                    section.setSid( --sid );
                     section.setSection_name( chapter.getSection_name()  );
                     section.setLevel( 2 );
                     section.setSection_seq( 0 );
@@ -342,7 +342,7 @@ public class Md2Save {
                     lastLevel=2;
                 }
                 konwledge=new Child();
-                konwledge.setSid( ++kid );
+                konwledge.setSid( --kid );
                 konwledge.setSection_name( tp.getContent()  );
                 konwledge.setLevel( 3 );
                 konwledge.setSection_seq( ++knowseq );
@@ -356,7 +356,7 @@ public class Md2Save {
             }else{//段落
                 if(lastLevel==1){//段落上直接是章，创建节
                     section=new Child();
-                    section.setSid( ++sid );
+                    section.setSid( --sid );
                     section.setSection_name( chapter.getSection_name()  );
                     section.setLevel( 2 );
                     section.setSection_seq( 0 );
@@ -370,7 +370,7 @@ public class Md2Save {
                 }
                 if(lastLevel==2){//目前段落上面直接是节，创建空知识点
                     konwledge=new Child();
-                    konwledge.setSid( ++kid );
+                    konwledge.setSid( --kid );
                     konwledge.setSection_name( "" );
                     konwledge.setLevel( 3 );
                     konwledge.setSection_seq( ++knowseq );

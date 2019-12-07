@@ -138,6 +138,11 @@ public class UserController {
                         cookie.setMaxAge(3*60*60);
                         cookie.setPath("/");
                         response.addCookie(cookie);
+                        //签发管理员token
+                        Cookie cookie2 = new Cookie("tokena",JWTUtil.signToken(user));
+                        cookie2.setMaxAge(3*60*60);
+                        cookie2.setPath("/");
+                        response.addCookie(cookie2);
                         responseData.putDataValue("userIcon",user.getUserAvatar());
                     }catch (Exception e){
                         e.printStackTrace();

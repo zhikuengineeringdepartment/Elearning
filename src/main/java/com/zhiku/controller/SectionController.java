@@ -30,8 +30,8 @@ public class SectionController {
      * @return 节-知识点-段落视图
      */
 //    @ResponseBody
-//    @RequestMapping(value = "getSection",method = RequestMethod.GET)
-//    public ResponseData getSection(@RequestParam(value = "sid") int sid){
+//    @RequestMapping(value = "getSections",method = RequestMethod.GET)
+//    public ResponseData getSections(@RequestParam(value = "sid") int sid){
 //        ResponseData responseData = ResponseData.ok();
 //        SectionView sectionView = sectionService.getSectionView(sid);
 //        responseData.putDataValue("sectionView",sectionView);
@@ -69,7 +69,6 @@ public class SectionController {
         // 用空格分开，分成两个部分，取出索引是1的部分
         // 如果是通过点分开，而没有通过空格分开，则用点分开，取出最后一个子串
         // 用空格分开一切都不会有问题，但是.不一定的，没有.会返回空
-        System.out.println("没有处理的key: \n" + key);
         String[] keySplitWithBlank = key.split(" ");
         key = keySplitWithBlank[keySplitWithBlank.length-1];
         if ( key.indexOf(".") != -1){
@@ -77,7 +76,6 @@ public class SectionController {
             key = keySplitWithPoint[keySplitWithPoint.length-1];
         }
 
-        System.out.println("处理后的key: \n" + key);
 
         List<TitleAndUrl> re = spiderBoot.bootSpider(key,"blog",1,3);
 
@@ -85,9 +83,6 @@ public class SectionController {
             re.remove(0);
         if (re.get(0).getTitle().equals(re.get(1).getTitle()))
             re.remove(0);
-        for (TitleAndUrl titleAndUrl:re){
-            System.out.println("csdn连接标题： " + titleAndUrl.getTitle());
-        }
         responseData.putDataValue("csdn",re);
         return responseData;
     }
@@ -122,7 +117,6 @@ public class SectionController {
         // 用空格分开，分成两个部分，取出索引是1的部分
         // 如果是通过点分开，而没有通过空格分开，则用点分开，取出最后一个子串
         // 用空格分开一切都不会有问题，但是.不一定的，没有.会返回空
-        System.out.println("没有处理的key: \n" + key);
         String[] keySplitWithBlank = key.split(" ");
         key = keySplitWithBlank[keySplitWithBlank.length-1];
         if ( key.indexOf(".") != -1){
@@ -130,7 +124,6 @@ public class SectionController {
             key = keySplitWithPoint[keySplitWithPoint.length-1];
         }
 
-        System.out.println("处理后的key: \n" + key);
 
         List<TitleAndUrl> re = spiderBoot.bootSpider(key,"blog",1,3);
 
@@ -138,9 +131,6 @@ public class SectionController {
             re.remove(0);
         if (re.get(0).getTitle().equals(re.get(1).getTitle()))
             re.remove(0);
-        for (TitleAndUrl titleAndUrl:re){
-            System.out.println("csdn连接标题： " + titleAndUrl.getTitle());
-        }
         responseData.putDataValue("csdn",re);
         return responseData;
     }

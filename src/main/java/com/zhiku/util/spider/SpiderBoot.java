@@ -41,9 +41,6 @@ public class SpiderBoot {
     public static void main(String[] args){
         SpiderBoot spiderBoot = new SpiderBoot();
         List<TitleAndUrl> re = spiderBoot.bootSpider("6.2同步量","blog",1,3);
-        System.out.println(re.get(0).getTitle());
-        System.out.println(re.get(1).getTitle());
-        System.out.println(re.get(2).getTitle());
     }
 
 }

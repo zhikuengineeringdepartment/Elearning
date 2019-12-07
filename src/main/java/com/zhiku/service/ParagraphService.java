@@ -1,6 +1,7 @@
 package com.zhiku.service;
 
 import com.zhiku.entity.*;
+import com.zhiku.entity.mongodb.Note;
 import com.zhiku.entity.mysql.ParagraphMysql;
 import com.zhiku.entity.mysql.ColParagraphKey;
 import com.zhiku.entity.mysql.ColParagraphMysql;
@@ -9,9 +10,13 @@ import com.zhiku.entity.mysql.NoteMysql;
 import com.zhiku.mapper.ColParagraphMapper;
 import com.zhiku.mapper.NoteMapper;
 import com.zhiku.mapper.ParagraphMapper;
+import com.zhiku.mongo.CollectTemplate;
+import com.zhiku.mongo.ContentTemplate;
+import com.zhiku.mongo.NoteTemplate;
 import com.zhiku.view.ColParagraphSectionView;
 import com.zhiku.view.ColParagraphView;
 import com.zhiku.view.NoteView;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +31,10 @@ public class ParagraphService {
     ColParagraphMapper colParagraphMapper;
     @Autowired
     NoteMapper noteMapper;
+    @Autowired
+    NoteTemplate noteTemplate;
+    @Autowired
+    CollectTemplate collectTemplate;
 
     /**
      * 获取某一节的收藏段落
@@ -53,17 +62,18 @@ public class ParagraphService {
      * @param paragraphSeq 段落序列
      * @return 是否收藏成功
      */
-    public boolean addColParagraph(int uid, int paragraphSeq) {
-        ColParagraphMysql colParagraph = new ColParagraphMysql();
-        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
-        colParagraph.setColpPara(paragraph.getPid());
-        colParagraph.setColpUser(uid);
-        colParagraph.setColpDate(new Date());
-        if(colParagraphMapper.insert(colParagraph)>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean addColParagraph(int uid, ObjectId paragraphSeq) {
+//        ColParagraphMysql colParagraph = new ColParagraphMysql();
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        colParagraph.setColpPara(paragraph.getPid());
+//        colParagraph.setColpUser(uid);
+//        colParagraph.setColpDate(new Date());
+//        if(colParagraphMapper.insert(colParagraph)>0){
+//            return true;
+//        }else{
+//            return false;
+//        }
+        return collectTemplate.insertColPar(uid,paragraphSeq);
     }
 
     /**
@@ -72,16 +82,17 @@ public class ParagraphService {
      * @param paragraphSeq 段落序列
      * @return
      */
-    public boolean removeColParagraph(int uid,int paragraphSeq){
-        ColParagraphKey colParagraphKey = new ColParagraphKey();
-        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
-        colParagraphKey.setColpUser(uid);
-        colParagraphKey.setColpPara(paragraph.getPid());
-        if(colParagraphMapper.deleteByPrimaryKey(colParagraphKey)>0){
-            return true;
-        }else {
-            return false;
-        }
+    public boolean removeColParagraph(int uid,ObjectId paragraphSeq){
+//        ColParagraphKey colParagraphKey = new ColParagraphKey();
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        colParagraphKey.setColpUser(uid);
+//        colParagraphKey.setColpPara(paragraph.getPid());
+//        if(colParagraphMapper.deleteByPrimaryKey(colParagraphKey)>0){
+//            return true;
+//        }else {
+//            return false;
+//        }
+        return collectTemplate.removeColPar(uid,paragraphSeq);
     }
 
     /**
@@ -96,16 +107,17 @@ public class ParagraphService {
 
     /**
      * 依据note的联合主键找到对应的note
-     * @param user  用户id
-     * @param paragraphSeq  段落序列
-     * @return Note 笔记
+     * @param user  联合主键中的uid
+     * @param paragraphSeq  联合主键中pid
+     * @return
      */
-    public NoteMysql getNoteByNoteKey(User user, int paragraphSeq){
-        NoteKey noteKey = new NoteKey();
-        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
-        noteKey.setNotePara(paragraph.getPid());
-        noteKey.setNoteUser(user.getUid());
-        return noteMapper.selectByPrimaryKey(noteKey);
+    public Note getNoteByNoteKey(User user, ObjectId paragraphSeq){
+//        NoteKey noteKey = new NoteKey();
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        noteKey.setNotePara(paragraph.getPid());
+//        noteKey.setNoteUser(user.getUid());
+//        return noteMapper.selectByPrimaryKey(noteKey);
+        return noteTemplate.selectNote(user.getUid(),paragraphSeq);
     }
 
     /**
@@ -116,29 +128,31 @@ public class ParagraphService {
      * @param paragraphSeq
      * @return 是否添加成功
      */
-    public boolean addNote(User user, NoteMysql note, int paragraphSeq){
-        note.setNoteUser(user.getUid());
-        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
-        note.setNotePara(paragraph.getPid());
-        note.setNoteDate(new Date());
-        if(noteMapper.insert(note)>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean addNote(User user, Note note, ObjectId paragraphSeq){
+//        note.setNoteUser(user.getUid());
+//        ParagraphMysql paragraph = paragraphMapper.selectByParagraphSeq(paragraphSeq);
+//        note.setNotePara(paragraph.getPid());
+//        note.setNoteDate(new Date());
+//        if(noteMapper.insert(note)>0){
+//            return true;
+//        }else{
+//            return false;
+//        }
+        return noteTemplate.addNote(user.getUid(),note,paragraphSeq);
     }
 
     /**
      * 删除一条笔记
-     * @param noteKey
+     *
      * @return 是否删除成功
      */
-    public boolean removeNote(NoteKey noteKey){
-        if(noteMapper.deleteByPrimaryKey(noteKey)>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean removeNote(int uid,ObjectId note_para){
+//        if(noteMapper.deleteByPrimaryKey(noteKey)>0){
+//            return true;
+//        }else{
+//            return false;
+//        }
+        return noteTemplate.removeNote(uid, note_para);
     }
 
     /**
@@ -146,13 +160,14 @@ public class ParagraphService {
      * @param note
      * @return
      */
-    public boolean modifyNote(NoteMysql note){
-        note.setNoteDate(new Date());
-        if(noteMapper.updateByPrimaryKeyWithBLOBs(note)>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean modifyNote(Note note){
+//        note.setNoteDate(new Date());
+//        if(noteMapper.updateByPrimaryKeyWithBLOBs(note)>0){
+//            return true;
+//        }else{
+//            return false;
+//        }
+        return noteTemplate.modifyNote(note);
     }
 
     /**

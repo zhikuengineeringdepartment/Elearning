@@ -1,20 +1,14 @@
 package com.zhiku.controller.admin;
 
-
-import com.zhiku.entity.User;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.zhiku.service.CourseSaveService;
-import com.zhiku.service.IndexService;
 import com.zhiku.util.ResponseData;
-import com.zhiku.view.ChapterProgressView;
-import com.zhiku.view.CourseView;
-import com.zhiku.view.SectionContentView;
-import com.zhiku.view.SectionView;
+import com.zhiku.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -36,12 +30,6 @@ public class CourseSaveController {
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     @ResponseBody
     public ResponseData create(String title,String describe,String vid,String iconPath){
-//        if(!isAdm(user)) {
-//            return ResponseData.powerError();
-//        }
-        if(title==null||title.equals( "" )){
-            return new ResponseData( 400, "课程名称不能为空");
-        }
         courseSaveService.createCourse( title,vid,describe,iconPath );
         return ResponseData.ok();
     }
@@ -61,9 +49,6 @@ public class CourseSaveController {
                                @RequestParam(required = false)String describe,
                                @RequestParam(required = false)String vid,
                                @RequestParam(required = false)String iconPath){
-//        if(!isAdm(user)) {
-//            return ResponseData.powerError();
-//        }
         String error=courseSaveService.update( cid,title,vid,describe,iconPath );
         if(error!=null){
             return new ResponseData( 400,error );
@@ -75,19 +60,30 @@ public class CourseSaveController {
     //TODO:覆盖课程内容、删除课程内容，都没有处理段落（目前段落都不删），应当判断段落是否收藏，然后删除或者禁止删
     /**
      * 添加课程内容
-     * @param file md文件
-     * @param cid 课程id,vid 版本号
+//     * @param file md文件
+//     * @param cid 课程id,vid 版本号
      */
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData save( MultipartFile file,Integer cid,
-                             @RequestParam(required = false) String vid,
-                             @RequestParam(required = false) List<ChapterProgressView> seqs)
-            throws IOException {
-//        if(!isAdm(user)) {
-//            return ResponseData.powerError();
-//        }
-
+    public ResponseData save(MultipartFile file, Integer cid,String vid,String seqs) throws IOException {
+        List<ChapterProgressView> chapterProgressViews=null;
+        //转换seqs
+        if(seqs!=null){
+            try {
+                chapterProgressViews=new ArrayList<>(  );
+                JSONArray jsonArray=JSONArray.parseArray( seqs );
+                for (int i=0; i < jsonArray.size(); i++)    {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    ChapterProgressView chapterProgressView=new ChapterProgressView();
+                    chapterProgressView.setChapter( jsonObject.getObject("chapter",Integer.TYPE) );
+                    chapterProgressView.setSections( jsonObject.getObject( "sections",List.class ) );
+                    chapterProgressViews.add( chapterProgressView );
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return new ResponseData( 400,"参数格式错误" );
+            }
+        }
         //储存文件
         if(Objects.equals( file.getOriginalFilename(), "" )){
             return new ResponseData(400,"课程文件不能为空");
@@ -102,7 +98,7 @@ public class CourseSaveController {
             return new ResponseData(400,"文件上传失败");
         }
         //储存课程内容
-        String re= courseSaveService.saveContent( filePath,cid,vid, seqs);
+        String re= courseSaveService.saveContent( filePath,cid,vid, chapterProgressViews);
         if(re!=null){
             return new ResponseData(400,re+"!");
         }
@@ -111,18 +107,33 @@ public class CourseSaveController {
 
     /**
      * 删除课程
-//     * @param user 自动获取
      * @param cid 课程id
      * @param vid 课程版本号
      * @param seqs 要删除的章节,不传表示课程全部删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData delete(Integer cid,String vid,@RequestParam(required = false) List<ChapterProgressView> seqs) {
-//        if(!isAdm(user)) {
-//            return ResponseData.powerError();
-//        }
-        courseSaveService.delete( cid,vid,seqs );
+    public ResponseData delete(Integer cid,String vid, String seqs) {
+        List<ChapterProgressView> chapterProgressViews=null;
+        //转换seqs
+        if(seqs!=null){
+            try {
+                chapterProgressViews=new ArrayList<>(  );
+                JSONArray jsonArray=JSONArray.parseArray( seqs );
+                for (int i=0; i < jsonArray.size(); i++)    {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    ChapterProgressView chapterProgressView=new ChapterProgressView();
+                    chapterProgressView.setChapter( jsonObject.getObject("chapter",Integer.TYPE) );
+                    chapterProgressView.setSections( jsonObject.getObject( "sections",List.class ) );
+                    chapterProgressViews.add( chapterProgressView );
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return new ResponseData( 400,"参数格式错误" );
+            }
+        }
+
+        courseSaveService.delete( cid,vid,chapterProgressViews );
         return  ResponseData.ok();
     }
 
@@ -153,10 +164,6 @@ public class CourseSaveController {
         Map<String, SectionContentView> sectionViewMap=new HashMap<>(  );
         CourseView courseView= courseSaveService.preview( filePath,sectionViewMap );
 
-        Set<String> keys=sectionViewMap.keySet();
-        for (String key:keys){
-            System.out.println(key+":"+sectionViewMap.get( key ).getKnowledgeViews().size());
-        }
         ResponseData responseData=new ResponseData( );
         responseData.putDataValue( "courseView",courseView );
         responseData.putDataValue( "sectionViewMap",sectionViewMap );//？key为Integer的map无法转化为json ！！

@@ -42,12 +42,6 @@ public class ContentTemplate {
         query.addCriteria( Criteria.where("paragraph_knowledge").in(kids) );
         query.with( Sort.by( "paragraph_knowledge","paragraph_seq" ) );
         List<Paragraph> paragraphs=mongoTemplate.find(query, Paragraph.class);
-        ///////////////
-        for(Paragraph paragraph:paragraphs){
-            System.out.println(paragraph.getParagraphContent());/////////////////////
-        }
-
-        ////////////////////
 
 
 //        //排序
@@ -87,7 +81,8 @@ public class ContentTemplate {
     }
 
     public void instertAll(List<Paragraph> paragraphs){
-        mongoTemplate.insert( paragraphs,Paragraph.class);
+        if(paragraphs!=null&&paragraphs.size()>0)
+            mongoTemplate.insert( paragraphs,Paragraph.class);
     }
 
     //不为null的字段更新//不含_class
