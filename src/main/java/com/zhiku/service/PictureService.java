@@ -1,7 +1,10 @@
 package com.zhiku.service;
 
+import com.sun.star.ucb.InteractiveNetworkGeneralException;
+import com.zhiku.entity.Course;
 import com.zhiku.entity.Picture;
 import com.zhiku.mapper.*;
+import com.zhiku.mongo.CourseTemplate;
 import com.zhiku.util.ResponseData;
 import com.zhiku.util.SmallTools;
 import com.zhiku.view.PictureView;
@@ -15,10 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PictureService {
@@ -28,6 +28,9 @@ public class PictureService {
     private String picSavePath;
     @Autowired
     private PictureMapper pictureMapper;
+
+    @Autowired
+    private CourseTemplate courseTemplate;
 
     private boolean checkFile(MultipartFile file){
         boolean re=false;
@@ -105,6 +108,24 @@ public class PictureService {
         }
 
         List<PictureView> pictureViews=pictureMapper.selectByUid( uid,m,pageSize );
+        //查询课程名
+        List<Integer> cids=new ArrayList<>(  );
+        for (PictureView pictureView:pictureViews){
+            if(pictureView.getSections()!=null){
+                cids.add( pictureView.getCid() );
+            }
+        }
+        List<Course> courses=courseTemplate.findByPrimaryKey(cids);
+        Map<Integer,String> cid2name=new HashMap<>(  );
+        for (Course course:courses){
+            cid2name.put( course.getCid(),course.getCourseName() );
+        }
+        for (PictureView pictureView:pictureViews){
+            if(pictureView.getSections()!=null){
+                pictureView.setCourse( cid2name.get( pictureView.getCid() ) );
+            }
+        }
+        //拆分索引字符串
         for (PictureView pictureView:pictureViews){
             if(pictureView.getSections()!=null){
                 pictureView.setSectionList( Arrays.asList(pictureView.getSections().split( "," )) );

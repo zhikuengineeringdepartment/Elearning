@@ -47,6 +47,15 @@ public class CourseTemplate {
     }
 
     /**
+     * 查询多个课程
+     * @param cids 课程id
+     */
+    public List<Course> findByPrimaryKey(List<Integer> cids){
+        Query query=new Query(  ).addCriteria( Criteria.where( "cid" ).in(cids) );
+        return mongoTemplate.find( query,Course.class );
+    }
+
+    /**
      * 插入新课程，自动生成cid
      * @param course
      */
