@@ -1,5 +1,15 @@
+<!--知识见解图片上传记录-->
 <template>
-  <el-table ref="filterTable" :data="tableData" stripe style="width: 100%">
+  <el-table
+    ref="filterTable"
+    :data="tableData"
+    stripe
+    max-height="550"
+    style="width: 100%"
+    v-loading="loading"
+    element-loading-text="加载中"
+    element-loading-spinner="el-icon-loading"
+  >
     <el-table-column label="上传记录" align="center">
       <el-table-column prop="name" label="文件名" align="center"></el-table-column>
       <el-table-column
@@ -23,6 +33,11 @@
         :filters="sections"
         :filter-method="filterHandler"
       ></el-table-column>
+    </el-table-column>
+    <el-table-column label="上传记录" align="center">
+      <template slot="header">
+        <el-button type="primary" size="mini" @click="reload">刷新</el-button>
+      </template>
       <el-table-column prop="url" label="URL" align="center"></el-table-column>
     </el-table-column>
   </el-table>
@@ -33,25 +48,20 @@ export default {
   props: {
     courses: Array,
     chapters: Array,
-    sections: Array
+    sections: Array,
+    tableData: Array,
+    loading: Boolean
   },
   data() {
-    return {
-      tableData: [
-        {
-          name: 1,
-          course: 1,
-          chapter: 1,
-          section: 1,
-          url: 1
-        }
-      ]
-    };
+    return {};
   },
   methods: {
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
+    },
+    reload() {
+      this.$emit("loadData");
     }
   }
 };

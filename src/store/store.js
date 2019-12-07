@@ -1,15 +1,16 @@
 // 使用vuex进行全局的数据状态管理
-
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import {
   user,
   isMobile,
+  isAdministrator,
+  isLogin,
   courseId,
   sectionId,
   fileId,
   path
-} from './global'
+} from "./global";
 
 Vue.use(Vuex);
 
@@ -17,6 +18,8 @@ const store = new Vuex.Store({
   state: {
     user, // 用户对象
     isMobile, // 是否为手机端
+    isLogin, // 是否登陆
+    isAdministrator, // 是否为管理员
     courseId, // 课程Id
     sectionId, // 章节id
     fileId, // 预览文件的id
@@ -31,6 +34,12 @@ const store = new Vuex.Store({
     // 更改浏览模式
     changeMode(state, isMobile) {
       state.isMobile = isMobile;
+    },
+    setAuthority(state, isAdministrator) {
+      state.isAdministrator = isAdministrator;
+    },
+    setLoginStatus(state, isLogin) {
+      state.isLogin = isLogin;
     },
     setCourseId(state, cid) {
       state.courseId = cid;

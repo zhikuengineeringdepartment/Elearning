@@ -1,13 +1,17 @@
 <!--预览知识见解-->
 <template>
-  <div class="section">
-    <div class="section-name" v-html="sectionView.sectionNameHtml"></div>
-    <div v-for="knowledge in sectionView.knowledgeViews" :key="knowledge.kid">
-      <div class="section-knowledge-name" v-html="knowledge.knowledgeNameHtml"></div>
-      <div v-for="paragraph in knowledge.paragraphs" :key="paragraph.pid">
-        <div class="section-knowledge-paragraph">
-          <div class="section-knowledge-paragraph-content" v-html="paragraph.paragraphContentHtml"></div>
-          <div class="button-group" v-if="currentPid === paragraph.pid"></div>
+  <div>
+    <div class="section" v-for="sectionView in sectionViewMap" :key="sectionView.sid">
+      <div class="section-name" v-html="sectionView.sectionNameHtml"></div>
+      <div v-for="knowledge in sectionView.knowledgeViews" :key="knowledge.kid">
+        <div class="section-knowledge-name" v-html="knowledge.knowledgeNameHtml"></div>
+        <div v-for="paragraph in knowledge.paragraphs" :key="paragraph.pid">
+          <div class="section-knowledge-paragraph">
+            <div
+              class="section-knowledge-paragraph-content"
+              v-html="paragraph.paragraphContentHtml"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -17,7 +21,9 @@
 <script>
 export default {
   name: "KnowledgeSection",
-  props: ["sectionView"],
+  props: {
+    sectionViewMap: Array
+  },
   data: function() {
     return {};
   },
@@ -34,12 +40,12 @@ export default {
 }
 
 .section-name {
-  padding: 2vmin 0;
+  padding: 1vmin 0;
   font-size: 3.5vmin;
 }
 
 .section-knowledge-name {
-  padding: 2vmin 0;
+  padding: 1vmin 0;
   font-size: 3vmin;
 }
 
@@ -53,11 +59,11 @@ export default {
 }
 
 .section-knowledge-paragraph-content {
-  padding: 3vmin 0;
+  padding: 2vmin 0;
   font-size: 2vmin;
 
   pre {
-    overflow: scroll;
+    overflow: hidden;
     width: 50vw;
   }
 

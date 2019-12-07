@@ -21,7 +21,7 @@
 import adminMenu from "./AdminMenu";
 
 export default {
-  name: "uploadKnowledge",
+  name: "Admin",
   components: { adminMenu }
 };
 </script>

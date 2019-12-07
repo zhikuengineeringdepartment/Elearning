@@ -1,6 +1,6 @@
 <template>
   <div>
-    <main-header :userIcon="userIcon"></main-header>
+    <main-header @singOut="signOut" :userIcon="userIcon"></main-header>
     <div id="router-view">
       <router-view />
     </div>
@@ -27,6 +27,12 @@ export default {
   created() {
     if (getCookie("token")) {
       this.userIcon = localStorage["userIcon"];
+      // _this.$store.commit("setLoginStatus", true);
+    }
+  },
+  methods: {
+    signOut() {
+      this.userIcon = "";
     }
   }
 };

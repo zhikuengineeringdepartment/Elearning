@@ -75,3 +75,16 @@ npm run lint
 + 2019.11.23    --by wuchvi
 
     修改路由，分管理模块和普通用户模块，新建管理页面
+
++ 2019.11.26    --by wuchvi
+
+    完善管理模块，但未和后台对接
+    使用mathjax转换公式，mathjax文件是public/tex-svg.js，配置文件是mathjax.config.js
+
++ 2019.12.01    --by wuchvi
+
+    完成管理界面的上传图片和预览功能
+
++ 2019.12.07    --by wuchvi
+
+    管理模块完成，增加管理员权限，增加智库周记

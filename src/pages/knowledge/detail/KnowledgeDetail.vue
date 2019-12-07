@@ -87,6 +87,7 @@ import KnowledgeSectionBlog from "./KnowledgeSectionBlog";
 import KnowledgeSectionNavigator from "./KnowledgeSectionNavigator";
 import KnowledgeSectionSelect from "./KnowledgeSectionSelect";
 import showdown from "showdown";
+import { parse } from "../../../tools";
 
 export default {
   name: "KnowledgeDetail",
@@ -108,11 +109,17 @@ export default {
       },
       sectionView: {},
       noteViews: [],
-      colParas: []
+      colParas: [],
+      converter: null
     };
   },
-  created: function() {
+  created() {
     this.getCourseView(this.$store.state.courseId);
+  },
+  mounted() {
+    this.converter = new showdown.Converter();
+    this.converter.setOption("tables", "true");
+    this.converter.setOption("simpleLineBreaks", "true");
   },
   methods: {
     showDrawerClick: function() {
@@ -181,37 +188,37 @@ export default {
             //TODO 后台应该直接从数据库中存储的时候就安排好结构
             let sections = [];
             let tempSections = response.data.data.courseView.sections;
-            let index = 0;
-            for (let i = 0; i < tempSections.length; i++) {
-              let name = tempSections[i].sectionName;
-              if (name.substring(0, name.indexOf(" ")) === "#") {
-                if (i === 0) {
-                  index = 0;
-                } else {
-                  index++;
-                }
-                sections[index] = {};
-                sections[index].title = name.substring(
-                  name.indexOf(" "),
-                  name.indexOf("章") + 1
-                );
-                sections[index].index = index;
-                sections[index].sub = [];
-                sections[index].sub[0] = tempSections[i];
-              } else {
-                sections[index].sub[sections[index].sub.length] =
-                  tempSections[i];
-              }
-            }
-            _this.courseView.sections = sections;
-            if (sections.length > 0) {
-              let sid = tempSections[0].sid;
+            // let index = 0;
+            // for (let i = 0; i < tempSections.length; i++) {
+            //   let name = tempSections[i].sectionName;
+            //   if (name.substring(0, name.indexOf(" ")) === "#") {
+            //     if (i === 0) {
+            //       index = 0;
+            //     } else {
+            //       index++;
+            //     }
+            //     sections[index] = {};
+            //     sections[index].title = name.substring(
+            //       name.indexOf(" "),
+            //       name.indexOf("章") + 1
+            //     );
+            //     sections[index].index = index;
+            //     sections[index].sub = [];
+            //     sections[index].sub[0] = tempSections[i];
+            //   } else {
+            //     sections[index].sub[sections[index].sub.length] =
+            //       tempSections[i];
+            //   }
+            // }
+            // _this.courseView.sections = sections;
+            if (tempSections.length > 0) {
+              let sid = tempSections[0].sub[0].sid;
               _this.getSectionView(sid);
               _this.getCsdn(sid);
               _this.$store.commit("setSectionId", sid);
             }
           } else {
-            this.$message({
+            _this.$message({
               showClose: true,
               message: response.data.message,
               type: "error"
@@ -237,46 +244,43 @@ export default {
           if (response.data.code === 200) {
             _this.sectionView = response.data.data.sectionView;
             _this.getSideSection(sid);
+            console.log(response.data.data.sectionView);
 
             // 将markdown转换为html
-            let converter = new showdown.Converter();
-            _this.sectionView.sectionNameHtml = converter.makeHtml(
-              _this.sectionView.sectionName.toString()
+            _this.sectionView.sectionNameHtml = _this.converter.makeHtml(
+              parse(_this.sectionView.sectionName)
             );
             for (const knowledge of _this.sectionView.knowledgeViews) {
-              knowledge.knowledgeNameHtml = converter.makeHtml(
-                knowledge.knowledgeName.toString()
+              knowledge.knowledgeNameHtml = _this.converter.makeHtml(
+                parse(knowledge.knowledgeName)
               );
               for (const paragraph of knowledge.paragraphs) {
-                let paragraphContentHtml = converter.makeHtml(
-                  paragraph.paragraphContent.toString()
+                let paragraphContentHtml = _this.converter.makeHtml(
+                  parse(paragraph.paragraphContent)
                 );
                 if (paragraphContentHtml.indexOf("<pre") !== -1) {
                   paragraphContentHtml = paragraphContentHtml.replace(
                     "<pre",
                     '<pre class="code-content"'
                   );
-                  console.log("===", paragraphContentHtml);
+                  // console.log("===", paragraphContentHtml);
                 } else if (paragraphContentHtml.indexOf("<img") !== -1) {
                   paragraphContentHtml = paragraphContentHtml.replace(
                     "<img",
                     '<img class="img-content"'
                   );
-                  console.log("====", paragraphContentHtml);
+                  // console.log("====", paragraphContentHtml);
                 }
                 paragraph.paragraphContentHtml = paragraphContentHtml;
               }
             }
           } else {
-            this.$message({
+            _this.$message({
               showClose: true,
               message: response.data.message,
               type: "error"
             });
           }
-        })
-        .then(() => {
-          MathJax.typesetPromise();
         })
         .catch(function(err) {
           console.log(err);
@@ -297,7 +301,7 @@ export default {
           if (response.data.code === 200) {
             _this.csdn = response.data.data.csdn;
           } else {
-            this.$message({
+            _this.$message({
               showClose: true,
               message: response.data.message,
               type: "error"

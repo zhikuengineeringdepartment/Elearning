@@ -52,6 +52,7 @@ export default {
             username: _this.loginForm.identity,
             userIcon: response.data.data.userIcon
           });
+          // _this.$store.commit("setLoginStatus", true);
           localStorage["userIcon"] = response.data.data.userIcon;
           routerChange("/user/info", _this);
         } else {

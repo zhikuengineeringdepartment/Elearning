@@ -5,7 +5,7 @@ module.exports = {
     port: 8080,
     proxy: {
       '/api': {
-        target: 'http://211.87.227.234:10234/', //对应自己的接口
+        target: 'http://www.sharingideas.cn:12321/', //对应自己的接口
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

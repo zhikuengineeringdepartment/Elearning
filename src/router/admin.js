@@ -1,9 +1,11 @@
 /**管理路由*/
+import { getCookie } from "../tools.js";
 
-export default [
+let adminRouter = [
   {
     path: "/admin",
     name: "Admin",
+    redirect: "/admin/upload/image",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../pages/admin/Admin"),
     children: [
@@ -27,7 +29,33 @@ export default [
           import(
             /* webpackChunkName: "admin-preview-knowledge" */ "../pages/admin/preview/index"
           )
+      },
+      {
+        path: "weekly/diary/upload",
+        component: () =>
+          import(
+            /* webpackChunkName: "admin-weekly-diary-upload" */ "../pages/admin/weeklyDiary/index"
+          )
       }
     ]
+  },
+  {
+    path: "*",
+    name: "404",
+    component: () =>
+      import(/* webpackChunkName: "404" */ "../components/PageNotFound")
   }
 ];
+
+let adminRouterGuard = (to, next) => {
+  if (to.path.includes("/admin") && getCookie("token") && getCookie("tokena")) {
+    next();
+  } else if (
+    to.path.includes("/admin") &&
+    (!getCookie("tokena") || !getCookie("token"))
+  ) {
+    next({ path: "*" });
+  }
+};
+
+export { adminRouter, adminRouterGuard };

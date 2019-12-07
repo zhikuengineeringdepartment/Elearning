@@ -5,16 +5,17 @@
     <img class="header-icon" :src="sharingIdeaImage" />
     <!--手机端tab-->
     <ul class="header-menu" v-if="$store.state.isMobile">
-      <li class="sub-menu" v-for="item in mobileList" :key="item.path">
+      <li class="sub-menu" style="width:20%;" v-for="item in mobileList" :key="item.path">
         <span
           v-if="$store.state.path.includes(item.path)"
           @click="menuClick(item.path)"
           class="content active"
-          >{{ item.menu }}</span
-        >
-        <span v-else @click="menuClick(item.path)" class="content">{{
+        >{{ item.menu }}</span>
+        <span v-else @click="menuClick(item.path)" class="content">
+          {{
           item.menu
-        }}</span>
+          }}
+        </span>
       </li>
     </ul>
     <!--PC端tab-->
@@ -24,11 +25,12 @@
           v-if="$store.state.path.includes(item.path)"
           @click="menuClick(item.path)"
           class="content active"
-          >{{ item.menu }}</span
-        >
-        <span v-else @click="menuClick(item.path)" class="content">{{
+        >{{ item.menu }}</span>
+        <span v-else @click="menuClick(item.path)" class="content">
+          {{
           item.menu
-        }}</span>
+          }}
+        </span>
       </li>
     </ul>
     <!--用户头像/登录注册按钮-->
@@ -62,6 +64,7 @@ export default {
         { menu: "文件资源", path: "/resources" },
         { menu: "在线论坛", path: "/forum" },
         { menu: "智库专栏", path: "/article" },
+        { menu: "智库周记", path: "/weekly/diary" },
         { menu: "关于智库", path: "/about" }
       ]
     };
@@ -129,8 +132,9 @@ li {
 
   .sub-menu {
     float: left;
-    width: 20%;
+    width: 16.6%;
     max-width: 17vmin;
+    cursor: pointer;
 
     .content {
       display: block;
@@ -149,6 +153,7 @@ li {
     width: 5vh;
     height: 5vh;
     margin: 2.5vh;
+    cursor: pointer;
   }
 }
 </style>

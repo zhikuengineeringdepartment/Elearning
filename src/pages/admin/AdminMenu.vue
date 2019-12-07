@@ -28,6 +28,24 @@
             </template>
           </el-menu-item>
         </router-link>
+
+        <router-link to="/admin/weekly/diary/upload">
+          <el-menu-item index="#/weekly/diary/upload">
+            <template slot="title">
+              <i class="el-icon-upload"></i>
+              <span>智库周记上传</span>
+            </template>
+          </el-menu-item>
+        </router-link>
+
+        <router-link to="/user/info">
+          <el-menu-item index="#/user/info">
+            <template slot="title">
+              <i class="el-icon-back"></i>
+              <span>退出</span>
+            </template>
+          </el-menu-item>
+        </router-link>
       </el-menu>
     </el-col>
   </el-menu>

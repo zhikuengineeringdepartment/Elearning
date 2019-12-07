@@ -8,7 +8,7 @@
           ref="upload"
           name="fileList"
           :file-list="uploadForm.fileList"
-          :limit="1"
+          :limit="2"
           :on-exceed="handleExceed"
           :on-change="change_file_list"
           :on-remove="handleRemove"
@@ -21,16 +21,16 @@
       </el-form-item>
       <el-form-item label="所属课程">
         <course-select @get-course-value="setCourseValue"></course-select>
+        <slot name="add"></slot>
       </el-form-item>
-      <el-form-item label="所属章节">
+      <el-form-item label="所属章节" v-if="isShow">
         <el-cascader v-model="uploadForm.section" :options="options" clearable></el-cascader>
       </el-form-item>
+      <slot name="section"></slot>
       <el-form-item>
         <el-button size="small" type="success" @click="submitUpload">上传到服务器</el-button>
       </el-form-item>
-      <el-form-item v-if="uploadForm.url" label="URL">
-        <span>{{uploadForm.url}}</span>
-      </el-form-item>
+      <slot name="url"></slot>
     </el-form>
   </el-col>
 </template>
@@ -42,7 +42,11 @@ export default {
   name: "Upload",
   props: {
     tip: String,
-    options: Array
+    options: Array,
+    isShow: {
+      type: Boolean,
+      default: true
+    }
   },
   components: { CourseSelect },
   data() {
@@ -51,9 +55,8 @@ export default {
       uploadForm: {
         fileList: [],
         course: -1,
-        section: -1,
-        url: ""
-      },
+        section: 0
+      }
     };
   },
   methods: {
@@ -61,9 +64,9 @@ export default {
       this.$message.warning(`一次只能上传一个文件`);
     },
     change_file_list(file, flist) {
-      console.log(this.$refs.upload.uploadFiles);
-      this.uploadForm.fileList = flist;
-      this.uploadForm.url = "";
+      // console.log(this.$refs.upload.uploadFiles);
+      this.uploadForm.fileList = [file];
+      this.$emit("clearUrl");
     },
     setCourseValue: function(cid) {
       this.uploadForm.course = cid;
@@ -75,7 +78,7 @@ export default {
       console.log(file, fileList);
     },
     submitUpload() {
-      console.log(this.uploadForm);
+      this.$emit("upload", this.uploadForm);
     }
   }
 };
@@ -85,6 +88,7 @@ export default {
 .resources-file-upload {
   text-align: left;
   width: 450px;
+  padding-right: 100px;
 
   .resources-file-upload-tips {
     display: inline;
