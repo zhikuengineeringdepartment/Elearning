@@ -7,21 +7,17 @@ let user = {
   userIcon: defaultUserIcon
 };
 
+//课程信息，courseId为课程号，versionId为版本号，sectionId为章节号
+let course = {
+  courseId: -1,
+  versionId: "V1.0",
+  sectionId: -1
+};
+
 let isMobile = false; // 是否为手机端
 let isAdministrator = false;
 let isLogin = false;
-let courseId = -1;
-let sectionId = -1;
 let fileId = -1; // 预览文件的id
 let path = "/"; // 当前路径
 
-export {
-  user,
-  isMobile,
-  isAdministrator,
-  isLogin,
-  courseId,
-  sectionId,
-  fileId,
-  path
-};
+export { user, course, isMobile, isAdministrator, isLogin, fileId, path };

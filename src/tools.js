@@ -163,7 +163,7 @@ const getInstance = () => {
     withCredentials: true,
     baseURL:
       process.env.NODE_ENV === "production"
-        ? "http://sharingideas.cn:10000/"
+        ? "http://www.sharingideas.cn:10000/"
         : "/api"
   });
   return instance;

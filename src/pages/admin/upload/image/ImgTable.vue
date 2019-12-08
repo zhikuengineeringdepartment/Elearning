@@ -39,6 +39,15 @@
         <el-button type="primary" size="mini" @click="reload">刷新</el-button>
       </template>
       <el-table-column prop="url" label="URL" align="center"></el-table-column>
+      <el-table-column label="预览(点击预览大图)" align="center">
+        <template slot-scope="scope">
+          <el-image
+            :src="scope.row.url"
+            :preview-src-list="srcList"
+            @click="preview(scope.row.url)"
+          ></el-image>
+        </template>
+      </el-table-column>
     </el-table-column>
   </el-table>
 </template>
@@ -53,7 +62,9 @@ export default {
     loading: Boolean
   },
   data() {
-    return {};
+    return {
+      srcList: []
+    };
   },
   methods: {
     filterHandler(value, row, column) {
@@ -62,6 +73,9 @@ export default {
     },
     reload() {
       this.$emit("loadData");
+    },
+    preview(url) {
+      this.srcList = [url];
     }
   }
 };

@@ -11,8 +11,6 @@ import animate from "animate.css";
 
 Vue.use(animate);
 
-// import {throttle} from './tools'
-
 // 创建一个axios实例
 const axiosInstance = axios.create({
   // config里面有这个transformRquest，这个选项会在发送参数前进行处理，这时候我们通过Qs.stringify转换为表单查询参数
@@ -30,7 +28,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
   baseURL:
     process.env.NODE_ENV === "production"
-      ? "http://sharingideas.cn:10000/"
+      ? "http://www.sharingideas.cn:10000/"
       : "/api" // 正式环境与开发环境的url
 });
 

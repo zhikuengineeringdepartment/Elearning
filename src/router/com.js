@@ -88,14 +88,15 @@ let router = [
       }
     ]
   },
-  {
-    path: "forum",
-    name: "Forum",
-    component: () =>
-      import(
-        /* webpackChunkName: "user-login" */ "../pages/forum/overview/Forum"
-      )
-  },
+  /* TODO  论坛模块暂未完成，先注释掉路由 */
+  // {
+  //   path: "forum",
+  //   name: "Forum",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "user-login" */ "../pages/forum/overview/Forum"
+  //     )
+  // },
   {
     path: "weekly/diary",
     name: "WeeklyDiary",
@@ -130,9 +131,12 @@ let comRouter = [
 
 let comRouterGuard = (to, next) => {
   console.log(to.path);
-  if (to.path === "/knowledge/detail" && store.state.courseId !== -1) {
+  if (to.path === "/knowledge/detail" && store.state.course.courseId !== -1) {
     next();
-  } else if (to.path === "/knowledge/detail" && store.state.courseId === -1) {
+  } else if (
+    to.path === "/knowledge/detail" &&
+    store.state.course.courseId === -1
+  ) {
     next({
       path: "/knowledge"
     });

@@ -15,7 +15,8 @@
             :style="{'padding':($store.state.isMobile ? '7vmin 0':'3vmin 0')}"
             v-html="paragraph.paragraphContentHtml"
           ></div>
-          <div class="button-group" v-if="currentPid === paragraph.pid">
+          <!-- TODO 新版本数据库收藏笔记未完成，这两个功能先注释-->
+          <!-- <div class="button-group" v-if="currentPid === paragraph.pid">
             <el-button
               type="primary"
               size="mini"
@@ -30,15 +31,15 @@
               :class="['button',$store.state.isMobile?'button-mobile':'']"
               @click="handleNote(paragraph.paragraphSeq)"
             >笔记</el-button>
-          </div>
+          </div>-->
         </div>
-        <wang-editor
+        <!-- <wang-editor
           :wangID="'wang'+paragraph.paragraphSeq"
           :content="note[paragraph.paragraphSeq]"
           @editorOnBlur="editorOnBlur"
           @editorOnFocus="editorOnFocus"
           v-if="noteId.includes(paragraph.paragraphSeq) || wangEditorIDs.includes('wang'+paragraph.paragraphSeq)"
-        ></wang-editor>
+        ></wang-editor>-->
       </div>
     </div>
   </div>
@@ -60,10 +61,10 @@ export default {
       sectionId: this.$store.state.sectionId
     };
   },
-  created() {
-    this.$emit("getColParas", this.$store.state.sectionId);
-    this.$emit("getNoteView", this.$store.state.sectionId);
-  },
+  // created() {
+  //   this.$emit("getColParas", this.$store.state.sectionId);
+  //   this.$emit("getNoteView", this.$store.state.sectionId);
+  // },
   updated() {
     this.sectionId = this.$store.state.sectionId;
   },
@@ -74,31 +75,31 @@ export default {
         this.note[i.colParagraphView.paragraphSeq] = i.noteContent;
       }
     },
-    sectionId() {
-      this.$emit("getColParas", this.$store.state.sectionId);
-      this.$emit("getNoteView", this.$store.state.sectionId);
-    }
+    // sectionId() {
+    //   this.$emit("getColParas", this.$store.state.sectionId);
+    //   this.$emit("getNoteView", this.$store.state.sectionId);
+    // }
   },
   methods: {
     mouseenter(pid) {
       this.currentPid = pid;
-      let id = "collected" + pid;
-      let colParasString = "";
-      if (this.colParas) {
-        for (let i of this.colParas) {
-          colParasString += i.colpPara + "&";
-        }
+      // let id = "collected" + pid;
+      // let colParasString = "";
+      // if (this.colParas) {
+      //   for (let i of this.colParas) {
+      //     colParasString += i.colpPara + "&";
+      //   }
 
-        if (colParasString.includes(pid)) {
-          this.$nextTick(() => {
-            this.$refs[id][0].innerHTML = "取消";
-          });
-        } else {
-          this.$nextTick(() => {
-            this.$refs[id][0].innerHTML = "收藏";
-          });
-        }
-      }
+      //   if (colParasString.includes(pid)) {
+      //     this.$nextTick(() => {
+      //       this.$refs[id][0].innerHTML = "取消";
+      //     });
+      //   } else {
+      //     this.$nextTick(() => {
+      //       this.$refs[id][0].innerHTML = "收藏";
+      //     });
+      //   }
+      // }
     },
     //点击收藏/取消按钮
     handleCollected(e, paragraphSeq) {

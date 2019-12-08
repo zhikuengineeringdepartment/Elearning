@@ -5,7 +5,8 @@
     <img class="header-icon" :src="sharingIdeaImage" />
     <!--手机端tab-->
     <ul class="header-menu" v-if="$store.state.isMobile">
-      <li class="sub-menu" style="width:20%;" v-for="item in mobileList" :key="item.path">
+      <!-- TODO width根据tab数目而改变-->
+      <li class="sub-menu" style="width:25%;" v-for="item in mobileList" :key="item.path">
         <span
           v-if="$store.state.path.includes(item.path)"
           @click="menuClick(item.path)"
@@ -55,14 +56,14 @@ export default {
       mobileList: [
         { menu: "见解", path: "/knowledge" },
         { menu: "文件", path: "/resources" },
-        { menu: "论坛", path: "/forum" },
+        // { menu: "论坛", path: "/forum" },
         { menu: "专栏", path: "/article" },
         { menu: "关于", path: "/about" }
       ],
       pcList: [
         { menu: "知识见解", path: "/knowledge" },
         { menu: "文件资源", path: "/resources" },
-        { menu: "在线论坛", path: "/forum" },
+        // { menu: "在线论坛", path: "/forum" },
         { menu: "智库专栏", path: "/article" },
         { menu: "智库周记", path: "/weekly/diary" },
         { menu: "关于智库", path: "/about" }
@@ -132,7 +133,7 @@ li {
 
   .sub-menu {
     float: left;
-    width: 16.6%;
+    width: 20%;
     max-width: 17vmin;
     cursor: pointer;
 

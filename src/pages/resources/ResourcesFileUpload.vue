@@ -11,7 +11,7 @@
               ref="upload"
               name="multipartFile"
               :file-list="uploadForm.multipartFile"
-              :limit="3"
+              :limit="2"
               :on-exceed="handleExceed"
               :on-change="change_file_list"
               :on-success="handleSuccess"
@@ -63,8 +63,7 @@
 
 <script>
 import CourseSelect from "../../components/CourseSelect";
-import { routerChange } from "../../tools";
-import { getCookie } from "../../tools.js";
+import { routerChange, getCookie, getInstance } from "../../tools";
 
 export default {
   name: "ResourcesFileUpload",
@@ -83,11 +82,7 @@ export default {
   },
   methods: {
     handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
+      this.$message.warning(`一次只能上传一个文件`);
     },
     handleClose(tag) {
       this.uploadForm.file_tags.splice(
@@ -96,8 +91,8 @@ export default {
       );
     },
     change_file_list(file, flist) {
-      console.log(this.$refs.upload.uploadFiles);
-      this.uploadForm.multipartFile = flist;
+      // console.log(this.$refs.upload.uploadFiles);
+      this.uploadForm.multipartFile = [file];
     },
     setCourseValue: function(cid) {
       this.uploadForm.fileCourse = cid;
@@ -146,7 +141,7 @@ export default {
           console.log(a, b);
         }
 
-        _this.$http
+        getInstance()
           .post("/file/upload", form)
           .then(res => {
             console.log(res);

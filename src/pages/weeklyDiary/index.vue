@@ -6,7 +6,7 @@
           v-for="picture in data"
           :key="picture.date"
           :title="picture.date.split(' ')[0]"
-          :name="picture.date.split(' ')[0]"
+          :name="picture.date"
         >
           <el-image
             :src="picture.url"
@@ -41,6 +41,7 @@ export default {
         .then(function(response) {
           if (response.data.code === 200) {
             _this.data = response.data.data.pictures;
+            _this.activeNames = response.data.data.pictures[0].date;
             // response.data.data.pictures.forEach(element => {
             //   _this.data.push({
             //     date: element.date,

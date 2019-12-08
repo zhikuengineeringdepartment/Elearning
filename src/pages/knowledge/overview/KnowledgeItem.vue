@@ -2,7 +2,7 @@
 <template>
   <el-card class="knowledge-item">
     <div @click="goKnowledgeDetail">
-      <img :src="course.courseIcon">
+      <img :src="course.courseIcon" />
       <div>
         <span>{{course.courseName}} - {{course.courseDesc}}</span>
       </div>
@@ -11,24 +11,24 @@
 </template>
 
 <script>
-  import {routerChange} from "../../../tools";
-  
-  export default {
-    name: "KnowledgeItem",
-    props: ['course'],
-    methods: {
-      goKnowledgeDetail: function () {
-        // console.log('current course id:', this.course.cid);
-        this.$store.commit('setCourseId', this.course.cid);
-        routerChange("/knowledge/detail", this);
-      }
-    },
+import { routerChange } from "../../../tools";
+
+export default {
+  name: "KnowledgeItem",
+  props: ["course"],
+  methods: {
+    goKnowledgeDetail: function() {
+      // console.log('current course id:', this.course.cid);
+      this.$store.commit("setCourse", this.course);
+      routerChange("/knowledge/detail", this);
+    }
   }
+};
 </script>
 
 <style scoped>
-  .knowledge-item {
-    float: left;
-    margin: 5vmin;
-  }
+.knowledge-item {
+  float: left;
+  margin: 5vmin;
+}
 </style>

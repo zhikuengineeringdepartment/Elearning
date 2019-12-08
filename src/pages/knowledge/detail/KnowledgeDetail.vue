@@ -114,7 +114,7 @@ export default {
     };
   },
   created() {
-    this.getCourseView(this.$store.state.courseId);
+    this.getCourseView(this.$store.state.course.courseId);
   },
   mounted() {
     this.converter = new showdown.Converter();
@@ -185,7 +185,6 @@ export default {
             _this.courseView = response.data.data.courseView;
 
             // 转换一下section的结构
-            //TODO 后台应该直接从数据库中存储的时候就安排好结构
             let sections = [];
             let tempSections = response.data.data.courseView.sections;
             // let index = 0;
@@ -244,7 +243,7 @@ export default {
           if (response.data.code === 200) {
             _this.sectionView = response.data.data.sectionView;
             _this.getSideSection(sid);
-            console.log(response.data.data.sectionView);
+            // console.log(response.data.data.sectionView);
 
             // 将markdown转换为html
             _this.sectionView.sectionNameHtml = _this.converter.makeHtml(
@@ -289,15 +288,16 @@ export default {
     // 获取csdn推荐的请求
     getCsdn: function(sid) {
       const _this = this;
-
       this.$http
-        .get("section/getCSDN", {
+        .get("section/getCSDN2", {
           params: {
-            sid: sid
+            cid: _this.$store.state.course.courseId,
+            sid: sid,
+            vid: _this.$store.state.course.versionId
           }
         })
         .then(function(response) {
-          console.log("get csdn", response);
+          // console.log("get csdn", response);
           if (response.data.code === 200) {
             _this.csdn = response.data.data.csdn;
           } else {
