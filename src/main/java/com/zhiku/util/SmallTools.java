@@ -1,8 +1,11 @@
 package com.zhiku.util;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Scanner;
 import java.util.UUID;
 
 public class SmallTools {
@@ -81,5 +84,13 @@ public class SmallTools {
         String head=in.substring(0,1);
         String out=head.toUpperCase()+in.substring(1,in.length());
         return out;
+    }
+
+    //注册密码生成
+    public static void main(String[] args){
+        System.out.println("输入密码：");
+        Scanner in=new Scanner( System.in );
+        String password=in.nextLine();
+        System.out.println(DigestUtils.md5Hex(password));
     }
 }

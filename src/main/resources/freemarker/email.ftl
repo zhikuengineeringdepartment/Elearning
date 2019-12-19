@@ -6,7 +6,7 @@
 
 <body>
 <h1>你好${user}</h1>
-<h3>点击<a href="http://211.87.227.234:8080/user/mail/${act}?username=${user}&code=${code}">激活邮件</a> </h3>
-<p>如果邮件到期，请尝试<a href="#">重新发送</a></p>
+<h3>点击<a href="http://sharingideas.cn/user/mail/${act}?username=${user}&code=${code}">激活邮件</a> </h3>
+<p>如果邮件到期，请尝试<a href="http://sharingideas.cn/user/mail/reset?username=${user}&code=2122112023">重新发送</a></p>
 </body>
 </html>

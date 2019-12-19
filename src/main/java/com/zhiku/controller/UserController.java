@@ -166,7 +166,7 @@ public class UserController {
         return responseData;
     }
 
-    //@ResponseBody
+//    @ResponseBody
     @RequestMapping(value = "mail/active",method = RequestMethod.GET)
     public String mailHandler(
             String act,
@@ -201,7 +201,7 @@ public class UserController {
         }
 
         // TODO 这个网页还没有
-        return "error.html";
+        return "/pages/error.html";
     }
 
     @ResponseBody
@@ -221,9 +221,25 @@ public class UserController {
         return responseData;
     }
 
-    @RequestMapping(value = "mail/reset",method = RequestMethod.POST)
-    public String reset(){
-        return "forward:/reset";
+    /*
+    邮件重发
+     */
+    @ResponseBody
+    @RequestMapping(value = "mail/reset",method = RequestMethod.GET)
+    public String reset(String username,
+                        String code) throws MessagingException {
+//        return "forward:/reset";
+        //TODO:针对邮件激活错误且已过期情况，临时简单更新日期，无验证，后续应加上验证
+        if(!code.equals("2122112023")){//TODO:简单欺骗黑客，让他以为有验证码，但方法及蠢，建议尽快添加正确验证法，防止攻击
+            return "失败";
+        }
+        User user = userService.getUserByUsername(username);
+        if(user.getUserStatus().equals( "n" )){
+            return "您已激活成功，请直接登录";
+        }
+        userService.resetMailTime(user);
+        userService.sendEmail(javaMailSender,user.getUserUsername(),user.getUserEmail(),"active",freemarkerConfig);
+        return "发送成功，请注意查收";
     }
 
     @ResponseBody

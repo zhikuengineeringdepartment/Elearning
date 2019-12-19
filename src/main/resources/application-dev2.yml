@@ -41,7 +41,7 @@ mybatis:
   type-aliases-package: com.zhiku.entity
   mapper-locations: com/zhiku/mapper/*.xml
 server:
-  port: 12321
+  port: 80  #TODO:邮件账号激活地址用的是静态地址，端口要去手动改写，路径：resources->freemarker->email.ftl
 #logging:
 #  level:
 #    com.zhiku.*: debug

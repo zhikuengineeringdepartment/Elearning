@@ -250,4 +250,14 @@ public class UserService {
         registeUser(username,password,email,request);
         sendEmail(javaMailSender,username,email,"active",freemarkerConfig);
     }
+
+    public void resetMailTime(User user){
+        User user1=new User();
+        user1.setUid( user.getUid() );
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(  ));
+        calendar.add(Calendar.DAY_OF_MONTH,1);
+        user1.setUserMailtime(calendar.getTime());   //邮箱激活到期时间为注册时间后1天
+        userMapper.updateByPrimaryKeySelective( user1 );
+    }
 }

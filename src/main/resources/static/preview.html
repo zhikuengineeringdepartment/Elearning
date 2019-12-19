@@ -4,16 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!--<link rel="stylesheet" type="text/css" href="css/school.css">-->
-    <script src="common/jquery.min.js"></script>
-    <!--<link rel="stylesheet" href="css/bootstrap.min.css">   -->
-    <!--<link rel="stylesheet" type="text/css" href="css/toast.css">     -->
+    <script src="preview/jquery.min.js"></script>
     <title>预览文件</title>
-    <script type="text/javascript" src="js/pdf.js"></script>
-    <!--<script type="text/javascript" src="lib/API.js"></script>-->
-    <!--<script type="text/javascript" src="lib/ajaxHandler.js"></script>-->
-    <!--<script src="lib/jquery.cookie.js"></script>-->
-    <!--<script src="lib/toastDom.js"></script>-->
+    <script type="text/javascript" src="preview/pdf.js"></script>
     <style>
         .el-button {
             display: inline-block;
@@ -50,107 +43,68 @@
             border-color: #67C23A;
         }
     </style>
-    
+
 </head>
 <body style="background-color: #fbf8f0">
     <button id="getDown" type="button" class="el-button el-button--success is-circle" style="float: right;margin:10px 20px;position: fixed">下载 </button>
-    <div id="container">   
+    <div id="container">
         <div id="pop" style="text-align: center;"></div>
     </div>
-    
 </body>
-<script type="text/javascript"> 
-    // pdfjsLib.getDocument('http://127.0.0.1:8080/java.pdf').then(function(page){
-    //     var scale = 1.5;
-    // var viewport = page.getViewport(scale);
-
-    // var canvas = document.getElementById('the-canvas');
-    // var context = canvas.getContext('2d');
-    // canvas.height = viewport.height;
-    // canvas.width = viewport.width;
-
-    // var renderContext = {
-    // canvasContext: context,
-    // viewport: viewport
-    // };
-    // page.render(renderContext);
-    // })
-    
+<script type="text/javascript">
     function showPdf(load) {
-            console.time('load');
-            var container = document.getElementById("container");
-            container.style.display = "block";
-            // var url = 'http://127.0.0.1:8080/java.pdf';
-            var url = '/'+load;
-            // convertDataURIToBinary('${encodeBase64}');//encodeBase64是后台传递的base64编码的二进制字符串
+        console.time('load');
+        const container = document.getElementById("container");
+        container.style.display = "block";
+        let url = '/'+load;
 
-            pdfjsLib.workerSrc = 'lib/pdf.worker.js';
-            pdfjsLib.getDocument(url).then(function getPdfHelloWorld(pdf) {
-                
-            	var $pop = $('#pop');
-                var shownPageCount = pdf.numPages < 50 ? pdf.numPages : 50;//设置显示的编码
-                var getPageAndRender = function (pageNumber) {
-                	 pdf.getPage(pageNumber).then(function getPageHelloWorld(page) {
-                         var scale = 1.2;
-                         var viewport = page.getViewport(scale);
-                         var $canvas = $('<canvas></canvas>').attr({
-                             'height': viewport.height,
-                             'width': viewport.width,
-                         });
-                         $pop.append($canvas);
-                         
-                         page.render({
-                             canvasContext: $canvas[0].getContext('2d'),
-                             viewport: viewport
-                         });
+        pdfjsLib.workerSrc = 'lib/pdf.worker.js';
+        pdfjsLib.getDocument(url).then(function getPdfHelloWorld(pdf) {
+
+        	let $pop = $('#pop');
+            let shownPageCount = pdf.numPages < 50 ? pdf.numPages : 50;//设置显示的编码
+            let getPageAndRender = function (pageNumber) {
+            	 pdf.getPage(pageNumber).then(function getPageHelloWorld(page) {
+                     let scale = 1.2;
+                     let viewport = page.getViewport(scale);
+                     let $canvas = $('<canvas></canvas>').attr({
+                         'height': viewport.height,
+                         'width': viewport.width,
                      });
-                	 if (pageNumber < shownPageCount) {
-                         pageNumber++;
-                         getPageAndRender(pageNumber);
-                     }  
-                };
-                getPageAndRender(1);
-                console.timeEnd('load');        		   
-            });
-            
+                     $pop.append($canvas);
+
+                     page.render({
+                         canvasContext: $canvas[0].getContext('2d'),
+                         viewport: viewport
+                     });
+                 });
+            	 if (pageNumber < shownPageCount) {
+                     pageNumber++;
+                     getPageAndRender(pageNumber);
+                 }
+            };
+            getPageAndRender(1);
+            console.timeEnd('load');
+        });
+    }
+
+    let fid = window.location.search.substr(1);
+    let loadUrl = 'file/preview?'+fid;
+    showPdf(loadUrl);
+
+    document.getElementById('getDown').onclick= function getDown(){
+        let cks = document.cookie.split(';');
+        let hasLogin = false;
+        for(let i = 0; i < cks.length; i++){
+            let key = cks[i].split('=');
+            if(key[0].trim() === 'token' && key.length > 1 && key[1] !== ''){
+                hasLogin = true;
+                window.open('file/download?'+fid+'&uid='+0)
+            }
         }
-        // new Toast().showMsg('首次加载时间稍长，请耐心等候',1500)
-
-        var fid = window.location.search.substr(1);
-        var loadurl = 'file/preview?'+fid;
-         showPdf(loadurl);
-
-
-         document.getElementById('getDown').onclick= function getDown(){
-                var cks = document.cookie.split(';');
-                var hasLogin=false;
-                for(var i=0;i<cks.length;i++){
-                    var key = cks[i].split('=');
-                    // console.log(key)
-
-                    if(key[0].trim()=='token'&& key.length>1&&key[1]!=''){
-                        hasLogin=true;
-                        window.open('file/download?'+fid+'&uid='+0)
-                    }
-                }
-                if(hasLogin==false){
-                    window.location.href='/#/login'
-                }
-            // if(!checkLogin()){
-            //     new Toast().showMsg('请先登录',1000);
-            //     return;
-            // }
-            // var user =new AjaxHandler();
-            // console.log(fid);
-            // user.downloadFile(fid,function(data,state){
-            //
-            //     console.log(data,state);
-            //     // var a = document.createElement('a');
-            //     // var url = API.fileDownload+`${fid}.do`;
-            //     // a.href = url;
-            // //  a.download = fileName;
-            //     // a.click();
-            // },function(){})
-         }
+        if(hasLogin === false){
+            window.location.href = '/#/user/login'
+        }
+    }
 </script>
 </html>

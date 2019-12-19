@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.zhiku</groupId>
     <artifactId>elearning</artifactId>
-    <version>1.0_12321</version>
+    <version>1.1_80</version>
     <name>elearning</name>
     <description>Springboot project for Elearning</description>
 
