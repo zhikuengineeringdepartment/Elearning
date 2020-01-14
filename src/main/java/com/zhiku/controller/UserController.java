@@ -229,12 +229,11 @@ public class UserController {
     public String reset(String username,
                         String code) throws MessagingException {
 //        return "forward:/reset";
-        //TODO:针对邮件激活错误且已过期情况，临时简单更新日期，无验证，后续应加上验证
-        if(!code.equals("2122112023")){//TODO:简单欺骗黑客，让他以为有验证码，但方法及蠢，建议尽快添加正确验证法，防止攻击
-            return "失败";
-        }
         User user = userService.getUserByUsername(username);
-        if(user.getUserStatus().equals( "n" )){
+        UserStatus userStatus = userService.checkUser(user);
+        if(!code.equals(user.hashCode()+"")){
+            return "认证失败";
+        }else if(!userStatus.equals(UserStatus.NORMAL)){
             return "您已激活成功，请直接登录";
         }
         userService.resetMailTime(user);
