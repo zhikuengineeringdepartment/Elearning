@@ -63,10 +63,14 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value = "modifyFileStatus",method = RequestMethod.POST)
-    public ResponseData modifyFileStatus(File file,String status){
+    public ResponseData modifyFileStatus(File file,int status){
         ResponseData responseData = null;
         File f = fileService.getFileByFid(file.getFid());
-        f.setFileStatus(status);
+        if(status==1){
+            f.setFileStatus(File.STATEON);
+        }else if(status==0){
+            f.setFileStatus(File.STATEOFF);
+        }
         fileService.updateFileStatus(f);
         responseData = ResponseData.ok();
         return responseData;

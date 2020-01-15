@@ -1,8 +1,12 @@
 package com.zhiku.entity.mysql;
 
+import javax.lang.model.element.NestingKind;
 import java.util.Date;
 
 public class File {
+    public static String STATEON="n";
+    public static String STATEOFF="u";
+
     private Integer fid;
 
     private String filePath;
