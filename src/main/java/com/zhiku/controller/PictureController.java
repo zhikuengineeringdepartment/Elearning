@@ -60,7 +60,7 @@ public class PictureController {
         ResponseData responseData=new ResponseData(  );
         //拼接url前地址
 //        String url=request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+picture.getUrl();
-        String url=".."+picture.getUrl();
+        String url="http://sharingideas.cn"+picture.getUrl();
         responseData.putDataValue( "url",url);
         return responseData;
     }
@@ -82,7 +82,7 @@ public class PictureController {
         //拼接url前地址
         for (PictureView pictureView:pictures) {
 //            pictureView.setUrl(request.getScheme()+"://"+ request.getServerName()+":"+request.getLocalPort()+pictureView.getUrl(  ) );
-            pictureView.setUrl(".."+pictureView.getUrl(  ) );
+            pictureView.setUrl("http://sharingideas.cn"+pictureView.getUrl(  ) );
         }
 
         ResponseData responseData=new ResponseData(  );
