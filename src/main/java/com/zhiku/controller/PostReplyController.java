@@ -1,9 +1,13 @@
 package com.zhiku.controller;
 
+import com.zhiku.entity.User;
+import com.zhiku.entity.mysql.Report;
+import com.zhiku.service.ReportService;
 import com.zhiku.util.ResponseData;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /*
 * 评论的controller
@@ -13,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/reply")
 public class PostReplyController {
+
+    @Autowired
+    private ReportService reportService;
 
 
     /**
@@ -97,4 +104,39 @@ public class PostReplyController {
         return null;
     }
 
+    /**
+     * 举报一级回答
+     * pid 帖子id
+     * reid 回答id
+     * uid 举报人id
+     * reason 举报理由
+     */
+    @RequestMapping(value = "/reportFirst",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData reportFirst(User user,Report report){
+        report.setUid( user.getUid() );
+        report.setType( Report.TYPE_FIRST_REPLY );
+        report.setState( Report.STATE_NULL );
+        report.setDate( new Date(  ) );
+        reportService.add( report );
+        return ResponseData.ok();
+    }
+
+    /**
+     * 举报多级回复
+     * pid 帖子id
+     * reid 回答id
+     * uid 举报人id
+     * reason 举报理由
+     */
+    @RequestMapping(value = "/reportSecond",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData reportSecond(User user, Report report){
+        report.setUid( user.getUid() );
+        report.setType( Report.TYPE_SECOND_REPLY );
+        report.setState( Report.STATE_NULL );
+        report.setDate( new Date(  ) );
+        reportService.add( report );
+        return ResponseData.ok();
+    }
 }
