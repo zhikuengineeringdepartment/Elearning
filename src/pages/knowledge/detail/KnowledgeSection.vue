@@ -300,6 +300,7 @@ export default {
 .section-knowledge-paragraph-content {
   padding: 3vmin 0;
   font-size: 2vmin;
+  width: 100%;
 
   pre {
     overflow: scroll;

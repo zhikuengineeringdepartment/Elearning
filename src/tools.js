@@ -102,7 +102,10 @@ const parse$$ = str => {
     } else if (testStr === "$$" && dollarFlag) {
       dollarFlag = false;
       mathStr = mathStr.substr(1, mathStr.length);
-      let parseMathStr = parseMath(mathStr);
+      let parseMathStr = parseMath(
+        mathStr,
+        mathStr.includes("\\tag{") ? true : false
+      );
       str = str.replace("$$" + mathStr + "$$", "<p>" + parseMathStr + "</p>");
       mathStr = "";
     } else if (testStr !== "$$" && dollarFlag) {
@@ -128,7 +131,10 @@ const parse$ = str => {
       dollarFlag = true;
     } else if (testStr === "$" && dollarFlag) {
       dollarFlag = false;
-      let parseMathStr = parseMath(mathStr);
+      let parseMathStr = parseMath(
+        mathStr,
+        mathStr.includes("\\tag{") ? true : false
+      );
       str = str.replace("$" + mathStr + "$", parseMathStr);
       mathStr = "";
     } else if (testStr !== "$" && dollarFlag) {
@@ -144,9 +150,10 @@ const parse$ = str => {
  * @param mathStr
  * @returns {*}
  */
-const parseMath = mathStr => {
+const parseMath = (mathStr, flag = false) => {
   return katex.renderToString(mathStr, {
     throwOnError: false,
+    displayMode: flag,
     output: "html",
     strict: "ignore "
   });
@@ -162,9 +169,7 @@ const getInstance = () => {
     },
     withCredentials: true,
     baseURL:
-      process.env.NODE_ENV === "production"
-        ? "http://www.sharingideas.cn:10000/"
-        : "/api"
+      process.env.NODE_ENV === "production" ? "http://sharingideas.cn:10000/" : "/api"
   });
   return instance;
 };

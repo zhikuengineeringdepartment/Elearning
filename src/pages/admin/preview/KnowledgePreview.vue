@@ -61,6 +61,7 @@ export default {
 .section-knowledge-paragraph-content {
   padding: 2vmin 0;
   font-size: 2vmin;
+  width: 100%;
 
   pre {
     overflow: hidden;

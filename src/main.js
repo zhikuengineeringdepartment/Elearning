@@ -28,7 +28,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
   baseURL:
     process.env.NODE_ENV === "production"
-      ? "http://www.sharingideas.cn:10000/"
+      ? "http://sharingideas.cn:10000/"
       : "/api" // 正式环境与开发环境的url
 });
 
