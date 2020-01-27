@@ -187,29 +187,7 @@ export default {
             // 转换一下section的结构
             let sections = [];
             let tempSections = response.data.data.courseView.sections;
-            // let index = 0;
-            // for (let i = 0; i < tempSections.length; i++) {
-            //   let name = tempSections[i].sectionName;
-            //   if (name.substring(0, name.indexOf(" ")) === "#") {
-            //     if (i === 0) {
-            //       index = 0;
-            //     } else {
-            //       index++;
-            //     }
-            //     sections[index] = {};
-            //     sections[index].title = name.substring(
-            //       name.indexOf(" "),
-            //       name.indexOf("章") + 1
-            //     );
-            //     sections[index].index = index;
-            //     sections[index].sub = [];
-            //     sections[index].sub[0] = tempSections[i];
-            //   } else {
-            //     sections[index].sub[sections[index].sub.length] =
-            //       tempSections[i];
-            //   }
-            // }
-            // _this.courseView.sections = sections;
+
             if (tempSections.length > 0) {
               let sid = tempSections[0].sub[0].sid;
               _this.getSectionView(sid);

@@ -1,7 +1,6 @@
 //本文件定义了一些工具方法。
 
 import katex from "katex";
-import axios from "axios";
 
 // 路由跳转的定制方法
 const routerChange = (pageUrl, _this) => {
@@ -159,21 +158,6 @@ const parseMath = (mathStr, flag = false) => {
   });
 };
 
-/**
- *新建axios实例
- */
-const getInstance = () => {
-  const instance = axios.create({
-    headers: {
-      "Content-Type": "multipart/form-data"
-    },
-    withCredentials: true,
-    baseURL:
-      process.env.NODE_ENV === "production" ? "http://sharingideas.cn:10000/" : "/api"
-  });
-  return instance;
-};
-
 export {
   routerChange,
   throttle,
@@ -181,6 +165,5 @@ export {
   setCookie,
   getCookie,
   clearCookie,
-  parse,
-  getInstance
+  parse
 };
