@@ -1,6 +1,7 @@
 import axios from "axios";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import Qs from "qs";
 
 const DEFALUT_HEADER = "application/x-www-form-urlencoded";
 const FILE_HEADER = "multipart/form-data";
