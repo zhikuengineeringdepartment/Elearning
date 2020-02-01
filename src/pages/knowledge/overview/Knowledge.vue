@@ -13,7 +13,8 @@
 
 <script>
 import KnowledgeItem from "./KnowledgeItem";
-import HTTP from "../../../app/http";
+// import Course from "../../../app/modules/Course"
+import { queryCourseList } from "../../../app/apis/knowledgeApi";
 
 export default {
   name: "Knowledge",
@@ -24,41 +25,37 @@ export default {
     };
   },
   created() {
-    this.getCourses();
-  },
-  methods: {
-    getCourses: function() {
-      const _this = this;
-
-      // const http = new HTTP(_this);
-      // http.get("course/getAllCourse", { uid: 0 }, res => {
-      //   console.log("http", res);
-      // });
-
-      // 请求所有的知识见解
-      _this.$http
-        .get("course/getAllCourse", {
-          params: {
-            uid: 0
-          }
-        })
-        .then(function(response) {
-          console.log("get course", response.data);
-          if (response.data.code === 200) {
-            _this.courses = response.data.data.courses;
-          } else {
-            this.$message({
-              showClose: true,
-              message: response.data.message,
-              type: "error"
-            });
-          }
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-    }
+    // this.getCourses();
+    queryCourseList().then(res => this.courses = res.data.courses);
   }
+  // methods: {
+  //   getCourses: function() {
+  //     const _this = this;
+
+  //     // 请求所有的知识见解
+  //     _this.$http
+  //       .get("course/getAllCourse", {
+  //         params: {
+  //           uid: 0
+  //         }
+  //       })
+  //       .then(function(response) {
+  //         console.log("get course", response.data);
+  //         if (response.data.code === 200) {
+  //           _this.courses = response.data.data.courses;
+  //         } else {
+  //           this.$message({
+  //             showClose: true,
+  //             message: response.data.message,
+  //             type: "error"
+  //           });
+  //         }
+  //       })
+  //       .catch(function(err) {
+  //         console.log(err);
+  //       });
+  //   }
+  // }
 };
 </script>
 

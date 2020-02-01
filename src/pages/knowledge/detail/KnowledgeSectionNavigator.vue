@@ -28,8 +28,8 @@
       handleMenu(sid) {
         this.$store.commit('setSectionId', sid);
         window.scrollTo(0, 0);
-        this.$emit('getSectionView', sid);
-        this.$emit('getCsdn', sid);
+        this.$emit('setSectionView', sid);
+        this.$emit('setCsdn', sid);
       }
     }
   }

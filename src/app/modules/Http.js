@@ -1,4 +1,6 @@
+import Vue from "vue";
 import axios from "axios";
+import { Message } from "element-ui";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Qs from "qs";
@@ -7,11 +9,16 @@ const DEFALUT_HEADER = "application/x-www-form-urlencoded";
 const FILE_HEADER = "multipart/form-data";
 const PRODUCTION_URL = "http://sharingideas.cn:10000/";
 const DEVELOPMENT_URL = "/api";
+const context = new Vue();
 
-export default class HTTP {
-  constructor(context) {
-    this.context = context;
-    this.axiosInstance = axios.create({
+export default class Http {
+  #axiosInstance;
+  constructor(header = DEFALUT_HEADER) {
+    this.#axiosInstance = this.createInstance(header);
+  }
+
+  createInstance(header) {
+    return axios.create({
       // config里面有这个transformRquest，这个选项会在发送参数前进行处理，这时候我们通过Qs.stringify转换为表单查询参数
       transformRequest: [
         function(data) {
@@ -21,21 +28,12 @@ export default class HTTP {
       ],
 
       // 设置Content-Type
-      headers: { "Content-Type": DEFALUT_HEADER },
+      headers: { "Content-Type": header },
 
       // 可携带cookies
       withCredentials: true,
       baseURL:
         process.env.NODE_ENV === "production" ? PRODUCTION_URL : DEVELOPMENT_URL // 正式环境与开发环境的url
-    });
-  }
-
-  changeInstance() {
-    this.axiosInstance = axios.create({
-      headers: { "Content-Type": FILE_HEADER },
-      withCredentials: true,
-      baseURL:
-        process.env.NODE_ENV === "production" ? PRODUCTION_URL : DEVELOPMENT_URL
     });
   }
 
@@ -48,20 +46,21 @@ export default class HTTP {
   get(url, data, fn) {
     NProgress.start();
 
-    let _this = this;
-    _this.axiosInstance
+    return this.axiosInstance
       .get(url, { params: data })
       .then(response => {
         NProgress.done();
 
         if (response.data.code === 200) {
-          fn(res.data);
+          return response.data;
+          // fn(response.data);
         } else {
-          _this.context.$message({
+          context.$message({
             showClose: true,
             message: response.data.message,
             type: "error"
           });
+          return response.data;
         }
       })
       .catch(err => {
@@ -79,8 +78,7 @@ export default class HTTP {
   post(url, data, fn) {
     NProgress.start();
 
-    let _this = this;
-    _this.axiosInstance
+    this.axiosInstance
       .post(url, data, {
         transformRequest: [
           data => {
@@ -101,18 +99,24 @@ export default class HTTP {
         NProgress.done();
 
         if (response.data.code === 200) {
-          fn(res.data);
+          return response.data;
+          // fn(response.data);
         } else {
-          _this.context.$message({
+          context.$message({
             showClose: true,
             message: response.data.message,
             type: "error"
           });
+          return response.data;
         }
       })
       .catch(err => {
         NProgress.done();
         console.log(err);
       });
+  }
+
+  get axiosInstance() {
+    return this.#axiosInstance;
   }
 }
