@@ -14,7 +14,8 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
   store.commit("setPath", to.path);
 
-  // 进行路由判断，让"通过复制url进入指定页面"的用户看到正确的tab状态
+  console.log(to.path);
+  // 进行路由判断来处理未登录，复制url访问等情况
   comRouterGuard(to, next);
   adminRouterGuard(to, next);
 

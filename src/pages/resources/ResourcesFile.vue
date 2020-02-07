@@ -61,39 +61,38 @@
 </template>
 
 <script>
-import FileTag from "../../components/FileTag";
-import { routerChange, getLocation, getCookie } from "../../tools";
+import FileTag from '../../components/FileTag'
 
 export default {
-  name: "ResourcesFile",
+  name: 'ResourcesFile',
   components: { FileTag },
-  props: ["fileItem"],
+  props: ['fileItem'],
   methods: {
     handlePreview: function(fid) {
-      console.log("预览文件" + fid);
-      this.$store.commit("setFid", fid);
-      const location = getLocation(window.location.href);
+      console.log('预览文件' + fid)
+      this.$store.commit('setFid', fid)
+      const location = this.$fn.getLocation(window.location.href)
       const host =
-        process.env.NODE_ENV === "production"
-          ? location.protocol + "//" + location.host
-          : "http://sharingideas.cn";
-      window.open(host + "/preview.html?fid=" + fid);
+        process.env.NODE_ENV === 'production'
+          ? location.protocol + '//' + location.host
+          : 'http://sharingideas.cn'
+      window.open(host + '/preview.html?fid=' + fid)
     },
     handleDownload: function(fid) {
-      if (getCookie("token")) {
-        console.log("下载文件");
-        const location = getLocation(window.location.href);
+      if (this.$fn.isLogin()) {
+        console.log('下载文件')
+        const location = this.$fn.getLocation(window.location.href)
         const host =
-          process.env.NODE_ENV === "production"
-            ? location.protocol + "//" + location.host
-            : "http://sharingideas.cn";
-        window.open(host + "/file/download?fid=" + fid + "&uid=" + 0);
+          process.env.NODE_ENV === 'production'
+            ? location.protocol + '//' + location.host
+            : 'http://sharingideas.cn'
+        window.open(host + '/file/download?fid=' + fid + '&uid=' + 0)
       } else {
-        routerChange("/user/login", this);
+        this.$fn.routerChange('/user/login', this)
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

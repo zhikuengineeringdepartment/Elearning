@@ -1,5 +1,5 @@
 /**管理路由*/
-import { getCookie } from "../tools.js";
+import { getCookie } from "../app/modules/functions";
 
 let adminRouter = [
   {
@@ -48,9 +48,7 @@ let adminRouter = [
 ];
 
 let adminRouterGuard = (to, next) => {
-  if (to.path.includes("/admin") && getCookie("token") && getCookie("tokena")) {
-    next();
-  } else if (
+  if (
     to.path.includes("/admin") &&
     (!getCookie("tokena") || !getCookie("token"))
   ) {

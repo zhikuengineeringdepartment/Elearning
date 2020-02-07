@@ -4,8 +4,7 @@
 
 import * as knowledge from "../apis/knowledgeApi";
 import store from "../../store/store";
-import showdown from "showdown";
-import { parse } from "./functions";
+import { markdown2Html } from "./functions";
 
 export default class Course {
   // #courseId;
@@ -98,28 +97,18 @@ export default class Course {
 
   setSectionView(sid) {
     this.getSectionView(sid).then(sectionView => {
-      console.log("get section view", sectionView);
+      // console.log("get section view", sectionView);
       this._sectionView = markdown2Html(sectionView);
       this.setSideSection(sid);
     });
   }
 
   setNoteView(sid) {
-    this.getNoteView(sid).then(noteViews => {
-      console.log("noteview-", noteViews, sid);
-      this._noteViews = noteViews;
-    });
+    this.getNoteView(sid).then(noteViews => (this._noteViews = noteViews));
   }
 
   setColParas(sid) {
-    this.getColParas(sid).then(colParas => {
-      console.log("colParas-", colParas, sid);
-      this._colParas = colParas;
-    });
-  }
-
-  get courseId() {
-    return this._courseId;
+    this.getColParas(sid).then(colParas => (this._colParas = colParas));
   }
 
   get courseView() {
@@ -145,43 +134,6 @@ export default class Course {
   get colParas() {
     return this._colParas;
   }
-}
-
-function markdown2Html(section) {
-  let converter = new showdown.Converter();
-  converter.setOption("tables", "true");
-  converter.setOption("simpleLineBreaks", "true");
-
-  let sectionView = section;
-  // 将markdown转换为html
-  sectionView.sectionNameHtml = converter.makeHtml(
-    parse(sectionView.sectionName)
-  );
-  for (const knowledge of sectionView.knowledgeViews) {
-    knowledge.knowledgeNameHtml = converter.makeHtml(
-      parse(knowledge.knowledgeName)
-    );
-    for (const paragraph of knowledge.paragraphs) {
-      let paragraphContentHtml = converter.makeHtml(
-        parse(paragraph.paragraphContent)
-      );
-      if (paragraphContentHtml.indexOf("<pre") !== -1) {
-        paragraphContentHtml = paragraphContentHtml.replace(
-          "<pre",
-          '<pre class="code-content"'
-        );
-        // console.log("===", paragraphContentHtml);
-      } else if (paragraphContentHtml.indexOf("<img") !== -1) {
-        paragraphContentHtml = paragraphContentHtml.replace(
-          "<img",
-          '<img class="img-content"'
-        );
-        // console.log("====", paragraphContentHtml);
-      }
-      paragraph.paragraphContentHtml = paragraphContentHtml;
-    }
-  }
-  return sectionView;
 }
 
 // 获取当前章节所在的位置

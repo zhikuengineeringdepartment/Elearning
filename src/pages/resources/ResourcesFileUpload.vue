@@ -19,10 +19,14 @@
               :auto-upload="false"
               :with-credentials="true"
             >
-              <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+              <el-button slot="trigger" size="small" type="primary"
+                >选取文件</el-button
+              >
               <!--手机端不显示此提示-->
               <div v-if="!$store.state.isMobile">
-                <div slot="tip" class="resources-file-upload-tips">可上传word,ppt,pdf类型文件，且不超过100M</div>
+                <div slot="tip" class="resources-file-upload-tips">
+                  可上传word,ppt,pdf类型文件，且不超过100M
+                </div>
               </div>
             </el-upload>
           </el-form-item>
@@ -39,7 +43,8 @@
               closable
               :disable-transitions="false"
               @close="handleClose(tag)"
-            >{{tag}}</el-tag>
+              >{{ tag }}</el-tag
+            >
             <el-input
               class="input-new-tag"
               v-if="tagVisible"
@@ -49,11 +54,21 @@
               @keyup.enter.native="handleInputConfirm"
               @blur="handleInputConfirm"
             ></el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+            <el-button
+              v-else
+              class="button-new-tag"
+              size="small"
+              @click="showInput"
+              >+ New Tag</el-button
+            >
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-            <el-button size="small" type="info" @click="returnBack">取消</el-button>
+            <el-button size="small" type="success" @click="submitUpload"
+              >上传到服务器</el-button
+            >
+            <el-button size="small" type="info" @click="returnBack"
+              >取消</el-button
+            >
           </el-form-item>
         </el-form>
       </el-col>
@@ -120,29 +135,31 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
+    getForm() {
+      let form = new FormData();
+      form.append(
+        "multipartFile",
+        document.getElementsByClassName("el-upload__input")[0].files[0]
+      );
+      form.append("uid", "0");
+      form.append("fileCourse", this.uploadForm.fileCourse);
+      form.append("fileTeacher", this.uploadForm.fileTeacher);
+      console.log(this.uploadForm.file_tags);
+
+      for (let i = 1; i <= this.uploadForm.file_tags.length; i++) {
+        form.append("key" + i, this.uploadForm.file_tags[i - 1]);
+      }
+      for (var [a, b] of form.entries()) {
+        console.log(a, b);
+      }
+      return form;
+    },
     submitUpload() {
       const _this = this;
 
-      if (getCookie("token")) {
-        let form = new FormData();
-        form.append(
-          "multipartFile",
-          document.getElementsByClassName("el-upload__input")[0].files[0]
-        );
-        form.append("uid", "0");
-        form.append("fileCourse", this.uploadForm.fileCourse);
-        form.append("fileTeacher", this.uploadForm.fileTeacher);
-        console.log(this.uploadForm.file_tags);
-
-        for (let i = 1; i <= this.uploadForm.file_tags.length; i++) {
-          form.append("key" + i, this.uploadForm.file_tags[i - 1]);
-        }
-        for (var [a, b] of form.entries()) {
-          console.log(a, b);
-        }
-
+      if (this.$fn.isLogin()) {
         getInstance()
-          .post("/file/upload", form)
+          .post("/file/upload", getForm())
           .then(res => {
             console.log(res);
             if (res.data.code === 200) {
@@ -157,7 +174,7 @@ export default {
             _this.$message({ message: "请输入完整文件信息", type: "warning" });
           });
       } else {
-        routerChange("/user/login", _this);
+        this.$fn.routerChange("/user/login", this);
       }
     },
     returnBack() {

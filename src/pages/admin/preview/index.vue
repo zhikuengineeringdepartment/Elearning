@@ -27,103 +27,101 @@
   </el-row>
 </template>
 
-
 <script>
-import showdown from "showdown";
-import KnowledgePreview from "./KnowledgePreview";
-import { parse, getInstance } from "../../../tools";
+import showdown from 'showdown'
+import KnowledgePreview from './KnowledgePreview'
+import { queryPreviewKnowledge } from '../../../app/apis/adminApi'
 
 export default {
   components: { KnowledgePreview },
   data() {
     return {
       file: [],
-      sectionViewMap: [],
-      converter: null
-    };
-  },
-  created() {
-    this.converter = new showdown.Converter();
-    this.converter.setOption("tables", true);
-    this.converter.setOption("simpleLineBreaks", true);
+      sectionViewMap: []
+    }
   },
   methods: {
     handleExceed(files, fileList) {
-      this.$message.warning(`一次只能预览一个文件`);
+      this.$message.warning(`一次只能预览一个文件`)
     },
     change_file_list(file, flist) {
-      let _this = this;
-      _this.file = [file];
+      this.file = [file]
 
-      let form = new FormData();
-      form.append("file", file.raw);
+      let form = new FormData()
+      form.append('file', file.raw)
 
-      const loading = _this.$loading({
+      const loading = this.$loading({
         lock: true,
-        text: "加载中",
-        spinner: "el-icon-loading"
-      });
+        text: '加载中',
+        spinner: 'el-icon-loading'
+      })
 
-      getInstance()
-        .post("/backstage/course/preview", form)
-        .then(res => {
-          console.log(res.data);
-          if (res.data.code === 200) {
-            let sectionViewMap = [];
-            for (let key in res.data.data.sectionViewMap) {
-              let sectionView = res.data.data.sectionViewMap[key];
-              if (sectionView) {
-                // 将markdown转换为html
-                sectionView.sectionNameHtml = _this.converter.makeHtml(
-                  parse(sectionView.sectionName)
-                );
-                for (const knowledge of sectionView.knowledgeViews) {
-                  knowledge.knowledgeNameHtml = _this.converter.makeHtml(
-                    parse(knowledge.knowledgeName)
-                  );
-                  for (const paragraph of knowledge.paragraphs) {
-                    let paragraphContentHtml = _this.converter.makeHtml(
-                      parse(paragraph.paragraphContent)
-                    );
-                    if (paragraphContentHtml.indexOf("<pre") !== -1) {
-                      paragraphContentHtml = paragraphContentHtml.replace(
-                        "<pre",
-                        '<pre class="code-content"'
-                      );
-                    } else if (paragraphContentHtml.indexOf("<img") !== -1) {
-                      paragraphContentHtml = paragraphContentHtml.replace(
-                        "<img",
-                        '<img class="img-content"'
-                      );
-                    }
-                    paragraph.paragraphContentHtml = paragraphContentHtml;
-                  }
-                }
-                sectionViewMap.push(sectionView);
-              }
-              _this.sectionViewMap = sectionViewMap;
-              loading.close();
-            }
-          } else {
-            loading.close();
-            _this.$message({ message: res.data.message, type: "warning" });
-          }
-        })
-        .catch(res => {
-          loading.close();
-          console.log(JSON.stringify(res));
-          _this.$message({ message: "请上传格式正确的文件", type: "warning" });
-        });
+      queryPreviewKnowledge(form).then(response => {
+        this.sectionViewMap = this.$fn.markdown2Html(
+          response.data.sectionViewMap
+        )
+        loading.close()
+      })
+      // getInstance()
+      //   .post("/backstage/course/preview", form)
+      //   .then(res => {
+      //     console.log(res.data);
+      //     if (res.data.code === 200) {
+      //       let sectionViewMap = [];
+      //       for (let key in res.data.data.sectionViewMap) {
+      //         let sectionView = res.data.data.sectionViewMap[key];
+      //         if (sectionView) {
+      //           // 将markdown转换为html
+      //           sectionView.sectionNameHtml = _this.converter.makeHtml(
+      //             parse(sectionView.sectionName)
+      //           );
+      //           for (const knowledge of sectionView.knowledgeViews) {
+      //             knowledge.knowledgeNameHtml = _this.converter.makeHtml(
+      //               parse(knowledge.knowledgeName)
+      //             );
+      //             for (const paragraph of knowledge.paragraphs) {
+      //               let paragraphContentHtml = _this.converter.makeHtml(
+      //                 parse(paragraph.paragraphContent)
+      //               );
+      //               if (paragraphContentHtml.indexOf("<pre") !== -1) {
+      //                 paragraphContentHtml = paragraphContentHtml.replace(
+      //                   "<pre",
+      //                   '<pre class="code-content"'
+      //                 );
+      //               } else if (paragraphContentHtml.indexOf("<img") !== -1) {
+      //                 paragraphContentHtml = paragraphContentHtml.replace(
+      //                   "<img",
+      //                   '<img class="img-content"'
+      //                 );
+      //               }
+      //               paragraph.paragraphContentHtml = paragraphContentHtml;
+      //             }
+      //           }
+      //           sectionViewMap.push(sectionView);
+      //         }
+      //         _this.sectionViewMap = sectionViewMap;
+      //         loading.close();
+      //       }
+      //     } else {
+      //       loading.close();
+      //       _this.$message({ message: res.data.message, type: "warning" });
+      //     }
+      //   })
+      //   .catch(res => {
+      //     loading.close();
+      //     console.log(JSON.stringify(res));
+      //     _this.$message({ message: "请上传格式正确的文件", type: "warning" });
+      //   });
     },
     handleSuccess(response, file, fileList) {
-      console.log(file, response);
+      console.log(file, response)
     },
     handlePreview(file) {
-      console.log(file);
+      console.log(file)
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      console.log(file, fileList)
     }
   }
-};
+}
 </script>

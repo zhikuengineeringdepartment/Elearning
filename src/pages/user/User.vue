@@ -34,25 +34,23 @@
 </template>
 
 <script>
-import { routerChange, getCookie } from "../../tools";
-
 export default {
   name: "user",
   methods: {
     toUserInfo: function() {
-      routerChange("/user/info", this);
+      this.$fn.routerChange("/user/info", this);
     },
     toMessage: function() {
-      routerChange("/user/message", this);
+      this.$fn.routerChange("/user/message", this);
     },
     toUpload: function() {
-      routerChange("/user/upload", this);
+      this.$fn.routerChange("/user/upload", this);
     },
     toDownload: function() {
-      routerChange("/user/download", this);
+      this.$fn.routerChange("/user/download", this);
     },
     toCollection: function() {
-      routerChange("/user/collection", this);
+      this.$fn.routerChange("/user/collection", this);
     }
   }
 };

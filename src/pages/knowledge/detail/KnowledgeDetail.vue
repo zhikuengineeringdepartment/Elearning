@@ -8,7 +8,9 @@
           <div>
             <div class="show-menu" @click="showDrawerClick">
               章
-              <br />节 <br />选 <br />择
+              <br />节
+              <br />选
+              <br />择
             </div>
             <el-drawer
               size="80%"
@@ -31,8 +33,8 @@
             />
             <knowledge-section
               :sectionView="course.sectionView"
-              :noteViews="noteViews"
-              :colParas="colParas"
+              :noteViews="course.noteViews"
+              :colParas="course.colParas"
               @setNoteView="setNoteView"
               @setColParas="setColParas"
             ></knowledge-section>
@@ -61,8 +63,8 @@
             />
             <knowledge-section
               :sectionView="course.sectionView"
-              :noteViews="noteViews"
-              :colParas="colParas"
+              :noteViews="course.noteViews"
+              :colParas="course.colParas"
               @setNoteView="setNoteView"
               @setColParas="setColParas"
             ></knowledge-section>
@@ -80,14 +82,14 @@
 </template>
 
 <script>
-import KnowledgeSection from "./KnowledgeSection";
-import KnowledgeSectionBlog from "./KnowledgeSectionBlog";
-import KnowledgeSectionNavigator from "./KnowledgeSectionNavigator";
-import KnowledgeSectionSelect from "./KnowledgeSectionSelect";
-import Course from "../../../app/modules/Course";
+import KnowledgeSection from './KnowledgeSection'
+import KnowledgeSectionBlog from './KnowledgeSectionBlog'
+import KnowledgeSectionNavigator from './KnowledgeSectionNavigator'
+import KnowledgeSectionSelect from './KnowledgeSectionSelect'
+import Course from '../../../app/modules/Course'
 
 export default {
-  name: "KnowledgeDetail",
+  name: 'KnowledgeDetail',
   components: {
     KnowledgeSectionSelect,
     KnowledgeSectionNavigator,
@@ -96,34 +98,34 @@ export default {
   },
   data: function() {
     return {
-      drawerDirection: "ltr",
+      drawerDirection: 'ltr',
       drawerShow: false,
       course: {}
-    };
+    }
   },
   created() {
-    let course = new Course(this.$store.state.course.courseId);
-    course.init();
-    this.course = course;
+    let course = new Course(this.$store.state.course.courseId)
+    course.init()
+    this.course = course
   },
   methods: {
     showDrawerClick: function() {
-      this.drawerShow = true;
+      this.drawerShow = true
     },
     setSectionView: function(sid) {
-      this.course.setSectionView(sid);
+      this.course.setSectionView(sid)
     },
     setCsdn: function(sid) {
-      this.course.setCsdn(sid);
+      this.course.setCsdn(sid)
     },
     setNoteView: function(sid) {
-      this.course.setNoteView(sid);
+      this.course.setNoteView(sid)
     },
     setColParas: function(sid) {
-      this.course.setColParas(sid);
+      this.course.setColParas(sid)
     }
   }
-};
+}
 </script>
 
 <style scoped>

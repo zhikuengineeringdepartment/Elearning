@@ -8,8 +8,7 @@ import axios from "axios";
 import Vueaxios from "vue-axios";
 import Qs from "qs";
 import animate from "animate.css";
-
-Vue.use(animate);
+import * as functions from "./app/modules/functions";
 
 // 创建一个axios实例
 const axiosInstance = axios.create({
@@ -32,10 +31,11 @@ const axiosInstance = axios.create({
       : "/api" // 正式环境与开发环境的url
 });
 
+Vue.use(animate);
 Vue.use(ElementUI);
 Vue.use(Vueaxios, axiosInstance);
-
 Vue.config.productionTip = false;
+Vue.prototype.$fn = functions;
 
 // 页面初始化时先判断是手机端还是电脑端
 store.commit("changeMode", window.innerHeight > window.innerWidth);

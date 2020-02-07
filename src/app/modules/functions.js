@@ -1,6 +1,7 @@
 //本文件定义了一些工具方法。
 
 import katex from "katex";
+import showdown from "showdown";
 
 // 路由跳转的定制方法
 const routerChange = (pageUrl, _this) => {
@@ -158,6 +159,51 @@ const parseMath = (mathStr, flag = false) => {
   });
 };
 
+/**将section从markdown转化成html
+ *@param section
+ *@return {Array}
+ */
+const markdown2Html = sectionView => {
+  let converter = new showdown.Converter();
+  converter.setOption("tables", "true");
+  converter.setOption("simpleLineBreaks", "true");
+
+  // 将markdown转换为html
+  sectionView.sectionNameHtml = converter.makeHtml(
+    parse(sectionView.sectionName)
+  );
+  sectionView.knowledgeViews.map(knowledge => {
+    knowledge.knowledgeNameHtml = converter.makeHtml(
+      parse(knowledge.knowledgeName)
+    );
+    knowledge.paragraphs.map(paragraph => {
+      let paragraphContentHtml = converter.makeHtml(
+        parse(paragraph.paragraphContent)
+      );
+      if (paragraphContentHtml.includes("<pre")) {
+        paragraphContentHtml = paragraphContentHtml.replace(
+          "<pre",
+          '<pre class="code-content"'
+        );
+        // console.log("===", paragraphContentHtml);
+      } else if (paragraphContentHtml.includes("<img")) {
+        paragraphContentHtml = paragraphContentHtml.replace(
+          "<img",
+          '<img class="img-content"'
+        );
+        // console.log("====", paragraphContentHtml);
+      }
+      paragraph.paragraphContentHtml = paragraphContentHtml;
+    });
+  });
+  return sectionView;
+};
+
+/**g=根据cookies判断是否登陆 */
+const isLogin = () => {
+  return getCookie("token");
+};
+
 export {
   routerChange,
   throttle,
@@ -165,5 +211,6 @@ export {
   setCookie,
   getCookie,
   clearCookie,
-  parse
+  markdown2Html,
+  isLogin
 };

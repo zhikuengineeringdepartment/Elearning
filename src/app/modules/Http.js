@@ -12,9 +12,9 @@ const DEVELOPMENT_URL = "/api";
 const context = new Vue();
 
 export default class Http {
-  #axiosInstance;
+  // #axiosInstance;
   constructor(header = DEFALUT_HEADER) {
-    this.#axiosInstance = this.createInstance(header);
+    this._axiosInstance = this.createInstance(header);
   }
 
   createInstance(header) {
@@ -43,7 +43,7 @@ export default class Http {
    * @param data 要携带的数据
    * @param fn 回调函数
    */
-  get(url, data, fn) {
+  get(url, data) {
     NProgress.start();
 
     return this.axiosInstance
@@ -53,7 +53,6 @@ export default class Http {
 
         if (response.data.code === 200) {
           return response.data;
-          // fn(response.data);
         } else {
           context.$message({
             showClose: true,
@@ -75,7 +74,7 @@ export default class Http {
    * @param data 要携带的数据
    * @param fn 回调函数
    */
-  post(url, data, fn) {
+  post(url, data) {
     NProgress.start();
 
     this.axiosInstance
@@ -100,7 +99,6 @@ export default class Http {
 
         if (response.data.code === 200) {
           return response.data;
-          // fn(response.data);
         } else {
           context.$message({
             showClose: true,
@@ -117,6 +115,6 @@ export default class Http {
   }
 
   get axiosInstance() {
-    return this.#axiosInstance;
+    return this._axiosInstance;
   }
 }

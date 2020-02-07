@@ -99,3 +99,7 @@ npm run lint
 - 2020.02.01 --by wuchvi
 
   知识见解页面重构基本完成，将知识见解页面数据封装成 Course 类，将 api 封装
+
+- 2020.02.07 --by wuchvi
+
+  将 tool.js 改成 functions.js，并挂载到 vue.prototype 作为全局方法，替换部分 http 请求为封装后的 api
