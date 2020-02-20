@@ -25,7 +25,8 @@ public interface FileMapper {
 
     File selectBySha(String sha);
 
-    List<FileView> selectFiles(@Param("keyWord") String keyWord, @Param("file") File file, @Param("startLine") int startLine, @Param("pageSize") int pageSize, @Param("order") boolean order,@Param("status")String status);
+    List<FileView> selectFiles(@Param("keyWord") String keyWord, @Param("file") File file, @Param("startLine") int startLine,
+                               @Param("pageSize") int pageSize, @Param("order") boolean order,@Param("status")String status,@Param("statusDelete")String statusDelete);
 
     List<FileView> selectFileUploadRecords(@Param("user") User user, @Param("startLine") int startLine, @Param("pageSize") int pageSize);
 }

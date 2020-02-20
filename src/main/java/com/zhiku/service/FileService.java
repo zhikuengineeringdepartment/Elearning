@@ -344,7 +344,7 @@ public class FileService{
      */
     public List<FileView> getFileList(String keyWord, File file, int page, boolean order,String status) {
         int startLine = (page-1)*PAGE_SIZE;
-        return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order,status);
+        return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order,status,FileStatus.DELETE.getCode());
     }
 
     /**

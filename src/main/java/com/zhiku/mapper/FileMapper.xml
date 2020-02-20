@@ -250,6 +250,9 @@
       <if test="status != null">
         and file_status = #{status}
       </if>
+      <if test="status == null">
+          and file_status != #{statusDelete}
+      </if>
       order by file_upload_time
       <if test="order == true">
         desc
