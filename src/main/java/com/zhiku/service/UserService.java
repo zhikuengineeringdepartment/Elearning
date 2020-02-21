@@ -5,6 +5,7 @@ import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.mapper.MessageMapper;
 import com.zhiku.mapper.UserMapper;
+import com.zhiku.mapper.UserRoleMapper;
 import com.zhiku.util.EmailUtil;
 import com.zhiku.util.UserStatus;
 import com.zhiku.view.MessageView;
@@ -28,6 +29,8 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private MessageMapper messageMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
     @Autowired
     JavaMailSender javaMailSender;
     @Autowired
@@ -259,5 +262,21 @@ public class UserService {
         calendar.add(Calendar.DAY_OF_MONTH,1);
         user1.setUserMailtime(calendar.getTime());   //邮箱激活到期时间为注册时间后1天
         userMapper.updateByPrimaryKeySelective( user1 );
+    }
+
+    /**
+     * 检查是否有权限
+     * @param user
+     * @param uri
+     * @return
+     */
+    public boolean checkAuthority(User user,String uri){
+        if(UserStatus.ROOT.getCode().equals( user.getUserAuth() )){
+            return true;
+        }else if(UserStatus.ADMINISTRATORS.getCode().equals( user.getUserAuth() )){
+            return userRoleMapper.check( user.getUid(),uri )!=null;
+        }else{
+            return false;
+        }
     }
 }

@@ -86,7 +86,9 @@ public class FileController {
             @RequestParam(value = "fid") int fid) throws FileNotExistException {
         user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);
-        fileService.fileDownload(request,response,user,file);
+        if(file.getFileStatus().equals( FileStatus.NORMAL.getCode() )){
+            fileService.fileDownload(request,response,user,file);//仅通过审核的可以下载
+        }
     }
 
     //TODO 待处理抛出的ConnectException

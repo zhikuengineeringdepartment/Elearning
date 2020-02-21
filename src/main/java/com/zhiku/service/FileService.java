@@ -298,6 +298,8 @@ public class FileService{
         File file = null;
         try{
             file = fileMapper.selectByPrimaryKey(fid);
+            if(file.getFileStatus().equals( FileStatus.DELETE.getCode() ))//已软删除
+                file=null;
         }catch (Exception e){
             FileNotExistException fileNotExistException = new FileNotExistException();
             throw fileNotExistException;
