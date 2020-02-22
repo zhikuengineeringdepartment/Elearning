@@ -7,7 +7,7 @@ let adminRouter = [
     name: "Admin",
     redirect: "/admin/upload/image",
     component: () =>
-      import(/* webpackChunkName: "admin" */ "../pages/admin/Admin"),
+      import(/* webpackChunkName: "admin" */ "../pages/admin/index"),
     children: [
       {
         path: "upload/image",
@@ -35,6 +35,13 @@ let adminRouter = [
         component: () =>
           import(
             /* webpackChunkName: "admin-weekly-diary-upload" */ "../pages/admin/weeklyDiary/index"
+          )
+      },
+      {
+        path: "file/review",
+        component: () =>
+          import(
+            /* webpackChunkName: "admin-file-review" */ "../pages/admin/file/index"
           )
       }
     ]

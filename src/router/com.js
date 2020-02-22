@@ -149,21 +149,25 @@ let comRouterGuard = (to, next) => {
     }
   }
 
-  if (to.path === "/user/login" || to.path === "/user/register") {
-    if (!isLogin()) {
-      next();
-    } else {
-      // 已登录却跳转到login或register的情况
-      next({
-        path: "/user/info"
-      });
-    }
-  }
-
-  if (to.path.includes("/user/") && !isLogin()) {
+  if (
+    to.path.includes("/user/") &&
+    !isLogin() &&
+    to.path !== "/user/login" &&
+    to.path !== "/user/register"
+  ) {
     // 未登录却跳转到user的情况
     next({
       path: "/user/login"
+    });
+  }
+
+  if (
+    (to.path === "/user/login" || to.path === "/user/register") &&
+    isLogin()
+  ) {
+    // 已登录却跳转到login或register的情况
+    next({
+      path: "/user/info"
     });
   }
 };

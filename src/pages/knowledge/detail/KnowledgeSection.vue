@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import wangEditor from "./WangEditor";
+// import wangEditor from "./WangEditor";
 
 export default {
   name: "KnowledgeSection",
   props: ["sectionView", "noteViews", "colParas"],
-  components: { wangEditor },
+  // components: { wangEditor },
   data: function() {
     return {
       currentPid: -1,

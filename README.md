@@ -1,6 +1,7 @@
 # sharing-ideas 山软智库前端 ——by shadowingszy
 
 > front-master 分支为上线的稳定版
+
 > front-dev 分支为开发版
 
 ## 目录结构
@@ -25,9 +26,9 @@
 |   |   |-- knowledge 知识见解 tab<br/>
 |   |   |-- resources 文件资源 tab<br/>
 |   |   |-- user 用户 tab<br/>
-| |-- app app 目录，放置全局的文件<br/>
-| |-- |-- apis 封装的 api 目录<br/>
-| |-- |-- modules 封装数据的模块<br/>
+|   |-- app app 目录，放置全局的文件<br/>
+|   |-- |-- apis 封装的 api 目录<br/>
+|   |-- |-- modules 封装数据的模块<br/>
 |   |-- router vue-router 配置<br/>
 |   |-- store vuex 配置<br/>
 |   |-- tools.js 全局的工具函数<br/>
@@ -103,3 +104,7 @@ npm run lint
 - 2020.02.07 --by wuchvi
 
   将 tool.js 改成 functions.js，并挂载到 vue.prototype 作为全局方法，替换部分 http 请求为封装后的 api
+  
+- 2020.02.22 --by wuchvi
+
+  增加文件审核模块
