@@ -33,7 +33,8 @@ public class TokenAop {
      * @throws UserNotFoundException 未找到用户异常
      * @throws TokenVerifyErrorException token验证失败异常
      */
-    @Before(value = "execution(* com.zhiku.controller.*.*(com.zhiku.entity.User,..)))")       //对于controller下的任意带有User user参数的请求进行拦截，带user的请求都是需要需要验证token的
+    @Before(value = "execution(* com.zhiku.controller.*.*(com.zhiku.entity.User,..))" +
+            "||execution(* com.zhiku.controller.*.*.*(com.zhiku.entity.User,..))")       //对于controller下的任意带有User user参数的请求进行拦截，带user的请求都是需要需要验证token的
     public void  before(JoinPoint pjp) throws UserNotFoundException , TokenVerifyErrorException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = getCookieByName("token",request.getCookies());
@@ -50,7 +51,7 @@ public class TokenAop {
      * @throws UserNotFoundException 未找到用户异常
      * @throws TokenVerifyErrorException    token验证失败异常
      */
-    @Before(value = "execution(* com.zhiku.controller.admin.*.*(..)))")
+    @Before(value = "execution(* com.zhiku.controller.admin.*.*(..))")
     public void adminBefore(JoinPoint pjp) throws UserNotFoundException, TokenVerifyErrorException{
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         //获取uri

@@ -142,6 +142,10 @@ public class PictureService {
         pictureMapper.deleteByPrimaryKey( picId );
     }
 
+    public Picture getByPicId(Integer picId){
+        return pictureMapper.selectByPrimaryKey( picId );
+    }
+
     //得到唯一路径
     private String getOnlyPath() {
         String path;

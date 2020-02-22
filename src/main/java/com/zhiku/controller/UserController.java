@@ -138,7 +138,8 @@ public class UserController {
                         cookie.setMaxAge(3*60*60);
                         cookie.setPath("/");
                         response.addCookie(cookie);
-                        if(user.getUserAuth().equals( "a" )){
+                        if(user.getUserAuth().equals( UserStatus.ROOT.getCode() )
+                                ||user.getUserAuth().equals( UserStatus.ADMINISTRATORS.getCode() )){
                             //签发管理员token
                             Cookie cookie2 = new Cookie("tokena",JWTUtil.signToken(user));
                             cookie2.setMaxAge(3*60*60);
