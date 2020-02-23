@@ -1,5 +1,6 @@
 package com.zhiku.controller;
 
+import com.zhiku.entity.mysql.File;
 import com.zhiku.entity.mysql.Preference;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
@@ -7,10 +8,12 @@ import com.zhiku.service.CourseService;
 import com.zhiku.service.FileService;
 import com.zhiku.service.PreferenceService;
 import com.zhiku.service.UserService;
+import com.zhiku.util.FileStatus;
 import com.zhiku.util.JWTUtil;
 import com.zhiku.util.ResponseData;
 import com.zhiku.util.UserStatus;
 import com.zhiku.view.ColCourseView;
+import com.zhiku.view.FileView;
 import com.zhiku.view.UserBaseInfoView;
 import freemarker.template.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -384,12 +387,23 @@ public class UserController {
         return responseData;
     }
 
+    /**
+     * 获取文件上传记录
+     * @param user 用户
+     * @param page 页数
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "getUploadRecords",method = RequestMethod.GET)
     public ResponseData getUploadRecords(User user, int page){
         ResponseData responseData = null;
         responseData = ResponseData.ok();
-        responseData.putDataValue("fileUploadRecords",fileService.getFileUploadRecords(user,page));
+        List<FileView> files=fileService.getFileUploadRecords(user,page);
+        for (File file:files){
+            //状态表示转中文
+            file.setFileStatus( FileStatus.getName( file.getFileStatus() ) );
+        }
+        responseData.putDataValue("fileUploadRecords",files);
         return responseData;
     }
 
