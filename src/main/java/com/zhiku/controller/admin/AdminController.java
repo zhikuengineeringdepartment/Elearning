@@ -103,7 +103,7 @@ public class AdminController {
      * @param fid   文件id
      * @throws ConnectException openoffice链接异常
      */
-    @RequestMapping(value = "preview",method = RequestMethod.GET)
+    @RequestMapping(value = "previewFile",method = RequestMethod.GET)
     public void filePreview(HttpServletResponse response, int fid) throws ConnectException {
         File file = fileService.getFileByFid(fid);
         if(file != null){
