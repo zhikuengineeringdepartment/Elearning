@@ -86,7 +86,7 @@ public class FileController {
             @RequestParam(value = "fid") int fid) throws FileNotExistException {
         user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);
-        if(file.getFileStatus().equals( FileStatus.NORMAL.getCode() )){
+        if(file.getFileStatus().equals( FileStatus.NORMAL.getCode() )||userService.checkAuthority( user,"/file/download" )){
             fileService.fileDownload(request,response,user,file);//仅通过审核的可以下载
         }
     }
