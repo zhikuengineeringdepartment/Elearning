@@ -1,12 +1,15 @@
 package com.zhiku.service;
 
+import com.zhiku.entity.VerificationCode;
 import com.zhiku.entity.mysql.Message;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.mapper.MessageMapper;
 import com.zhiku.mapper.UserMapper;
 import com.zhiku.mapper.UserRoleMapper;
+import com.zhiku.mapper.VerificationCodeMapper;
 import com.zhiku.util.EmailUtil;
+import com.zhiku.util.SmallTools;
 import com.zhiku.util.UserStatus;
 import com.zhiku.view.MessageView;
 import com.zhiku.view.UserBaseInfoView;
@@ -19,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -35,7 +36,12 @@ public class UserService {
     JavaMailSender javaMailSender;
     @Autowired
     Configuration freemarkerConfig;
+    @Autowired
+    VerificationCodeMapper verificationCodeMapper;
+
     private EmailUtil emailUtil = new EmailUtil();
+    private int codeTime=1;//验证码有效期/小时
+
 
     /**
      * 通过用户id获得用户信息
@@ -279,4 +285,43 @@ public class UserService {
             return false;
         }
     }
+
+    /**
+     * 发送验证码
+     * @param email 邮箱
+     */
+    public boolean sendCode(String email) throws MessagingException {
+        User user=userMapper.selectByEmail( email );
+        if(user==null){
+            return false;
+        }
+        //生成6位验证码
+        String code=""+ SmallTools.nextInt( 100000,999999 );
+        //储存进数据库
+        //TODO:REPLACE into table (id, name, age) values(1, "A", 19)
+        VerificationCode verificationCode=new VerificationCode();
+        verificationCode.setUid( user.getUid() );
+        verificationCode.setCode( code );
+        verificationCode.setDate( SmallTools.addDate( new Date(  ),codeTime ) );
+        verificationCodeMapper.replaceSelective( verificationCode );
+        //发送邮件
+        Map<String,Object> args=new HashMap<>(  );
+        args.put( "code",code );
+        args.put( "time",""+codeTime+"小时" );
+        emailUtil.sendMailC(javaMailSender,"verification_code.ftl",args,"智库邮件",email,freemarkerConfig);
+        return true;
+    }
+
+
+    /**
+     * 验证验证码
+     */
+    public boolean checkCode(User user,String code) {
+        if(user==null){
+            return false;
+        }
+        VerificationCode verificationCode=verificationCodeMapper.selectByPrimaryKey( user.getUid() );
+        return verificationCode!=null&&verificationCode.getCode().equals( code )&&verificationCode.getDate().after( new Date(  ) );
+    }
+
 }

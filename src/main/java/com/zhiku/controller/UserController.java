@@ -8,10 +8,7 @@ import com.zhiku.service.CourseService;
 import com.zhiku.service.FileService;
 import com.zhiku.service.PreferenceService;
 import com.zhiku.service.UserService;
-import com.zhiku.util.FileStatus;
-import com.zhiku.util.JWTUtil;
-import com.zhiku.util.ResponseData;
-import com.zhiku.util.UserStatus;
+import com.zhiku.util.*;
 import com.zhiku.view.ColCourseView;
 import com.zhiku.view.FileView;
 import com.zhiku.view.UserBaseInfoView;
@@ -430,6 +427,35 @@ public class UserController {
 
     public String redirectToActivePage(){
         return "/pages/active.html";
+    }
+
+    /**
+     * 通过邮件发送验证码
+     * @param email 邮箱
+     */
+    @ResponseBody
+    @RequestMapping(value = "mail/sendCode",method = RequestMethod.POST)
+    public ResponseData sendCode(String email) throws MessagingException {
+        if(!userService.sendCode(email)){
+            return ResponseData.customerError();
+        }
+        return ResponseData.ok();
+    }
+
+    /**
+     * 修改密码
+     * @param email 邮箱
+     * @param password 新密码
+     */
+    @ResponseBody
+    @RequestMapping(value = "setPassword",method = RequestMethod.POST)
+    public ResponseData setPassword(String email,String code,String password){
+        User user= userService.getUserByEmail( email );
+        if(!userService.checkCode(user,code)){
+            return ResponseData.customerError();
+        }
+        userService.resetPassword( user, SmallTools.word2Password( password ) );
+        return ResponseData.ok();
     }
 
 }

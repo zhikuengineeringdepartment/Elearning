@@ -5,8 +5,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class SmallTools {
 
@@ -86,6 +85,31 @@ public class SmallTools {
         return out;
     }
 
+
+    /*
+    生成随机数
+     */
+    public static int nextInt(final int min, final int max) {
+        Random rand= new Random();
+        int tmp = Math.abs(rand.nextInt());
+        return tmp % (max - min + 1) + min;
+
+    }
+
+    /*
+    增加时间-小时
+     */
+    public static Date addDate(Date now,int h){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.HOUR_OF_DAY,h);
+        return calendar.getTime();   //邮箱激活到期时间为注册时间后1天
+    }
+
+    public static String word2Password(String word){
+        return DigestUtils.md5Hex(word);
+    }
+
     //注册密码生成
     public static void main(String[] args){
         System.out.println("输入密码：");
@@ -93,4 +117,5 @@ public class SmallTools {
         String password=in.nextLine();
         System.out.println(DigestUtils.md5Hex(password));
     }
+
 }
