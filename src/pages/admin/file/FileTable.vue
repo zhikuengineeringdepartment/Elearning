@@ -99,7 +99,7 @@
             //     this.$emit("changePage", this.page, this.status);
             // },
             handlePreview(row) {
-                this.$emit("handlePreview", row.fid);
+                this.$emit("handlePreview", row.fid, row.fileName);
             },
             handleDownload(row) {
                 this.$emit("handleDownload", row.fid);

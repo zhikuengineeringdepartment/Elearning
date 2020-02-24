@@ -28,7 +28,7 @@
                                     type="primary"
                                     icon="el-icon-document"
                                     circle
-                                    @click="handlePreview(fileItem.fid)"
+                                    @click="handlePreview(fileItem.fid,fileItem.fileName)"
                             ></el-button>
                             <el-button
                                     type="success"
@@ -57,18 +57,28 @@
                 </el-row>
             </el-col>
         </el-row>
+        <pdf-preview v-if="isPreviewShow" @closePreview="closePreview" :isPreviewShow="isPreviewShow"
+                     :PreviewSrc="previewSrc" :title="previewTitle"></pdf-preview>
     </el-card>
 </template>
 
 <script>
     import FileTag from '../../components/FileTag'
+    import PdfPreview from "../../components/PdfPreview";
 
     export default {
         name: 'ResourcesFile',
-        components: {FileTag},
+        components: {FileTag, PdfPreview},
         props: ['fileItem'],
+        data() {
+            return {
+                isPreviewShow: false,
+                previewSrc: "",
+                previewTitle: ""
+            }
+        },
         methods: {
-            handlePreview: function (fid) {
+            handlePreview(fid, fieName) {
                 console.log('预览文件' + fid)
                 this.$store.commit('setFid', fid)
                 const location = this.$fn.getLocation(window.location.href)
@@ -76,7 +86,12 @@
                     process.env.NODE_ENV === 'production'
                         ? location.protocol + '//' + location.host
                         : 'http://sharingideas.cn'
-                window.open(host + '/preview.html?fid=' + fid)
+                this.previewSrc = host + '/file/preview?fid=' + fid
+                this.previewTitle = fieName + "（只能预览前十页）"
+                this.isPreviewShow = true
+            },
+            closePreview() {
+                this.isPreviewShow = false
             },
             handleDownload: function (fid) {
                 if (this.$fn.isLogin()) {

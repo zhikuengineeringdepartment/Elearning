@@ -34,6 +34,8 @@
                 ></file-table>
             </el-tab-pane>
         </el-tabs>
+        <!--        <pdf-preview v-if="isPreviewShow" @closePreview="closePreview" :isPreviewShow="isPreviewShow"-->
+        <!--                     :PreviewSrc="previewSrc" :title="previewTitle"></pdf-preview>-->
     </el-row>
 </template>
 
@@ -49,7 +51,10 @@
                 page: 1,
                 status: 2,
                 tableData: [],
-                loading: true
+                loading: true,
+                // isPreviewShow: false,
+                // previewSrc: "",
+                // previewTitle: ""
             }
         },
         mounted() {
@@ -73,16 +78,27 @@
                     this.status = 3
                 }
             },
-            handlePreview(fid) {
-                console.log('预览文件' + fid)
-                this.$store.commit('setFid', fid)
-                const location = this.$fn.getLocation(window.location.href)
-                const host =
-                    process.env.NODE_ENV === 'production'
-                        ? location.protocol + '//' + location.host
-                        : 'http://sharingideas.cn'
-                window.open(host + '/preview.html?fid=' + fid)
+            handlePreview(fid, fileName) {
+                if (/\.(?:pdf)$/.test(fileName)) {
+                    console.log('预览文件' + fid)
+                    this.$store.commit('setFid', fid)
+                    const location = this.$fn.getLocation(window.location.href)
+                    const host =
+                        process.env.NODE_ENV === 'production'
+                            ? location.protocol + '//' + location.host
+                            : 'http://sharingideas.cn'
+                    window.open(host + "/admin/preview?fid=" + fid)
+                } else {
+                    this.$message.warning("目前只支持预览PDF文件哦~")
+                }
+                // this.previewSrc = host + "/admin/preview?fid=" + fid
+                // console.log(this.previewSrc)
+                // this.previewTitle = fieName
+                // this.isPreviewShow = true
             },
+            // closePreview() {
+            //     this.isPreviewShow = false
+            // },
             handleDownload(fid) {
                 if (this.$fn.isLogin()) {
                     console.log('下载文件')
