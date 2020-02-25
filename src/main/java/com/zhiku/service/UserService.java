@@ -26,6 +26,10 @@ import java.util.*;
 
 @Service
 public class UserService {
+
+    public static final int CODE_TIME =1;//验证码有效期/小时
+    public static final int AVATAR_TIME=1;//激活有效期/天
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -40,8 +44,6 @@ public class UserService {
     VerificationCodeMapper verificationCodeMapper;
 
     private EmailUtil emailUtil = new EmailUtil();
-    private int codeTime=1;//验证码有效期/小时
-
 
     /**
      * 通过用户id获得用户信息
@@ -124,7 +126,7 @@ public class UserService {
         Date current = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(current);
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DAY_OF_MONTH,AVATAR_TIME);
         user.setUserLasttime(current);
         user.setUserMailtime(calendar.getTime());   //邮箱激活到期时间为注册时间后一天
         user.setUserRegip(request.getRemoteAddr());
@@ -301,12 +303,12 @@ public class UserService {
         VerificationCode verificationCode=new VerificationCode();
         verificationCode.setUid( user.getUid() );
         verificationCode.setCode( code );
-        verificationCode.setDate( SmallTools.addDate( new Date(  ),codeTime ) );
+        verificationCode.setDate( SmallTools.addDate( new Date(  ), CODE_TIME ) );
         verificationCodeMapper.replaceSelective( verificationCode );
         //发送邮件
         Map<String,Object> args=new HashMap<>(  );
         args.put( "code",code );
-        args.put( "time",""+codeTime+"小时" );
+        args.put( "time",""+ CODE_TIME +"小时" );
         emailUtil.sendMailC(javaMailSender,"verification_code.ftl",args,"智库邮件",email,freemarkerConfig);
         return true;
     }
@@ -321,6 +323,13 @@ public class UserService {
         }
         VerificationCode verificationCode=verificationCodeMapper.selectByPrimaryKey( user.getUid() );
         return verificationCode!=null&&verificationCode.getCode().equals( code )&&verificationCode.getDate().after( new Date(  ) );
+    }
+
+    //删除/未激活用户
+    public void delete(User user){
+        if(user.getUserStatus().equals( UserStatus.UNCHECKED.getCode() )) {
+            userMapper.deleteByPrimaryKey( user.getUid() );
+        }
     }
 
 }

@@ -63,16 +63,23 @@ public class UserController {
             @RequestParam(name = "email" ) String email){
         ResponseData responseData = null;
         try{
-            userService.getUserByUsername(username);
-            responseData = ResponseData.badRequest();
-            responseData.setMessage("用户名重复");
+            User user=userService.getUserByUsername(username);
+            if(isCover(user)){
+                throw new UserNotFoundException();
+            }else{
+                responseData = ResponseData.badRequest();
+                responseData.setMessage("用户名重复");
+            }
         }catch (UserNotFoundException unfe){
             try{
-                userService.getUserByEmail(email);
-                responseData = ResponseData.badRequest();
-                responseData.setMessage("邮箱重复");
+                User user=userService.getUserByEmail(email);
+                if(isCover(user)){
+                    throw new UserNotFoundException();
+                }else{
+                    responseData = ResponseData.badRequest();
+                    responseData.setMessage("邮箱重复");
+                }
             }catch (UserNotFoundException e){
-
                 //if(userService.registeUser(username,password,email,request)){
                 //    userService.sendEmail(javaMailSender,username,email,"active",freemarkerConfig);
                 //    responseData = ResponseData.ok();
@@ -193,14 +200,12 @@ public class UserController {
                 }
             }else {
                 responseData = ResponseData.customerError();
-                responseData.setMessage("无效链接");
+                responseData.setMessage("无效链接或逾期未激活用户名已被占用");
             }
         }catch (UserNotFoundException e){
             responseData = ResponseData.badRequest();
-            responseData.setMessage("用户不存在");
+            responseData.setMessage("用户不存在或逾期被删除");
         }
-
-        // TODO 这个网页还没有
         return "/error.html";
     }
 
@@ -229,10 +234,15 @@ public class UserController {
     public String reset(String username,
                         String code) throws MessagingException {
 //        return "forward:/reset";
-        User user = userService.getUserByUsername(username);
+        User user;
+        try{
+            user = userService.getUserByUsername(username);
+        }catch (UserNotFoundException unfe){
+            return "激活超期，邮箱已被他人使用，无法再激活，请重新注册";
+        }
         UserStatus userStatus = userService.checkUser(user);
         if(!code.equals(user.hashCode()+"")){
-            return "认证失败";
+            return "激活超期，用户名已被他人使用，无法再激活，请重新注册";
         }else if(!userStatus.equals(UserStatus.NORMAL)){
             return "您已激活成功，请直接登录";
         }
@@ -464,6 +474,15 @@ public class UserController {
         }
         userService.resetPassword( user, SmallTools.word2Password( password ) );
         return ResponseData.ok();
+    }
+    //是否可以覆盖账号//可以直接删除原账号
+    private boolean isCover(User user){
+        boolean isc=user.getUserStatus().equals( UserStatus.UNCHECKED.getCode() )
+                &&user.getUserMailtime().before( new Date() );
+        if(isc){
+            userService.delete( user );
+        }
+        return isc;
     }
 
 }
