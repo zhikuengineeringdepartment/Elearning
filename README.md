@@ -108,3 +108,11 @@ npm run lint
 - 2020.02.22 --by wuchvi
 
   增加文件审核模块
+  
+- 2020.02.24 --by wuchvi
+
+  增加 修改密码，修改文件资源列表加载  
+  
+- 2020.02.25 --by wuchvi
+
+  增加axios拦截器，优化http.js

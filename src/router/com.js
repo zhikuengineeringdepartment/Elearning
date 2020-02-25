@@ -117,6 +117,11 @@ let router = [
                 /* webpackChunkName: "user-register" */ "../pages/user/UserRegister"
                 )
     },
+    {
+        path: "user/change_password",
+        name: "UserChangePassword",
+        component: () => import(/* webpackChunkName: "user-change-password" */ "../pages/user/UserChangePassword")
+    }
 ];
 
 let comRouter = [

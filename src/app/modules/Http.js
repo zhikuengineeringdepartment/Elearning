@@ -18,7 +18,7 @@ export default class Http {
     }
 
     createInstance(header) {
-        return axios.create({
+        const axiosInstance = axios.create({
             // config里面有这个transformRquest，这个选项会在发送参数前进行处理，这时候我们通过Qs.stringify转换为表单查询参数
             transformRequest: [
                 function (data) {
@@ -30,11 +30,24 @@ export default class Http {
             // 设置Content-Type
             headers: {"Content-Type": header},
 
+            timeout: 1000 * 15,
             // 可携带cookies
             withCredentials: true,
             baseURL:
                 process.env.NODE_ENV === "production" ? PRODUCTION_URL : DEVELOPMENT_URL // 正式环境与开发环境的url
         });
+
+        //设置拦截器
+        axiosInstance.interceptors.response.use(
+            response => response.data.code === 200 ? Promise.resolve(response.data) : Promise.reject(response.data),
+            error => {
+                const {response} = error
+                if (response) {
+                    return Promise.reject(response.data)
+                } else context.$message.error("网络似乎出了一些状况")
+            }
+        )
+        return axiosInstance
     }
 
     uploadFileInstance() {
@@ -53,26 +66,25 @@ export default class Http {
      * 发送get请求
      * @param url
      * @param data
-     * @returns {Promise<AxiosResponse<T>>}
+     * @param fn
      */
-    get(url, data) {
+    get(url, data, fn) {
         NProgress.start();
 
         return this.axiosInstance
             .get(url, {params: data})
             .then(response => {
                 NProgress.done();
-
-                if (response.data.code === 200) {
-                    return response.data;
-                } else {
-                    context.$message({
-                        showClose: true,
-                        message: response.data.message,
-                        type: "error"
-                    });
-                    return response.data;
-                }
+                return fn(response)
+                // return response;
+            }, error => {
+                NProgress.done();
+                context.$message({
+                    showClose: true,
+                    message: error.message,
+                    type: "error"
+                })
+                throw new Error("出错啦")
             })
             .catch(err => {
                 NProgress.done();
@@ -84,9 +96,9 @@ export default class Http {
      * 发送post请求
      * @param url
      * @param data
-     * @returns {Promise<AxiosResponse<T>>}
+     * @param fn
      */
-    post(url, data) {
+    post(url, data, fn) {
         NProgress.start();
 
         return this.axiosInstance
@@ -108,17 +120,15 @@ export default class Http {
             })
             .then(response => {
                 NProgress.done();
-
-                if (response.data.code === 200) {
-                    return response.data;
-                } else {
-                    context.$message({
-                        showClose: true,
-                        message: response.data.message,
-                        type: "error"
-                    });
-                    return response.data;
-                }
+                return fn(response)
+            }, error => {
+                NProgress.done();
+                context.$message({
+                    showClose: true,
+                    message: error.message,
+                    type: "error"
+                })
+                throw new Error("出错啦")
             })
             .catch(err => {
                 NProgress.done();

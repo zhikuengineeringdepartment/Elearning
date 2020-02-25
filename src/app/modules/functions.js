@@ -204,6 +204,20 @@ const isLogin = () => {
     return getCookie("token");
 };
 
+/**
+ * 滚动到底部时执行fn
+ * @param fn
+ */
+const lazyLoading = (fn) => {
+    let scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop
+    let clientHeight = document.documentElement.clientHeight
+    let scrollHeight = document.documentElement.scrollHeight
+    if (scrollTop + clientHeight + 0.2 >= scrollHeight) {
+        fn()
+    }
+}
+
 export {
     routerChange,
     throttle,
@@ -212,5 +226,6 @@ export {
     getCookie,
     clearCookie,
     markdown2Html,
-    isLogin
+    isLogin,
+    lazyLoading
 };

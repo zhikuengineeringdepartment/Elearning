@@ -86,22 +86,14 @@
                     const host =
                         process.env.NODE_ENV === 'production'
                             ? location.protocol + '//' + location.host
-                            : 'http://sharingideas.cn'
-                    window.open(host + "/admin/preview?fid=" + fid)
+                            : 'http://sharingideas.cn:10000'
+                    window.open(host + "/admin/previewFile?fid=" + fid)
                 } else {
                     this.$message.warning("目前只支持预览PDF文件哦~")
                 }
-                // this.previewSrc = host + "/admin/preview?fid=" + fid
-                // console.log(this.previewSrc)
-                // this.previewTitle = fieName
-                // this.isPreviewShow = true
             },
-            // closePreview() {
-            //     this.isPreviewShow = false
-            // },
             handleDownload(fid) {
                 if (this.$fn.isLogin()) {
-                    console.log('下载文件')
                     const location = this.$fn.getLocation(window.location.href)
                     const host =
                         process.env.NODE_ENV === 'production'
@@ -118,10 +110,10 @@
                     fid: fid,
                     status: status
                 }
-                updateFileStatus(params).then(response => {
+                updateFileStatus(params, response => {
                     console.log(response)
                     if (response.code === 200) {
-                        this.$message("修改成功")
+                        this.$message.success("修改成功")
                         this.loading = true
                         this.getFileList(this.page, this.status)
                     } else this.$message.error("修改失败")
@@ -135,7 +127,7 @@
                     order: true,
                     status: status
                 }
-                queryFileList(params).then(response => {
+                queryFileList(params, response => {
                     this.loading = false
                     this.tableData = response.data.files
                 })

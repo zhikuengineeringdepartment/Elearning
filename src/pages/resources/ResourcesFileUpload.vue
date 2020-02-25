@@ -169,7 +169,7 @@
                             console.log(response);
                             loading.close();
                             if (response.data.code === 200) {
-                                this.$message({message: "提交成功"});
+                                this.$message.success({message: "提交成功"});
                                 this.$router.push({path: "/resources"});
                             } else {
                                 this.$message.warning(response.data.message);

@@ -69,7 +69,6 @@
             close() {
                 this.$emit("closePreview")
             }
-
         }
     }
 </script>

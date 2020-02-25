@@ -1,7 +1,7 @@
 /**
  *Course类，封装了课程列表和知识见解页面的数据
  */
-
+import Vue from "vue";
 import * as knowledge from "../apis/knowledgeApi";
 import store from "../../store/store";
 import {markdown2Html} from "./functions";
@@ -27,42 +27,42 @@ export default class Course {
 
     init() {
         this.getCourseView()
-            .then(courseView => {
-                this._courseView = courseView;
-                if (courseView.sections.length > 0)
-                    return courseView.sections[0].sub[0].sid;
-                else reject("章节为空");
-            })
             .then(sid => {
                 this.setSectionView(sid);
                 this.setCsdn(sid);
             })
-            .catch(err => console.log(err));
+            .catch(error => new Vue().$message.warning(error));
     }
 
-    getCourseList() {
-        return knowledge.queryCourseList();
-    }
+    // getCourseList() {
+    //     return knowledge.queryCourseList();
+    // }
 
     getCourseView() {
+        let params = {cid: this._courseId}
         return knowledge
-            .queryCourseView({cid: this._courseId})
-            .then(response => response.data.courseView);
+            .queryCourseView(params, response => {
+                this._courseView = response.data.courseView
+                if (this._courseView.sections.length > 0)
+                    return this._courseView.sections[0].sub[0].sid;
+                else throw new Error("章节为空")
+            })
     }
 
-    getSectionView(sid) {
-        return knowledge
-            .querySectionView({sid: sid})
-            .then(response => response.data.sectionView);
+    setSectionView(sid) {
+        knowledge.querySectionView({sid: sid}, response => {
+            this._sectionView = markdown2Html(response.data.sectionView);
+            this.setSideSection(sid);
+        })
     }
 
-    getCsdn(sid) {
+    setCsdn(sid) {
         let params = {
             cid: store.state.course.courseId,
             sid: sid,
             vid: store.state.course.versionId
         };
-        return knowledge.queryCsdn(params).then(response => response.data.csdn);
+        knowledge.queryCsdn(params, response => this._csdn = response.data.csdn)
     }
 
     getNoteView(sid) {
@@ -70,8 +70,7 @@ export default class Course {
             .queryNoteView({
                 uid: 0,
                 sid: sid
-            })
-            .then(response => response.data.noteViews);
+            }, response => response.data.noteViews)
     }
 
     getColParas(sid) {
@@ -79,8 +78,7 @@ export default class Course {
             .queryColParas({
                 uid: 0,
                 sid: sid
-            })
-            .then(response => response.data.colParagraphList);
+            }, response => response.data.colParagraphList)
     }
 
     setSideSection(sid) {
@@ -89,18 +87,6 @@ export default class Course {
 
         this._side.preSection = findPre(sections, sideIndex);
         this._side.nextSection = findNext(sections, sideIndex);
-    }
-
-    setCsdn(sid) {
-        this.getCsdn(sid).then(csdn => (this._csdn = csdn));
-    }
-
-    setSectionView(sid) {
-        this.getSectionView(sid).then(sectionView => {
-            console.log("get section view", sectionView);
-            this._sectionView = markdown2Html(sectionView);
-            this.setSideSection(sid);
-        });
     }
 
     setNoteView(sid) {

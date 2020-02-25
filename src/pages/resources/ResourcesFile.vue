@@ -78,17 +78,21 @@
             }
         },
         methods: {
-            handlePreview(fid, fieName) {
-                console.log('预览文件' + fid)
-                this.$store.commit('setFid', fid)
-                const location = this.$fn.getLocation(window.location.href)
-                const host =
-                    process.env.NODE_ENV === 'production'
-                        ? location.protocol + '//' + location.host
-                        : 'http://sharingideas.cn'
-                this.previewSrc = host + '/file/preview?fid=' + fid
-                this.previewTitle = fieName + "（只能预览前十页）"
-                this.isPreviewShow = true
+            handlePreview(fid, fileName) {
+                if (/\.(?:pdf)$/.test(fileName)) {
+                    console.log('预览文件' + fid)
+                    this.$store.commit('setFid', fid)
+                    const location = this.$fn.getLocation(window.location.href)
+                    const host =
+                        process.env.NODE_ENV === 'production'
+                            ? location.protocol + '//' + location.host
+                            : 'http://sharingideas.cn'
+                    this.previewSrc = host + '/file/preview?fid=' + fid
+                    this.previewTitle = fileName + "（只能预览前十页）"
+                    this.isPreviewShow = true
+                } else {
+                    this.$message.warning("目前只支持预览PDF文件哦~")
+                }
             },
             closePreview() {
                 this.isPreviewShow = false

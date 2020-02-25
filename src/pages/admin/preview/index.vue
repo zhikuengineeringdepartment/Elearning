@@ -61,12 +61,12 @@ export default {
       });
       queryPreviewKnowledge(form)
         .then(response => {
-          for (let index in response.data.data.sectionViewMap) {
-            this.sectionViewMap.push(
-              this.$fn.markdown2Html(response.data.data.sectionViewMap[index])
-            );
-          }
-          loading.close();
+            for (let index in response.data.data.sectionViewMap) {
+                this.sectionViewMap.push(
+                    this.$fn.markdown2Html(response.data.data.sectionViewMap[index])
+                );
+            }
+            loading.close();
         })
         .catch(err => console.log(err));
     },
