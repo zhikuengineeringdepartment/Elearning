@@ -41,9 +41,6 @@ public class PictureAController {
     @ResponseBody
     public ResponseData save(User user, @RequestParam("file") MultipartFile file,
                              Integer cid, String[] sections) {
-
-        System.out.println("<<<>>>UIDS="+user.getUid());////////////////
-
         //储存图片
         Picture picture=new Picture();
         picture.setCid( cid );
@@ -71,8 +68,6 @@ public class PictureAController {
     @ResponseBody
     public ResponseData list(User user,@RequestParam(required = false) Integer page
             ,@RequestParam(required = false) Integer pageSize) {
-        System.out.println("<<<>>>UID="+user.getUid());////////////////
-
         List<PictureView> pictures=pictureService.getList( user.getUid(),page,pageSize );
         //拼接url前地址
         for (PictureView pictureView:pictures) {

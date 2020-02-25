@@ -85,7 +85,6 @@ public class UserController {
                 try {
                     userService.registeUserAndSendEmail(username,password,email,request);
                     //发生异常就不会执行这一句
-                    System.out.println("邮件发送成功");
                     responseData = ResponseData.ok();
                 }
                 catch (Exception ex){
