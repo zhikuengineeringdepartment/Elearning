@@ -290,8 +290,7 @@ public class UserService {
      * 发送验证码
      * @param email 邮箱
      */
-    public boolean sendCode(String email) throws MessagingException {
-        User user=userMapper.selectByEmail( email );
+    public boolean sendCode(User user,String email) throws MessagingException {
         if(user==null){
             return false;
         }

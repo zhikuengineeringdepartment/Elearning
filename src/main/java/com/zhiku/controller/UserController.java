@@ -201,7 +201,7 @@ public class UserController {
         }
 
         // TODO 这个网页还没有
-        return "/pages/error.html";
+        return "/error.html";
     }
 
     @ResponseBody
@@ -425,7 +425,7 @@ public class UserController {
 
 
     public String redirectToActivePage(){
-        return "/pages/active.html";
+        return "/active.html";
     }
 
     /**
@@ -435,7 +435,12 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "mail/sendCode",method = RequestMethod.POST)
     public ResponseData sendCode(String email) throws MessagingException {
-        if(!userService.sendCode(email)){
+        User user=userService.getUserByEmail( email );
+        if(user.getUserStatus().equals( UserStatus.UNCHECKED.getCode() )
+                ||user.getUserStatus().equals( UserStatus.FORBID.getCode())){
+            return ResponseData.customerError();
+        }
+        if(!userService.sendCode(user,email)){
             return ResponseData.customerError();
         }
         return ResponseData.ok();
@@ -450,6 +455,10 @@ public class UserController {
     @RequestMapping(value = "setPassword",method = RequestMethod.POST)
     public ResponseData setPassword(String email,String code,String password){
         User user= userService.getUserByEmail( email );
+        if(user.getUserStatus().equals( UserStatus.UNCHECKED.getCode() )
+                ||user.getUserStatus().equals( UserStatus.FORBID.getCode())){
+            return ResponseData.customerError();
+        }
         if(!userService.checkCode(user,code)){
             return ResponseData.customerError();
         }
