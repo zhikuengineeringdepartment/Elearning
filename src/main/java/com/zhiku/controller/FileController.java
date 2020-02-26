@@ -48,7 +48,6 @@ public class FileController {
             FileKeys fileKeys){
         ResponseData responseData = null;
         //检查文件是否规范
-        System.out.println(user.getUid());
         FileStatus fileStatus = fileService.checkFile(multipartFile);
         //TODO:数据库要求文件老师不为null，但前端可以不传这个字段，目前不知道其他代码对FileTeacher有没有非null
         //TODO:在考察完有关file的代码，对FileTeacher没有非null要求后，最好将数据库的非null去除，再删掉下面处理方法

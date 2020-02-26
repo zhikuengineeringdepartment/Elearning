@@ -78,7 +78,7 @@ public class FileService{
         //检查文件是否重复
         try{
             File file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
-            if(file != null){
+            if(file != null&&file.getFileStatus().equals( FileStatus.NORMAL.getCode() )){
                 return FileStatus.DUPLICATE;
             }
         }catch (IOException ioe){
