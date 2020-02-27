@@ -25,6 +25,10 @@ public interface FileMapper {
 
     File selectBySha(String sha);
 
+    int getFileNumber();
+
+    int getAdminFileNumber(String status);
+
     List<FileView> selectFiles(@Param("keyWord") String keyWord, @Param("file") File file, @Param("startLine") int startLine,
                                @Param("pageSize") int pageSize, @Param("order") boolean order,@Param("status")String status,@Param("statusDelete")String statusDelete);
 

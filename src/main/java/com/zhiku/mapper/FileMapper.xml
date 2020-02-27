@@ -223,6 +223,17 @@
     where file_sha = #{sha}
   </select>
 
+  <select id="getFileNumber" resultType="java.lang.Integer">
+    select count(fid)
+    from file
+  </select>
+
+  <select id="getAdminFileNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(fid)
+    from file
+    where file_status = #{status}
+  </select>
+
   <select id="selectFiles" resultMap="FileView">
     select
     <include refid="FileView_Base_Column_List" />

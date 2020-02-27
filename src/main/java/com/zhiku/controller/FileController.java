@@ -119,8 +119,10 @@ public class FileController {
     public ResponseData getFileList(String keyWord,File file,int page,boolean order){
         ResponseData responseData = null;
         List<FileView> files = fileService.getFileList(keyWord,file,page,order,FileStatus.NORMAL.getCode());
+        Integer numbers = fileService.getFileNumber();
         responseData = ResponseData.ok();
         responseData.putDataValue("files",files);
+        responseData.putDataValue("numbers",numbers);
         return  responseData;
     }
 }

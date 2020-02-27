@@ -62,8 +62,10 @@ public class AdminController {
         }
         //查询待审核的文件
         List<FileView> files = fileService.getFileList(keyWord,file,page,order,statusStr);
+        Integer numbers = fileService.getAdminFileNumber(statusStr);
         responseData = ResponseData.ok();
         responseData.putDataValue("files",files);
+        responseData.putDataValue("numbers",numbers);
         return  responseData;
     }
 

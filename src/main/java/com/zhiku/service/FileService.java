@@ -350,6 +350,21 @@ public class FileService{
     }
 
     /**
+     * 用户获取文件总数
+     * */
+    public Integer getFileNumber(){
+        return fileMapper.getFileNumber();
+    }
+
+    /**
+     * 管理员获取未审核文件总数
+     * @param status 获取什么状态的文件(待审核，正常等)
+     * */
+    public Integer getAdminFileNumber(String status){
+        return fileMapper.getAdminFileNumber(status);
+    }
+
+    /**
      * 处理文件的预览操作
      * 管理员可预览全部文件，用户只能浏览默认的10页
      * @param response 响应
