@@ -1,15 +1,17 @@
 import Vue from "vue";
 import axios from "axios";
+import {getLocation} from "./functions";
 // import {Message} from "element-ui";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Qs from "qs";
 
+const context = new Vue();
 const DEFALUT_HEADER = "application/x-www-form-urlencoded";
 const FILE_HEADER = "multipart/form-data";
-const PRODUCTION_URL = "http://sharingideas.cn:10000/";
+const LOCATION = getLocation(window.location.href)
 const DEVELOPMENT_URL = "/api";
-const context = new Vue();
+const PRODUCTION_URL = LOCATION.protocol + '//' + LOCATION.host + (LOCATION.port ? ":" + LOCATION.port : '')
 
 export default class Http {
     // #axiosInstance;

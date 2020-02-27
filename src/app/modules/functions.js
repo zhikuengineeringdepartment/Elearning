@@ -23,10 +23,15 @@ const throttle = (fn, duration) => {
     };
 };
 
-// 匹配根域名
+/**
+ * 匹配根域名
+ * @param href
+ * @returns {RegExpMatchArray | Promise<Response | undefined> | * | {protocol: string | *, hostname: string | *, search: string | *, port: string | *, host: string | *, hash: string | *, pathname: string | *}}
+ */
 const getLocation = href => {
     const match = href.match(
-        /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
+        // eslint-disable-next-line no-useless-escape
+        /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]?[^?#]*)(\?[^#]*|)(#.*|)$/
     );
     return (
         match && {
@@ -58,7 +63,8 @@ const setCookie = function (cname, cvalue, expire) {
  * @desc 获取cookie
  * @param cname
  * @returns {string}
- */ const getCookie = cname => {
+ */
+const getCookie = cname => {
     var name = cname + "=";
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {

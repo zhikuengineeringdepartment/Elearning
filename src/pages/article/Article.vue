@@ -14,11 +14,11 @@ export default {
   data() {
     return {
       articles: [
-        {
-          title: "六一就该聊点羞羞哒R18少儿不宜鸭 | 山软杂谈",
-          img: require("../../assets/article-pictures/img_1.jpg"),
-          link: "https://mp.weixin.qq.com/s/drfJGm0W043P6btPZjcLLg"
-        },
+        // {
+        //   title: "六一就该聊点羞羞哒R18少儿不宜鸭 | 山软杂谈",
+        //   img: require("../../assets/article-pictures/img_1.jpg"),
+        //   link: "https://mp.weixin.qq.com/s/drfJGm0W043P6btPZjcLLg"
+        // },
         {
           title: "软件运行老不好，多半是装的...装的不好！| 山软小便签",
           img: require("../../assets/article-pictures/img_2.jpg"),
