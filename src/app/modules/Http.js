@@ -10,8 +10,8 @@ const context = new Vue();
 const DEFALUT_HEADER = "application/x-www-form-urlencoded";
 const FILE_HEADER = "multipart/form-data";
 const LOCATION = getLocation(window.location.href)
+const PRODUCTION_URL = LOCATION.protocol + '//' + LOCATION.host
 const DEVELOPMENT_URL = "/api";
-const PRODUCTION_URL = LOCATION.protocol + '//' + LOCATION.host + (LOCATION.port ? ":" + LOCATION.port : '')
 
 export default class Http {
     // #axiosInstance;
