@@ -3,6 +3,7 @@ package com.zhiku.controller;
 import com.zhiku.entity.Post;
 import com.zhiku.entity.mysql.Report;
 import com.zhiku.entity.User;
+import com.zhiku.service.PostSearchService;
 import com.zhiku.service.PostService;
 import com.zhiku.service.ReportService;
 import com.zhiku.util.ResponseData;
@@ -24,6 +25,8 @@ public class PostController {
     private PostService postService;
     @Autowired
     private ReportService reportService;
+    @Autowired
+    private PostSearchService postSearchService;
 
 
     @ResponseBody
@@ -88,14 +91,15 @@ public class PostController {
      * @param page 分页-页码，从1开始
      * @param pageSize 分页-页大小
      */
-    @RequestMapping("/search")
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData search(Integer page,Integer pageSize,Integer order,String keys){
+    public ResponseData search(Integer page,Integer pageSize,Integer order,String keyWords){
         if(page<1||pageSize<1){
             return ResponseData.badRequest();
         }
         ResponseData responseData= ResponseData.ok();
-        responseData.putDataValue( "postView",postService.list( page,pageSize,order ) );
+
+        responseData.putDataValue( "postView",postSearchService.search( keyWords.trim(),page,pageSize,order ) );
         return responseData;
     }
 
