@@ -72,7 +72,7 @@ public class PostController {
             responseData.setMessage("参数非法");
             return responseData;
         }
-        if(post.getAuthor()!=user.getUid()){
+        if(!post.getAuthor().equals(user.getUid())){
             responseData=ResponseData.unauthorized();
             return responseData;
         }
