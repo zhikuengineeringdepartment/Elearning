@@ -5,6 +5,7 @@ import com.zhiku.exception.TokenVerifyErrorException;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.service.UserService;
 import com.zhiku.util.JWTUtil;
+import com.zhiku.util.UserStatus;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -32,7 +33,8 @@ public class TokenAop {
      * @throws UserNotFoundException 未找到用户异常
      * @throws TokenVerifyErrorException token验证失败异常
      */
-    @Before(value = "execution(* com.zhiku.controller.*.*(com.zhiku.entity.User,..)))")       //对于controller下的任意带有User user参数的请求进行拦截，带user的请求都是需要需要验证token的
+    @Before(value = "execution(* com.zhiku.controller.*.*(com.zhiku.entity.User,..))" +
+            "||execution(* com.zhiku.controller.*.*.*(com.zhiku.entity.User,..))")       //对于controller下的任意带有User user参数的请求进行拦截，带user的请求都是需要需要验证token的
     public void  before(JoinPoint pjp) throws UserNotFoundException , TokenVerifyErrorException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = getCookieByName("token",request.getCookies());
@@ -49,16 +51,17 @@ public class TokenAop {
      * @throws UserNotFoundException 未找到用户异常
      * @throws TokenVerifyErrorException    token验证失败异常
      */
-    @Before(value = "execution(* com.zhiku.controller.admin.*.*(..)))")
+    @Before(value = "execution(* com.zhiku.controller.admin.*.*(..))")
     public void adminBefore(JoinPoint pjp) throws UserNotFoundException, TokenVerifyErrorException{
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        //获取uri
+        String requestURI =request.getRequestURI();
         String token = getCookieByName("token",request.getCookies());
         User user = userService.getUserByUsername(JWTUtil.getUserName(token));
         //检查该用户是否是admin用户，即它的权限值为a（admin），普通的用户权限值为u（user）
-        if(!"a".equals(user.getUserAuth())){
+        if(!userService.checkAuthority( user,requestURI )){
             throw new TokenVerifyErrorException("抱歉，您没有该权限！");
         }
-
     }
 
 

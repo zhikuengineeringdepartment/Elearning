@@ -5,12 +5,10 @@ import com.zhiku.service.FileService;
 import com.zhiku.util.FileStatus;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.FileView;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.ConnectException;
@@ -42,16 +40,32 @@ public class AdminController {
      * @param file  包含fileCourse属性，选择哪一门课程下的文件
      * @param page  页数
      * @param order 是否按时间降序排序
+     * @param status 状态
      * @return  待审核文件列表
      */
     @ResponseBody
     @RequestMapping(value = "getUncheckFiles",method = RequestMethod.GET)
-    public ResponseData getUncheckFileList(String keyWord, File file, int page, boolean order){
+    public ResponseData getUncheckFileList(String keyWord, File file, int page, boolean order,
+                                           @RequestParam( value = "status",required=false,defaultValue="1") Integer status){
         ResponseData responseData = null;
+        String statusStr;
+        if(status==1) {
+            statusStr = String.valueOf( FileStatus.NORMAL.getCode() );//通过
+        }else if (status==2){
+            statusStr=String.valueOf( FileStatus.UNCHECK.getCode() );//待审核
+        }else if(status==3){
+            statusStr=String.valueOf( FileStatus.FORBIDDEN.getCode() );//不通过
+        }else if(status==0) {
+            statusStr=null;
+        }else{
+            return responseData;
+        }
         //查询待审核的文件
-        List<FileView> files = fileService.getFileList(keyWord,file,page,order, FileStatus.UNCHECK.getCode());
+        List<FileView> files = fileService.getFileList(keyWord,file,page,order,statusStr);
+        Integer numbers = fileService.getAdminFileNumber(statusStr);
         responseData = ResponseData.ok();
         responseData.putDataValue("files",files);
+        responseData.putDataValue("numbers",numbers);
         return  responseData;
     }
 
@@ -63,14 +77,22 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value = "modifyFileStatus",method = RequestMethod.POST)
-    public ResponseData modifyFileStatus(File file,int status){
+    public ResponseData modifyFileStatus(File file,Integer status){
         ResponseData responseData = null;
-        File f = fileService.getFileByFid(file.getFid());
-        if(status==1){
-            f.setFileStatus(File.STATEON);
-        }else if(status==0){
-            f.setFileStatus(File.STATEOFF);
+        String statusStr;
+        if(status==1) {
+            statusStr = String.valueOf( FileStatus.NORMAL.getCode() );//通过
+        }else if (status==2){
+            statusStr=String.valueOf( FileStatus.UNCHECK.getCode() );//待审核
+        }else if(status==3){
+            statusStr=String.valueOf( FileStatus.FORBIDDEN.getCode() );//不通过
+        }else if(status==4){
+            statusStr=String.valueOf( FileStatus.DELETE.getCode() );//软删除
+        }else{
+            return responseData;
         }
+        File f = fileService.getFileByFid(file.getFid());
+        f.setFileStatus(statusStr);
         fileService.updateFileStatus(f);
         responseData = ResponseData.ok();
         return responseData;
@@ -83,7 +105,7 @@ public class AdminController {
      * @param fid   文件id
      * @throws ConnectException openoffice链接异常
      */
-    @RequestMapping(value = "preview",method = RequestMethod.GET)
+    @RequestMapping(value = "previewFile",method = RequestMethod.GET)
     public void filePreview(HttpServletResponse response, int fid) throws ConnectException {
         File file = fileService.getFileByFid(fid);
         if(file != null){
