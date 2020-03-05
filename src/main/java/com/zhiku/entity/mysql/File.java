@@ -8,7 +8,7 @@ public class File {
     public static String STATEOFF="u";
 
     private Integer fid;
-
+    
     private String filePath;
 
     private String fileName;

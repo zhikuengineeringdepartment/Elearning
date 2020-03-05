@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,14 +29,16 @@
             font-size: 14px;
             border-radius: 4px;
         }
+
         .el-button.is-circle {
             border-radius: 50%;
             padding: 20px 12px;
         }
 
-        .el-button+.el-button {
+        .el-button + .el-button {
             margin-left: 10px;
         }
+
         .el-button--success {
             color: #FFF;
             background-color: #67C23A;
@@ -46,42 +48,44 @@
 
 </head>
 <body style="background-color: #fbf8f0">
-    <button id="getDown" type="button" class="el-button el-button--success is-circle" style="float: right;margin:10px 20px;position: fixed">下载 </button>
-    <div id="container">
-        <div id="pop" style="text-align: center;"></div>
-    </div>
+<button id="getDown" type="button" class="el-button el-button--success is-circle"
+        style="float: right;margin:10px 20px;position: fixed">下载
+</button>
+<div id="container">
+    <div id="pop" style="text-align: center;"></div>
+</div>
 </body>
 <script type="text/javascript">
     function showPdf(load) {
         console.time('load');
         const container = document.getElementById("container");
         container.style.display = "block";
-        let url = '/'+load;
+        let url = '/' + load;
 
         pdfjsLib.workerSrc = 'lib/pdf.worker.js';
         pdfjsLib.getDocument(url).then(function getPdfHelloWorld(pdf) {
 
-        	let $pop = $('#pop');
+            let $pop = $('#pop');
             let shownPageCount = pdf.numPages < 50 ? pdf.numPages : 50;//设置显示的编码
             let getPageAndRender = function (pageNumber) {
-            	 pdf.getPage(pageNumber).then(function getPageHelloWorld(page) {
-                     let scale = 1.2;
-                     let viewport = page.getViewport(scale);
-                     let $canvas = $('<canvas></canvas>').attr({
-                         'height': viewport.height,
-                         'width': viewport.width,
-                     });
-                     $pop.append($canvas);
+                pdf.getPage(pageNumber).then(function getPageHelloWorld(page) {
+                    let scale = 1.2;
+                    let viewport = page.getViewport(scale);
+                    let $canvas = $('<canvas></canvas>').attr({
+                        'height': viewport.height,
+                        'width': viewport.width,
+                    });
+                    $pop.append($canvas);
 
-                     page.render({
-                         canvasContext: $canvas[0].getContext('2d'),
-                         viewport: viewport
-                     });
-                 });
-            	 if (pageNumber < shownPageCount) {
-                     pageNumber++;
-                     getPageAndRender(pageNumber);
-                 }
+                    page.render({
+                        canvasContext: $canvas[0].getContext('2d'),
+                        viewport: viewport
+                    });
+                });
+                if (pageNumber < shownPageCount) {
+                    pageNumber++;
+                    getPageAndRender(pageNumber);
+                }
             };
             getPageAndRender(1);
             console.timeEnd('load');
@@ -89,20 +93,20 @@
     }
 
     let fid = window.location.search.substr(1);
-    let loadUrl = 'file/preview?'+fid;
+    let loadUrl = 'file/preview?' + fid;
     showPdf(loadUrl);
 
-    document.getElementById('getDown').onclick= function getDown(){
+    document.getElementById('getDown').onclick = function getDown() {
         let cks = document.cookie.split(';');
         let hasLogin = false;
-        for(let i = 0; i < cks.length; i++){
+        for (let i = 0; i < cks.length; i++) {
             let key = cks[i].split('=');
-            if(key[0].trim() === 'token' && key.length > 1 && key[1] !== ''){
+            if (key[0].trim() === 'token' && key.length > 1 && key[1] !== '') {
                 hasLogin = true;
-                window.open('file/download?'+fid+'&uid='+0)
+                window.open('file/download?' + fid + '&uid=' + 0)
             }
         }
-        if(hasLogin === false){
+        if (hasLogin === false) {
             window.location.href = '/#/user/login'
         }
     }

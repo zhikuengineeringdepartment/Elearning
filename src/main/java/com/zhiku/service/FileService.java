@@ -78,7 +78,7 @@ public class FileService{
         //检查文件是否重复
         try{
             File file = fileMapper.selectBySha(DigestUtils.sha256Hex(multipartFile.getInputStream()));
-            if(file != null){
+            if(file != null&&file.getFileStatus().equals( FileStatus.NORMAL.getCode() )){
                 return FileStatus.DUPLICATE;
             }
         }catch (IOException ioe){
@@ -298,6 +298,8 @@ public class FileService{
         File file = null;
         try{
             file = fileMapper.selectByPrimaryKey(fid);
+            if(file.getFileStatus().equals( FileStatus.DELETE.getCode() ))//已软删除
+                file=null;
         }catch (Exception e){
             FileNotExistException fileNotExistException = new FileNotExistException();
             throw fileNotExistException;
@@ -344,7 +346,22 @@ public class FileService{
      */
     public List<FileView> getFileList(String keyWord, File file, int page, boolean order,String status) {
         int startLine = (page-1)*PAGE_SIZE;
-        return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order,status);
+        return fileMapper.selectFiles(keyWord,file,startLine,PAGE_SIZE,order,status,FileStatus.DELETE.getCode());
+    }
+
+    /**
+     * 用户获取文件总数
+     * */
+    public Integer getFileNumber(){
+        return fileMapper.getFileNumber();
+    }
+
+    /**
+     * 管理员获取未审核文件总数
+     * @param status 获取什么状态的文件(待审核，正常等)
+     * */
+    public Integer getAdminFileNumber(String status){
+        return fileMapper.getAdminFileNumber(status);
     }
 
     /**

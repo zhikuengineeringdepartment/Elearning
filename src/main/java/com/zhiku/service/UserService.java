@@ -1,11 +1,15 @@
 package com.zhiku.service;
 
+import com.zhiku.entity.VerificationCode;
 import com.zhiku.entity.mysql.Message;
 import com.zhiku.entity.User;
 import com.zhiku.exception.UserNotFoundException;
 import com.zhiku.mapper.MessageMapper;
 import com.zhiku.mapper.UserMapper;
+import com.zhiku.mapper.UserRoleMapper;
+import com.zhiku.mapper.VerificationCodeMapper;
 import com.zhiku.util.EmailUtil;
+import com.zhiku.util.SmallTools;
 import com.zhiku.util.UserStatus;
 import com.zhiku.view.MessageView;
 import com.zhiku.view.UserBaseInfoView;
@@ -18,20 +22,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
+
+    public static final int CODE_TIME =1;//验证码有效期/小时
+    public static final int AVATAR_TIME=1;//激活有效期/天
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private MessageMapper messageMapper;
     @Autowired
+    private UserRoleMapper userRoleMapper;
+    @Autowired
     JavaMailSender javaMailSender;
     @Autowired
     Configuration freemarkerConfig;
+    @Autowired
+    VerificationCodeMapper verificationCodeMapper;
+
     private EmailUtil emailUtil = new EmailUtil();
 
     /**
@@ -115,7 +126,7 @@ public class UserService {
         Date current = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(current);
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.DAY_OF_MONTH,AVATAR_TIME);
         user.setUserLasttime(current);
         user.setUserMailtime(calendar.getTime());   //邮箱激活到期时间为注册时间后一天
         user.setUserRegip(request.getRemoteAddr());
@@ -260,4 +271,65 @@ public class UserService {
         user1.setUserMailtime(calendar.getTime());   //邮箱激活到期时间为注册时间后1天
         userMapper.updateByPrimaryKeySelective( user1 );
     }
+
+    /**
+     * 检查是否有权限
+     * @param user
+     * @param uri
+     * @return
+     */
+    public boolean checkAuthority(User user,String uri){
+        if(UserStatus.ROOT.getCode().equals( user.getUserAuth() )){
+            return true;
+        }else if(UserStatus.ADMINISTRATORS.getCode().equals( user.getUserAuth() )){
+            return userRoleMapper.check( user.getUid(),uri )!=null;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 发送验证码
+     * @param email 邮箱
+     */
+    public boolean sendCode(User user,String email) throws MessagingException {
+        if(user==null){
+            return false;
+        }
+        //生成6位验证码
+        String code=""+ SmallTools.nextInt( 100000,999999 );
+        //储存进数据库
+        //TODO:REPLACE into table (id, name, age) values(1, "A", 19)
+        VerificationCode verificationCode=new VerificationCode();
+        verificationCode.setUid( user.getUid() );
+        verificationCode.setCode( code );
+        verificationCode.setDate( SmallTools.addDate( new Date(  ), CODE_TIME ) );
+        verificationCodeMapper.replaceSelective( verificationCode );
+        //发送邮件
+        Map<String,Object> args=new HashMap<>(  );
+        args.put( "code",code );
+        args.put( "time",""+ CODE_TIME +"小时" );
+        emailUtil.sendMailC(javaMailSender,"verification_code.ftl",args,"智库邮件",email,freemarkerConfig);
+        return true;
+    }
+
+
+    /**
+     * 验证验证码
+     */
+    public boolean checkCode(User user,String code) {
+        if(user==null){
+            return false;
+        }
+        VerificationCode verificationCode=verificationCodeMapper.selectByPrimaryKey( user.getUid() );
+        return verificationCode!=null&&verificationCode.getCode().equals( code )&&verificationCode.getDate().after( new Date(  ) );
+    }
+
+    //删除/未激活用户
+    public void delete(User user){
+        if(user.getUserStatus().equals( UserStatus.UNCHECKED.getCode() )) {
+            userMapper.deleteByPrimaryKey( user.getUid() );
+        }
+    }
+
 }

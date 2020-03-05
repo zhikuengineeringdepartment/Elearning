@@ -1,18 +1,20 @@
 package com.zhiku.controller;
 
 import com.zhiku.entity.Post;
+import com.zhiku.entity.mysql.Report;
 import com.zhiku.entity.User;
+import com.zhiku.service.PostSearchService;
 import com.zhiku.service.PostService;
+import com.zhiku.service.ReportService;
 import com.zhiku.util.ResponseData;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.security.x509.RDN;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 @Controller
@@ -21,6 +23,10 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private ReportService reportService;
+    @Autowired
+    private PostSearchService postSearchService;
 
 
     @ResponseBody
@@ -81,23 +87,38 @@ public class PostController {
     }
 
     /**
-     * 获取帖子列表
+     * 搜索帖子//未完
      * @param page 分页-页码，从1开始
      * @param pageSize 分页-页大小
-     * @return
      */
-    @RequestMapping("/list")
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData list(Integer page,Integer pageSize,Integer order){
+    public ResponseData search(Integer page,Integer pageSize,Integer order,String keyWords){
         if(page<1||pageSize<1){
             return ResponseData.badRequest();
         }
         ResponseData responseData= ResponseData.ok();
-        responseData.putDataValue( "postView",postService.list( page,pageSize,order ) );
+
+        responseData.putDataValue( "postView",postSearchService.search( keyWords.trim(),page,pageSize,order ) );
         return responseData;
     }
 
-
-
+    /**
+     * 举报帖子
+     * pid 帖子id
+     * uid 举报人id
+     * reason 举报理由
+     */
+    @RequestMapping(value = "/report",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseData report(User user,Report report){
+        report.setUid( user.getUid() );
+        report.setType( Report.TYPE_POST );
+        report.setState( Report.STATE_NULL );
+        report.setDate( new Date(  ) );
+        report.setRid( null );
+        reportService.add( report );
+        return ResponseData.ok();
+    }
 
 }

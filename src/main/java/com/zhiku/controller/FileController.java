@@ -48,7 +48,6 @@ public class FileController {
             FileKeys fileKeys){
         ResponseData responseData = null;
         //检查文件是否规范
-        System.out.println(user.getUid());
         FileStatus fileStatus = fileService.checkFile(multipartFile);
         //TODO:数据库要求文件老师不为null，但前端可以不传这个字段，目前不知道其他代码对FileTeacher有没有非null
         //TODO:在考察完有关file的代码，对FileTeacher没有非null要求后，最好将数据库的非null去除，再删掉下面处理方法
@@ -86,7 +85,9 @@ public class FileController {
             @RequestParam(value = "fid") int fid) throws FileNotExistException {
         user = userService.getUserById(user.getUid());
         File file = fileService.getFileByFid(fid);
-        fileService.fileDownload(request,response,user,file);
+        if(file.getFileStatus().equals( FileStatus.NORMAL.getCode() )||userService.checkAuthority( user,"/file/download" )){
+            fileService.fileDownload(request,response,user,file);//仅通过审核的可以下载
+        }
     }
 
     //TODO 待处理抛出的ConnectException
@@ -118,8 +119,10 @@ public class FileController {
     public ResponseData getFileList(String keyWord,File file,int page,boolean order){
         ResponseData responseData = null;
         List<FileView> files = fileService.getFileList(keyWord,file,page,order,FileStatus.NORMAL.getCode());
+        Integer numbers = fileService.getFileNumber();
         responseData = ResponseData.ok();
         responseData.putDataValue("files",files);
+        responseData.putDataValue("numbers",numbers);
         return  responseData;
     }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.UserRoleMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.UserRole">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <id column="rid" jdbcType="VARCHAR" property="rid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.zhiku.entity.mysql.UserRole">
+    delete from user_role
+    where uid = #{uid,jdbcType=INTEGER}
+      and rid = #{rid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.UserRole">
+    insert into user_role (uid, rid)
+    values (#{uid,jdbcType=INTEGER}, #{rid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.UserRole">
+    insert into user_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="rid != null">
+        rid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="rid != null">
+        #{rid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <!-- 自定义sql -->
+    <select id="check" resultType="java.lang.String">
+        SELECT rid
+        FROM user_role NATURAL JOIN role
+        WHERE uid=#{uid,jdbcType=INTEGER} AND uri=#{uri,jdbcType=VARCHAR}
+    </select>
+</mapper>

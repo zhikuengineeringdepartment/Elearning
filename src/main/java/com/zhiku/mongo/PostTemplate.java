@@ -3,6 +3,7 @@ package com.zhiku.mongo;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.zhiku.entity.Post;
+import com.zhiku.service.PostSearchService;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Component
 public class PostTemplate {
@@ -51,7 +53,6 @@ public class PostTemplate {
      * @param pageSize 页大小
      * @param orderByTime 按更新时间排序，1==正序，-1==倒序，0==不按
      * @param orderByAgree 按热度（点赞数）排序 同上
-     * @return
      */
     public List<Post> pageList(int page,int pageSize,Integer orderByTime,Integer orderByAgree){
         Query query = new Query();
@@ -71,4 +72,32 @@ public class PostTemplate {
 
         return mongoTemplate.find(query,Post.class);
     }
+
+    /**
+     * 分页查询全部帖子列表
+     * @param page 页码
+     * @param pageSize 页大小
+     */
+    public List<Post> searchByOneWord(String word,int page,int pageSize,Integer order){
+
+        Criteria criteria = new Criteria();
+        Pattern pattern=Pattern.compile("^.*"+word+".*$", Pattern.CASE_INSENSITIVE);
+        criteria.orOperator(Criteria.where("title").regex(pattern),
+                Criteria.where("content").regex(pattern));
+        Query query = new Query(criteria);
+        //设置起始数
+        query.skip((page - 1) * pageSize);
+        //设置查询条数
+        query.limit(pageSize);
+        if(order== PostSearchService.PostSearchStatus.ORDER_BY_UPDATEDATE.getCode()){
+            query.with( Sort.by( Sort.Order.desc("updateTime")));//按更新时间排序
+        }else if(order== PostSearchService.PostSearchStatus.ORDER_BY_HEAT.getCode()){
+            query.with( Sort.by( Sort.Order.desc("agreeCount")));//按热度排序，这里暂用点赞数
+        }else if(order== PostSearchService.PostSearchStatus.ORDER_BY_SIMILAR.getCode()){
+            //按相似度排序
+            //暂无
+        }
+        return mongoTemplate.find(query,Post.class);
+    }
+
 }
