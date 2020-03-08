@@ -16,8 +16,8 @@ spring:
             fallback: false
   data:
     mongodb:
-#      uri: mongodb://admin:admin@211.87.227.234:27017/zhiku?authSource=admin&readPreference=primary&appname=MongoDB%20Compass%20Beta&ssl=false
-      uri: mongodb://127.0.0.1:27017/zhiku
+      uri: mongodb://admin:admin@211.87.227.234:27017/zhiku?authSource=admin&readPreference=primary&appname=MongoDB%20Compass%20Beta&ssl=false
+#      uri: mongodb://127.0.0.1:27017/zhiku
   datasource:
 #    todo: 临时替换数据库，避免影响上线数据库
 #    url: jdbc:mysql://cdb-nj2smsfc.bj.tencentcdb.com:10001/zhiku?characterEncoding=utf-8&serverTimezone=GMT%2b8
