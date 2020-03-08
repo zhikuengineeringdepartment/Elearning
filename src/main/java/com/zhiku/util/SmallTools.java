@@ -2,13 +2,19 @@ package com.zhiku.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SmallTools {
 
+    private static SimpleDateFormat sdf=null;
 
     public static String uuid(){
         return UUID.randomUUID().toString().replaceAll("-","");
@@ -116,6 +122,62 @@ public class SmallTools {
         Scanner in=new Scanner( System.in );
         String password=in.nextLine();
         System.out.println(DigestUtils.md5Hex(password));
+    }
+
+    private static final String UNKNOWN = "unknown";
+    private static final String LOCALHOST = "127.0.0.1";
+    private static final String SEPARATOR = ",";
+
+    /*
+    获取客户端ip地址
+     */
+    public static String getIp(HttpServletRequest request) {
+        System.out.println(request);
+        String ipAddress;
+        try {
+            ipAddress = request.getHeader("x-forwarded-for");
+            if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+                ipAddress = request.getHeader("Proxy-Client-IP");
+            }
+            if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+                ipAddress = request.getHeader("WL-Proxy-Client-IP");
+            }
+            if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+                ipAddress = request.getRemoteAddr();
+                if (LOCALHOST.equals(ipAddress)) {
+                    InetAddress inet = null;
+                    try {
+                        inet = InetAddress.getLocalHost();
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }
+                    ipAddress = inet.getHostAddress();
+                }
+            }
+            // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+            // "***.***.***.***".length()
+            if (ipAddress != null && ipAddress.length() > 15) {
+                if (ipAddress.indexOf(SEPARATOR) > 0) {
+                    ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+                }
+            }
+        } catch (Exception e) {
+            ipAddress = "";
+        }
+        return ipAddress;
+    }
+
+
+    public static Date toDay(Date date) throws ParseException {
+        if(sdf==null)
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse( sdf.format( date ) );
+    }
+
+    public static Date toDay(String date) throws ParseException {
+        if(sdf==null)
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(  date  );
     }
 
 }

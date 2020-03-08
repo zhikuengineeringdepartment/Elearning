@@ -11,6 +11,7 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
     @Value( "${file_path.visit_statistics}" )
     private String statisticsPath;
 
+    //仅在服务端开启时运行一次
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         VisitStatistics.setSaveFile(statisticsPath);

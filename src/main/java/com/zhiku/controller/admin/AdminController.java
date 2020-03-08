@@ -1,6 +1,7 @@
 package com.zhiku.controller.admin;
 
 import com.zhiku.entity.mysql.File;
+import com.zhiku.service.DataStatisticsService;
 import com.zhiku.service.FileService;
 import com.zhiku.util.FileStatus;
 import com.zhiku.util.ResponseData;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.ConnectException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +25,9 @@ import java.util.List;
 public class AdminController {
     @Autowired
     FileService fileService;
+    @Autowired
+    private DataStatisticsService dataStatisticsService;
+
 
     /**
      * 本来设计用来做管理员的首页的，后台工期紧，搁置了，暂时用不到
@@ -114,4 +119,20 @@ public class AdminController {
             System.out.println(rmsg);
         }
     }
+
+
+    /**
+     * 获取访问统计信息
+     * @param beginDay
+     * @param endDay
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "dataStatistics/getFlow",method = RequestMethod.GET)
+    public ResponseData getFlow(Date beginDay, Date endDay){
+        ResponseData responseData=ResponseData.ok();
+        responseData.putDataValue( "accessData",dataStatisticsService.listByDateInterval( beginDay,endDay ) );
+        return responseData;
+    }
+
 }

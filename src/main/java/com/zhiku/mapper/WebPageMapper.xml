@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.WebPageMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.WebPage">
+    <id column="uri" jdbcType="VARCHAR" property="uri" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uri, name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from web_page
+    where uri = #{uri,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from web_page
+    where uri = #{uri,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.WebPage">
+    insert into web_page (uri, name)
+    values (#{uri,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.WebPage">
+    insert into web_page
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uri != null">
+        uri,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uri != null">
+        #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.WebPage">
+    update web_page
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uri = #{uri,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.WebPage">
+    update web_page
+    set name = #{name,jdbcType=VARCHAR}
+    where uri = #{uri,jdbcType=VARCHAR}
+  </update>
+</mapper>
