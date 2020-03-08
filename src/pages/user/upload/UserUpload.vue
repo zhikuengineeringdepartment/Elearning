@@ -25,6 +25,8 @@
                     </el-col>
                 </el-row>
             </el-card>
+            <pagination :pageSize="10" :totalNumber="totalNumber"
+                        @handleCurrentChange="getUploadRecords"></pagination>
             <p v-if="loading">加载中...</p>
         </div>
     </div>
@@ -41,7 +43,8 @@
             return {
                 page: 1,
                 fileUploadRecords: [],
-                loading: true
+                loading: true,
+                totalNumber: 10
             }
         },
         mounted() {
@@ -64,10 +67,11 @@
                 }
                 queryUploadRecords(params, response => {
                     this.loading = false
+                    this.totalNumber = response.data.numbers;
                     if (response.data.fileUploadRecords.length === 0)
                         this.$message.warning("已经没有更多了~")
                     else
-                        this.fileUploadRecords = this.fileUploadRecords.concat(response.data.fileUploadRecords);
+                        this.fileUploadRecords = response.data.fileUploadRecords;
                 })
             }
         }

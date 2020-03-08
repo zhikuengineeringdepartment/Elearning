@@ -12,7 +12,7 @@
             </el-card>
         </el-col>
 
-        <el-col :span="20" @scroll.native="lazyLoading">
+        <el-col :span="20">
             <el-row>
                 <div class="resources-select">
                     <!--这里暂不支持课程选择-->
@@ -39,6 +39,10 @@
         <el-col :span="20" class="file-list-detail">
             <resources-file v-for="(fileItem, index) in myFiles" :key="index" :fileItem="fileItem"></resources-file>
         </el-col>
+        <el-col :span="20" style="padding: 5px 0">
+            <pagination style="float: right" :pageSize="10" :totalNumber="totalNumber"
+                        @handleCurrentChange="getFileList"></pagination>
+        </el-col>
         <p v-if="loading">加载中...</p>
     </el-main>
 </template>
@@ -46,12 +50,13 @@
 <script>
     // import CourseSelect from "../../components/CourseSelect";
     import ResourcesFile from './ResourcesFile'
+    import Pagination from "../../components/Pagination";
     import {queryFileList} from '../../app/apis/resourceApi'
 
     export default {
         name: 'Resources',
         // components: {ResourcesFile, CourseSelect},
-        components: {ResourcesFile},
+        components: {Pagination, ResourcesFile},
         data() {
             return {
                 fileListForm: {
@@ -61,7 +66,8 @@
                     page: 1
                 },
                 myFiles: [],
-                loading: false
+                loading: false,
+                totalNumber: 10
             }
         },
         computed: {
@@ -102,25 +108,16 @@
                 }
                 queryFileList(params, response => {
                     this.loading = false
+                    this.totalNumber = response.data.numbers
                     if (response.data.files.length === 0)
                         this.$message.warning("已经没有更多了~")
                     else
-                        this.myFiles = this.myFiles.concat(response.data.files)
+                        this.myFiles = response.data.files
                 })
-            },
+            }
         },
         mounted() {
             this.getFileList(this.fileListForm.page)
-            document.onscroll = () => {
-                if (this.$route.path === '/resources') {
-                    this.$fn.lazyLoading(() => {
-                        this.loading = true
-                        this.fileListForm.page++
-                        console.log(this.fileListForm.page)
-                        this.getFileList(this.fileListForm.page)
-                    })
-                }
-            }
         }
     }
 </script>

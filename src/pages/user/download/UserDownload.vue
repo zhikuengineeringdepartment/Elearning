@@ -26,6 +26,8 @@
                     </el-col>
                 </el-row>
             </el-card>
+            <pagination :pageSize="10" :totalNumber="totalNumber"
+                        @handleCurrentChange="getDownloadRecords"></pagination>
             <p v-if="loading">加载中...</p>
         </div>
     </div>
@@ -33,31 +35,24 @@
 
 <script>
     import FileTag from "../../../components/FileTag";
+    import Pagination from "../../../components/Pagination"
     import {queryDownloadRecords} from "../../../app/apis/userApi";
 
     export default {
         name: "UserDownload",
-        components: {FileTag},
+        components: {FileTag, Pagination},
         data() {
             return {
                 page: 1,
                 fileDownloadRecords: [],
                 commented: true,
                 score: 0,
-                loading: false
+                loading: false,
+                totalNumber: 10
             }
         },
         mounted() {
             this.getDownloadRecords(this.page)
-            document.onscroll = () => {
-                if (this.$route.path === '/user/download') {
-                    this.$fn.lazyLoading(() => {
-                        this.loading = true
-                        this.page++
-                        this.getDownloadRecords(this.page)
-                    })
-                }
-            }
         },
         methods: {
             getDownloadRecords(page) {
@@ -68,10 +63,11 @@
                 queryDownloadRecords(params, response => {
                     console.log(response)
                     this.loading = false
+                    this.totalNumber = response.data.numbers;
                     if (response.data.fileDownloadRecords.length === 0)
                         this.$message.warning("已经没有更多了~")
                     else
-                        this.fileDownloadRecords = this.fileDownloadRecords.concat(response.data.fileDownloadRecords);
+                        this.fileDownloadRecords = response.data.fileDownloadRecords
                 })
             }
         }
