@@ -43,6 +43,13 @@ let adminRouter = [
                     import(
                         /* webpackChunkName: "admin-file-review" */ "../pages/admin/file/index"
                         )
+            },
+            {
+                path: "dataAnalysis",
+                component: () =>
+                    import(
+                        "../pages/admin/dataAnalysis/index"
+                    )
             }
         ]
     },

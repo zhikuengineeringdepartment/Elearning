@@ -47,6 +47,15 @@
           </el-menu-item>
         </router-link>
 
+        <router-link to="/admin/dataAnalysis">
+          <el-menu-item index="/admin/dataAnalysis">
+            <template slot="title">
+              <i class="el-icon-data-line"></i>
+              <span>网站数据分析</span>
+            </template>
+          </el-menu-item>
+        </router-link>
+
         <router-link to="/user/info">
           <el-menu-item index="#/user/info">
             <template slot="title">
