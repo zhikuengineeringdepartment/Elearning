@@ -117,6 +117,10 @@ npm run lint
 
   增加axios拦截器，优化http.js
   
+- 2020.03.16 --by wuchvi
+
+  安装前端无感知监控插件，文档地址 http://www.shadowingszy.top/ShadowTracker/zh-cn/docs/demo1.html
+  
   TODO：
   * 优化界面自适应
   * word，ppt在线预览
