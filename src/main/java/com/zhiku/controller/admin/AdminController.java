@@ -121,18 +121,6 @@ public class AdminController {
     }
 
 
-    /**
-     * 获取访问统计信息
-     * @param beginDay
-     * @param endDay
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "dataStatistics/getFlow",method = RequestMethod.GET)
-    public ResponseData getFlow(Date beginDay, Date endDay){
-        ResponseData responseData=ResponseData.ok();
-        responseData.putDataValue( "accessData",dataStatisticsService.listByDateInterval( beginDay,endDay ) );
-        return responseData;
-    }
+
 
 }

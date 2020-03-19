@@ -1,7 +1,9 @@
 package com.zhiku.service;
 
+import com.zhiku.entity.User;
 import com.zhiku.entity.mysql.AccessRecord;
 import com.zhiku.mapper.AccessRecordMapper;
+import com.zhiku.mapper.UserMapper;
 import com.zhiku.util.SmallTools;
 import com.zhiku.view.AccessRecordView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,14 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DataStatisticsService {
     @Autowired
     private AccessRecordMapper accessRecordMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 访问记录-进入页面//暂不使用
@@ -88,6 +93,10 @@ public class DataStatisticsService {
                            accessRecordView.getStayTime()/accessRecordView.getNumber() );
         }
         return accessRecordViews;
+    }
+
+    public  List<Map<String,Object> > listRegistrationByDateInterval(Date beginDay, Date endDay){
+        return userMapper.countByDateInterval( beginDay,endDay );
     }
 
 }
