@@ -2,17 +2,13 @@ package com.zhiku.controller.admin;
 
 import com.zhiku.service.DataStatisticsService;
 import com.zhiku.util.ResponseData;
-import com.zhiku.util.SmallTools;
-import com.zhiku.util.monitor.VisitStatistics;
+import com.zhiku.view.AccessRecordView;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @CrossOrigin(value = "*")
@@ -31,11 +27,35 @@ public class DataStatisticsAController {
      */
     @ResponseBody
     @RequestMapping(value = "getFlow",method = RequestMethod.GET)
-    public ResponseData getFlow(Date beginDay, Date endDay){
+    public ResponseData getFlow(@RequestParam Date beginDay, @RequestParam Date endDay){
         ResponseData responseData=ResponseData.ok();
-        responseData.putDataValue( "accessData",dataStatisticsService.listByDateInterval( beginDay,endDay ) );
+        List<AccessRecordView> aDPage=dataStatisticsService.listByDateInterval( beginDay,endDay );
+        Map<Date, Pair<Integer,Long> > mapTotal=new TreeMap<>(  );
+        for (AccessRecordView accessRecordView:aDPage){
+            try {
+                Pair<Integer,Long> old=mapTotal.get( accessRecordView.getDate() );
+                mapTotal.put( accessRecordView.getDate(),new Pair<>(
+                        accessRecordView.getNumber()+old.getKey(),accessRecordView.getStayTime()+old.getValue() ));
+            }catch (NullPointerException e){
+                mapTotal.put( accessRecordView.getDate(), new Pair<>(
+                        accessRecordView.getNumber(), new Long(accessRecordView.getStayTime() ) ) );
+            }
+        }
+        List<Map<String,Object> > aDTotal=new LinkedList<>(  );
+        for (Map.Entry<Date, Pair<Integer, Long>> entry : mapTotal.entrySet()) {
+            // 获取key、value
+            Map<String, Object> t = new HashMap<>();
+            t.put( "date", entry.getKey() );
+            Pair<Integer, Long> p = entry.getValue();
+            t.put( "number", p.getKey() );
+            t.put( "stayTime", p.getValue() );
+            aDTotal.add( t );
+        }
+        responseData.putDataValue( "accessData",aDPage );
+        responseData.putDataValue( "aDTotal",aDTotal );
         return responseData;
     }
+
     /**
      * 获取注册统计信息
      * --仅已邮箱激活的算注册用户

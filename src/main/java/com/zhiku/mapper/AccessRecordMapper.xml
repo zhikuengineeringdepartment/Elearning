@@ -139,10 +139,11 @@
     </select>
     <select id="selectByDateInterval" resultMap="ExpandedResultMap">
         select
-        uri,date,COUNT(ip) as ip_sum,SUM(number) as number,SUM(stay_time) as stay_time
+        uri,date,COUNT(ip) as ip_sum,SUM(number) as number,SUM(stay_time) as stay_time,name
         from access_record natural join web_page
         where date >= #{begin,jdbcType=DATE} and #{end,jdbcType=DATE} >= date
         GROUP BY uri,date
+        order by date
     </select>
     <insert id="replaceAll" parameterType="java.util.List">
       replace into access_record (aid, ip, uri,
