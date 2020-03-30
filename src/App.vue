@@ -46,6 +46,7 @@
                 // code for IE6, IE5
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 }
+                //请求的路径
                 xhr.open("POST", "api/dataStatistics/access", false);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 // lastURI: "/",          //上一个页面uri
