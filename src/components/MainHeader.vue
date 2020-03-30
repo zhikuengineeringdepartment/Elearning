@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import {changePageReq} from "../../src/app/apis/dataAnalysisApi";
     export default {
         name: "MainHeader",
         props: {
@@ -73,15 +74,20 @@
         methods: {
             menuClick: function (path) {
                 console.log(path);
+                let postData = {"lastURI":this.$route.path,"nextURI":path};
                 if (path.includes("/user")) {
                     if (this.$fn.isLogin()) {
                         this.$router.push("/user/info");
+                        postData.nextURI = "/user/info"
                     } else {
                         this.$router.push("/user/login");
+                        postData.nextURI="/user/login";
                     }
                 } else {
                     this.$router.push(path);
                 }
+                //大页面跳转时发送请求
+                changePageReq(postData,response =>{});
             }
         }
     };
