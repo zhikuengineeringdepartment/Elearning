@@ -17,6 +17,14 @@
                 isRouterAlive: true
             };
         },
+        mounted() {
+            console.log(this.$route.path);
+            // 进入页面发请求
+            this.EnterPageReq();
+            // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
+            // console.log("Hello!mounted");
+            // window.addEventListener("unload", e => this.unloadHandler(e));
+        },
         methods: {
             //页面刷新
             reload() {
@@ -25,8 +33,34 @@
                     console.log("reload");
                     this.isRouterAlive = true;
                 });
-            }
-        }
+            },
+            //进入页面发请求，与离开相似
+            //null to url
+            EnterPageReq(){
+                console.log("Welcome to sharingideas")
+                let xhr;
+                if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xhr = new XMLHttpRequest();
+                } else {
+                // code for IE6, IE5
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xhr.open("POST", "/dataStatistics/access", false);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                // lastURI: "/",          //上一个页面uri
+                // nextURI: "/resources",      //即将跳转的页面uri
+                //注意这里的值
+                let lastURI = null;
+                let nextURI = this.$route.path;
+                // let parm = "lastURI=" + lastURI + "&nextURI=" + nextURI;
+                let postData = {"lastURI":lastURI,"nextURI":nextURI};
+                xhr.send(postData);
+            },
+        },
+        // destroy(){
+        //     window.removeEventListener("beforeunload", e =>this.beforeunloadHandler(e));
+        // }
     };
 </script>
 

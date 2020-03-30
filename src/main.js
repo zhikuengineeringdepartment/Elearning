@@ -44,7 +44,31 @@ store.commit("changeMode", window.innerHeight > window.innerWidth);
 window.onresize = () => {
   store.commit("changeMode", window.innerHeight > window.innerWidth);
 };
-
+/**
+* 关闭或者离开页面时候发请求
+* 参考网上说必须发同步请求，所以不能用axsio
+* 用了最原始的Ajax
+*/
+window.onbeforeunload = ()=>{
+  let xhr;
+  if (window.XMLHttpRequest) {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
+    xhr = new XMLHttpRequest();
+  } else {
+  // code for IE6, IE5
+  xhr = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  //发送同步请求
+  xhr.open("POST", "/dataStatistics/access", false);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  // lastURI: "/",          //上一个页面uri
+  // nextURI: "/resources",      //即将跳转的页面uri
+  let lastURI = this.$route.path;
+  let nextURI = null;
+  // let parm = "lastURI=" + lastURI + "&nextURI=" + nextURI;
+  let postData = {"lastURI":lastURI,"nextURI":nextURI};
+  xhr.send(postData);
+}
 // 这个版本是使用节流函数的，不过貌似在这里使用节流函数效果更差
 // window.onresize = throttle(() => {
 //   store.commit('changeMode', window.innerHeight > window.innerWidth);
