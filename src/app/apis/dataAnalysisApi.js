@@ -7,9 +7,11 @@ let http = new Http();
 const changePageReq = (params, fn) => http.post("/dataStatistics/access", params, fn);
 
 // 请求数据
-const getData = (params, fn) => http.get("/admin/dataStatistics/getFlow", params, fn)
+const getData = (params, fn) => http.get("/admin/dataStatistics/getFlow", params, fn);
+
+//每日注册用户数量
+const getRegistration = (params, fn) => http.get("/admin/dataStatistics/getRegistration", params, fn);
 
 export {
-    changePageReq,
-    getData
+    changePageReq,getData,getRegistration
 }
