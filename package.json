@@ -12,6 +12,7 @@
     "animate.css": "latest",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
+    "echarts": "^4.7.0",
     "element-ui": "^2.12.0",
     "katex": "latest",
     "less": "^2.7.3",
