@@ -21,9 +21,9 @@ a {
   text-decoration: none;
 
   .article-item {
-    width: 80vw;
+    /*width: 80vw;*/
     height: 15vmin;
-    margin: 0 10vw;
+    /*margin: 0 10vw;*/
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid #dcdfe6;
