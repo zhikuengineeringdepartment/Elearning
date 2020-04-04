@@ -48,7 +48,7 @@ export default {
                 this.ourData = response.data;
                 }
             );
-            for(let i=0;i<this.ourData.registers.length;i++){
+            for(let i=0;i<this.ourData.registers.length();i++){
               dateArr.push(this.ourData.registers[i].date);
               numArr.push(this.ourData.registers[i].number);
             }
