@@ -8,31 +8,27 @@
       format="yyyy / MM / dd"
       value-format="yyyy/MM/dd"
     ></el-date-picker>
-    <el-button
-      type="primary"
-      round
-      size="small"
-      style="margin-left:10px"
-      @click="getRegistrationData"
-    >确定</el-button>
-    <div id="chart_registration_data" style="width:800px;height:400px"></div>
+    <el-button type="primary" round size="small" style="margin-left:10px" @click="getOurData">确定</el-button>
+    <!-- 网站所有页面总点击量、停留时间 -->
+    <div id="chart_data_aDTotal" style="width:800px;height:400px"></div>
   </div>
 </template>
 <style scoped>
 </style>
 <script>
 import echarts from "echarts";
-import { getRegistration } from "../../../app/apis/dataAnalysisApi";
+import { getData } from "../../../app/apis/dataAnalysisApi";
 export default {
   data() {
     return {
-      DateValues: "",
-      ourData: [],
-      chart: null
+      DateValues: "", //传向服务端的时间
+      aDTotal: [], //存储返回的数据中的aDTotal部分
+      chart: null,
+      chartName: ""
     };
   },
   methods: {
-    getRegistrationData: function() {
+    getOurData: function() {
       const _this = this;
       let startDate = this.DateValues[0];
       let endDate = this.DateValues[1];
@@ -40,20 +36,29 @@ export default {
         beginDay: startDate,
         endDay: endDate
       };
-      let dateArr = new Array();
-      let numArr = new Array();
-      getRegistration(DateRange, response => {
-        this.ourData = response.data;
-        for (let i = 0; i < this.ourData.registers.length; i++) {
-          dateArr.push(this.ourData.registers[i].date);
-          numArr.push(this.ourData.registers[i].number);
+
+      getData(DateRange, response => {
+        console.log(response);
+        this.aDTotal = response.data.aDTotal;
+
+        //数据转为数组存储用于绘制
+        let dateArr = new Array(); //日期，横坐标
+        let numArr = new Array();
+        let stayTimeArr = new Array();
+        for (let i = 0; i < this.accessData.length; i++) {
+          let date = this.accessData[i].date;
+          let date_day = date.split(" ")[0];
+          // console.log(date_day)
+          dateArr.push(date_day);
+          numArr.push(this.aDTotal[i]["number"]);
+          stayTimeArr.push(this.aDTotal[i]["stayTime"]);
         }
         // 基于准备好的dom，初始化echarts实例
-        _this.chart = echarts.init(
-          document.getElementById("chart_registration_data")
+        this.chart = echarts.init(
+          document.getElementById("chart_data_aDTotal")
         );
         // 绘制图表
-        _this.chart.setOption({
+        this.chart.setOption({
           title: {},
           tooltip: {},
           xAxis: {
@@ -65,9 +70,32 @@ export default {
           yAxis: {},
           series: [
             {
-              name: "注册数（已激活）",
+              name: "总点击量",
               type: "bar",
-              data: numArr,
+              barWidth: "30%",
+              label: {
+                show: true
+              },
+              itemStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      offset: 0,
+                      color: "#fccb05"
+                    },
+                    {
+                      offset: 1,
+                      color: "#f5804d"
+                    }
+                  ]),
+                  barBorderRadius: 12
+                }
+              },
+              data: numArr
+            },
+            {
+              name: "总停留时间",
+              type: "bar",
               barWidth: "30%",
               itemStyle: {
                 normal: {
@@ -83,7 +111,8 @@ export default {
                   ]),
                   barBorderRadius: 12
                 }
-              }
+              },
+              data: stayTimeArr
             }
           ],
           dataZoom: [
