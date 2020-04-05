@@ -18,7 +18,7 @@ public class SpecialColumnArticle {
 
     private Date updateTime;
 
-    private boolean isDelete;
+    private Integer isDelete;  //是否删除 0未删除  1删除
 
     public Integer getAid() {
         return aid;
@@ -68,19 +68,41 @@ public class SpecialColumnArticle {
         this.updateTime = updateTime;
     }
 
-    public boolean isDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(boolean delete) {
-        isDelete = delete;
-    }
-
     public String getArticlePicUrl() {
         return articlePicUrl;
     }
 
     public void setArticlePicUrl(String articlePicUrl) {
         this.articlePicUrl = articlePicUrl;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public SpecialColumnArticle() {
+    }
+
+    public SpecialColumnArticle(String articleTitle, String articleUrl, String articlePicUrl, Integer specialColumnId, Date createTime, Date updateTime, Integer isDelete) {
+        this.articleTitle = articleTitle;
+        this.articleUrl = articleUrl;
+        this.articlePicUrl = articlePicUrl;
+        this.specialColumnId = specialColumnId;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.isDelete = isDelete;
+    }
+
+    public SpecialColumnArticle(Integer aid, String articleTitle, String articleUrl, String articlePicUrl, Integer specialColumnId, Date updateTime) {
+        this.aid = aid;
+        this.articleTitle = articleTitle;
+        this.articleUrl = articleUrl;
+        this.articlePicUrl = articlePicUrl;
+        this.specialColumnId = specialColumnId;
+        this.updateTime = updateTime;
     }
 }
