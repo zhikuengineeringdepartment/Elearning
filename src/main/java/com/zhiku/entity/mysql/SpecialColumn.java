@@ -8,13 +8,13 @@ public class SpecialColumn {
 
     private String specialcName;
 
-    private String speaiclcRemark;
+    private String specialcRemark;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private boolean isDelete;
+    private  Integer isDelete;  //是否删除 0未删除  1删除
 
     public Integer getSid() {
         return sid;
@@ -48,19 +48,37 @@ public class SpecialColumn {
         this.updateTime = updateTime;
     }
 
-    public boolean isDelete() {
+    public String getSpecialcRemark() {
+        return specialcRemark;
+    }
+
+    public void setSpecialcRemark(String specialcRemark) {
+        this.specialcRemark = specialcRemark;
+    }
+
+    public Integer getIsDelete() {
         return isDelete;
     }
 
-    public void setDelete(boolean delete) {
-        isDelete = delete;
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
-    public String getSpeaiclcRemark() {
-        return speaiclcRemark;
+    public SpecialColumn() {
     }
 
-    public void setSpeaiclcRemark(String speaiclcRemark) {
-        this.speaiclcRemark = speaiclcRemark;
+    public SpecialColumn(String specialcName, String specialcRemark, Date createTime, Date updateTime, Integer isDelete) {
+        this.specialcName = specialcName;
+        this.specialcRemark = specialcRemark;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.isDelete = isDelete;
+    }
+
+    public SpecialColumn(Integer sid, String specialcName, String specialcRemark,Date updateTime) {
+        this.sid = sid;
+        this.specialcName = specialcName;
+        this.specialcRemark = specialcRemark;
+        this.updateTime = updateTime;
     }
 }
