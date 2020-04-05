@@ -34,11 +34,12 @@ export default {
   },
   created() {
     this.$notify({
-      title: "提示",
+      title: "提示(该提示需手动关闭)",
       dangerouslyUseHTMLString: true,
       message:
         "<p>选取日期范围以显示可视化数据</p>" +
-        "<p>生成的数据图下方的操作轴可伸缩以修改图片显示的时间范围</p>",
+        "<p>生成的数据图下方的操作轴可伸缩以修改图片显示的时间范围</p>" +
+        "<p>目前只有第3、4条后端已部署，可用，其他暂不可用</p>",
       duration: 0
     });
   }
