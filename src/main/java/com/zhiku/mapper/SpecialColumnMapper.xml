@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.SpecialColumnMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.SpecialColumn">
+    <id column="sid"  property="sid" />
+    <result column="specialc_name"  property="specialcName" />
+    <result column="create_time"  property="createTime" />
+    <result column="update_time" property="updateTime" />
+    <result column="is_delete"  property="isDelete" />
+    <result column="specialc_remark"  property="specialcRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sid,specialc_name,create_time,update_time,is_delete,specialc_remark
+  </sql>
+  <select id="getTotal" parameterType="com.zhiku.entity.mysql.SpecialColumn" resultType="int">
+    select count(*) from special_column
+    <where>
+      <if test="sid!=null">
+        and sid=#{sid}
+      </if>
+      <if test="specialcName!=null">
+        and specialc_name=#{specialcName}
+      </if>
+      <if test="createTime!=null">
+        and create_time=#{createTime}
+      </if>
+      <if test="updateTime!=null">
+        and update_time=#{updateTime}
+      </if>
+      <if test="isDelete!=null">
+        and is_delete=#{isDelete}
+      </if>
+      <if test="specialcRemark!=null">
+        and specialc_remark=#{specialcRemark}
+      </if>
+    </where>
+  </select>
+  <select id="list" parameterType="Map" resultMap="BaseResultMap" >
+    select * from special_column
+    <where>
+    <if test="sid!=null">
+        and sid=#{sid}
+    </if>
+    <if test="specialcName!=null">
+      and specialc_name=#{specialcName}
+    </if>
+    <if test="createTime!=null">
+      and create_time=#{createTime}
+    </if>
+    <if test="updateTime!=null">
+      and update_time=#{updateTime}
+    </if>
+    <if test="isDelete!=null">
+      and is_delete=#{isDelete}
+    </if>
+    <if test="specialcRemark!=null">
+      and specialc_remark=#{specialcRemark}
+    </if>
+    </where>
+    <if test="start!=null and size!=null">
+      limit ${size*(start-1)},#{size}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from special_column
+    where sid = #{sid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="int">
+    update special_column
+    set is_delete=1
+    where sid = #{sid}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.SpecialColumn">
+    insert into special_column (specialc_name, create_time, update_time,is_delete,specialc_remark
+    )
+    values (#{specialcName}, #{createTime}, #{updateTime},#{isDelete},#{specialcRemark}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.SpecialColumn">
+    insert into special_column
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="specialcName != null">
+        specialc_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="specialcRemark != null">
+        specialc_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="specialcName != null">
+        #{specialcName},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete},
+      </if>
+      <if test="specialcRemark != null">
+        #{specialcRemark},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.SpecialColumn">
+    update special_column
+    <set>
+      <if test="specialcName != null">
+        specialc_name = #{specialcName},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+      <if test="specialcRemark != null">
+        specialc_remark = #{specialcRemark},
+      </if>
+    </set>
+    where sid = #{sid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.SpecialColumn">
+    update special_column
+    set specialc_name = #{specialcName},
+     update_time = #{updateTime},
+     specialc_remark = #{specialcRemark}
+    where sid = #{sid}
+  </update>
+</mapper>

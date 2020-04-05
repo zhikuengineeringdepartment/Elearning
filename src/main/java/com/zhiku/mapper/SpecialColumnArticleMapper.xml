@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.SpecialColumnArticleMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.SpecialColumnArticle">
+    <id column="aid"  property="aid" />
+    <result column="article_title"  property="articleTitle" />
+    <result column="article_url"  property="articleUrl" />
+    <result column="article_pic_url" property="articlePicUrl" />
+    <result column="special_column_id"  property="specialColumnId" />
+    <result column="create_time"  property="createTime" />
+    <result column="update_time"  property="updateTime" />
+    <result column="is_delete"  property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    aid, article_title, article_url,article_pic_url,special_column_id,create_time,update_time,is_delete
+  </sql>
+  <select id="getTotal" parameterType="com.zhiku.entity.mysql.SpecialColumnArticle" resultType="int">
+    select count(*) from special_column_article
+    <where>
+      <if test="aid!=null">
+        and aid=#{aid}
+      </if>
+      <if test="articleTitle!=null">
+        and article_title=#{articleTitle}
+      </if>
+      <if test="articleUrl!=null">
+        and article_url=#{articleUrl}
+      </if>
+      <if test="articlePicUrl!=null">
+        and article_pic_url=#{articlePicUrl}
+      </if>
+      <if test="specialColumnId!=null">
+        and special_column_id=#{specialColumnId}
+      </if>
+      <if test="createTime!=null">
+        and create_time=#{createTime}
+      </if>
+      <if test="updateTime!=null">
+        and update_time=#{updateTime}
+      </if>
+      <if test="isDelete!=null">
+        and is_delete=#{isDelete}
+      </if>
+    </where>
+  </select>
+  <select id="list" parameterType="Map" resultMap="BaseResultMap">
+    select * from special_column_article
+    <where>
+      <if test="aid!=null">
+        and aid=#{aid}
+      </if>
+      <if test="articleTitle!=null">
+        and article_title=#{articleTitle}
+      </if>
+      <if test="articleUrl!=null">
+        and article_url=#{articleUrl}
+      </if>
+      <if test="articlePicUrl!=null">
+        and article_pic_url=#{articlePicUrl}
+      </if>
+      <if test="specialColumnId!=null">
+        and special_column_id=#{specialColumnId}
+      </if>
+      <if test="createTime!=null">
+        and create_time=#{createTime}
+      </if>
+      <if test="updateTime!=null">
+        and update_time=#{updateTime}
+      </if>
+      <if test="isDelete!=null">
+        and is_delete=#{isDelete}
+      </if>
+    </where>
+    <if test="start!=null and size!=null">
+      limit ${size*(start-1)},#{size}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from special_column_article
+    where aid = #{aid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="int">
+    update special_column_article
+    set is_delete=1
+    where aid = #{aid}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.SpecialColumnArticle">
+    insert into special_column_article (article_title, article_url,article_pic_url,special_column_id,create_time,update_time,is_delete
+    )
+    values (#{articleTitle}, #{articleUrl}, #{articlePicUrl},#{specialColumnId},#{createTime},#{updateTime},#{isDelete}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.SpecialColumnArticle">
+    insert into special_column_article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleTitle != null">
+        article_title,
+      </if>
+      <if test="articleUrl != null">
+        article_url,
+      </if>
+      <if test="articlePicUrl != null">
+        article_pic_url,
+      </if>
+      <if test="specialColumnId != null">
+        special_column_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleTitle != null">
+        #{articleTitle},
+      </if>
+      <if test="articleUrl != null">
+        #{articleUrl},
+      </if>
+      <if test="articlePicUrl != null">
+        #{articlePicUrl},
+      </if>
+      <if test="specialColumnId != null">
+        #{specialColumnId},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.SpecialColumnArticle">
+    update special_column_article
+    <set>
+      <if test="articleTitle != null">
+        article_title = #{articleTitle},
+      </if>
+      <if test="articleUrl != null">
+        article_url = #{articleUrl},
+      </if>
+      <if test="articlePicUrl != null">
+        article_pic_url = #{articlePicUrl},
+      </if>
+      <if test="specialColumnId != null">
+        special_column_id = #{specialColumnId},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where aid = #{aid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.SpecialColumnArticle">
+    update special_column_article
+    set article_title = #{articleTitle},
+      article_url = #{articleUrl},
+     article_pic_url = #{articlePicUrl},
+     special_column_id = #{specialColumnId},
+     update_time = #{updateTime}
+    where aid = #{aid}
+  </update>
+</mapper>
