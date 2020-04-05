@@ -45,6 +45,13 @@ let adminRouter = [
                         )
             },
             {
+                path: "upload/article",
+                component: () =>
+                    import(
+                        /* webpackChunkName: "admin-file-review" */ "../pages/admin/articleUp/index"
+                        )
+            },
+            {
                 path: "dataAnalysis",
                 component: () =>
                     import(

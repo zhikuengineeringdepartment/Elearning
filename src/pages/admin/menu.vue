@@ -47,6 +47,15 @@
           </el-menu-item>
         </router-link>
 
+        <router-link to="/admin/upload/article">
+          <el-menu-item index="/admin/upload/article">
+            <template slot="title">
+              <i class="el-icon-document"></i>
+              <span>专栏文章上传</span>
+            </template>
+          </el-menu-item>
+        </router-link>
+
         <router-link to="/admin/dataAnalysis">
           <el-menu-item index="/admin/dataAnalysis">
             <template slot="title">
