@@ -5,6 +5,7 @@ import com.zhiku.util.ResponseData;
 import com.zhiku.view.AccessRecordView;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,25 +31,29 @@ public class DataStatisticsAController {
     public ResponseData getFlow(@RequestParam Date beginDay, @RequestParam Date endDay){
         ResponseData responseData=ResponseData.ok();
         List<AccessRecordView> aDPage=dataStatisticsService.listByDateInterval( beginDay,endDay );
-        Map<Date, Pair<Integer,Long> > mapTotal=new TreeMap<>(  );
+        //???linux上使用Pair<>，new Pair<>会出错！
+//        Map<Date, Pair<Integer,Long> > mapTotal=new TreeMap<>(  );
+        Map<Date, Integer> mapTotalNumber=new TreeMap<>(  );
+        Map<Date, Long > mapTotalStayTime=new TreeMap<>(  );
+        //
         for (AccessRecordView accessRecordView:aDPage){
-            try {
-                Pair<Integer,Long> old=mapTotal.get( accessRecordView.getDate() );
-                mapTotal.put( accessRecordView.getDate(),new Pair<>(
-                        accessRecordView.getNumber()+old.getKey(),accessRecordView.getStayTime()+old.getValue() ));
-            }catch (NullPointerException e){
-                mapTotal.put( accessRecordView.getDate(), new Pair<>(
-                        accessRecordView.getNumber(), new Long(accessRecordView.getStayTime() ) ) );
+            Integer oldNumber=mapTotalNumber.get( accessRecordView.getDate() );
+            Long oldStay=mapTotalStayTime.get( accessRecordView.getDate() );
+            if(oldNumber==null||oldStay==null){
+                mapTotalNumber.put(accessRecordView.getDate(),accessRecordView.getNumber());
+                mapTotalStayTime.put(accessRecordView.getDate(),new Long(accessRecordView.getStayTime() ) );
+            }else{
+                mapTotalNumber.put(accessRecordView.getDate(),accessRecordView.getNumber()+oldNumber);
+                mapTotalStayTime.put(accessRecordView.getDate(),oldStay+accessRecordView.getStayTime() );
             }
         }
         List<Map<String,Object> > aDTotal=new LinkedList<>(  );
-        for (Map.Entry<Date, Pair<Integer, Long>> entry : mapTotal.entrySet()) {
+        for (Map.Entry<Date,Integer> entry : mapTotalNumber.entrySet()) {
             // 获取key、value
             Map<String, Object> t = new HashMap<>();
             t.put( "date", entry.getKey() );
-            Pair<Integer, Long> p = entry.getValue();
-            t.put( "number", p.getKey() );
-            t.put( "stayTime", p.getValue() );
+            t.put( "number", entry.getValue() );
+            t.put( "stayTime", mapTotalStayTime.get( entry.getKey() ) );
             aDTotal.add( t );
         }
         responseData.putDataValue( "accessData",aDPage );

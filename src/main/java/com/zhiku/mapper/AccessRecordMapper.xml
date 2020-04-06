@@ -146,9 +146,7 @@
         order by date
     </select>
     <insert id="replaceAll" parameterType="java.util.List">
-      replace into access_record (aid, ip, uri,
-      date, number, stay_time,
-      latest_time)
+      replace into access_record (aid, ip, uri, date, number, stay_time, latest_time)
     values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.aid,jdbcType=INTEGER}, #{item.ip,jdbcType=VARCHAR}, #{item.uri,jdbcType=VARCHAR},

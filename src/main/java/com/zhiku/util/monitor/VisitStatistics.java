@@ -11,12 +11,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class VisitStatistics {
     //储存数据
-    private static Map<String, Date> ipDates=new ConcurrentHashMap<>(  );
-    private static List<AccessRecord> acEnds=new LinkedList<>(  );//记录无对应进入页面的离开页面请求
-    private static Map<String, AccessRecord> ipUriDatas =new ConcurrentHashMap<>();//累计停留时间记录；ip+uri:AccessRecord
+    private volatile static Map<String, Date> ipDates=new ConcurrentHashMap<>(  );
+    private volatile static List<AccessRecord> acEnds=new CopyOnWriteArrayList<>(  );//记录无对应进入页面的离开页面请求
+    private volatile static Map<String, AccessRecord> ipUriDatas =new ConcurrentHashMap<>();//累计停留时间记录；ip+uri:AccessRecord
     //提供服务对象
     private static Thread thread;
     private static DataStatisticsService dataStatisticsService;
@@ -27,9 +28,9 @@ public class VisitStatistics {
     private static int sleepTime=2*60*1000;//每2分钟写入一次文件，防止网站关闭数据丢失,不立即记录，是防止性能过低
     private static int MAX_changeNumber=10000;//最多在内存中储存数目，超过此数，sleepTime时间不到也转储数据库
     //计数变量
-    private static boolean isChing;
-    private static int changeNumber=0;
-    private static int errorNum=0;
+    private volatile  static boolean isChing;
+    private volatile  static int changeNumber=0;
+    private volatile  static int errorNum=0;
 
     public static synchronized void add(String ip){
         ipDates.put( ip,new Date(  ) );
@@ -53,7 +54,7 @@ public class VisitStatistics {
                     }catch (Exception e) {
                         e.printStackTrace();
                         try {//防止出错后快速循环
-                            Thread.sleep(2*60*1000);
+                            Thread.sleep(sleepTime);
                         }catch (Exception e0){
                             e0.printStackTrace();
                             errorNum++;
@@ -263,12 +264,14 @@ public class VisitStatistics {
             accessRecord.setIp( ip );
             accessRecord.setUri( uri );
             accessRecord.setDate( SmallTools.toDay( time ) );
-            accessRecord.setLatestTime( time );
+            accessRecord.setLatestTime( new Date(  ) );//记录加入时间
             acEnds.add( accessRecord );
         }else {
-            accessRecord.setStayTime( accessRecord.getStayTime() +
-                    (int) ((time.getTime() - accessRecord.getLatestTime().getTime()) / 1000) );
-            accessRecord.setLatestTime( null );
+            if(accessRecord.getLatestTime()!=null){
+                accessRecord.setStayTime( accessRecord.getStayTime() +
+                        (int) ((time.getTime() - accessRecord.getLatestTime().getTime()) / 1000) );
+                accessRecord.setLatestTime( null );
+            }
         }
         if(++changeNumber>MAX_changeNumber){
             recordToDb();//synchronized为可重入锁，能调用同样加锁的方法
@@ -303,20 +306,22 @@ public class VisitStatistics {
                 //没有，添加
                 accessRecords.add( accessRecord );
             }else{
-                //有更新
+                //有,更新
                 oldAR.setNumber( oldAR.getNumber()+accessRecord.getNumber() );
-                oldAR.setLatestTime( accessRecord.getLatestTime() );
 
+                oldAR.setLatestTime( accessRecord.getLatestTime() );
             }
         }
         //更新
-        dataStatisticsService.replaceAll( accessRecords );
+        if(!accessRecords.isEmpty()){
+            dataStatisticsService.replaceAll( accessRecords );
+        }
         ipUriDatas.clear();
         acEnds.clear();
         changeNumber=0;
     }
 
-    public static void setDataStatisticsService(DataStatisticsService dataStatisticsService){
+    public synchronized static void setDataStatisticsService(DataStatisticsService dataStatisticsService){
         VisitStatistics.dataStatisticsService=dataStatisticsService;
     }
 
