@@ -8,16 +8,17 @@
       <el-collapse-item title="每日注册用户量">
         <RegistDataCharts></RegistDataCharts>
       </el-collapse-item>
-      <el-collapse-item title="每日各页面访问量">
+      <el-collapse-item title="每日各页面访问相关数据">
         <!-- 通过props传递参数选择绘制的类型 -->
-        <DataCharts chart-content="accessIpNumber"></DataCharts>
+        <!-- <DataCharts chart-content="accessIpNumber"></DataCharts> -->
+        <DataCharts></DataCharts>
       </el-collapse-item>
-      <el-collapse-item title="每日各页面总停留时间">
+      <!-- <el-collapse-item title="每日各页面总停留时间">
         <DataCharts chart-content="stayTime"></DataCharts>
       </el-collapse-item>
       <el-collapse-item title="每日各页面平均停留时间">
         <DataCharts chart-content="stayTimeAvg"></DataCharts>
-      </el-collapse-item>
+      </el-collapse-item>-->
     </el-collapse>
   </div>
 </template>

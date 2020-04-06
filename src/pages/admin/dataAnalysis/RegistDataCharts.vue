@@ -43,6 +43,7 @@ export default {
       let dateArr = new Array();
       let numArr = new Array();
       getRegistration(DateRange, response => {
+        console.log(response);
         this.ourData = response.data;
         for (let i = 0; i < this.ourData.registers.length; i++) {
           dateArr.push(this.ourData.registers[i].date);
@@ -68,7 +69,10 @@ export default {
               name: "注册数（已激活）",
               type: "bar",
               data: numArr,
-              barWidth: "30%",
+              label: {
+                show: true
+              },
+              barWidth: "40%",
               itemStyle: {
                 normal: {
                   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [

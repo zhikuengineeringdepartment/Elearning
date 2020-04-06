@@ -24,7 +24,7 @@ export default {
       DateValues: "", //传向服务端的时间
       aDTotal: [], //存储返回的数据中的aDTotal部分
       chart: null,
-      chartName: ""
+      chartName: ["总点击量", "总停留时间"]
     };
   },
   methods: {
@@ -45,8 +45,8 @@ export default {
         let dateArr = new Array(); //日期，横坐标
         let numArr = new Array();
         let stayTimeArr = new Array();
-        for (let i = 0; i < this.accessData.length; i++) {
-          let date = this.accessData[i].date;
+        for (let i = 0; i < this.aDTotal.length; i++) {
+          let date = this.aDTotal[i].date;
           let date_day = date.split(" ")[0];
           // console.log(date_day)
           dateArr.push(date_day);
@@ -60,7 +60,24 @@ export default {
         // 绘制图表
         this.chart.setOption({
           title: {},
-          tooltip: {},
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              // 坐标轴指示器，坐标轴触发有效
+              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          legend: {
+            data: _this.chartName,
+            left: 20,
+            // top: 12,
+            textStyle: {
+              color: "#000"
+            },
+            itemWidth: 12,
+            itemHeight: 10
+            // itemGap: 35
+          },
           xAxis: {
             data: dateArr,
             grid: {
@@ -70,7 +87,7 @@ export default {
           yAxis: {},
           series: [
             {
-              name: "总点击量",
+              name: _this.chartName[0],
               type: "bar",
               barWidth: "30%",
               label: {
@@ -91,28 +108,31 @@ export default {
                   barBorderRadius: 12
                 }
               },
-              data: numArr
+              data: numArr //点击量
             },
             {
-              name: "总停留时间",
+              name: _this.chartName[1],
               type: "bar",
               barWidth: "30%",
+              label: {
+                show: true
+              },
               itemStyle: {
                 normal: {
                   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     {
                       offset: 0,
-                      color: "#fccb05"
+                      color: "#248ff7"
                     },
                     {
                       offset: 1,
-                      color: "#f5804d"
+                      color: "#6851f1"
                     }
                   ]),
-                  barBorderRadius: 12
+                  barBorderRadius: 11
                 }
               },
-              data: stayTimeArr
+              data: stayTimeArr //停留时间
             }
           ],
           dataZoom: [

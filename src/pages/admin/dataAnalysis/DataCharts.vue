@@ -9,7 +9,8 @@
       value-format="yyyy/MM/dd"
     ></el-date-picker>
     <el-button type="primary" round size="small" style="margin-left:10px" @click="getOurData">确定</el-button>
-    <div :id="'chart_data_'+chartContent" style="width:800px;height:400px"></div>
+    <!-- <div :id="'chart_data_'+chartContent" style="width:800px;height:400px"></div> -->
+    <div id="chart_data_accessData" style="width:800px;height:400px"></div>
   </div>
 </template>
 <style scoped>
@@ -18,40 +19,42 @@
 import echarts from "echarts";
 import { getData } from "../../../app/apis/dataAnalysisApi";
 export default {
-  props: {
-    chartContent: String
-  },
+  // props: {
+  //   chartContent: String
+  // },
   data() {
     return {
       DateValues: "",
       accessData: [],
-      aDTotal: [],
-      chartId: "chart_data_",
       chart: null,
-      chartName: ""
+      chartName: [
+        "访问量",
+        "访问人数(按IP计算)",
+        "页面停留时间",
+        "页面平均停留时间"
+      ]
     };
   },
-  mounted: function() {
-    let chartContent = this.chartContent;
-    switch (chartContent) {
-      case "accessIpNumber":
-        this.chartName = "访问量(按IP计算)";
-        break;
-      case "stayTime":
-        this.chartName = "页面停留时间";
-        break;
-      case "stayTimeAvg":
-        this.chartName = "页面平均停留时间";
-        break;
-      default:
-        this.chartName = "数据";
-        break;
-    }
-  },
+  // mounted: function() {
+  //   let chartContent = this.chartContent;
+  //   switch (chartContent) {
+  //     case "accessIpNumber":
+  //       this.chartName = "访问量(按IP计算)";
+  //       break;
+  //     case "stayTime":
+  //       this.chartName = "页面停留时间";
+  //       break;
+  //     case "stayTimeAvg":
+  //       this.chartName = "页面平均停留时间";
+  //       break;
+  //     default:
+  //       this.chartName = "数据";
+  //       break;
+  //   }
+  // },
   methods: {
     getOurData: function() {
       const _this = this;
-      console.log(this.chartContent);
       let startDate = this.DateValues[0];
       let endDate = this.DateValues[1];
       let DateRange = {
@@ -60,12 +63,16 @@ export default {
       };
 
       getData(DateRange, response => {
+        const _this = this;
         console.log(response);
         this.accessData = response.data.accessData;
-        this.aDTotal = response.data.aDTotal;
 
         let XArr = new Array();
         let numArr = new Array();
+        let accessArr = new Array();
+        let stayTimeArr = new Array();
+        let stayTimeAvgArr = new Array();
+
         for (let i = 0; i < this.accessData.length; i++) {
           let date = this.accessData[i].date;
           let date_day = date.split(" ")[0];
@@ -76,16 +83,37 @@ export default {
           let Xdata = date_day + page;
           // console.log(date_day)
           XArr.push(Xdata);
-          numArr.push(this.accessData[i][this.chartContent]);
+          // numArr.push(this.accessData[i][this.chartContent]);
+          numArr.push(this.accessData[i].number);
+          accessArr.push(this.accessData[i].accessIpNumber);
+          stayTimeArr.push(this.accessData[i].stayTime);
+          stayTimeAvgArr.push(this.accessData[i].stayTimeAvg);
         }
         // 基于准备好的dom，初始化echarts实例
         this.chart = echarts.init(
-          document.getElementById(this.chartId + this.chartContent)
+          document.getElementById("chart_data_accessData")
         );
         // 绘制图表
         this.chart.setOption({
           title: {},
-          tooltip: {},
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              // 坐标轴指示器，坐标轴触发有效
+              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          legend: {
+            data: _this.chartName,
+            left: 20,
+            // top: 12,
+            textStyle: {
+              color: "#000"
+            },
+            itemWidth: 12,
+            itemHeight: 10
+            // itemGap: 35
+          },
           xAxis: {
             data: XArr,
             axisLabel: {
@@ -130,10 +158,10 @@ export default {
           yAxis: {},
           series: [
             {
-              name: _this.chartName,
+              name: _this.chartName[0],
               type: "bar",
               data: numArr,
-              barWidth: "30%",
+              barWidth: "20%",
               label: {
                 show: true
               },
@@ -150,6 +178,78 @@ export default {
                     }
                   ]),
                   barBorderRadius: 11
+                }
+              }
+            },
+            {
+              name: _this.chartName[1],
+              type: "bar",
+              data: accessArr,
+              barWidth: "20%",
+              label: {
+                show: true
+              },
+              itemStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      offset: 0,
+                      color: "#ED4C67"
+                    },
+                    {
+                      offset: 1,
+                      color: "#833471"
+                    }
+                  ]),
+                  barBorderRadius: 11
+                }
+              }
+            },
+            {
+              name: _this.chartName[2],
+              type: "bar",
+              data: stayTimeArr,
+              barWidth: "20%",
+              label: {
+                show: true
+              },
+              itemStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      offset: 0,
+                      color: "#8bd46e"
+                    },
+                    {
+                      offset: 1,
+                      color: "#09bcb7"
+                    }
+                  ]),
+                  barBorderRadius: 11
+                }
+              }
+            },
+            {
+              name: _this.chartName[3],
+              type: "bar",
+              data: stayTimeAvgArr,
+              barWidth: "20%",
+              label: {
+                show: true
+              },
+              itemStyle: {
+                normal: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      offset: 0,
+                      color: "#fccb05"
+                    },
+                    {
+                      offset: 1,
+                      color: "#f5804d"
+                    }
+                  ]),
+                  barBorderRadius: 12
                 }
               }
             }

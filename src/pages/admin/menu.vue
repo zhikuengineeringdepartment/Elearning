@@ -51,7 +51,7 @@
           <el-menu-item index="/admin/upload/article">
             <template slot="title">
               <i class="el-icon-document"></i>
-              <span>专栏文章上传</span>
+              <span>专栏文章管理</span>
             </template>
           </el-menu-item>
         </router-link>
