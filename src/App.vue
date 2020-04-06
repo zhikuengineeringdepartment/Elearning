@@ -47,7 +47,10 @@
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 }
                 //请求的路径
-                xhr.open("POST", "api/dataStatistics/access", false);
+                let apiPath = process.env.NODE_ENV === "production"
+                ? "dataStatistics/access"
+                : "api/dataStatistics/access" // 正式环境与开发环境的url
+                xhr.open("POST",apiPath, false);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 // lastURI: "/",          //上一个页面uri
                 // nextURI: "/resources",      //即将跳转的页面uri

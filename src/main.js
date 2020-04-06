@@ -59,7 +59,10 @@ window.onbeforeunload = ()=>{
   xhr = new ActiveXObject("Microsoft.XMLHTTP");
   }
   //发送同步请求
-  xhr.open("POST", "api/dataStatistics/access", false);
+  let apiPath = process.env.NODE_ENV === "production"
+  ? "dataStatistics/access"
+  : "api/dataStatistics/access" // 正式环境与开发环境的url
+  xhr.open("POST",apiPath, false);
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   // lastURI: "/",          //上一个页面uri
   // nextURI: "/resources",      //即将跳转的页面uri
@@ -68,7 +71,7 @@ window.onbeforeunload = ()=>{
   // let parm = "lastURI=" + lastURI + "&nextURI=" + nextURI;
   let postData = {"lastURI":lastURI,"nextURI":nextURI};
   xhr.send(postData);
-}
+};
 // 这个版本是使用节流函数的，不过貌似在这里使用节流函数效果更差
 // window.onresize = throttle(() => {
 //   store.commit('changeMode', window.innerHeight > window.innerWidth);
