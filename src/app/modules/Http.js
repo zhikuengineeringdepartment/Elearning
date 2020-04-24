@@ -86,6 +86,7 @@ export default class Http {
                     message: error.message,
                     type: "error"
                 })
+                console.log(error)
                 throw new Error("出错啦")
             })
             .catch(err => {
@@ -130,6 +131,7 @@ export default class Http {
                     message: error.message,
                     type: "error"
                 })
+                console.log(error)
                 throw new Error("出错啦")
             })
             .catch(err => {

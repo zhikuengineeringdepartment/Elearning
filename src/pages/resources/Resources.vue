@@ -43,7 +43,6 @@
             <pagination style="float: right" :pageSize="10" :totalNumber="totalNumber"
                         @handleCurrentChange="getFileList"></pagination>
         </el-col>
-        <p v-if="loading">加载中...</p>
     </el-main>
 </template>
 
@@ -66,7 +65,6 @@
                     page: 1
                 },
                 myFiles: [],
-                loading: false,
                 totalNumber: 10
             }
         },
@@ -107,7 +105,6 @@
                     order: this.fileListForm.order
                 }
                 queryFileList(params, response => {
-                    this.loading = false
                     this.totalNumber = response.data.numbers
                     if (response.data.files.length === 0)
                         this.$message.warning("已经没有更多了~")

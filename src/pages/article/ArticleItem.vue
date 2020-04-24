@@ -1,10 +1,10 @@
 <!--智库专栏中每一个详细的专栏-->
 <!--这个组件的难点在于长和宽的计算-->
 <template>
-  <a :href="article.link" target="_blank">
+  <a :href="article.articleUrl" target="_blank">
     <div class="article-item">
-      <div>{{article.title}}</div>
-      <img :src="article.img" :alt="article.title" />
+      <div>{{article.articleTitle}}</div>
+      <img :src="article.articlePicUrl" :alt="article.articleTitle" />
     </div>
   </a>
 </template>

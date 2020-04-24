@@ -80,6 +80,7 @@
 
 <script>
     import {changePageReq} from "../../src/app/apis/dataAnalysisApi";
+    import {queryArticleTypes} from "../app/apis/articleApi";
 
     export default {
         name: "MainHeader",
@@ -98,10 +99,7 @@
                     {
                         name: "智库专栏",
                         path: "/article",
-                        children: [{name: "方向谈", path: "/article"}, {name: "知识说", path: "/article2"}, {
-                            name: "小便签",
-                            path: "/article3"
-                        }, {name: "科研路", path: "/article4"}, {name: "杂谈", path: "/article5"}]
+                        children: []
                     },
                     {name: "智库周记", path: "/weekly/diary"},
                     {name: "关于智库", path: "/about"}
@@ -110,6 +108,7 @@
         },
         created() {
             this.activeIndex = window.location.hash.substr(1)
+            this.getArticleTypes()
         },
         methods: {
             menuClick: function (path) {
@@ -127,7 +126,22 @@
                     this.$router.push(path);
                 }
                 //大页面跳转时发送请求
-                changePageReq(postData, response => {});
+                changePageReq(postData, response => {
+                });
+            },
+            getArticleTypes: function () {
+                queryArticleTypes({}, response => {
+                    let {specialColumns} = response.data
+                    this.menuList = this.menuList.map(item => {
+                        if (item.children) {
+                            item.children = specialColumns.map(type => ({
+                                name: type.specialcName,
+                                path: '/article?type=' + type.sid
+                            }))
+                        }
+                        return item
+                    })
+                })
             }
         }
     };
