@@ -33,7 +33,10 @@
         components: {ArticleItem, ArticleSwiper, Pagination},
         data() {
             return {
-                images: [],
+                images: [require('../../assets/article-pictures/banner_1.jpg'),
+                    require('../../assets/article-pictures/banner_2.jpg'),
+                    require('../../assets/article-pictures/banner_3.jpg'),
+                    require('../../assets/article-pictures/banner_4.jpg')],
                 articles: [],
                 totalNumber: 10
             };
