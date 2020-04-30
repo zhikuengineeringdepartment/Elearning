@@ -1,13 +1,12 @@
 package com.zhiku.service;
 
+import com.zhiku.entity.UserCode;
 import com.zhiku.entity.VerificationCode;
 import com.zhiku.entity.mysql.Message;
 import com.zhiku.entity.User;
+import com.zhiku.exception.UserCodeNotFoundException;
 import com.zhiku.exception.UserNotFoundException;
-import com.zhiku.mapper.MessageMapper;
-import com.zhiku.mapper.UserMapper;
-import com.zhiku.mapper.UserRoleMapper;
-import com.zhiku.mapper.VerificationCodeMapper;
+import com.zhiku.mapper.*;
 import com.zhiku.util.EmailUtil;
 import com.zhiku.util.SmallTools;
 import com.zhiku.util.UserStatus;
@@ -32,6 +31,8 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserCodeMapper userCodeMapper;
     @Autowired
     private MessageMapper messageMapper;
     @Autowired
@@ -300,6 +301,14 @@ public class UserService {
         String code=""+ SmallTools.nextInt( 100000,999999 );
         //储存进数据库
         //TODO:REPLACE into table (id, name, age) values(1, "A", 19)
+        UserCode userCode = new UserCode(user, code);
+        try{
+            userCodeMapper.selectByPrimaryKey(user.getUid());
+            userCodeMapper.updateByPrimaryKey(userCode);
+        }catch(UserCodeNotFoundException e){
+            userCodeMapper.insert(userCode);
+        }
+
         VerificationCode verificationCode=new VerificationCode();
         verificationCode.setUid( user.getUid() );
         verificationCode.setCode( code );

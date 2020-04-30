@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.zhiku.entity.UserCode">
+        <id column="uid" jdbcType="INTEGER" property="uid" />
+        <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+        <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        uid, user_code, deadline
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where uid = #{uid,jdbcType=INTEGER}
+    </select>
+    <delete id="delete" parameterType="INTEGER">
+        delete from user
+        where uid = #{uid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.zhiku.entity.UserCode">
+        insert into userCode (uid, user_code, deadline)
+        values(#{uid, jdbcType=INTEGER}, #{user_code, jdbcType=VARCHAR}, #{deadline, jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.UserCode">
+        update userCode
+        set user_code = #{userCode, jdbcType=VARCHAR},
+        deadline = #{deadline, jdbcType=VARCHAR}
+        where uid = #{uid, jdbcType=INTEGER}
+    </update>
+</mapper>
