@@ -40,6 +40,7 @@
       ></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
+          <!-- edit需要先打开弹窗 -->
           <el-button @click="editBtn(scope.row)" type="text" size="small">编辑</el-button>
           <el-button @click="deleteReq(scope.row)" type="text" size="small">删除</el-button>
         </template>
@@ -59,7 +60,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false;editRowInfo={}">取 消</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
         <el-button type="primary" @click="editReq">确 定</el-button>
       </div>
     </el-dialog>
@@ -93,7 +94,7 @@ export default {
   //   watch
   watch: {
     editDialogVis: function(val) {
-      this.editDialogVisible = this.editDialogVis;
+      this.editDialogVisible = val;
     }
   },
   methods: {
@@ -106,12 +107,32 @@ export default {
       //   this.$emit("edit", row);
       //   console.log("yep,emit");
     },
+    //关闭对话框
+    closeDialog: function() {
+      this.editDialogVisible = false;
+      this.editRowInfo = {};
+      //视反馈加不加
+      // this.editCategoryForm={}
+    },
     editReq: function() {
       let _this = this;
+      if (
+        _this.editCategoryForm.specialcName &&
+        _this.editCategoryForm.specialcName.trim() != ""
+      )
+        console.log(_this.editCategoryForm.specialcName);
       let editQueryData = {
         sid: _this.editRowInfo.sid,
-        specialcName: _this.editCategoryForm.specialcName,
-        speaiclcRemark: _this.editCategoryForm.speaiclcRemark
+        specialcName:
+          _this.editCategoryForm.specialcName &&
+          _this.editCategoryForm.specialcName.trim() != ""
+            ? _this.editCategoryForm.specialcName
+            : _this.editRowInfo.specialcName,
+        speaiclcRemark:
+          _this.editCategoryForm.speaiclcRemark &&
+          _this.editCategoryForm.speaiclcRemark.trim() != ""
+            ? _this.editCategoryForm.speaiclcRemark
+            : _this.editRowInfo.speaiclcRemark
       };
       _this.$emit("edit", editQueryData);
       //   _this.editDialogVisible = false;

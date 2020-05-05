@@ -35,7 +35,7 @@
                 ></el-image>
               </el-form-item>
               <el-form-item label="状态">
-                <span>{{ props.row.statue }}</span>
+                <span>{{ props.row.status }}</span>
               </el-form-item>
             </el-form>
           </template>
@@ -52,34 +52,50 @@
         ></el-table-column>
         <!-- <el-table-column prop="url" label="上传时间" align="center"></el-table-column>
         <el-table-column prop="url" label="更新时间" align="center"></el-table-column>-->
-        <el-table-column prop="updateTime" label="最后更改时间" align="center"></el-table-column>
+        <!-- <el-table-column prop="updateTime" label="最后更改时间" align="center"></el-table-column> -->
         <el-table-column
           prop="status"
           label="状态"
           align="center"
-          :filters="[{ text: '已删除', value: '已删除' }, { text: '正常', value: '正常' }]"
+          :filters="[
+            { text: '已删除', value: '已删除' },
+            { text: '正常', value: '正常' },
+          ]"
           :filter-method="filterStatue"
           filter-placement="bottom-end"
         ></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <!-- 暂时用删除+新建替代编辑，之后再开放编辑功能 -->
+            <!-- <el-button @click="editBtn(scope.row)" type="text" size="small">编辑</el-button> -->
+            <el-button @click="deleteReq(scope.row)" type="text" size="small">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table-column>
     </el-table>
+    <!-- edit对话框 -->
+    <el-dialog title="修改文章信息" :visible.sync="editDialogVisible" :append-to-body="true">
+      <el-form :model="editArticleForm">
+        <label>原名称：{{editRowInfo.articleTitle}}</label>
+        <br />
+        <label>原url：{{editRowInfo.articleUrl}}</label>
+        <br />
+        <label>原属专栏：{{editRowInfo.specialColumnName}}</label>
+        <el-form-item label="新的文章名称">
+          <el-input v-model="editArticleForm.specialcName"></el-input>
+        </el-form-item>
+        <el-form-item label="新的url">
+          <el-input v-model="editArticleForm.speaiclcRemark"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <!-- <el-button @click="closeDialog">取 消</el-button>
+        <el-button type="primary" @click="editReq">确 定</el-button>-->
+      </div>
+    </el-dialog>
   </el-col>
 </template>
 
-<style>
-.table-expand {
-  font-size: 0;
-}
-.table-expand label {
-  width: 90px;
-  color: #99a9bf;
-}
-.table-expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 50%;
-}
-</style>
 
 <script>
 export default {
@@ -89,7 +105,13 @@ export default {
   },
   data() {
     return {
-      categoryFilArr: []
+      //该数组包含的是“正常”状态的专栏，用于筛选
+      categoryFilArr: [],
+      //绑定编辑文章的表单
+      editArticleForm: {},
+      //要编辑的那行的信息，用于显示
+      editRowInfo: {},
+      editDialogVisible: false
     };
   },
   created() {
@@ -115,7 +137,51 @@ export default {
     },
     filterStatue: function(value, row) {
       return row.status === value;
+    },
+
+    editBtn: function(row) {
+      console.log(row);
+      this.editRowInfo = row;
+      this.editDialogVisible = true;
+
+      //   this.$emit("edit", row);
+      //   console.log("yep,emit");
+    },
+    // //关闭对话框
+    // closeDialog: function() {
+    //   this.editDialogVisible = false;
+    //   this.editRowInfo = {};
+    //   //视反馈加不加
+    //   // this.editCategoryForm={}
+    // },
+    // editReq: function() {
+    //   let _this = this;
+    //   let editQueryData = {
+    //     sid: _this.editRowInfo.sid,
+    //     specialcName: _this.editCategoryForm.specialcName,
+    //     speaiclcRemark: _this.editCategoryForm.speaiclcRemark
+    //   };
+    //   _this.$emit("edit", editQueryData);
+    //   //   _this.editDialogVisible = false;
+    // },
+    deleteReq: function(row) {
+      let reqData = { id: row.aid };
+      this.$emit("delete", reqData);
     }
   }
 };
 </script>
+<style>
+.table-expand {
+  font-size: 0;
+}
+.table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
+</style>
