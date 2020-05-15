@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
@@ -44,6 +45,8 @@ public class UserController {
     Configuration freemarkerConfig;
     @Autowired
     private UserCodeService userCodeService;
+    @Autowired
+    private PictureService pictureService;
 
     /**
      * 新用户注册
@@ -433,6 +436,21 @@ public class UserController {
         u.setUserAvatar(avatar);
         userService.saveUser(u);
         responseData = ResponseData.ok();
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "addAvatar", method = RequestMethod.POST)
+    public ResponseData addAvatar(User user, MultipartFile file){
+        User u = userService.getUserById(user.getUid());
+        ResponseData responseData = null;
+        String url = pictureService.addAavatar(file);
+        if(url.indexOf('/') == 0){
+            responseData = modifyAvatar(u, url);
+        }else{
+            responseData = new ResponseData();
+            responseData.putDataValue("url", url);
+        }
         return responseData;
     }
 
