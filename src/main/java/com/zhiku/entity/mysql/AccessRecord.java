@@ -72,4 +72,16 @@ public class AccessRecord {
     public void setLatestTime(Date latestTime) {
         this.latestTime = latestTime;
     }
+
+    public AccessRecord(){ }
+
+    public AccessRecord(AccessRecord accessRecord){
+        this.aid=accessRecord.aid;
+        this.ip=accessRecord.ip;
+        this.uri=accessRecord.uri;
+        this.date=accessRecord.date;
+        this.number=accessRecord.number;
+        this.stayTime=accessRecord.stayTime;
+        this.latestTime=accessRecord.latestTime;
+    }
 }

@@ -35,7 +35,6 @@ public class DataStatisticsController {
     @RequestMapping("access")
     public ResponseData access(HttpServletRequest response,String lastURI, String nextURI) throws ParseException {
         String ip= SmallTools.getIp( response );
-        System.out.println("访问："+ip+"|"+lastURI+"|"+nextURI);///////////
         VisitStatistics.setDataStatisticsService( dataStatisticsService );
         if(nextURI!=null){
             VisitStatistics.addStart( ip,nextURI,new Date(  ) );
@@ -45,18 +44,5 @@ public class DataStatisticsController {
         }
         return ResponseData.ok();
     }
-
-//    /**
-//     * 获取访问统计信息
-//     * @param beginDay
-//     * @param endDay
-//     * @return
-//     */
-//    @RequestMapping(value = "getFlow",method = RequestMethod.GET)
-//    public ResponseData getFlow(Date beginDay,Date endDay){
-//        ResponseData responseData=ResponseData.ok();
-//        responseData.putDataValue( "accessData",dataStatisticsService.listByDateInterval( beginDay,endDay ) );
-//        return responseData;
-//    }
 
 }
