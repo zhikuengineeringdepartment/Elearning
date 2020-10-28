@@ -23,7 +23,6 @@
     <insert id="insert" parameterType="com.zhiku.entity.UserCode">
         insert into userCode (uid, user_code, deadline, function)
         values(#{uid, jdbcType=INTEGER}, #{user_code, jdbcType=VARCHAR}, #{deadline, jdbcType=VARCHAR}, #{function, jdbcType = INTEGER})
-        where uid = #{uid,jdbcType=INTEGER}
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.UserCode">
         update userCode
