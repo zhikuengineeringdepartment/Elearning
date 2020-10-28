@@ -9,32 +9,35 @@ public class UserCode {
     //验证码用途，后期扩展，目前只用1
     private Integer function;
 
-    public UserCode(){};
+    public UserCode() {
+    }
 
-    public UserCode(User user, String userCode, String deadline, Integer function){
+    ;
+
+    public UserCode(User user, String userCode, String deadline, Integer function) {
         this.user = user;
         this.userCode = userCode;
         this.deadline = deadline;
         this.function = function;
     }
 
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public String getUserCode(){
+    public String getUserCode() {
         return userCode;
     }
 
-    public void setUserCode(String userCode){
+    public void setUserCode(String userCode) {
         this.userCode = userCode;
     }
 
-    public String getDeadline(){
+    public String getDeadline() {
         return deadline;
     }
 
