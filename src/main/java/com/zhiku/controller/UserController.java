@@ -1,13 +1,12 @@
 package com.zhiku.controller;
 
+import com.zhiku.entity.UserCode;
 import com.zhiku.entity.mysql.File;
 import com.zhiku.entity.mysql.Preference;
 import com.zhiku.entity.User;
+import com.zhiku.exception.UserCodeNotFoundException;
 import com.zhiku.exception.UserNotFoundException;
-import com.zhiku.service.CourseService;
-import com.zhiku.service.FileService;
-import com.zhiku.service.PreferenceService;
-import com.zhiku.service.UserService;
+import com.zhiku.service.*;
 import com.zhiku.util.*;
 import com.zhiku.view.ColCourseView;
 import com.zhiku.view.FileView;
@@ -17,11 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +43,10 @@ public class UserController {
     JavaMailSender javaMailSender;
     @Autowired
     Configuration freemarkerConfig;
+    @Autowired
+    UserCodeService userCodeService;
+    @Autowired
+    PictureService pictureService;
 
     /**
      * 新用户注册
@@ -173,7 +179,7 @@ public class UserController {
         return responseData;
     }
 
-//    @ResponseBody
+    //    @ResponseBody
     @RequestMapping(value = "mail/active",method = RequestMethod.GET)
     public String mailHandler(
             String act,
@@ -433,6 +439,27 @@ public class UserController {
         return responseData;
     }
 
+    /**
+     *
+     * @param user 用户
+     * @param file 头像文件
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "addAvatar", method = RequestMethod.POST)
+    public ResponseData addAvatar(User user, MultipartFile file){
+        User u = userService.getUserById(user.getUid());
+        ResponseData responseData = null;
+        String url = pictureService.addAavatar(file);
+        if(url.indexOf('/') == 0){
+            responseData = modifyAvatar(u, url);
+        }else{
+            responseData = new ResponseData();
+            responseData.putDataValue("url", url);
+        }
+        return responseData;
+    }
+
 
     public String redirectToActivePage(){
         return "/active.html";
@@ -485,4 +512,51 @@ public class UserController {
         return isc;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "modifyNickName", method = RequestMethod.POST)
+    public ResponseData modifyUserName(User user, String newNickName){
+        ResponseData responseData = null;
+        User u = userService.getUserById(user.getUid());
+        u.setUserNick(newNickName);
+        userService.saveUser(u);
+        responseData = ResponseData.ok();
+        return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "modifyEmail", method = RequestMethod.POST)
+    public ResponseData modifyEmail(User user, String newEmail, String code){
+        ResponseData responseData = null;
+        User u = null;
+        try{
+            u = userService.getUserByEmail(newEmail);
+            responseData = ResponseData.badRequest();
+            responseData.setMessage("邮箱重复");
+        }catch(UserNotFoundException e){
+            int uid = user.getUid();
+            try {
+                UserCode userCode = userCodeService.getUserCodeById(uid);
+                if(userCode.getUserCode().equals(code)){
+                    String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Calendar.getInstance());
+                    if(userCode.getDeadline().compareTo(now)<=0){
+                        userCodeService.deleteByPrimaryKey(uid);
+                        u = userService.getUserById(user.getUid());
+                        u.setUserEmail(newEmail);
+                        responseData = ResponseData.ok();
+                    }else {
+                        responseData = ResponseData.badRequest();
+                        responseData.setMessage("验证码过期");
+                    }
+                }else{
+                    responseData = ResponseData.badRequest();
+                    responseData.setMessage("验证码错误");
+                }
+            } catch (UserCodeNotFoundException ex) {
+                responseData = ResponseData.badRequest();
+                responseData.setMessage("未发送验证码");
+            }
+        }
+        return responseData;
+    }
 }
+

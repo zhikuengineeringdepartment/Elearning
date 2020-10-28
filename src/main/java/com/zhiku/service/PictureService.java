@@ -95,6 +95,23 @@ public class PictureService {
     }
 
     /**
+     *
+     */
+    public String addAavatar(MultipartFile file){
+        if(!checkFile(file)){
+            return "文件类型不符合，请上传jpg或png或Gif类型！";
+        }
+        String url="";
+        try{
+            url= "/pictures/"+saveFile( file ).replace( "\\","/" );
+        }catch (Exception e){
+            e.printStackTrace();
+            return "用户头像上传失败！";
+        }
+        return url;
+    }
+
+    /**
      * 得到用户上传的图片列表
      * @param uid 用户id
      * @return 错误信息
