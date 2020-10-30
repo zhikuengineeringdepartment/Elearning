@@ -2,10 +2,7 @@ package com.zhiku.util;
 
 import com.zhiku.entity.mongodb.Child;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class ChildUtil {
 
@@ -39,42 +36,33 @@ public class ChildUtil {
         }else if(orgChildren==null){
             return newChildren;
         }
-        //找出最大seq
-        int maxseq=0;
-        for(Child child:orgChildren){
-            if(child.getSection_seq()>maxseq){
-                maxseq=child.getSection_seq();
-            }
-        }
-        for(Child child:newChildren){
-            if(child.getSection_seq()>maxseq){
-                maxseq=child.getSection_seq();
-            }
-        }
-        //seq小为0,大部分时从0开始，不用省空间
-        Child[] children=new Child[maxseq+1];
+        Map<Integer,Child> map=new HashMap<>();
         //先赋值newChildren，可以覆盖orgChildren
         for(Child child:newChildren){
-            children[child.getSection_seq()]=child;
+            map.put( child.getSection_seq(),child );
         }
+
         for(Child child:orgChildren){
-            if(children[child.getSection_seq()]==null){
-                children[child.getSection_seq()]=child;
+            Child newChild=map.get( child.getSection_seq() );
+            if(newChild==null){
+                map.put( child.getSection_seq(),child );
             }else if(child.getLevel()==1){//如果是章，到节再覆盖
-                children[child.getSection_seq()].setSub(
-                        merge(child.getSub(),children[child.getSection_seq()].getSub()));
-                if(children[child.getSection_seq()].getSection_name()==null){//空章(标题为null)可以保留原章标题
-                    children[child.getSection_seq()].setSection_name( child.getSection_name() );
+                newChild.setSub( merge(child.getSub(),newChild.getSub()) );
+                if(newChild.getSection_name()==null){//空章(标题为null)可以保留原章标题
+                    newChild.setSection_name( child.getSection_name() );
                 }
-                children[child.getSection_seq()].setSid( child.getSid() );//原章id可保留，仅章可以
-            }//非章，不能覆盖newChildren
+                newChild.setSid( child.getSid() );//原章id可保留，仅章可以
+            }
+            //非章，不能覆盖newChildren
         }
         List<Child> re=new ArrayList<>(  );
-        for (Child child : children) {
+        for (Child child : map.values() ) {
             if (child != null) {
                 re.add( child );
             }
         }
+        re.sort( Comparator.comparing( Child::getSection_seq ) );
+
         return re;
     }
 

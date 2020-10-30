@@ -79,10 +79,11 @@ public class FileUtils {
         // 不为空继续读
         while ((line = br.readLine()) != null) {
             arr.add(line);
-
-            // System.out.println(line);
         }
 
+        br.close();
+        isr.close();
+        fis.close();
         return arr;
     }
 

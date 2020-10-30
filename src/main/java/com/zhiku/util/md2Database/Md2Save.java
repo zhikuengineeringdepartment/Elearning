@@ -305,7 +305,7 @@ public class Md2Save {
                 chapter.setSection_name( tp.getContent()  );
                 chapter.setLevel( 1 );
                 chapter.setSection_seq( ++chaseq );
-                chapter.setSub( new ArrayList<Child>(  ) );
+                chapter.setSub( new ArrayList<>(  ) );
                 chapterList.add( chapter );//存上一章
 
                 secseq=0;
@@ -318,9 +318,11 @@ public class Md2Save {
                 section.setSection_name( tp.getContent()  );
                 section.setLevel( 2 );
                 section.setSection_seq( ++secseq );
-                section.setSub( new ArrayList<Child>(  ) );
+                section.setSub( new ArrayList<>(  ) );
                 if(chapter!=null){
                     chapter.getSub().add(section);
+                }else{
+                    return "文件格式错误，在节<"+section.getSection_name()+">之前应有章";
                 }
 
                 knowseq=0;
@@ -333,13 +335,9 @@ public class Md2Save {
                     section.setSection_name( chapter.getSection_name()  );
                     section.setLevel( 2 );
                     section.setSection_seq( 0 );
-                    section.setSub( new ArrayList<Child>(  ) );
-                    if(chapter!=null){
-                        chapter.getSub().add(section);
-                    }
+                    section.setSub( new ArrayList<>(  ) );
+                    chapter.getSub().add(section);
                     knowseq=0;
-                    pagseq=0;
-                    lastLevel=2;
                 }
                 konwledge=new Child();
                 konwledge.setSid( --kid );
@@ -349,21 +347,24 @@ public class Md2Save {
                 konwledge.setSub( null );
                 if(section!=null){
                     section.getSub().add(konwledge);
+                }else{
+                    return "文件格式错误，在知识点<"+konwledge.getSection_name()+">之前应有节或章";
                 }
 
                 pagseq=0;
                 lastLevel=3;
             }else{//段落
+                if(lastLevel==0){
+                    return "文件格式错误，在段落<"+tp.getContent()+">之前应有节或章";
+                }
                 if(lastLevel==1){//段落上直接是章，创建节
                     section=new Child();
                     section.setSid( --sid );
                     section.setSection_name( chapter.getSection_name()  );
                     section.setLevel( 2 );
                     section.setSection_seq( 0 );
-                    section.setSub( new ArrayList<Child>(  ) );
-                    if(chapter!=null){
-                        chapter.getSub().add(section);
-                    }
+                    section.setSub( new ArrayList<>(  ) );
+                    chapter.getSub().add(section);
                     knowseq=0;
                     pagseq=0;
                     lastLevel=2;
@@ -375,9 +376,7 @@ public class Md2Save {
                     konwledge.setLevel( 3 );
                     konwledge.setSection_seq( ++knowseq );
                     konwledge.setSub( null );
-                    if(section!=null){
-                        section.getSub().add(konwledge);
-                    }
+                    section.getSub().add(konwledge);
                     pagseq=0;
                     lastLevel=3;
                 }

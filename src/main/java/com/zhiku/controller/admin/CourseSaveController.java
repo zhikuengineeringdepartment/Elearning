@@ -5,11 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhiku.service.CourseSaveService;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 import java.util.*;
 
 @CrossOrigin(value = "*")
@@ -21,7 +21,6 @@ public class CourseSaveController {
 
     /**
      * 创建课程
-//     * @param user 自动获取
      * @param title 课程名称
      * @param vid 版本号
      * @param describe 课程描述
@@ -36,7 +35,6 @@ public class CourseSaveController {
 
     /**
      * 修改课程，可修改课程版本号、标题、图片、描述
-//     * @param user 自动获取
      * @param title 课程名称
      * @param vid 版本号
      * @param describe 课程描述
@@ -60,15 +58,17 @@ public class CourseSaveController {
     //TODO:覆盖课程内容、删除课程内容，都没有处理段落（目前段落都不删），应当判断段落是否收藏，然后删除或者禁止删
     /**
      * 添加课程内容
-//     * @param file md文件
-//     * @param cid 课程id,vid 版本号
+     * @param file 课程内容md文件
+     * @param cid 课程id,vid 版本号
+     * @param vid 版本号
+     * @param seqs 内容对应具体章节号，json格式，详见接口文档
      */
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData save(MultipartFile file, Integer cid,String vid,String seqs) throws IOException {
+    public ResponseData save(MultipartFile file, Integer cid,String vid,String seqs) {
         List<ChapterProgressView> chapterProgressViews=null;
         //转换seqs
-        if(seqs!=null){
+        if(!StringUtils.isEmpty( seqs )){
             try {
                 chapterProgressViews=new ArrayList<>(  );
                 JSONArray jsonArray=JSONArray.parseArray( seqs );
@@ -81,26 +81,29 @@ public class CourseSaveController {
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                return new ResponseData( 400,"参数格式错误" );
+                return new ResponseData( 400,"参数<章节号>格式错误" );
             }
         }
         //储存文件
-        if(Objects.equals( file.getOriginalFilename(), "" )){
-            return new ResponseData(400,"课程文件不能为空");
+        if(StringUtils.isEmpty( file.getOriginalFilename() )) {
+            return new ResponseData( 400, "课程文件不能为空" );
         }
         if (!courseSaveService.checkFile( file )) {
             return new ResponseData(400,"文件类型不符合，请上传.md或.txt类型！");
         }
-        String filePath="";
+        String filePath;
         try{
             filePath= courseSaveService.saveFile( file );
         }catch (Exception e){
             return new ResponseData(400,"文件上传失败");
         }
         //储存课程内容
-        String re= courseSaveService.saveContent( filePath,cid,vid, chapterProgressViews);
-        if(re!=null){
-            return new ResponseData(400,re+"!");
+        try {
+            courseSaveService.saveContent( filePath,cid,vid, chapterProgressViews);
+        }catch (Exception e){
+            //储存失败不保存文件
+            courseSaveService.deleteFile( filePath );
+            return new ResponseData(400,e.getMessage()+"!");
         }
         return ResponseData.ok();
     }
@@ -143,7 +146,7 @@ public class CourseSaveController {
      */
     @RequestMapping(value = "/preview",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData preview( MultipartFile file) throws IOException {
+    public ResponseData preview( MultipartFile file) {
         //储存文件
         if(Objects.equals( file.getOriginalFilename(), "" )){
             return new ResponseData(400,"课程文件不能为空");
@@ -158,8 +161,12 @@ public class CourseSaveController {
             return new ResponseData(400,"文件上传失败！");
         }
         Map<String, SectionContentView> sectionViewMap=new HashMap<>(  );
-        CourseView courseView= courseSaveService.preview( filePath,sectionViewMap );
-
+        CourseView courseView;
+        try {
+            courseView= courseSaveService.preview( filePath,sectionViewMap );
+        }catch (Exception e){
+            return new ResponseData(400,e.getMessage());
+        }
         ResponseData responseData=new ResponseData( );
         responseData.putDataValue( "courseView",courseView );
         responseData.putDataValue( "sectionViewMap",sectionViewMap );//？key为Integer的map无法转化为json ！！
