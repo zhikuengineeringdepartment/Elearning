@@ -2,10 +2,14 @@ package com.zhiku.mapper;
 
 import com.zhiku.entity.User;
 import com.zhiku.view.UserBaseInfoView;
+import javafx.util.Pair;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public interface UserMapper {
@@ -29,4 +33,7 @@ public interface UserMapper {
     UserBaseInfoView selectBaseInfo(Integer uid);
 
     List<User> selectByUids(List<Integer> uids);
+
+    List<Map<String,Object> > countByDateInterval(@Param( "begin" ) Date begin, @Param( "end" ) Date end);
+
 }

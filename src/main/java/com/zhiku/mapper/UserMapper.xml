@@ -312,6 +312,11 @@
     <result column="user_download_count" jdbcType="INTEGER" property="userDownloadCount" />
   </resultMap>
 
+    <resultMap id="CountRegisterMap"  type="java.util.HashMap">
+        <result column="number" jdbcType="VARCHAR" property="number" />
+        <result column="date" jdbcType="DATE" property="date" />
+    </resultMap>
+
   <sql id="Base_Info_Column_List">
     user_username, user_nick, user_avatar, user_sign, user_gender,
     user_coin, user_email, user_phone, user_qq, user_college, user_major,
@@ -348,4 +353,14 @@
             #{uid,jdbcType=INTEGER}
         </foreach>
     </select>
+
+    <select id="countByDateInterval" resultMap="CountRegisterMap">
+       select date(user_regtime) date, COUNT(uid) number
+       from user
+       where user_regtime >= #{begin,jdbcType=DATE} and #{end,jdbcType=DATE} >= user_regtime
+       and user_status != 'u'
+       GROUP BY date(user_regtime)
+       order by date(user_regtime)
+    </select>
+
 </mapper>

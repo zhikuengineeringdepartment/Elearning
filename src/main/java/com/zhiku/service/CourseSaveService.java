@@ -10,12 +10,12 @@ import com.zhiku.mongo.IndexTemplate;
 import com.zhiku.util.ChildUtil;
 import com.zhiku.util.SmallTools;
 import com.zhiku.view.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.zhiku.util.md2Database.Md2Save;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -53,7 +53,7 @@ public class CourseSaveService {
             //如果文件夹不存在则创建
             File dir =new File(rootFPath);
             if  (!dir .exists()&&!dir .isDirectory()) {
-                dir .mkdirs();
+                boolean b=dir.mkdirs();
             }
             String filename = file.getOriginalFilename();
             assert filename != null;
@@ -63,6 +63,18 @@ public class CourseSaveService {
             file.transferTo(new File(path));
         }
         return path;
+    }
+
+    public void deleteFile(String path){
+        if (!StringUtils.isEmpty(path)) {
+            File file = new File( path );
+            if (file.exists()) {
+                boolean b=file.delete();
+                if(b){
+                    new Exception("md文件"+path+"删除失败").printStackTrace();
+                }
+            }
+        }
     }
 
     public Course createCourse(String title,String vid,String describe,String iconPath) {
@@ -92,33 +104,63 @@ public class CourseSaveService {
      * 储存课程内容
      * 适用于添加新课程内容，增加内容，替换内容
      */
-    public String saveContent(String filePath,int cid,String vid,List<ChapterProgressView> seqs) throws IOException {
+    public void saveContent(String filePath,int cid,String vid,List<ChapterProgressView> seqs) throws Exception {
         List<Child> childList=new ArrayList<>(  );
         List<Paragraph> paragraphs=new ArrayList<>(  );
         //存入实体类中
         String errorStr=Md2Save.md2Entitys( filePath,childList,paragraphs );
         if(errorStr!=null)
-            return errorStr;
-        //确保结构严格，没有章添加空章
-        if(childList.get( 0 ).getLevel()!=1){
+            throw new Exception(errorStr);
+        if(seqs!=null){
+            seqs.sort( Comparator.comparing( ChapterProgressView::getChapter ) );
+            for(ChapterProgressView seq:seqs){
+                seq.getSections().sort( Integer::compareTo );
+            }
+        }
+        if(childList.get( 0 ).getLevel()!=1){ //只包含节，没有章
             Child chapter=new Child();
             if(seqs==null||seqs.size()==0||seqs.get( 0 ).getChapter()==null)
-                return "解析失败，不确定章号";
+                throw new Exception("解析失败，不确定章号");
             chapter.setSection_seq( seqs.get( 0 ).getChapter() );
             chapter.setLevel( 1 );
-            chapter.setSection_name( null );//空掌以标题为null标识
+            chapter.setSection_name( null );//空章以标题为null标识
             chapter.setSub( childList );
             childList=new ArrayList<>(  );
             childList.add( chapter );
         }
-        //修改序列
+        childList.removeIf( child -> child.getLevel() != 1 );
+        //检测与seqs选择序列是否对应
         if(seqs!=null&&seqs.size()>0){
-            List<Child> tempList=new ArrayList<>(  );//不在seqs中的要移除
+            if(childList.size()!=seqs.size()){
+                throw new Exception("匹配失败，文件章数与所选章号数不同");
+            }
+            for (int i=0;i<childList.size();++i){
+                Child child=childList.get( i );
+                child.setSection_seq( seqs.get( i ).getChapter() );
+                List<Child> children=child.getSub();
+                List<Integer> sSeqs=seqs.get( i ).getSections();
+                if(sSeqs!=null && sSeqs.size() >0 ) {
+                    if (children == null || children.size() != sSeqs.size()) {
+                        throw new Exception( "匹配失败，第" + seqs.get( i ).getChapter() + "章的实际节数与所选节号的数目不同" );
+                    }
+                    if (children.get( 0 ).getSection_seq() == 0 && sSeqs.get( 0 ) != 0) {
+                        throw new Exception( "概论不可作为第" + sSeqs.get( 0 ) + "节！如果文件中存在没有从属节的段落，请选择概论(第0节)" );
+                    }
+                    for (int j = 0; j < children.size(); ++j) {
+                        children.get( j ).setSection_seq( sSeqs.get( j ) );
+                    }
+                }
+            }
+        }
+        /*
+        //去除不seqs原序列中的章节
+        if(seqs!=null&&seqs.size()>0){
+            List<Child> tempList=new ArrayList<>(  );
             int i=-1;
             for(Child child:childList){
                 if(i>=(seqs.size()-1))
                    break;
-                if(child.getLevel()!=1)//第一层只存章
+                if(child.getLevel()!=1)
                     continue;
                 tempList.add( child );
                 ChapterProgressView chapterProgressView=seqs.get( ++i );
@@ -143,13 +185,14 @@ public class CourseSaveService {
             }
             childList=tempList;
         }
+        */
         if(childList.size()==0)
-            return "格式错误，文件中没有章或节";
+            throw new Exception("文件格式错误，文件中没有章或节");
         //查询目录
         if(vid==null){
             Course course=courseTemplate.findByPrimaryKey(cid);
             if(course==null)
-                return "课程不存在";
+                throw new Exception("课程不存在");
             vid=course.getVid();
         }
         Index index=indexTemplate.findByPrimaryKey(cid,vid);
@@ -167,18 +210,16 @@ public class CourseSaveService {
             if(child.getSection_name(  )==null)
                 child.setSection_name( "" );
         }
-        //储存//新加入的节和知识点id均为负
-        Map<Integer,Integer> kid2xkid=indexTemplate.upset(index);
-        List<Paragraph> paragraphsx=new ArrayList<>(  );
+        //储存//新加入的节和知识点sid均为负
+        Map<Integer,Integer> kid2Newkid=indexTemplate.upset(index);
+        List<Paragraph> paragraphsNew=new ArrayList<>(  );
         for(Paragraph paragraph:paragraphs){
-            if(kid2xkid.get( paragraph.getParagraphKnowledge() )!=null){
-                paragraph.setParagraphKnowledge(kid2xkid.get( paragraph.getParagraphKnowledge() ) );
-                paragraphsx.add( paragraph );
+            if(kid2Newkid.get( paragraph.getParagraphKnowledge() )!=null){
+                paragraph.setParagraphKnowledge(kid2Newkid.get( paragraph.getParagraphKnowledge() ) );
+                paragraphsNew.add( paragraph );
             }
         }
-        contentTemplate.instertAll(paragraphsx);
-
-        return null;
+        contentTemplate.instertAll(paragraphsNew);
     }
 
     public void deleteCourse(Integer cid) {
@@ -252,13 +293,13 @@ public class CourseSaveService {
         }
     }
 
-    public CourseView preview(String filePath, Map<String,SectionContentView> sectionViewMap) throws IOException {
+    public CourseView preview(String filePath, Map<String,SectionContentView> sectionViewMap) throws Exception {
         List<Child> chapterList=new ArrayList<>(  );
         List<Paragraph> paragraphs=new ArrayList<>(  );
         //存入实体类中
         String errorStr=Md2Save.md2Entitys( filePath,chapterList,paragraphs );
         if(errorStr!=null)
-            return null;
+            throw  new Exception(errorStr);
         if(chapterList.get( 0 ).getLevel()!=1){//确保结构严格，没有章
             Child chapter=new Child();
             chapter.setSection_seq( 0 );
@@ -302,7 +343,6 @@ public class CourseSaveService {
         for(Paragraph paragraph:paragraphs) {
             if(paragraph.getParagraphKnowledge()>maxKid)
                 continue;
-//            paragraph.setPid( new ObjectId(  ) );
             knowledgeViews[paragraph.getParagraphKnowledge()-minKid].getParagraphs().add(paragraph);
         }
 
@@ -437,22 +477,5 @@ public class CourseSaveService {
         }
         return chapterProgressViews;
     }
-
-//    //查重
-//    private boolean duplicateChecking(Integer courseID,List<Section> sections){
-//        int secseq=sectionMapper.selectSectionMaxID(courseID);
-//        if(secseq==0||sections==null){
-//            return false;
-//        }else{//查重
-//            for(Section section:sections){
-//                if(section!=null&&section.getSectionName()!=null
-//                        &&sectionMapper.selectSectionID(section.getSectionName(),courseID)!=0){
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-
 
 }

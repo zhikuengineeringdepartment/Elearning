@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiku.mapper.AccessRecordMapper">
+  <resultMap id="BaseResultMap" type="com.zhiku.entity.mysql.AccessRecord">
+    <id column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="uri" jdbcType="VARCHAR" property="uri" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="stay_time" jdbcType="INTEGER" property="stayTime" />
+    <result column="latest_time" jdbcType="TIMESTAMP" property="latestTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    aid, ip, uri, date, number, stay_time, latest_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from access_record
+    where aid = #{aid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from access_record
+    where aid = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiku.entity.mysql.AccessRecord">
+    insert into access_record (aid, ip, uri, 
+      date, number, stay_time, 
+      latest_time)
+    values (#{aid,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR}, 
+      #{date,jdbcType=DATE}, #{number,jdbcType=INTEGER}, #{stayTime,jdbcType=INTEGER}, 
+      #{latestTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.AccessRecord">
+    insert into access_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="uri != null">
+        uri,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="stayTime != null">
+        stay_time,
+      </if>
+      <if test="latestTime != null">
+        latest_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null">
+        #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="stayTime != null">
+        #{stayTime,jdbcType=INTEGER},
+      </if>
+      <if test="latestTime != null">
+        #{latestTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiku.entity.mysql.AccessRecord">
+    update access_record
+    <set>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null">
+        uri = #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="stayTime != null">
+        stay_time = #{stayTime,jdbcType=INTEGER},
+      </if>
+      <if test="latestTime != null">
+        latest_time = #{latestTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiku.entity.mysql.AccessRecord">
+    update access_record
+    set ip = #{ip,jdbcType=VARCHAR},
+      uri = #{uri,jdbcType=VARCHAR},
+      date = #{date,jdbcType=DATE},
+      number = #{number,jdbcType=INTEGER},
+      stay_time = #{stayTime,jdbcType=INTEGER},
+      latest_time = #{latestTime,jdbcType=TIMESTAMP}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+    <!--自定义sql-->
+    <resultMap id="ExpandedResultMap" extends="BaseResultMap" type="com.zhiku.view.AccessRecordView">
+        <result column="name" jdbcType="VARCHAR" property="pageName" />
+        <result column="ip_sum" jdbcType="INTEGER" property="accessIpNumber" />
+    </resultMap>
+
+    <select id="selectByIpUriDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from access_record
+        where ip = #{ip,jdbcType=VARCHAR} and uri = #{uri,jdbcType=VARCHAR}
+        and date = #{date,jdbcType=DATE}
+    </select>
+    <select id="selectByIpUriDateAll" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from access_record
+        where
+        <foreach collection="list" item="item" index="index" separator=" or ">
+            ip = #{item.ip,jdbcType=VARCHAR} and uri = #{item.uri,jdbcType=VARCHAR}
+            and date = #{item.date,jdbcType=DATE}
+        </foreach>
+    </select>
+    <select id="selectByDateInterval" resultMap="ExpandedResultMap">
+        select
+        uri,date,COUNT(ip) as ip_sum,SUM(number) as number,SUM(stay_time) as stay_time,name
+        from access_record natural join web_page
+        where date >= #{begin,jdbcType=DATE} and #{end,jdbcType=DATE} >= date
+        GROUP BY uri,date
+        order by date
+    </select>
+    <insert id="replaceAll" parameterType="java.util.List">
+      replace into access_record (aid, ip, uri, date, number, stay_time, latest_time)
+    values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.aid,jdbcType=INTEGER}, #{item.ip,jdbcType=VARCHAR}, #{item.uri,jdbcType=VARCHAR},
+            #{item.date,jdbcType=DATE}, #{item.number,jdbcType=INTEGER}, #{item.stayTime,jdbcType=INTEGER},
+            #{item.latestTime,jdbcType=TIMESTAMP})
+        </foreach>
+  </insert>
+
+
+</mapper>
