@@ -70,7 +70,7 @@ public class CourseSaveService {
             File file = new File( path );
             if (file.exists()) {
                 boolean b=file.delete();
-                if(b){
+                if(!b){
                     new Exception("md文件"+path+"删除失败").printStackTrace();
                 }
             }
