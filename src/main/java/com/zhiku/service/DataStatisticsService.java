@@ -37,7 +37,7 @@ public class DataStatisticsService {
             accessRecord.setUri( uri );
             accessRecord.setDate( day );
             accessRecord.setNumber( 1 );
-            accessRecord.setStayTime( 0 );
+            accessRecord.setStayTime( 0L );
             accessRecord.setLatestTime( time );
             accessRecordMapper.insertSelective( accessRecord );
         }else{
@@ -90,7 +90,8 @@ public class DataStatisticsService {
         List<AccessRecordView> accessRecordViews=accessRecordMapper.selectByDateInterval( beginDay,endDay );
         for(AccessRecordView accessRecordView:accessRecordViews){
             accessRecordView.setStayTimeAvg( accessRecordView.getNumber()<=0?0:
-                           accessRecordView.getStayTime()/accessRecordView.getNumber() );
+                    (int)(accessRecordView.getStayTime()/accessRecordView.getNumber())/1000 );
+            accessRecordView.setStayTime( accessRecordView.getStayTime()/1000 );
         }
         return accessRecordViews;
     }

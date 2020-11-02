@@ -170,7 +170,7 @@ public class CourseSaveController {
         ResponseData responseData=new ResponseData( );
         responseData.putDataValue( "courseView",courseView );
         responseData.putDataValue( "sectionViewMap",sectionViewMap );//？key为Integer的map无法转化为json ！！
-
+        courseSaveService.deleteFile( filePath );
         return responseData;
     }
 

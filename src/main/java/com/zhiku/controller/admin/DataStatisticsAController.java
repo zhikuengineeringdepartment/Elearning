@@ -3,7 +3,6 @@ package com.zhiku.controller.admin;
 import com.zhiku.service.DataStatisticsService;
 import com.zhiku.util.ResponseData;
 import com.zhiku.view.AccessRecordView;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.stereotype.Controller;
@@ -32,16 +31,15 @@ public class DataStatisticsAController {
         ResponseData responseData=ResponseData.ok();
         List<AccessRecordView> aDPage=dataStatisticsService.listByDateInterval( beginDay,endDay );
         //???linux上使用Pair<>，new Pair<>会出错！
-//        Map<Date, Pair<Integer,Long> > mapTotal=new TreeMap<>(  );
         Map<Date, Integer> mapTotalNumber=new TreeMap<>(  );
         Map<Date, Long > mapTotalStayTime=new TreeMap<>(  );
-        //
+
         for (AccessRecordView accessRecordView:aDPage){
             Integer oldNumber=mapTotalNumber.get( accessRecordView.getDate() );
             Long oldStay=mapTotalStayTime.get( accessRecordView.getDate() );
             if(oldNumber==null||oldStay==null){
                 mapTotalNumber.put(accessRecordView.getDate(),accessRecordView.getNumber());
-                mapTotalStayTime.put(accessRecordView.getDate(),new Long(accessRecordView.getStayTime() ) );
+                mapTotalStayTime.put(accessRecordView.getDate(), accessRecordView.getStayTime() );
             }else{
                 mapTotalNumber.put(accessRecordView.getDate(),accessRecordView.getNumber()+oldNumber);
                 mapTotalStayTime.put(accessRecordView.getDate(),oldStay+accessRecordView.getStayTime() );

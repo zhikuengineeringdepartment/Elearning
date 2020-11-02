@@ -7,14 +7,14 @@
     <result column="uri" jdbcType="VARCHAR" property="uri" />
     <result column="date" jdbcType="DATE" property="date" />
     <result column="number" jdbcType="INTEGER" property="number" />
-    <result column="stay_time" jdbcType="INTEGER" property="stayTime" />
+    <result column="stay_time" jdbcType="BIGINT" property="stayTime" />
     <result column="latest_time" jdbcType="TIMESTAMP" property="latestTime" />
   </resultMap>
   <sql id="Base_Column_List">
     aid, ip, uri, date, number, stay_time, latest_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from access_record
     where aid = #{aid,jdbcType=INTEGER}
@@ -24,11 +24,11 @@
     where aid = #{aid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zhiku.entity.mysql.AccessRecord">
-    insert into access_record (aid, ip, uri, 
-      date, number, stay_time, 
+    insert into access_record (aid, ip, uri,
+      date, number, stay_time,
       latest_time)
-    values (#{aid,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR}, 
-      #{date,jdbcType=DATE}, #{number,jdbcType=INTEGER}, #{stayTime,jdbcType=INTEGER}, 
+    values (#{aid,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR},
+      #{date,jdbcType=DATE}, #{number,jdbcType=INTEGER}, #{stayTime,jdbcType=BIGINT},
       #{latestTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.zhiku.entity.mysql.AccessRecord">
@@ -73,7 +73,7 @@
         #{number,jdbcType=INTEGER},
       </if>
       <if test="stayTime != null">
-        #{stayTime,jdbcType=INTEGER},
+        #{stayTime,jdbcType=BIGINT},
       </if>
       <if test="latestTime != null">
         #{latestTime,jdbcType=TIMESTAMP},
@@ -96,7 +96,7 @@
         number = #{number,jdbcType=INTEGER},
       </if>
       <if test="stayTime != null">
-        stay_time = #{stayTime,jdbcType=INTEGER},
+        stay_time = #{stayTime,jdbcType=BIGINT},
       </if>
       <if test="latestTime != null">
         latest_time = #{latestTime,jdbcType=TIMESTAMP},
@@ -110,7 +110,7 @@
       uri = #{uri,jdbcType=VARCHAR},
       date = #{date,jdbcType=DATE},
       number = #{number,jdbcType=INTEGER},
-      stay_time = #{stayTime,jdbcType=INTEGER},
+      stay_time = #{stayTime,jdbcType=BIGINT},
       latest_time = #{latestTime,jdbcType=TIMESTAMP}
     where aid = #{aid,jdbcType=INTEGER}
   </update>
@@ -150,7 +150,7 @@
     values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.aid,jdbcType=INTEGER}, #{item.ip,jdbcType=VARCHAR}, #{item.uri,jdbcType=VARCHAR},
-            #{item.date,jdbcType=DATE}, #{item.number,jdbcType=INTEGER}, #{item.stayTime,jdbcType=INTEGER},
+            #{item.date,jdbcType=DATE}, #{item.number,jdbcType=INTEGER}, #{item.stayTime,jdbcType=BIGINT},
             #{item.latestTime,jdbcType=TIMESTAMP})
         </foreach>
   </insert>

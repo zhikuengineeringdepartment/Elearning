@@ -35,6 +35,7 @@ public class DataStatisticsController {
     @RequestMapping("access")
     public ResponseData access(HttpServletRequest response,String lastURI, String nextURI) throws ParseException {
         String ip= SmallTools.getIp( response );
+        System.out.println("访问记录<测试>："+lastURI+"->"+nextURI+"|"+ip);//TODO:查看日志用，待删除
         VisitStatistics.setDataStatisticsService( dataStatisticsService );
         if(nextURI!=null){
             VisitStatistics.addStart( ip,nextURI,new Date(  ) );

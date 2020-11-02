@@ -144,7 +144,7 @@ public class CourseSaveService {
                         throw new Exception( "匹配失败，第" + seqs.get( i ).getChapter() + "章的实际节数与所选节号的数目不同" );
                     }
                     if (children.get( 0 ).getSection_seq() == 0 && sSeqs.get( 0 ) != 0) {
-                        throw new Exception( "概论不可作为第" + sSeqs.get( 0 ) + "节！如果文件中存在没有从属节的段落，请选择概论(第0节)" );
+                        throw new Exception( "概述不可作为第" + sSeqs.get( 0 ) + "节！如果文件中存在没有从属节的段落，请选择概述(第0节)" );
                     }
                     for (int j = 0; j < children.size(); ++j) {
                         children.get( j ).setSection_seq( sSeqs.get( j ) );

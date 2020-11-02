@@ -23,6 +23,8 @@ public class VisitStatistics {
     private volatile static ScheduledExecutorService scheduledExecutorService;
     private volatile static ExecutorService executorServiceDo;
     private static final Runnable task;
+    private static volatile ScheduledFuture scheduledFuture;
+    private static volatile Future future;
 
     //配置参数
     private static String saveFile;
@@ -30,21 +32,22 @@ public class VisitStatistics {
     private static final int limit=60*60*1000;//无法判断用户何时下线，以60分钟不发请求为下线
     private static final int sleepTime=2*60*1000;//每2分钟写入一次文件，防止网站关闭数据丢失,不立即记录，防止性能过低
     private static final int MAX_changeNumber=100000;//最多在内存中储存数目，超过此数，sleepTime时间不到也转储数据库
-    private static final int MAX_taskNumber=100;//添加写入数据库的最大任务大小，防止任务执行出现问题，一直添加任务占用过多内存，超过的任务数的任务暂时舍弃掉//TODO：待添加通知功能
+    private static final int MAX_runTime=sleepTime*10;//任务运行的最大时间，超过此时间认为已卡住，杀死任务线程重新执行
     //计数变量
     private volatile static boolean isChing;
     private volatile static int changeNumber=0;
-    private volatile static AtomicInteger taskNumber=new AtomicInteger(0);
 
     private volatile static List<AccessRecord> acEndsT;
     private volatile static Map<String, AccessRecord> ipUriDatasT;
     private volatile static int changeNumberT;
+    private volatile static Date lastUpdateDate=new Date();
+
     static {
         task= ()-> {
             try {
                 recordToDb( ipUriDatasT, acEndsT, changeNumberT );
-            }finally {
-                taskNumber.getAndAdd( -1 );
+            }catch (Exception e){
+                e.printStackTrace();
             }
         };
     }
@@ -62,7 +65,7 @@ public class VisitStatistics {
         if(scheduledExecutorService!=null)
             return;
         scheduledExecutorService=Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleWithFixedDelay(
+        scheduledFuture=scheduledExecutorService.scheduleWithFixedDelay(
                 VisitStatistics::recordToDb,
                 0,
                 sleepTime,
@@ -240,7 +243,7 @@ public class VisitStatistics {
             accessRecord.setUri( uri );
             accessRecord.setDate( SmallTools.toDay( time ) );
             accessRecord.setNumber( 1 );
-            accessRecord.setStayTime( 0 );
+            accessRecord.setStayTime( 0L );
             accessRecord.setLatestTime( time );
             ipUriDatas.put(ip+uri, accessRecord );
         }else{
@@ -249,9 +252,15 @@ public class VisitStatistics {
         }
         if(++changeNumber>MAX_changeNumber){
             recordToDb();
+            if(scheduledFuture.isDone()){
+                scheduledFuture=scheduledExecutorService.scheduleWithFixedDelay(
+                        VisitStatistics::recordToDb,
+                        sleepTime,
+                        sleepTime,
+                        TimeUnit.MILLISECONDS);
+            }
         }
     }
-
     /*添加离开页面记录*/
     public synchronized static void addEnd(String ip,String uri,Date time) throws ParseException {
         AccessRecord accessRecord=ipUriDatas.get( ip+uri );
@@ -265,12 +274,19 @@ public class VisitStatistics {
         }else {
             if(accessRecord.getLatestTime()!=null){
                 accessRecord.setStayTime( accessRecord.getStayTime() +
-                        (int) ((time.getTime() - accessRecord.getLatestTime().getTime()) / 1000) );
+                        (int) ((time.getTime() - accessRecord.getLatestTime().getTime()) ) );
                 accessRecord.setLatestTime( null );
             }
         }
         if(++changeNumber>MAX_changeNumber){
             recordToDb();
+            if(scheduledFuture.isDone()){
+                scheduledFuture=scheduledExecutorService.scheduleWithFixedDelay(
+                        VisitStatistics::recordToDb,
+                        sleepTime,
+                        sleepTime,
+                        TimeUnit.MILLISECONDS);
+            }
         }
     }
 
@@ -286,11 +302,15 @@ public class VisitStatistics {
         ipUriDatasT=clone( ipUriDatas );
         acEndsT=clone( acEnds );
         changeNumberT=changeNumber;
-        if( taskNumber.getAndAdd(1) <MAX_taskNumber ){
-            //无法通过线程池ExecutorService获取当前排队的任务数，只能额外记录加入任务数taskNumber//TODO: try{}finally{}有线程死亡不执行的风险，待修改
-            executorServiceDo.submit( task );
+        if(future==null||future.isDone()){
+            lastUpdateDate=new Date();
+            future=executorServiceDo.submit( task );
         }else{
-            taskNumber.getAndAdd( -1 );
+            if((new Date().getTime()-lastUpdateDate.getTime())>MAX_runTime){
+                future.cancel( true );
+                lastUpdateDate=new Date();
+                future=executorServiceDo.submit( task );
+            }
         }
         ipUriDatas.clear();
         acEnds.clear();
@@ -307,6 +327,7 @@ public class VisitStatistics {
         List<AccessRecord> accessRecords=dataStatisticsService.selectByIpUriDateAll( forSelect );
         Map<String,AccessRecord> mapARs=new HashMap<>();
         for(AccessRecord accessRecord:accessRecords){
+            accessRecord.setStayTime( accessRecord.getStayTime() );
             mapARs.put( accessRecord.getIp()+accessRecord.getUri(),accessRecord );
         }
         //先记录离开页面
@@ -315,7 +336,7 @@ public class VisitStatistics {
             if(oldAR==null||oldAR.getLatestTime()==null)
                 continue;
             oldAR.setStayTime(  oldAR.getStayTime() +
-                    (int) ((accessRecord.getLatestTime().getTime() - oldAR.getLatestTime().getTime()) / 1000) );
+                    (int) ((accessRecord.getLatestTime().getTime() - oldAR.getLatestTime().getTime()) ) );
             oldAR.setLatestTime( null );
         }
         //记录其他访问
@@ -331,6 +352,9 @@ public class VisitStatistics {
             }
         }
         //更新
+        for(AccessRecord accessRecord:accessRecords){
+            accessRecord.setStayTime( accessRecord.getStayTime() );
+        }
         if(!accessRecords.isEmpty()){
             dataStatisticsService.replaceAll( accessRecords );
         }

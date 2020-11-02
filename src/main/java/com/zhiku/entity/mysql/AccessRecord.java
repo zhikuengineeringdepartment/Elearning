@@ -13,7 +13,7 @@ public class AccessRecord {
 
     private Integer number;
 
-    private Integer stayTime;
+    private Long stayTime;
 
     private Date latestTime;
 
@@ -57,11 +57,11 @@ public class AccessRecord {
         this.number = number;
     }
 
-    public Integer getStayTime() {
+    public Long getStayTime() {
         return stayTime;
     }
 
-    public void setStayTime(Integer stayTime) {
+    public void setStayTime(Long stayTime) {
         this.stayTime = stayTime;
     }
 
